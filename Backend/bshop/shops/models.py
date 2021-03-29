@@ -4,7 +4,7 @@ from django.apps import apps
 class Shop(models.Model):
 
 	title = models.CharField(max_length = 100, blank=False)
-    user = models.ForeignKey(User,related_name='users',on_delete=models.CASCADE) 
+    # user = models.ForeignKey(User,related_name='users',on_delete=models.CASCADE) 
 	logo = models.ImageField(blank=True , upload_to='image/')
 	address = models.CharField(max_length = 500, blank=False)
     theme = models.IntegerField()
