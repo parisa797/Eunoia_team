@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Shop
-# from accounts.models import User
+from users.models import MyUser
 
 class ShopSerializer(serializers.ModelSerializer): 
 
