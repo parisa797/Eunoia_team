@@ -7,8 +7,10 @@ class Shop(models.Model):
     # user = models.ForeignKey(User,related_name='users',on_delete=models.CASCADE) 
 	logo = models.ImageField(blank=True , upload_to='image/')
 	address = models.CharField(max_length = 500, blank=False)
-    theme = models.IntegerField()
-    shomare_sabt = models.IntegerField()
-
+	theme = models.IntegerField(default=1, blank=True, null=True)
+	shomare_sabt = models.IntegerField(default=1, blank=True, null=True)
+	rate = models.IntegerField(default=5, blank=True, null=True)
+	phone = models.IntegerField(blank=True, null=True)
+	
 	def str(self):
 		return self.title
