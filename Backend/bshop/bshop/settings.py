@@ -13,7 +13,7 @@ SECRET_KEY = 'w44&ts*^p7z-s@hsv3#et2-h^9xjcgf&kje1!#2x81c&pb!-#='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SITE_ID=1
 # Application definition
@@ -46,7 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     # 'django.middleware.common.BrokenLinkEmailsMiddleware',
     # 'django.middleware.common.CommonMiddleware',
 ]
@@ -130,8 +130,6 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'EunoiaDB',
         'USER': 'postgres',
