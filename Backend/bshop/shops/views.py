@@ -1,7 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.exceptions import ParseError
 from rest_framework import filters
 
@@ -10,8 +10,8 @@ from .models import Shop
 from .serializers import ShopSerializer
 from users.models import MyUser
 
-class ShopListCreateAPIView(generics.ListCreateAPIView):
-    
+class ShopCreateAPIView(generics.CreateAPIView):
+
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
@@ -24,6 +24,13 @@ class ShopListCreateAPIView(generics.ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+class AllShopListAPIView(generics.ListAPIView):
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
 
 class OwnerFilterBackend(filters.BaseFilterBackend):
         def filter_queryset(self, request, queryset, view):
@@ -31,7 +38,7 @@ class OwnerFilterBackend(filters.BaseFilterBackend):
 
 
 class ShopListAPIView(generics.ListAPIView):
-    
+
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
@@ -39,7 +46,9 @@ class ShopListAPIView(generics.ListAPIView):
 
 
 
-class ShopRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    
+class ShopRetrieveAPIView(generics.RetrieveAPIView):
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
