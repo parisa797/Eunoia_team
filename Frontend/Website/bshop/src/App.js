@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect, NavLink } from 
 import CustomNavbar from './Navbar';
 import './themes.css';
 import HomePage from './HomePage';
-//import ProfilePage from './ProfilePage';
+import ProfilePage from './ProfilePage';
 
 function App() {
   //for the themes, the first character is either l (light) or d (dark), the second one is the number of the theme selected (for those shops that have their own custom theme)
@@ -36,7 +36,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path='/' component={HomePage} />
-            {/* <Route path="/profile" render={(props) => <ProfilePage triggerNavbarUpdate={triggerNavbarUpdate} setTriggerNavUpdate={setTriggerNavUpdate} {...props} />} /> */}
+             <Route path="/profile" render={(props) => <ProfilePage triggerNavbarUpdate={triggerNavbarUpdate} setTriggerNavUpdate={setTriggerNavUpdate} {...props} />} /> 
           </Switch>
         </Router>
       </div>
