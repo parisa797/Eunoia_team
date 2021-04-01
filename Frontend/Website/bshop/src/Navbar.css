@@ -1,0 +1,7 @@
+.custom-nav{
+    z-index: 999;
+}
+.custom-nav ,.custom-nav .navbar-brand{
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
