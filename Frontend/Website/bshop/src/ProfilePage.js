@@ -385,7 +385,7 @@ function ProfilePage(props) {
 
                         </form>
                     </div>
-                    {profile.role === "buyer" && <a href="/sth" className="be-admin-notif" data-testid="become-a-seller"> میخواهید فروشگاه خود را ثبت کنید؟</a>}
+                    <a href="/registerstore" className="be-admin-notif" data-testid="become-a-seller">{profile.role === "buyer"? "میخواهید فروشگاه خود را ثبت کنید؟" : "می خواهید فروشگاه جدیدی ثبت کنید؟"}</a>
                 </div>
             </div>
         </div>

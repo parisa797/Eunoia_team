@@ -10,7 +10,7 @@ function CustomNavbar(props) {
   const [profile, setProfile] = useState(null);
   const [dropVis, setDropVis] = useState(false);
   useEffect(() => {
-    if (!localStorage.getItem("username")) {
+    if (!localStorage.getItem("token")) {
       setProfile(null);
       return;
     }
@@ -29,10 +29,18 @@ function CustomNavbar(props) {
       }
     ).then(
       res => {
+        if(res === null)
+          return;
         if (!(res?.urls?.length > 0)) {
           res.urls = [{ uploaded_file: "./../profile.png" }];
           res.files = [-1];
         }
+        if(!localStorage.getItem("role"))
+          localStorage.setItem("role",res.role);
+        
+        if(!localStorage.getItem("username"))
+          localStorage.setItem("username",res.user_name);
+
         setProfile(res)
       }
     )
@@ -51,7 +59,7 @@ function CustomNavbar(props) {
       <Navbar.Brand ><a href="/">Bshop</a><div className="btn" data-testid="nav-theme-toggle" onClick={() => props.setMode(props.theme[0] === 'l' ? 'd' : 'l')}> {props.theme[0] === 'l' ? '☀' : '🌙'}</div></Navbar.Brand>
       <Nav className="mr-auto">
         {!profile ?
-          <Nav.Link href="/signin" data-testid="no-profile" className="no-profile">ورود / ثبتنام</Nav.Link>
+          <Nav.Link href="/login" data-testid="no-profile" className="no-profile">ورود / ثبتنام</Nav.Link>
           :
           <div className="nav-profile">
             <img data-testid="nav-prof-img" className="image btn" src={profile && profile.urls && profile.urls.length > 0 ? profile.urls[0].uploaded_file : "./../profile.png"} alt="profile" onClick={() => setDropVis(!dropVis)} />

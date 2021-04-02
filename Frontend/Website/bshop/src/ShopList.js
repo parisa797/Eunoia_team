@@ -7,7 +7,7 @@ function ShopList(props) {
     const [myshops, setMyShops] = useState([]);
     useEffect(() => {
 
-        if (localStorage.getItem("role") === "seller") {
+        // if (localStorage.getItem("role") === "seller") {
             fetch("http://127.0.0.1:8000/api/v1/shops/user/", {
                 method: 'GET',
                 headers: {
@@ -24,7 +24,7 @@ function ShopList(props) {
                 .then((d) => {
                     setMyShops(d);
                 });
-        }
+        //}
         fetch("http://127.0.0.1:8000/api/v1/shops/", {
             method: 'GET',
             headers: {

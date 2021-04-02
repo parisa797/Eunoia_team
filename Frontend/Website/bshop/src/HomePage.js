@@ -9,7 +9,7 @@ function HomePage(props) {
 
     return (
         <div className="homepage">
-            {!localStorage.getItem('username') ?
+            {!localStorage.getItem('token') ?
                 (
                     <div className="not-logged-header" data-testid="not-logged-header">
                         <Lottie options={{
@@ -23,7 +23,7 @@ function HomePage(props) {
                                 <h2>!خرید، راحتتر از همیشه</h2>
                                 <p>با  بیشاپ، میتوانید از فروشگاه دلخواهتون چه آنلاین و چه حضوری آسان تر خرید کنید
                         </p>
-                                <div className="btn">ورود / ثبت نام</div>
+                                <div className="btn" onClick={()=>window.location.replace("/login")}>ورود / ثبت نام</div>
                             </div>
                         </div>
                     </div>
