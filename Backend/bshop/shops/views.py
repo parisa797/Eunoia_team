@@ -38,7 +38,6 @@ class OwnerFilterBackend(filters.BaseFilterBackend):
 
 
 class ShopListAPIView(generics.ListAPIView):
-
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
