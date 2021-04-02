@@ -1,0 +1,42 @@
+/* [data-theme="l0"] {
+    --primary-color: #302AE6;
+    --secondary-color: #536390;
+    --font-color: #424242;
+    --bg-color: #fff;
+    --heading-color: #292922;
+} */
+
+/* [data-theme="l0"] {
+    --primary-color: #d40c3e;
+    --secondary-color: #3b2023;
+    --font-color: #221e24;
+    --bg-color: rgb(231, 221, 221);
+    --heading-color: #391542;
+} */
+
+[data-theme="l0"] {
+    --primary-color: #b96a9d;
+    --secondary-color: #594F99;
+    --third-color: #fbb3ae;
+    --font-color: #221e24;
+    --font-color2: #56485e;
+    --font-always-light-color: #fff;
+    --font-always-dark-color: #000;
+    --bg-color: #fff;
+    --heading-color: #945798;
+    --bg-color2: rgb(231, 229, 233);
+}
+
+
+[data-theme="d0"] {
+    --primary-color: #9A97F3;
+    --secondary-color: #818cab;
+    --third-color: #915753;
+    --font-color: #e1e1ff;
+    --font-color2: #dbd6e2;
+    --font-always-light-color: #fff;
+    --font-always-dark-color: #000;
+    --bg-color: #161625;
+    --bg-color2: #3b335e;
+    --heading-color: #818cab;
+}
