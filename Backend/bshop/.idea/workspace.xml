@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c0c8ca57-be22-407f-ab13-4cd81bb69d57" name="Default Changelist" comment="" />
+    <list default="true" id="acc2007c-7bd8-47d9-b3a7-4f1dfcfbc0d6" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectId" id="1qSrmioRTsXZQ6Q4LYbX9ilxe7K" />
+  <component name="ProjectId" id="1qbsPN4UDpvJdFyM0EyKQrI9ERN" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -47,17 +47,22 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c0c8ca57-be22-407f-ab13-4cd81bb69d57" name="Default Changelist" comment="" />
-      <created>1617083998937</created>
+      <changelist id="acc2007c-7bd8-47d9-b3a7-4f1dfcfbc0d6" name="Default Changelist" comment="" />
+      <created>1617359604759</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1617083998937</updated>
-      <workItem from="1617084008334" duration="3833000" />
-      <workItem from="1617089893675" duration="544000" />
+      <updated>1617359604759</updated>
+      <workItem from="1617359624493" duration="15868000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="508" y="210" key="#com.intellij.ide.actions.DebugLogConfigureAction" timestamp="1617375439291">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="508" y="210" key="#com.intellij.ide.actions.DebugLogConfigureAction/0.0.1360.728@0.0.1360.728" timestamp="1617375439291" />
   </component>
 </project>
