@@ -114,8 +114,6 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "users.MyUser"
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' ##3 in hamon email host inast
-ACCOUNT_EMAIL_VERIFICATION = "optional"
 
 
 # Database
@@ -179,3 +177,30 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
 MEDIA_URL= "/media/"
+
+def verified_callback(user):
+    user.is_active = True
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  
+ 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'zamghaz2000@gmail.com'
+EMAIL_HOST_PASSWORD = 'commutive1234'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'zamghaz2000@gmail.com'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = False
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = False
+# ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/admin'
+# ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/admin'
+
