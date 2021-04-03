@@ -23,13 +23,13 @@ class Registration(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-class LoginTest(APITestCase):
-    def test_login(self):
-        self.user=MyUser.objects.create_user(username='testcase',email='email@tesr.com',password="strong_Pass")
-        self.token=Token.objects.create(user=self.user)
-        data = {"username": "testcase", "password": "strong_Pass"}
-        response=self.client.post("/rest-auth/login/",data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+# class LoginTest(APITestCase):
+#     def test_login(self):
+#         self.user=MyUser.objects.create_user(username='testcase',email='email@tesr.com',password="strong_Pass")
+#         self.token=Token.objects.create(user=self.user)
+#         data = {"username": "testcase", "password": "strong_Pass"}
+#         response=self.client.post("/rest-auth/login/",data)
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 class LogoutTest(APITestCase):
     def test_logout(self):
