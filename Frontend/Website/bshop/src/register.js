@@ -26,10 +26,9 @@ const Register = () => {
     }).then((res) => res.data)
     .then(res=>{
       console.log(res)
-      if(!!res && res.key)
+      if(!!res && !!res.detail && res.detail==="Verification e-mail sent.")
       {
-        localStorage.setItem("token",res.key);
-        window.location.replace("/");
+        window.location.replace("/login");
       }
     }).catch((e) => {console.log(e)})
   }

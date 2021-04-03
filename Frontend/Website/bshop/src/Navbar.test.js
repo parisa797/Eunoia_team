@@ -43,7 +43,7 @@ test("navbar profile for unsigned users", async () => {
 });
 
 test("navbar profile for signed users with no fullname", async () => {
-  localStorage.setItem("username", "itsme")
+  localStorage.setItem("token", "itsme")
   var fakeUser = {
     user_name: "uwu",
     email: "sb@gmail.com",
@@ -77,7 +77,7 @@ test("navbar profile for signed users with no fullname", async () => {
 });
 
 test("navbar profile for signed users with fullname", async () => {
-  localStorage.setItem("username", "itsme");
+  localStorage.setItem("token", "itsme");
   var theme = "l0";
   const setMode = (c) => theme = c + theme[1];
   var fakeUser = {
@@ -113,7 +113,7 @@ test("navbar profile for signed users with fullname", async () => {
 });
 
 test("navbar profile for signed users with first name (no last name)", async () => {
-  localStorage.setItem("username", "itsme")
+  localStorage.setItem("token", "itsme")
   var fakeUser = {
     user_name: "uwu",
     FirstName: "اسممم",
@@ -148,7 +148,7 @@ test("navbar profile for signed users with first name (no last name)", async () 
 });
 
 test("navbar profile for signed users with last name (no first name)", async () => {
-  localStorage.setItem("username", "itsme")
+  localStorage.setItem("token", "itsme")
   var fakeUser = {
     user_name: "uwu",
     LastName: "فامیلیمم",
@@ -183,7 +183,7 @@ test("navbar profile for signed users with last name (no first name)", async () 
 });
 
 test("navbar light/dark toggle", async () => {
-  localStorage.setItem("username", "itsme")
+  localStorage.setItem("token", "itsme")
   var fakeUser = {
     username: "uwu",
     email: "sb@gmail.com",

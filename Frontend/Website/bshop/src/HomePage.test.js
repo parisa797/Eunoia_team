@@ -41,7 +41,7 @@ test("home page for unsigned users", async () => {
 });
 
 test("home page for signed users", async () => {
-  localStorage.setItem("username", "aljfleij")
+  localStorage.setItem("token", "aljfleij")
   const shops = [{ title: "shop1", id: 1, address: "addressssss", logo: "" }
     , { title: "shop2", id: 2, address: "addressssss", logo: "" }
     , { title: "shop3", id: 3, address: "addressssss", logo: "" }

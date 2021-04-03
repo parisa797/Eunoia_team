@@ -6,7 +6,7 @@ import logo from './assets/logo.png'
 
 const Login = () => {
   const [values, setValues] = useState({
-    username: '',
+    email: '',
     password: ''
   })
   const handleChange = (n, v) => {
@@ -18,7 +18,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     loginUser({
-      username: values.username,
+      email: values.email,
       password: values.password
     }).then((res) => res.data)
     .then(res=>{
@@ -52,10 +52,10 @@ const Login = () => {
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.username}
-          onChange={(e) => handleChange('username', e.target.value)}
+          onChange={(e) => handleChange('email', e.target.value)}
           id="inputEmail"
           className="form-control"
-          placeholder="یوزرنیم خود را وارد کنید"
+          placeholder="ایمیل خود را وارد کنید"
           required
           autofocus
         />
