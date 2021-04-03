@@ -53,7 +53,7 @@ export default function Login() {
             else {
               // fetch("http://127.0.0.1:8000/rest-auth/login/", requestOptions)
               //instead of 127 put 192.168.1.6!!!
-              fetch("http://192.168.1.6:8000/rest-auth/login/", {
+              fetch("http://192.168.1.4:8000/rest-auth/login/", {
                 method: "POST",
                 headers: {
                   Accept: "application/json",
