@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { createStore } from "./api";
 import logo from "./assets/logo.png";
+import RegisterStore from './registerStore';
+import '@testing-library/jest-dom';
+
 
 const RegisterStore = () => {
   const [values, setValues] = useState({
-    email: "",
-    password: "",
+    // email: "",
+    // password: "",
     storeName: "",
     src: "",
     ownerName: "",
@@ -118,7 +120,7 @@ const RegisterStore = () => {
           autofocus
         />
         <label for="userName" className="sr-only">
-          نام  صاحب فروشگاه
+          نام  مدیر فروشگاه
         </label>
         <input
           style={{ textAlign: "right", marginBottom: "10px" }}
