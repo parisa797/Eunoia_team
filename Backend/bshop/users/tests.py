@@ -24,12 +24,20 @@ class Registration(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 class LoginTest(APITestCase):
-    def test_login(self):
+    def test_login_not_varify_email(self):
         self.user=MyUser.objects.create_user(username='testcase',email='email@tesr.com',password="strong_Pass")
         self.token=Token.objects.create(user=self.user)
         data = {"username": "testcase", "password": "strong_Pass"}
         response=self.client.post("/rest-auth/login/",data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    # def test_login_with_varify_email(self):
+    #     self.user = MyUser.objects.create_user(username='testcase', email='email@tesr.com', password="strong_Pass")
+    #     self.token = Token.objects.create(user=self.user)
+    #     self.client.credentials(HTTP_AUTHORIZATION="Token "+ self.token.key)
+    #     data = {"username": "amyrose", "password": "googooly","email":"amy78rose@gmail.com"}
+    #     response=self.client.post("/rest-auth/login/",data)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 class LogoutTest(APITestCase):
     def test_logout(self):
@@ -75,7 +83,7 @@ class ProfileTest(APITestCase):
         data={"email":"myemail@gmail.com","FirstName":"test","LastName":"case","role":"seller","phone":"09123654575","address":"test addres"}
         response=self.client.put(self.url,data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        print(response.data)
+        #print(response.data)
         newData={'FirstName': 'test', 'LastName': 'case', 'user_name': 'testcase', 'role': 'seller', 'phone': '09123654575', 'address': 'test addres', 'email': 'myemail@gmail.com'}
         responseData = {'FirstName': response.data["FirstName"], 'LastName': response.data["LastName"], 'user_name': response.data["user_name"], 'role': response.data["role"],
                    'phone': response.data["phone"], 'address': response.data["address"], 'email': response.data["email"]}
@@ -92,8 +100,8 @@ class ProfileTest(APITestCase):
         with open(tmp_file.name, 'rb') as data:
             response = self.client.post('/users/profile/upload-file',
                                         {"image": data, "item": 1}, format='multipart')
-            print(response.data,'data')
-            print(tmp_file.name,"temp name")
+            #print(response.data,'data')
+            #print(tmp_file.name,"temp name")
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
             ##check on edit file
