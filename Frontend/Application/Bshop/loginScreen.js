@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 export default function Login() {
-  const [user, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
 
   return (
@@ -23,9 +23,9 @@ export default function Login() {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="username"
+          placeholder="email"
           placeholderTextColor="#FBB3AE"
-          onChangeText={(user) => setUsername(user)}
+          onChangeText={(email) => setEmail(email)}
         />
       </View>
 
@@ -46,8 +46,8 @@ export default function Login() {
       <TouchableOpacity
         style={styles.loginBtn}
         onPress={() => {
-          // console.log(user);
-          if (user.length == 0) alert("Please enter your username");
+          // console.log(email);
+          if (email.length == 0) alert("Please enter your email");
           else {
             if (pass.length == 0) alert("Please enter your password");
             else {
@@ -62,7 +62,7 @@ export default function Login() {
                   "Access-Control-Allow-Headers": "*",
                 },
                 body: JSON.stringify({
-                  username: user,
+                  email: email,
                   password: pass,
                 }),
               })
@@ -71,7 +71,7 @@ export default function Login() {
                   console.log(response.status);
                   if (response.status == 200)
                     alert("You've logged in successfully");
-                  else alert("Incorrect username or password");
+                  else alert("Incorrect email or password");
 
                   return response.json();
                 })
