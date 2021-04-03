@@ -1,0 +1,180 @@
+.custom-nav{
+    z-index: 999;
+    width: 100vw;
+    background-color: var(--secondary-color);
+}
+.custom-nav ,.custom-nav .navbar-brand, .custom-nav .navbar-brand a, .custom-nav .navbar-brand a:hover{
+    color: var(--font-always-light-color);
+    text-decoration: none;
+}
+
+
+.custom-nav .navbar-brand .btn{
+    padding: 0px 0 0px 0;
+    margin-top: -20px;
+}
+
+.nav-profile img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--primary-color);
+    background-color: white;
+    padding: 0;
+    border: none;
+}
+
+.navbar-light .navbar-nav .nav-link, .custom-nav .no-profile{
+    color: var(--font-always-light-color)
+}
+
+@media (min-width: 621px){
+    .nav-profile .dropdown{
+        /* visibility: hidden; */
+        display: block;
+        transition: visibility .5s ease-in-out;
+        /* transition-delay: 2s; */
+        z-index: 1000;
+        position: absolute;
+        top: 50px;
+        background-color: var(--bg-color);
+        color: var(--font-color);
+        border-radius: 7px;
+        border: 1px solid var(--secondary-color);
+        width: 400px;
+        transform: translateX(-60px);
+    }
+    .nav-profile .dropdown .img-parent{
+        float : right;
+        height:100%;
+        width: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    
+    .nav-profile .dropdown .img-parent img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: white;
+        align-self: center;
+    }
+
+    .nav-profile .dropdown .prof-info{
+        text-align: end;
+    }
+
+    .nav-profile .dropdown .prof-info p{
+        margin-bottom: 0px;
+    }
+
+    .nav-profile .dropdown .prof-info .username{
+        font-size: smaller;
+        color:var(--secondary-color)
+
+    }
+
+    .nav-profile .dropdown .drop-exit{
+        display: none;
+    }
+}
+
+.nav-profile img{
+    object-fit: cover;
+}
+
+.nav-profile .drop-item{
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px 5px;
+}
+.nav-profile .dropdown .drop-continue{
+    color: var(--primary-color);
+    align-self: center;
+    margin-right: auto;
+}
+.nav-profile .dropdown .drop-continue:hover{
+    text-decoration: none;
+    color:var(--secondary-color);
+}
+
+.dropdown .drop-break{
+    border-bottom: 1px solid var(--secondary-color);
+    margin: 0 10px;
+    /* height: 1px;
+    background-color: var(--secondary-color);
+    background-image: linear-gradient(left , var(--bg-color) 2%, var(--secondary-color) 50%, var(--bg-color) 98%);
+    background-image: -o-linear-gradient(left , var(--bg-color) 2%, var(--secondary-color) 50%, var(--bg-color) 98%);
+    background-image: -moz-linear-gradient(left , var(--bg-color) 2%, var(--secondary-color) 50%, var(--bg-color) 98%);
+    background-image: -webkit-linear-gradient(left , var(--bg-color) 2%, var(--secondary-color) 50%, var(--bg-color) 98%);
+    background-image: -ms-linear-gradient(left , var(--bg-color) 2%, var(--secondary-color) 50%, var(--bg-color) 98%);
+    background-image: -webkit-gradient( linear, left bottom, right bottom, color-stop(0.02, var(--bg-color)), color-stop(0.5, var(--secondary-color)), color-stop(0.98, var(--bg-color)) ); */
+}
+
+.dropdown .drop-a{
+    margin: 0 5px;
+}
+
+.dropdown .drop-a:hover{
+    text-decoration: none;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+@media (max-width: 620px){
+    .nav-profile .dropprofile{
+        display: block;
+    }
+    .nav-profile .dropdown{
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    z-index: 1000;
+    position: fixed;
+    width: 100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    right:0px;
+    border: none;
+    }
+    .nav-profile .dropdown .img-parent{
+        float : middle;
+        height:50vw;
+        padding: 5vw;
+    }
+    .nav-profile .dropdown .img-parent img{
+        width: 40vw;
+        height: 40vw;
+        border-radius: 50%;
+        background-color: white;
+        border: 2px solid var(--primary-color)
+    }
+
+    .nav-profile .dropdown .prof-info p{
+        margin-bottom: 3px;
+    }
+
+    .nav-profile .dropdown .prof-info .username{
+        font-size: smaller;
+        color:var(--secondary-color)
+
+    }
+
+    .dropdown .drop-break{
+        margin: 15px 10px;
+    }
+
+    .nav-profile .dropdown .drop-exit{
+        position: fixed;
+        top:10px;
+        left: 5px;
+        font-size: 30px;
+        cursor: pointer;
+        color: var(--font-color)
+    }
+}
+
+
+/* .nav-profile:hover .dropdown{
+    visibility: visible;
+} */
