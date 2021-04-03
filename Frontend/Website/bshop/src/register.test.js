@@ -3,9 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import Register from './register';
 import '@testing-library/jest-dom';
-import { unmountComponentAtNode } from "react-dom";
-import { render, fireEvent } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+
 
 
 let container = null;
@@ -36,6 +34,6 @@ test("register users", async () => {
     );
     var page;
     await act(async () => {
-        page = await render(<Register />);
+        page = await render(<register />);
     });
 });

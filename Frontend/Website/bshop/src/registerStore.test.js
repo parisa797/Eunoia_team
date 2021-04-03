@@ -33,7 +33,7 @@ test("register for store", async () => {
   );
   var page;
   await act(async () => {
-    page = await render(<RegisterStore />);
+    page = await render(<registerStore />);
   });
 
 });
