@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c0c8ca57-be22-407f-ab13-4cd81bb69d57" name="Default Changelist" comment="" />
+    <list default="true" id="483c2936-fd35-4245-8169-ce260c46b3c5" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ProjectId" id="1qSrmioRTsXZQ6Q4LYbX9ilxe7K" />
+  <component name="ProjectId" id="1qezNMYfEvoNQuijcuXVQk4gfZK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -18,8 +18,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RunManager">
-    <configuration name="BShop" type="Python.DjangoServer" factoryName="Django server">
-      <module name="BShop" />
+    <configuration name="bshop" type="Python.DjangoServer" factoryName="Django server">
+      <module name="bshop" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -47,13 +47,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c0c8ca57-be22-407f-ab13-4cd81bb69d57" name="Default Changelist" comment="" />
-      <created>1617083998937</created>
+      <changelist id="483c2936-fd35-4245-8169-ce260c46b3c5" name="Default Changelist" comment="" />
+      <created>1617454816644</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1617083998937</updated>
-      <workItem from="1617084008334" duration="3833000" />
-      <workItem from="1617089893675" duration="544000" />
+      <updated>1617454816644</updated>
+      <workItem from="1617454832602" duration="3177000" />
     </task>
     <servers />
   </component>
