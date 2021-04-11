@@ -14,6 +14,8 @@ class Shop(models.Model):
 	theme = models.IntegerField(default=1, blank=True, null=True)
 	shomare_sabt = models.CharField(max_length = 100, blank=True, null=True)
 	phone = models.CharField(max_length = 100,blank=True, null=True)
+	online = models.BooleanField(default=False,blank=True, null=True)
+	mantaghe = models.CharField(max_length = 200, blank=False)
 	
 
 	@property

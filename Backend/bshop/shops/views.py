@@ -58,6 +58,33 @@ class ShopRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
 
+class ShopUpdateAPIView(generics.UpdateAPIView):
+
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.title = request.data.get('title', instance.title)
+        instance.manager = request.data.get('manager', instance.manager)
+        instance.address = request.data.get('address', instance.address)
+        instance.logo = request.data.get('logo', instance.logo)
+        instance.theme = request.data.get('theme', instance.theme)
+        instance.shomare_sabt = request.data.get('shomare_sabt', instance.shomare_sabt)
+        instance.phone = request.data.get('phone', instance.phone)
+        instance.online = request.data.get('online', instance.online)
+        instance.mantaghe = request.data.get('mantaghe', instance.mantaghe)
+        instance.save()
+        serializer = ShopSerializer(instance)
+        return Response(serializer.data)
+
+
+class ShopDestroyAPIView(generics.DestroyAPIView):
+
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
+
 class RateCreateAPIView(generics.CreateAPIView):
     serializer_class = RateSerializer
 
