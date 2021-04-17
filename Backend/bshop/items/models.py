@@ -26,7 +26,7 @@ class Item(models.Model):
                   ('Drinks','Drinks'),
                   ('Makeup and trimming','Makeup and trimming'),
                   ('Washing and Cleaning Equipment','Washing and Cleaning Equipment'),
-                  ('otherst','others'),]
+                  ('others','others'),]
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
     def __str__(self):
         return self.name

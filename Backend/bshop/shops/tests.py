@@ -64,3 +64,32 @@ class ShopRetrieveTest(TestCase):
         serializer_shop = ShopSerializer(shop)
         self.assertEqual(response.data, serializer_shop.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class SearchShop(APITestCase):
+    def test_search_shop(self):
+        self.user = MyUser.objects.create_user(username='testcase', email='email@tesr.com', password="strong_Pass")
+        self.token = Token.objects.create(user=self.user)
+        h = Shop.objects.create(title="testShop", user=self.user, manager="Test",
+                                address="Test address", theme=1, shomare_sabt="1111", phone="111111")
+        Shop.objects.create(title="test", user=self.user, manager="Test",
+                            address="Test address", theme=1, shomare_sabt="1111", phone="111111")
+        Shop.objects.create(title="heyday", user=self.user, manager="Test",
+                            address="Test address", theme=1, shomare_sabt="1111", phone="111111")
+        Shop.objects.create(title="heyday", user=self.user, manager="Test",
+                            address="address", theme=1, shomare_sabt="1111", phone="111111")
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+        response=self.client.get("/api/v1/shops/search?q=test")
+        searcheOne=Shop.objects.get(id=13)
+        chooseSerializer=ShopSerializer(searcheOne)
+        searcheOne1 = Shop.objects.get(id=14)
+        chooseSerializer1 = ShopSerializer(searcheOne1)
+        searcheOne2 = Shop.objects.get(id=15)
+        chooseSerializer2 = ShopSerializer(searcheOne2)
+        self.assertEqual(response.data[0], chooseSerializer.data)
+        self.assertEqual(response.data[1], chooseSerializer1.data)
+        self.assertEqual(response.data[2], chooseSerializer2.data)
+        self.assertEqual(len(response.data), 3)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

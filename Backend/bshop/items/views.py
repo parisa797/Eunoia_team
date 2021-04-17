@@ -84,7 +84,7 @@ class CreateItem(generics.ListCreateAPIView):
     def create(self, request, *args, **kwargs):
         shop = self.get_object()
         if shop == None:
-            return Response(data="Community Not found", status=status.HTTP_404_NOT_FOUND)
+            return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
