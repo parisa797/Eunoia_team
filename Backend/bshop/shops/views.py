@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.exceptions import ParseError
 from rest_framework import filters
+from django.db.models import Q
+from django.http import Http404
 
 
 from .models import Shop
@@ -74,6 +76,7 @@ class ShopUpdateAPIView(generics.UpdateAPIView):
         instance.phone = request.data.get('phone', instance.phone)
         instance.online = request.data.get('online', instance.online)
         instance.mantaghe = request.data.get('mantaghe', instance.mantaghe)
+        instance.shop_phone = request.data.get('shop_phone', instance.shop_phone)
         instance.save()
         serializer = ShopSerializer(instance)
         return Response(serializer.data)
@@ -89,7 +92,7 @@ class RateCreateAPIView(generics.CreateAPIView):
     serializer_class = RateSerializer
 
     def get_queryset(self):
-        queryset = Rate.objects.filter(post=self.kwargs['pk'])
+        queryset = Rate.objects.filter(shop=self.kwargs['pk'])
         return queryset
 
     def create(self, request, *args, **kwargs):
@@ -153,3 +156,29 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         instance.save()
         serializer = CommentSerializer(instance)
         return Response(serializer.data)
+
+
+class TopShopListAPIView(generics.ListAPIView):
+    serializer_class = ShopSerializer
+
+    def get_queryset(self):
+        queryset = sorted(Shop.objects.all(), key=lambda a: a.rate_value, reverse=True)
+        return queryset
+
+class MantagheShopListAPIView(generics.ListAPIView):
+    serializer_class = ShopSerializer
+
+    def get_queryset(self):
+        searchedword = self.request.query_params.get('q', None)
+        queryset = Shop.objects.all()
+        if searchedword is None:
+            return queryset
+        if searchedword is not None:
+            if searchedword == "":
+                raise Http404
+            queryset = queryset.filter(
+                Q(mantaghe__icontains=searchedword)
+            )
+            if len(queryset) == 0:
+                raise Http404
+        return queryset

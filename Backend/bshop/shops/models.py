@@ -16,6 +16,7 @@ class Shop(models.Model):
 	phone = models.CharField(max_length = 100,blank=True, null=True)
 	online = models.BooleanField(default=False,blank=True, null=True)
 	mantaghe = models.CharField(max_length = 200, blank=False)
+	shop_phone = models.CharField(max_length = 100,blank=True, null=True)
 	
 
 	@property
@@ -29,7 +30,9 @@ class Shop(models.Model):
 
 	@property
 	def rate_value(self):
-		return Rate.objects.filter(shop_id=self.id).aggregate(Avg('rate')).values()
+		if Rate.objects.filter(shop_id=self.id).count() is 0:
+			return 0
+		return Rate.objects.filter(shop_id=self.id).aggregate(Avg('rate'))['rate__avg']
 
 	def str(self):
 		return self.title
@@ -48,7 +51,7 @@ class Rate(models.Model):
 
     user = models.ForeignKey(MyUser,related_name='rates_user',on_delete=models.CASCADE,blank=True)
     shop = models.ForeignKey(Shop,related_name='rates_shop',on_delete=models.CASCADE,blank=True)
-    rate = models.IntegerField(default=2.5, blank=True, null=True)
+    rate = models.IntegerField(default=2, blank=True, null=True)
 
     def str(self):
         return self.shop
