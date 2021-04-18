@@ -11,4 +11,9 @@ urlpatterns = [
     path('items/cheap/', CheapestAllItemListAPIView.as_view(),name="cheapestAllItem"),
     path('items/new/', NewestAllItemListAPIView.as_view(),name="newestAllItem"),
     path('items/discount/', MostDiscountsAllItemListAPIView.as_view(),name="mostDiscountsAllItem"),
+    path('items/category/', FilterCategoryItemListAPIView.as_view(),name="filterCategoryItem"),
+    path('items/category/expensive/', ExpensiveFilterItemListAPIView.as_view(),name="expensiveFilterItem"),
+    path('items/category/cheap/', CheapFilterItemListAPIView.as_view(),name="cheapFilterItem"),
+    path('items/category/new/', NewFilterItemListAPIView.as_view(),name="newFilterItem"),
+    path('items/category/discount/', DiscountsFilterItemListAPIView.as_view(),name="discountsFilterItem"),
 ]
