@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 import json
-from .models import Shop
+from .models import *
 from .serializers import ShopSerializer
 from .views import *
 from .urls import *
