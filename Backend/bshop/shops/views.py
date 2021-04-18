@@ -7,6 +7,13 @@ from rest_framework import filters
 from django.db.models import Q
 from django.http import Http404
 
+from django.db.models import Q
+from django.http import Http404
+from rest_framework.authentication import TokenAuthentication
+from django.core.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework import status
+
 
 from .models import Shop
 from .serializers import ShopSerializer
@@ -157,6 +164,26 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         serializer = CommentSerializer(instance)
         return Response(serializer.data)
 
+#####search
+class ShopSearch(generics.ListAPIView):
+    serializer_class = ShopSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        searchedword = self.request.query_params.get('q', None)
+        queryset = Shop.objects.all()
+        if searchedword is None:
+            return queryset
+        if searchedword is not None:
+            if searchedword == "":
+                raise Http404
+            queryset = queryset.filter(
+                Q(title__icontains=searchedword) |
+                Q(address__icontains=searchedword)
+            )
+            if len(queryset) == 0:
+                raise Http404
+        return queryset
 
 class TopShopListAPIView(generics.ListAPIView):
     serializer_class = ShopSerializer

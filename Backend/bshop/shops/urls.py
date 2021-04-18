@@ -19,4 +19,5 @@ urlpatterns = [
     path('rate/<int:pk>', views.RateRetrieveUpdateDestroyAPIView.as_view()),
     path('top/', views.TopShopListAPIView.as_view()),
     path('region/', views.MantagheShopListAPIView.as_view()),
+    path('search', views.ShopSearch.as_view()),##search roye hame shop ha
 ]

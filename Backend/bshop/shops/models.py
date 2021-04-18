@@ -6,7 +6,7 @@ from users.models import MyUser
 
 class Shop(models.Model):
 
-	title = models.CharField(max_length = 100, blank=False)
+	title = models.CharField(max_length = 100, blank=False )#,primary_key=True)
 	user = models.ForeignKey(MyUser,related_name='user_shop',on_delete=models.CASCADE)
 	manager = models.CharField(max_length = 200, blank=False)
 	logo = models.ImageField(blank=True , upload_to='image/')
