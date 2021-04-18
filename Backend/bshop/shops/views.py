@@ -187,6 +187,8 @@ class ShopSearch(generics.ListAPIView):
 
 class TopShopListAPIView(generics.ListAPIView):
     serializer_class = ShopSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     def get_queryset(self):
         queryset = sorted(Shop.objects.all(), key=lambda a: a.rate_value, reverse=True)
@@ -194,6 +196,8 @@ class TopShopListAPIView(generics.ListAPIView):
 
 class MantagheShopListAPIView(generics.ListAPIView):
     serializer_class = ShopSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     def get_queryset(self):
         searchedword = self.request.query_params.get('q', None)

@@ -121,3 +121,31 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
             return Response(data="item Not found", status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(items)
         return Response(serializer.data)
+
+class MostExpensiveAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-price')
+
+class CheapestAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('price')
+
+class NewestAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-manufacture_Date')
+
+class MostDiscountsAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-discount')

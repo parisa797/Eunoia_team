@@ -17,7 +17,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model= Item
-        fields=['ItemShop','photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','onlineShop','category','id']
+        fields=['ItemShop','photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','onlineShop','category','id','discount','price']
 
 class CreateListItemSerializer(serializers.ModelSerializer):
     #Liked_By = UsersInfoserializer(source='liked_by', read_only=True, many=True)
@@ -25,4 +25,4 @@ class CreateListItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model= Item
-        fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','onlineShop','category','id']
+        fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','onlineShop','category','discount','price','id']

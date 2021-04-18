@@ -24,7 +24,6 @@ class Item(models.Model):
                   ('Fruits and vegetables','Fruits and vegetables'),
                   ('Dairy','Dairy'),
                   ('Drinks','Drinks'),
-                  ('Makeup and trimming','Makeup and trimming'),
                   ('Washing and Cleaning Equipment','Washing and Cleaning Equipment'),
                   ('others','others'),]
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
