@@ -1,0 +1,74 @@
+
+.shop-profile .prof-pic-selector{
+    padding: 0 0 0 0;
+    margin-bottom: 5vh;
+    position: relative;
+}
+
+.shop-profile .prof-pic-selector .img-uploader{
+    position: absolute;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.shop-profile .prof-pic-selector .custom-file-upload{
+    /* background-color: var(--primary-color);
+    color: var(--bg-color); */
+    border-radius: 50%;
+    font-size: large;
+    padding: 0;
+    /* position: absolute;
+    top:14%;
+    right:15%; */
+    color: var(--primary-color);
+    margin-top: 5px;
+    padding-left:3px;
+}
+
+.shop-profile .img-container{
+    width: 20vh;
+    height:20vh;
+    padding-top: 100%; 
+    position: relative;
+    overflow: hidden;
+}
+
+.shop-profile .img-container2{
+    position: absolute;
+    bottom: -5vh;
+    right:20px;
+
+}
+
+.shop-profile .prof-img{
+    border-radius: 20px;
+}
+
+.shop-profile .prof-pic-background{
+    height: 50vh;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-bottom: 6vh;
+    background-position: center;
+}
+
+.shop-profile .custom-container{
+    position:sticky;
+    top: 100px;
+}
+
+.shop-profile .checkbox-prof{
+    display: flex;
+    padding: 10px 10px;
+}
+
+.shop-profile .checkbox-prof label{
+    align-self: flex-start;
+    color: var(--heading-color);
+}
+
+.shop-profile #prof-page-online{
+    margin: auto 0 auto 5px;
+}
