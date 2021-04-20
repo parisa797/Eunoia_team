@@ -3,9 +3,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import ShopList from './ShopList';
 import Carousel from 'react-bootstrap/Carousel';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import OfflineGroceries from './media/OnlineGroceries-pana.svg';
-import OnlineGroceries from './media/OnlineGroceries-amico.svg';
-import DiscountPic from './media/Discount-pana.svg';
+import OfflineGroceries from './medias/OnlineGroceries-pana.svg';
+import OnlineGroceries from './medias/OnlineGroceries-amico.svg';
+import DiscountPic from './medias/Discount-pana.svg';
 import { useState } from 'react';
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
-import animationData from './media/53735-cart-icon-loader.json';
+import animationData from './medias/53735-cart-icon-loader.json';
 import HomePage from './HomePage'
 
 function LoadingPage(props) {
