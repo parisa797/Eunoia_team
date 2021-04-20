@@ -121,3 +121,89 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
             return Response(data="item Not found", status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(items)
         return Response(serializer.data)
+
+class MostExpensiveAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-price')
+
+class CheapestAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('price')
+
+class NewestAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-manufacture_Date')
+
+class MostDiscountsAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.all()
+        return queryset.order_by('-discount')
+
+class FilterCategoryItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(category=q)
+        return queryset
+
+class ExpensiveFilterItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(category=q)
+        return queryset.order_by('-price')
+
+class CheapFilterItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(category=q)
+        return queryset.order_by('price')
+
+class NewFilterItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(category=q)
+        return queryset.order_by('-manufacture_Date')
+
+class DiscountsFilterItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(category=q)
+        return queryset.order_by('-discount')

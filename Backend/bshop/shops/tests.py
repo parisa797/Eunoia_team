@@ -5,7 +5,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 import json
-from .models import Shop
+from .models import *
 from .serializers import ShopSerializer
 from .views import *
 from .urls import *
@@ -65,6 +65,11 @@ class ShopRetrieveTest(TestCase):
         self.assertEqual(response.data, serializer_shop.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_get_invalid_single_shop(self):
+        response = client.get(reverse('ShopRetrieveAPIView', kwargs={'pk': 100}))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
 
 class SearchShop(APITestCase):
     def test_search_shop(self):
@@ -82,14 +87,15 @@ class SearchShop(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         response=self.client.get("/api/v1/shops/search?q=test")
-        searcheOne=Shop.objects.get(id=13)
+        searcheOne=Shop.objects.get(id=14)
         chooseSerializer=ShopSerializer(searcheOne)
-        searcheOne1 = Shop.objects.get(id=14)
+        searcheOne1 = Shop.objects.get(id=15)
         chooseSerializer1 = ShopSerializer(searcheOne1)
-        searcheOne2 = Shop.objects.get(id=15)
+        searcheOne2 = Shop.objects.get(id=16)
         chooseSerializer2 = ShopSerializer(searcheOne2)
         self.assertEqual(response.data[0], chooseSerializer.data)
         self.assertEqual(response.data[1], chooseSerializer1.data)
         self.assertEqual(response.data[2], chooseSerializer2.data)
         self.assertEqual(len(response.data), 3)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
