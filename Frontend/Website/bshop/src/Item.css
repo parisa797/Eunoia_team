@@ -1,0 +1,55 @@
+
+.item-page{
+    border: 1px solid black;
+    padding: 5vh 5vw;
+    direction: rtl;
+    font-family: Vazir;
+    color: var(--font-color2);
+    
+    /* position: relative; */
+}
+.item-page .description
+{
+    margin: auto;
+    display: flex;
+    border: 2px solid black ;
+    padding: 5vh 5vw;
+    /* position: absolute; */
+    font-size: 18px;
+    background-color: var(--third-color);
+}
+
+.item-page .btn{
+    background-color: var(--secondary-color);
+    border: 1px solid black;
+}
+
+.item-page .w3-hover-sepia {
+        position: sticky;
+        top: 200px;
+        /* right: 140px; */
+        width: 250px;
+        height: 250px;
+        /* position: relative, */
+         
+     
+    }
+
+    .column {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+
+    }
+
+
+    .sub-container {
+        display: flex;
+        width: 100%;
+        /* background-color: var(--primary-color); */
+    }
+
+.item-page .item-title
+{
+    margin: auto;
+}
