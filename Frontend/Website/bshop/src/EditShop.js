@@ -17,7 +17,7 @@ function EditShop(props) {
     const [online, setOnline] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const [proPic, setProPic] = useState("/shop-default-logo.png");
+    const [proPic, setProPic] = useState("/supermarket.jpg");
     const [proLogo, setProLogo] = useState("/shop-default-logo.png");
     const [newPicInfo, setNewPicInfo] = useState(null);
     const [newLogoInfo, setNewLogoInfo] = useState(null);
@@ -78,7 +78,7 @@ function EditShop(props) {
                 if (!prof.logo)
                     prof.logo = "/shop-default-logo.png";
                 if (!prof.picture)
-                    prof.picture = "/shop-default-logo.png";
+                    prof.picture = "/supermarket.jpg";
                 if (!prof.online)
                     prof.online = false;
                 //set prof in profile and other state variables
