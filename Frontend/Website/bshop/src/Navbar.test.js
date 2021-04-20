@@ -38,7 +38,7 @@ test("navbar profile for unsigned users", async () => {
     page = await render(<CustomNavbar setMode={setMode} theme={theme} />);
   });
   expect(page.queryByTestId("no-profile")).not.toBeNull();
-  expect(page.queryByTestId("no-profile")).toHaveTextContent("ورود / ثبتنام");
+  expect(page.queryByTestId("no-profile")).toHaveTextContent("ورود / ثبت نام");
   expect(page.queryByTestId("nav-prof-img")).toBeNull();
 });
 
@@ -63,7 +63,7 @@ test("navbar profile for signed users with no fullname", async () => {
   });
   expect(page.queryByTestId("no-profile")).toBeNull();
   expect(page.queryByTestId("nav-prof-img")).not.toBeNull();
-  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("nav-dropdown")).not.toBeVisible();
 
   await act(async () => {
@@ -71,7 +71,7 @@ test("navbar profile for signed users with no fullname", async () => {
   })
   expect(page.queryByTestId("nav-dropdown")).toBeVisible();
   expect(page.queryByTestId("dropdown-img")).not.toBeNull();
-  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("dropdown-fullname")).toHaveTextContent("بدون نام");
   expect(page.queryByTestId("dropdown-username")).toHaveTextContent("uwu");
 });
@@ -99,7 +99,7 @@ test("navbar profile for signed users with fullname", async () => {
   });
   expect(page2.queryByTestId("no-profile")).toBeNull();
   expect(page2.queryByTestId("nav-prof-img")).not.toBeNull();
-  expect(page2.queryByTestId("nav-prof-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page2.queryByTestId("nav-prof-img")).toHaveAttribute("src", "/profile.png");
   expect(page2.queryByTestId("nav-dropdown")).not.toBeVisible();
 
   await act(async () => {
@@ -107,7 +107,7 @@ test("navbar profile for signed users with fullname", async () => {
   })
   expect(page2.queryByTestId("nav-dropdown")).toBeVisible();
   expect(page2.queryByTestId("dropdown-img")).not.toBeNull();
-  expect(page2.queryByTestId("dropdown-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page2.queryByTestId("dropdown-img")).toHaveAttribute("src", "/profile.png");
   expect(page2.queryByTestId("dropdown-fullname")).toHaveTextContent("اسم فامیل");
   expect(page2.queryByTestId("dropdown-username")).toHaveTextContent("uwu");
 });
@@ -134,7 +134,7 @@ test("navbar profile for signed users with first name (no last name)", async () 
   });
   expect(page.queryByTestId("no-profile")).toBeNull();
   expect(page.queryByTestId("nav-prof-img")).not.toBeNull();
-  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("nav-dropdown")).not.toBeVisible();
 
   await act(async () => {
@@ -142,7 +142,7 @@ test("navbar profile for signed users with first name (no last name)", async () 
   })
   expect(page.queryByTestId("nav-dropdown")).toBeVisible();
   expect(page.queryByTestId("dropdown-img")).not.toBeNull();
-  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("dropdown-fullname")).toHaveTextContent("اسممم ");
   expect(page.queryByTestId("dropdown-username")).toHaveTextContent("uwu");
 });
@@ -169,7 +169,7 @@ test("navbar profile for signed users with last name (no first name)", async () 
   });
   expect(page.queryByTestId("no-profile")).toBeNull();
   expect(page.queryByTestId("nav-prof-img")).not.toBeNull();
-  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("nav-prof-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("nav-dropdown")).not.toBeVisible();
 
   await act(async () => {
@@ -177,7 +177,7 @@ test("navbar profile for signed users with last name (no first name)", async () 
   })
   expect(page.queryByTestId("nav-dropdown")).toBeVisible();
   expect(page.queryByTestId("dropdown-img")).not.toBeNull();
-  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "./../profile.png");
+  expect(page.queryByTestId("dropdown-img")).toHaveAttribute("src", "/profile.png");
   expect(page.queryByTestId("dropdown-fullname")).toHaveTextContent(" فامیلیمم");
   expect(page.queryByTestId("dropdown-username")).toHaveTextContent("uwu");
 });
