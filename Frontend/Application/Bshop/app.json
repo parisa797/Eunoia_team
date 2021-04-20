@@ -1,7 +1,9 @@
 {
   "expo": {
-    "name": "Bshop",
-    "slug": "Bshop",
+    "sdkVersion": "39.0.0",
+    "name": "React Native Fashion",
+    "slug": "react-native-fashion",
+    "owner": "ace26",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,14 +21,11 @@
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "experiments": {
+      "turboModules": true
     }
   }
 }
