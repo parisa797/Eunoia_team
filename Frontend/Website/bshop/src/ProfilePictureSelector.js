@@ -1,5 +1,4 @@
 import "./ProfilePage.css";
-//import { useEffect, useState } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 function ProfilePictureSelector(props) {
 
