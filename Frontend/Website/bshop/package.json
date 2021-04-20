@@ -44,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "fetch-mock-jest": "^1.5.1",
+    "jest-fetch-mock": "^3.0.3"
   }
 }

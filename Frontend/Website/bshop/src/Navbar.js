@@ -29,18 +29,12 @@ function CustomNavbar(props) {
       }
     ).then(
       res => {
-        if(res === null)
+        if (res === null)
           return;
         if (!(res?.urls?.length > 0)) {
-          res.urls = [{ uploaded_file: "./../profile.png" }];
+          res.urls = [{ uploaded_file: "/profile.png" }];
           res.files = [-1];
         }
-        if(!localStorage.getItem("role"))
-          localStorage.setItem("role",res.role);
-        
-        if(!localStorage.getItem("username"))
-          localStorage.setItem("username",res.user_name);
-
         setProfile(res)
       }
     )
@@ -54,50 +48,69 @@ function CustomNavbar(props) {
     window.location.replace("/");
   }
 
-  return (
-    <Navbar fixed="top" className='custom-nav'>
-      <Navbar.Brand ><a href="/">Bshop</a><div className="btn" data-testid="nav-theme-toggle" onClick={() => props.setMode(props.theme[0] === 'l' ? 'd' : 'l')}> {props.theme[0] === 'l' ? '☀' : '🌙'}</div></Navbar.Brand>
-      <Nav className="mr-auto">
-        {!profile ?
-          <Nav.Link href="/login" data-testid="no-profile" className="no-profile">ورود / ثبتنام</Nav.Link>
-          :
-          <div className="nav-profile">
-            <img data-testid="nav-prof-img" className="image btn" src={profile && profile.urls && profile.urls.length > 0 ? profile.urls[0].uploaded_file : "./../profile.png"} alt="profile" onClick={() => setDropVis(!dropVis)} />
-            <div className="dropdown" hidden={!dropVis} data-testid="nav-dropdown" >
-              <CloseIcon className="drop-exit" onClick={() => setDropVis(!dropVis)} />
-              <div className="dropprofile drop-item" >
-                <div className="img-parent">
-                  <img data-testid="dropdown-img" src={profile && profile.urls && profile.urls.length > 0 ? profile.urls[0].uploaded_file : "./../profile.png"} alt="profile" />
-                </div>
-                <div className="prof-info">
-                  <p className="name" data-testid="dropdown-fullname" >{profile?.FirstName || profile.LastName ? (profile?.FirstName + " " + profile?.LastName) : "بدون نام"}</p>
-                  <p className="username" data-testid="dropdown-username" >{profile?.user_name}</p>
-                </div>
-                <a href="/profile" className="drop-continue">
-                  مشاهده پروفایل
-            </a>
-              </div>
-              <div className="drop-break"></div>
-              <div className="drop-item drop-a a" href="#" >
-                کیف پول
-          </div>
-              <div className="drop-item drop-a a" href="#" >
-                گزارش خرید
-          </div>
-              <div className="drop-item drop-a a" onClick={() => logout()} >
-                خروج
-          </div>
-            </div>
-          </div>
+  window.onclick = function (event) {
+    if (!event.target.matches('.nav-dropdown-toggle')) {
+      if (dropVis)
+        setDropVis(false)
+    }
+    if (!event.target.matches('.dropdown-toggle')) {
+      var dropdowns = document.getElementsByClassName("dropdown-menu");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
         }
-      </Nav>
+      }
+    }
+  }
+
+  return (
+    <Navbar fixed="top" className='custom-nav navbar-default'>
+      <div className="nav-upper mr-auto">
+        <Navbar.Brand ><a href="/">Bshop</a><div className="btn" data-testid="nav-theme-toggle" onClick={() => props.setMode(props.theme[0] === 'l' ? 'd' : 'l')}> {props.theme[0] === 'l' ? '☀' : '🌙'}</div></Navbar.Brand>
+        <Nav className="">
+          {!profile ?
+            <Nav.Link href="/login" data-testid="no-profile" className="no-profile">ورود / ثبت نام</Nav.Link>
+            :
+            <div className="nav-profile">
+              <img data-testid="nav-prof-img" className="image btn nav-dropdown-toggle" src={profile && profile.urls && profile.urls.length > 0 ? profile.urls[0].uploaded_file : "/profile.png"} alt="profile" onClick={() => setDropVis(!dropVis)} />
+              <div className="dropdown" hidden={!dropVis} data-testid="nav-dropdown" >
+                <CloseIcon className="drop-exit" onClick={() => setDropVis(!dropVis)} />
+                <div className="dropprofile drop-item" >
+                  <div className="img-parent">
+                    <img data-testid="dropdown-img" src={profile && profile.urls && profile.urls.length > 0 ? profile.urls[0].uploaded_file : "/profile.png"} alt="profile" />
+                  </div>
+                  <div className="prof-info">
+                    <p className="name" data-testid="dropdown-fullname" >{profile?.FirstName || profile.LastName ? (profile?.FirstName + " " + profile?.LastName) : "بدون نام"}</p>
+                    <p className="username" data-testid="dropdown-username" >{profile?.user_name}</p>
+                  </div>
+                  <a href="/profile" className="drop-continue">
+                    مشاهده پروفایل
+            </a>
+                </div>
+                <div className="drop-break"></div>
+                <div className="drop-item drop-a a" href="#" >
+                  کیف پول
+          </div>
+                <div className="drop-item drop-a a" href="#" >
+                  گزارش خرید
+          </div>
+                <div className="drop-item drop-a a" onClick={() => logout()} >
+                  خروج
+          </div>
+              </div>
+            </div>
+          }
+        </Nav>
+      </div>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav">
-        <Form inline>
-          <FormControl type="text" placeholder="جستجو..." className=" mr-sm-2" style={{ direction: "rtl" }} />
-          <div className="btn" type="submit" >Submit</div>
-        </Form>
-      </Navbar.Collapse>
+      {/* <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav"> */}
+      <Form inline className="search-form">
+        <FormControl type="text" placeholder="جستجو..." className=" mr-sm-2" className="search-bar" />
+        {/* <div className="btn" type="submit" >Submit</div> */}
+      </Form>
+      {/* </Navbar.Collapse> */}
     </Navbar>
   )
 }
