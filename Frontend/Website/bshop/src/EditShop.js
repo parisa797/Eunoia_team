@@ -303,7 +303,7 @@ function EditShop(props) {
 
                                 <div className=" form-group input-container col-6 col-md-3">
                                     <label>شهر</label>
-                                    <input id="prof-page-city" type="text" className="input" value={"تهران"} data-testid="edit-shop-city" maxLength={20}
+                                    <input id="prof-page-city" type="text" className="input" defaultValue={"تهران"} data-testid="edit-shop-city" maxLength={20}
                                     />
                                 </div>
 

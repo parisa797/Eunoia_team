@@ -10,9 +10,9 @@ function Item(props) {
     useEffect(() => {
         fetch("http://127.0.0.1:8000/shops/"+shopID+"/items/"+itemID, {
             method: 'GET',
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
+            // headers: {
+            //     "Authorization": "Token " + localStorage.getItem('token')
+            // }
         }).then((res) => {
             if (res.status === 200) {
                 return res.json();

@@ -179,7 +179,7 @@ function Shop(props) {
                                  <><p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {Math.round(shopInfo.rate_value * 10) / 10}  </p>
                                     <ReactStars
                                         edit={!!localStorage.getItem("token")}
-                                        value={Math.round(shopInfo.rate_value)}
+                                        value={shopInfo.rate_value?Math.round(shopInfo.rate_value):0}
                                         isHalf={false}
                                         classNames="stars"
                                         data-testid="shop-rate-stars"

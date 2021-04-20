@@ -118,6 +118,4 @@ test("shoplist shops contents", async () => {
     expect(page.queryByTestId("shop-rate-count" + i)).toHaveTextContent(shops[i].rate_count)
   }
   expect(page.queryByTestId("shop-img-" + 0)).toHaveAttribute("src", shops[0].logo);
-  expect(page.queryByTestId("shop-img-" + 1)).toBeNull();
-  expect(page.queryByTestId("shop-img-" + 2)).toBeNull();
 });
