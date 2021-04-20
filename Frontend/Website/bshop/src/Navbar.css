@@ -1,10 +1,21 @@
 .custom-nav{
     z-index: 999;
     width: 100vw;
-    background-color: var(--secondary-color);
+    background-color: var(--bg-color);
+    /* box-shadow: var(--bg-color3) 0px 7px 29px 0px; */
+    height: 56px;
+    /* background-color: var(--secondary-color); */
 }
+
+@media(max-width:640px){
+    .custom-nav{
+        height: 120px;
+    }
+}
+
 .custom-nav ,.custom-nav .navbar-brand, .custom-nav .navbar-brand a, .custom-nav .navbar-brand a:hover{
-    color: var(--font-always-light-color);
+    color: var(--primary-color);
+    /* color: var(--font-always-light-color); */
     text-decoration: none;
 }
 
@@ -24,8 +35,9 @@
     border: none;
 }
 
-.navbar-light .navbar-nav .nav-link, .custom-nav .no-profile{
-    color: var(--font-always-light-color)
+.navbar-light .navbar-nav .nav-link, .custom-nav .no-profile,.navbar-light .navbar-nav .nav-link:hover, .custom-nav .no-profile:hover{
+    color: var(--font-color2)
+    /* color: var(--font-always-light-color) */
 }
 
 @media (min-width: 621px){
@@ -172,6 +184,59 @@
         cursor: pointer;
         color: var(--font-color)
     }
+}
+
+.custom-nav .search-form{
+    padding-right: 1rem;
+    direction: rtl;
+    /* width: 60vw; */
+    /* width: 50vw; */
+}
+
+.custom-nav .nav-upper{
+    display: inherit;
+    padding: inherit;
+}
+
+@media(max-width:640px){
+    .custom-nav .search-bar{
+      width: 100vw
+    }
+    .custom-nav .nav-upper{
+        width: 100vw;
+        height: 56px;
+        display: inherit;
+        padding: inherit;
+    }
+    .custom-nav .search-form{
+        width: 100vw;
+        height: 56px;
+        display: flex;
+        padding:inherit;
+        padding-right: 2rem
+    }
+    .custom-nav{
+        flex-direction: column;
+    }
+  }
+
+  @media(min-width:641px){
+      .custom-nav .search-bar{
+        width: 60vw;
+      }
+  }
+
+.custom-nav .search-bar{
+    background-color: var(--bg-color2);
+    border:none;
+    color: var(--heading-color);
+    
+    direction: rtl;
+}
+
+.custom-nav .search-bar::placeholder, .custom-nav .search-bar::-ms-input-placeholder, .custom-nav .search-bar::-ms-input-placeholder{
+    color: var(--heading-color);
+    opacity: 1; /* Firefox */
 }
 
 
