@@ -37,30 +37,20 @@ function EditShop(props) {
         }
         //fetch all shops of this user, if he's not the owner of the shop with the url's shopID, go back to shop
         let prof = {};
-        fetch("http://127.0.0.1:8000/api/v1/shops/user/", {
+        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(
-            res => {
+        })
+            .then((res) => {
                 if (res.status === 200) {
                     return res.json()
                 }
-                return null;
+                return {};
             }
-        ).then(
-            response => {
-                let res = null
-                for (let i in response) {
-                    if (response[i].id === parseInt(shopID)) {
-                        res = response[i]
-                    }
-                }
-                if (!res) {
-                    window.location.replace("/store/" + shopID);
-                    return;
-                }
+            )
+            .then((res) => {
                 console.log(res)
                 prof = res;
                 if (!prof.title)
@@ -214,6 +204,7 @@ function EditShop(props) {
 
                 if (response.status === 200) {
                     setReloadProfile(!reloadProfile);
+                    props.setTriggerReload(!props.triggerReload)
                     SetToastState({ text: "اطلاعات جدید ذخیره شد", show: true })
                     await timeout(4000)
                     SetToastState({ show: false })
