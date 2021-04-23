@@ -95,7 +95,7 @@ function Itemslist(props) {
             .then((d) => {
                 setShopInfo(d);
             });
-    }, [])
+    }, [props.triggerReload])
 
     return (
         <div style={{ direction: "rtl", padding: "5vh 5vw" }}>
@@ -109,7 +109,7 @@ function Itemslist(props) {
                     {items.map((item) => {
                         if (!!item) return (
                             <div /*class="card col-12 col-sm-6 col-md-4 col-lg-3"*/ className="col-12 col-sm-6 col-md-4 col-lg-3" style={{ padding: "5px" }}>
-                                <ItemCard item={item} />
+                                <ItemCard item={item} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                 {/* <div class="card-body">
                 <h5 class="btn btn-primary" style={{backgroundColor :"var(--secondary-color)",width: "100%" }}>{item.name} </h5>
                 {item.photo && <img data-testid={"myitem-img-"} src={item.photo} />}
