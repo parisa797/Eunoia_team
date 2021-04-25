@@ -43,6 +43,7 @@
     width: 50vh;
     height: 50vh;
     position: relative;
+    margin: 0 auto;
 }
 
 .item-profile .item-img-container{
@@ -68,10 +69,46 @@
 .item-profile .edit-item-photo{
     display: flex;
     margin-bottom: 5vh;
+    flex-direction: column;
 }
 
 .item-profile .img-uploader{
     visibility: hidden;
     width:0;
     height:0;
+}
+
+.item-profile .edit-item-photo .btn{
+    width:fit-content;
+    margin: 5px auto 0 auto;
+    border: none;
+}
+
+.item-profile .edit-header .btn{
+    margin-top: -0.4rem;
+    color: red;
+}
+
+.item-profile .edit-header .btn:hover{
+    background-color: transparent;
+    color: red;
+    transform: scale(1.05);
+}
+
+.item-profile .feedback-text{
+    margin-bottom:3px;
+}
+
+.item-profile{
+    padding:0 0 5vh 0;
+}
+
+.item-profile .btn{
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.item-profile .save, .item-profile .cancel{
+    border: 1px solid var(--secondary-color); 
+    margin: 0 3px;
 }

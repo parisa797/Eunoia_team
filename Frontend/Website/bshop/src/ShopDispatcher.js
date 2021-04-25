@@ -11,10 +11,7 @@ import DeleteItem from './DeleteItem'
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link,
-    Redirect,
-    NavLink,
+    Route
 } from "react-router-dom";
 import Itemslist from "./ItemsList";
 
@@ -92,6 +89,8 @@ function ShopDispatcher() {
                         triggerReload={triggerReload}
                         setTriggerReload={setTriggerReload}
                         userState={userState}
+                        deleteItemModal={deleteItemModal}
+                        setShowDeleteModal={setDeleteItemModal}
                         showDeleteItemModal={showDeleteItemModal}
                         {...props}
                     />)}

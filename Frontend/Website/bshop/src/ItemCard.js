@@ -40,7 +40,7 @@ function ItemCard(props) {
 
     const ToggleOptions=(e)=>{
         e.stopPropagation(); 
-        var el = document.getElementById("add-to-cart"+props.item.id); 
+        var el = document.getElementById("add-to-cart"+ (props.id? props.id : props.item.id)); 
         setHideOptions(!hideOptions); 
         el.style.visibility = el.style.visibility==="hidden"?"visible":"hidden";
         el.style.opacity = 1- el.style.opacity;
@@ -49,7 +49,7 @@ function ItemCard(props) {
 
     return (
         <div className="item-card" >
-            <div id={"add-to-cart"+props.item.id} className="add-to-cart-card" style={{visibility:"hidden",opacity:"0"}} /*hidden="true"*/>
+            <div id={"add-to-cart"+(props.id? props.id : props.item.id)} className="add-to-cart-card" style={{visibility:"hidden",opacity:"0"}} /*hidden="true"*/>
             <h5 className="item-card-title" >{props.item.name}</h5>
             {props.userState !== "m"?<><div><h1 className="cart-price">{cartPrice}</h1><p>ریال</p></div>
             <div className="count-div">

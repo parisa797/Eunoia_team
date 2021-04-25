@@ -12,6 +12,8 @@ function DeleteItem(props){
             res => {
                 if (res.status === 204) {
                     props.setTriggerReload(!props.triggerReload)
+                    if(props.url)
+                        window.location.href = props.url;
                     props.setShowDeleteModal({show:false})
                 }
                 return null;
