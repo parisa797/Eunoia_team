@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import MyUser
 from shops.models import Shop
+
 # Create your models here.
 class Item(models.Model):
     name = models.CharField(max_length=50)
@@ -12,7 +13,6 @@ class Item(models.Model):
     count=models.IntegerField(default=0,blank=True)
     price = models.IntegerField(default=0, blank=True)
     discount = models.IntegerField(default=0, blank=True)
-    onlineShop=models.BooleanField(default=True, blank=True) #####ino bayad ba shop bezanim
     categories_choices=[('Spices and condiments and food side dishes','Spices and condiments and food side dishes'),
                   ('Cosmetics','Cosmetics'),
                   ('Makeup and trimming','Makeup and trimming'),
@@ -29,3 +29,5 @@ class Item(models.Model):
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
     def __str__(self):
         return self.name
+
+

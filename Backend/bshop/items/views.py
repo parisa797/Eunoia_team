@@ -16,6 +16,9 @@ from .permission import *
 from rest_framework.pagination import PageNumberPagination
 import datetime
 from django.db.models import Count
+from django.utils.dateparse import parse_date
+from datetime import datetime, timedelta
+
 
 # from django.http import HttpResponse
 # Create your views here.
@@ -85,6 +88,15 @@ class CreateItem(generics.ListCreateAPIView):
         shop = self.get_object()
         if shop == None:
             return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+        # delta=parse_date(request.data['manufacture_Date'])-datetime.now().date()
+        # if delta<= timedelta(days=0): ##darbareye
+        #     return Response(data="manufacture_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before today", status=status.HTTP_400_BAD_REQUEST)
+
+        delta= parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
+        if delta< timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        elif delta == timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -114,6 +126,13 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
         if items.shopID != shops:
             items = None
         return items
+    def update(self, request, *args, **kwargs):
+        delta = parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
+        if delta < timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        elif delta == timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        return super().update(request)
 
     def retrieve(self, request, *args, **kwargs):
         items = self.get_object()
@@ -207,3 +226,4 @@ class DiscountsFilterItemListAPIView(generics.ListAPIView):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-discount')
+
