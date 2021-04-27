@@ -235,7 +235,7 @@ function Shop(props) {
                                 if (item)
                                     return (
                                         <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
+                                            <ItemCard item={item} id={"all-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                         </div>
                                     )
                             })}
@@ -254,7 +254,7 @@ function Shop(props) {
                                 if (item)
                                     return (
                                         <div key={"discount-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
+                                            <ItemCard item={item} id={"discount-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                         </div>
                                     )
                             })}
@@ -273,7 +273,7 @@ function Shop(props) {
                                 if (item)
                                     return (
                                         <div key={"popular-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
+                                            <ItemCard item={item} id={"loved-items-"+item.id} onlineShop={shopInfo.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
                                         </div>
                                     )
                             })}

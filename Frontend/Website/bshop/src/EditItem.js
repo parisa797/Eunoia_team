@@ -21,7 +21,7 @@ function EditItem(props) {
     const [OtherErrs, setOtherErrs] = useState(["", "", ""])
     const [hasPrice, setHasPrice] = useState(true);
     const [description, setDescription] = useState("");
-    const [onlineShop, setOnline] = useState(false);
+    // const [onlineShop, setOnline] = useState(false);
 
     const [proPic, setProPic] = useState("/no-image-icon-0.jpg");
     const [newPicInfo, setNewPicInfo] = useState(null);
@@ -105,8 +105,8 @@ function EditItem(props) {
                     prof.description = "توضیحات مربوط به کالا را وارد کنید...";
                 if (!prof.photo)
                     prof.photo = "/no-image-icon-0.jpg";
-                if (!prof.onlineShop)
-                    prof.onlineShop = false;
+                // if (!prof.onlineShop)
+                //     prof.onlineShop = false;
                 prof.category = categories[prof.category]
                 prof.Expiration_Date = prof.Expiration_Date.split("-")
                 prof.manufacture_Date = prof.manufacture_Date.split("-")
@@ -120,7 +120,7 @@ function EditItem(props) {
                 setHasPrice(prof.hasPrice);
                 setDiscount(prof.discount);
                 setExpirationDate(prof.Expiration_Date);
-                setOnline(prof.onlineShop)
+                // setOnline(prof.onlineShop)
                 setDescription(prof.description);
                 setProPic(prof.photo);
 
@@ -265,7 +265,7 @@ function EditItem(props) {
         setHasPrice(profile.hasPrice);
         setDiscount(profile.discount);
         setExpirationDate(profile.Expiration_Date);
-        setOnline(profile.onlineShop)
+        // setOnline(profile.onlineShop)
         setDescription(profile.description);
         setProPic(profile.photo);
 
@@ -286,12 +286,15 @@ function EditItem(props) {
         await document.getElementById("prof-page-expiration-date-year").blur()
         await document.getElementById("prof-page-expiration-date-month").blur()
         await document.getElementById("prof-page-expiration-date-day").blur()
-        await document.getElementById("prof-page-online").blur()
+        // await document.getElementById("prof-page-online").blur()
         await document.getElementById("prof-page-description").blur()
 
-        if (!!DateErr.a[0] || DateErr.m.every(el => !!el) || DateErr.e.every(el => !!el) 
-            || OtherErrs.every(el => !!el))
-            return;
+        if (!!DateErr.a[0] || DateErr.m.some(el => !!el) || DateErr.e.some(el => !!el) 
+            || OtherErrs.some(el => !!el))
+            {
+                return;
+            }
+            
 
         let fd = new FormData();
         let sthChanged = false;
@@ -319,7 +322,6 @@ function EditItem(props) {
             fd.append("price", price)
             sthChanged = true;
             if(!hasPrice){
-                console.log("yup")
                 fd.append("discount", 0)
                 sthChanged = true;
             }
@@ -332,10 +334,10 @@ function EditItem(props) {
             fd.append("Expiration_Date", Expiration_Date.join("-"));
             sthChanged = true;
         }
-        if (onlineShop !== profile.onlineShop) {
-            fd.append("onlineShop", onlineShop ? "True" : "False")
-            sthChanged = true;
-        }
+        // if (onlineShop !== profile.onlineShop) {
+        //     fd.append("onlineShop", onlineShop ? "True" : "False")
+        //     sthChanged = true;
+        // }
         if (description !== profile.description && description) {
             fd.append("description", description)
             sthChanged = true;
@@ -508,7 +510,7 @@ function EditItem(props) {
                                     />
                                 </div> */}
 
-                        <div className=" form-group input-container col-12 col-sm-6 col-md-3">
+                        <div className=" form-group input-container col-12 col-md-4">
                             <label>تعداد</label>
                             <input id="prof-page-count" type="text" className="input" value={count} data-testid="edit-shop-count" maxLength={20}
                                 onFocus={() => { if (count === "تعداد موجودی کالا را وارد کنید...") setCount("") }}
@@ -518,7 +520,7 @@ function EditItem(props) {
                             {OtherErrs[0] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[0]}</p>}
                         </div>
 
-                        <div className=" form-group input-container col-12 col-sm-6 col-md-3">
+                        <div className=" form-group input-container col-12 col-sm-6 col-md-4">
                             <label>قیمت کالا (به ریال)</label>
                             <input id="prof-page-price" type="text" className="input" value={price} data-testid="edit-shop-price" maxLength={20}
                                 onFocus={() => { if (price === "قیمت کالا را وارد کنید...") setPrice("") }}
@@ -527,7 +529,7 @@ function EditItem(props) {
                             />
                             {OtherErrs[1] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[1]}</p>}
                         </div>
-                        <div className=" form-group input-container col-12 col-sm-6 col-md-3">
+                        <div className=" form-group input-container col-12 col-sm-6 col-md-4">
                             <label>درصد تخفیف</label>
                             <input id="prof-page-discount" type="text" className="input" value={hasPrice ? discount : "ابتدا قیمت کالا را مشخص کنید"} data-testid="edit-shop-discount" maxLength={20} readOnly={!hasPrice}
                                 onFocus={() => { if (discount === "تخفیف کالا را وارد کنید...") setDiscount("") }}
@@ -535,11 +537,6 @@ function EditItem(props) {
                                 onBlur={(e) => {if(hasPrice)validate_Numerical_Fields(e.target.value, 2)}}
                             />
                             {OtherErrs[2] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[2]}</p>}
-                        </div>
-
-                        <div className="checkbox-prof col-12 col-sm-6 col-md-3">
-                            <input id="prof-page-online" type="checkbox" data-testid="edit-shop-checkbox" checked={onlineShop} onChange={() => setOnline(!onlineShop)} />
-                            <label>قابلیت خرید آنلاین</label>
                         </div>
 
                         <div style={{ margin: "auto" }}>

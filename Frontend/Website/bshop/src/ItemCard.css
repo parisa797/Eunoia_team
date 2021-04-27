@@ -171,6 +171,9 @@ transition: visibility 0.2s, opacity 0.2s linear;
 
 .item-card .count-div .btn{
     color: var(--primary-color);
+    font-size: x-large;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .item-card .add-to-cart-btn{

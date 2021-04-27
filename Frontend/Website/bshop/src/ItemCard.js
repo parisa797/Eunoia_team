@@ -16,8 +16,8 @@ function ItemCard(props) {
     const [hideOptions,setHideOptions] = useState(true)
 
     const changeCartCount = (count)=>{
-        if(count<0)
-            count=0
+        if(count<1)
+            count=1
         if(props.item.count<count)
             count = props.item.count
         setCartCount(count)
@@ -97,7 +97,7 @@ function ItemCard(props) {
                     //     <div className="btn-desc-2">ویرایش</div>
                     // </div>
                     // :
-                    <div className="card-add-to-cart">
+                   <div className="card-add-to-cart">
                         {props.userState === "m"?
                         // <div className="btn cart-btn cart-btn-1" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
                         //     {hideOptions? <SettingsIcon />:<CloseIcon />}
@@ -108,10 +108,10 @@ function ItemCard(props) {
                             <div className="cart-btn-1" style={{backgroundColor: "cadetblue",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); window.location.href = "/store/" + props.item.shop_id + "/items/" + props.item.id }}><VisibilityIcon /></div>
                             </div>
                             :
-                            !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
+                            props.onlineShop && !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
                             {hideOptions?<ShoppingCartIcon/>:<CloseIcon />}
                             </div>
-}
+}                   
 
                     <div className="count"></div>
                     </div>
