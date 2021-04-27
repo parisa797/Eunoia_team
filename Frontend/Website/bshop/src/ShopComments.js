@@ -22,12 +22,13 @@ function ShopComments(props){
             if(res)
                 {
                     for(let i in res){
-                        let str = res[i].date.split('T').join('.').split('.').join('-').split('-');
+                        let str = res[i].date_jalali.split(' ').join('.').split('.').join('-').split('-');
                         console.log(str)
-                        str[1]= months[parseInt(str[1])]
-                        str[3] = " ساعت" + str[3]
+                        str[1]= months[parseInt(str[1])-1]
+                        str[3] = " ساعت " + str[3]
+                        str[2] = str[2][0]==='0'? str[2][1]: str[2]
                         let new_str = [str[2],str[1],str[0],str[3]]
-                        res[i].date = new_str.join(" ");
+                        res[i].date_jalali = new_str.join(" ");
                     }
                     setComments(res);
                 }
@@ -35,6 +36,8 @@ function ShopComments(props){
     },[updateComments])
     
     function SendComment(){
+        if(writtenComment ==="")
+            return;
         let fd = new FormData()
         fd.append("text",writtenComment);
         fd.append("shop",props.shopID)
@@ -47,6 +50,7 @@ function ShopComments(props){
         }).then(res=>{
             if(res.status===201){
                 setUpdateComments(!updateComments);
+                setWrittenComment("")
             }
         }).catch(e=>console.log(e))
     }
@@ -59,7 +63,7 @@ function ShopComments(props){
                 {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                 <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                     <p className="shop-comment-author">{comment.user.user_name}</p>
-                    <p className="shop-comment-date">{comment.date}</p>
+                    <p className="shop-comment-date">{comment.date_jalali}</p>
                 </div>
                 <p className="shop-comment-desc">{comment.text}</p>
             </div>
