@@ -8,7 +8,7 @@ import ItemCard from './ItemCard';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import SendIcon from '@material-ui/icons/Send';
+import ShopComments from './ShopComments'
 
 function Shop(props) {
     const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
@@ -17,7 +17,6 @@ function Shop(props) {
     const [discountedItems, setDiscountedItem] = useState([])
     const [rated, setRated] = useState(false)
     const [rateID, setRateId] = useState(null)
-    const [comments, setComments] = useState([{ title: "شلوغ!", user: { user_name: "KhaRidAr" }, date: "20 فروردین 1400", text: "خیلی شلوغ بود\n حتی سبد خرید هم پیدا نمیشد:|" }, { title: "شلوغ!", user: { user_name: "اسمم خریداره", }, date: "23 اسفند 1399", text: "کارمندان بسیار خوشرو بودند." }, { title: "شلوغ!", user: { user_name: "یک خریدار دیگر" }, date: "1 اردیبهشت 1400", text: "هر چی میخواستم داشت:)" }])
     // const [triggerReload, setTriggerReload] = useState(false)
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
 
@@ -287,24 +286,7 @@ function Shop(props) {
                     </div></>}
                 <h4 className="header"><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">
-                    <div className="shop-comments">
-                        {comments.map(comment => {
-                            if (comment) return (
-                                <div className="shop-comment">
-                                    {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
-                                    <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
-                                        <p className="shop-comment-author">{comment.user.user_name}</p>
-                                        <p className="shop-comment-date">{comment.date}</p>
-                                    </div>
-                                    <p className="shop-comment-desc">{comment.text}</p>
-                                </div>
-                            )
-                        })}
-                        {(props.userState !== "u") && <div className="shop-comment write-comment">
-                            <SendIcon />
-                            <textarea type="text" placeholder="نظر خود را بنویسید..." style={{ border: "none", height: "calc(20vh - 20px)" }}></textarea>
-                        </div>}
-                    </div>
+                    <ShopComments shopID={shopID}/>
                 </div>
 
             </div>

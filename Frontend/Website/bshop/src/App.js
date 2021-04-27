@@ -133,14 +133,17 @@ function App() {
         }}
       >
         <Snackbar />
-        {showCompletePage ? <>
+        
           <CustomNavbar
             setMode={setMode}
             theme={theme}
             triggerNavbarUpdate={triggerNavbarUpdate}
             setTriggerNavUpdate={setTriggerNavUpdate}
+            showNavOptions={showCompletePage}
           />
+          
           <div className="page-holder">
+          {showCompletePage ?<>
             <Router>
               <Switch>
                 <Route exact path="/" component={LoadingPage} />
@@ -161,15 +164,16 @@ function App() {
                 {/* <Route exact path='/Items' component={Items} /> */}
               </Switch>
             </Router>
-            <PageFooter />
-          </div>
-        </> :
+            <PageFooter /> </>
+          
+        :
           <Router>
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
             </Switch>
           </Router>}
+          </div>
       </SnackbarProvider>
     </div>
   );
