@@ -73,8 +73,8 @@ function ItemCard(props) {
             <div className="item-card-body">
                 <h5 className="item-card-title">{props.item.name}</h5>
                 <div>
-                    {props.item.Expiration_Date ? <p className="item-card-date">{props.item.manufacture_Date.replace(/-/g, '/')} تا {props.item.Expiration_Date.replace(/-/g, '/')}</p> :
-                        props.item.manufacture_Date && <p className="item-card-date">{props.item.manufacture_Date.replace(/-/g, '/')}</p>
+                    {props.item.Expiration_jalali ? <p className="item-card-date">{props.item.manufacture_jalali.replace(/-/g, '/')} تا {props.item.Expiration_jalali.replace(/-/g, '/')}</p> :
+                        props.item.manufacture_jalali && <p className="item-card-date">{props.item.manufacture_jalali.replace(/-/g, '/')}</p>
                     }
                 </div>
                 {!!props.item?.discount && props.item.discount>0 ?

@@ -107,7 +107,7 @@ function EditShop(props) {
             userError = "تنها عدد وارد کنید";
         }
         else if (p.length !== 11) {
-            userError = "شماره همراه درست نیست!";
+            userError = "شماره درست نیست!";
         }
 
         if (whose === "m") {

@@ -108,8 +108,8 @@ function EditItem(props) {
                 // if (!prof.onlineShop)
                 //     prof.onlineShop = false;
                 prof.category = categories[prof.category]
-                prof.Expiration_Date = prof.Expiration_Date.split("-")
-                prof.manufacture_Date = prof.manufacture_Date.split("-")
+                prof.Expiration_Date = prof.Expiration_jalali.split("-")
+                prof.manufacture_Date = prof.manufacture_jalali.split("-")
                 //set prof in profile and other state variables
                 setProfile(prof)
                 setName(prof.name);
@@ -334,6 +334,7 @@ function EditItem(props) {
             fd.append("Expiration_Date", Expiration_Date.join("-"));
             sthChanged = true;
         }
+        console.log( Expiration_Date.join("-"))
         // if (onlineShop !== profile.onlineShop) {
         //     fd.append("onlineShop", onlineShop ? "True" : "False")
         //     sthChanged = true;
@@ -359,6 +360,7 @@ function EditItem(props) {
             },
             body: fd,
         };
+        console.log(Expiration_Date.join("-"))
         fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/" + itemID, requestOptions)
             .then(async (response) => {
 
