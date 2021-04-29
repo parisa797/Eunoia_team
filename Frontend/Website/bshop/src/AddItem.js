@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "./assets/logo.png";
+import snack from "./libs/snack";
 // import { AddItem } from "./api";
 
 
 
 const AddItem = () => {
+  // const location = useLocation()
+  // console.log(location.pathname.split('/'));
   const [values, setValues] = useState({
     name: "",
     src: "",
@@ -20,6 +23,9 @@ const AddItem = () => {
 
 
   let shopID = window.location.pathname.match(/[^\/]+/g)[1]
+  let itemID = window.location.pathname.match(/[^\/]+/g)[3]
+  // const itemID = location.pathname.split('/')[2]
+  
   const handleChange = (n, v) => {
     setValues((prev) => ({
       ...prev,
@@ -36,32 +42,50 @@ const AddItem = () => {
     const tempItem = item
     tempItem.target.value = null
   }
+  console.log(new Date(values.manufacture_Date));
   const handleSubmit = (e) => {
+    console.log('clicked');
     e.preventDefault()
-    const fd = new FormData()
-    fd.append('name', values.name)
-    fd.append('photo', values.src)
-    fd.append('description', values.description)
-    fd.append('manufacture_Date', values.manufacture_Date)
-    fd.append('Expiration_Date', values.Expiration_Date)
-    fd.append('count', values.count)
-    fd.append('price', values.price)
-    fd.append('discount', values.discount)
-    fd.append('category', values.category)
-
-
-      fetch("http://127.0.0.1:8000/shops/"+shopID+"/items/", {
-        method: 'POST',
-        headers: {
-          "Authorization": "Token " + localStorage.getItem("token")
-        }
-        ,body:fd
-      }).then((resp) => {
-        if (resp.status === 201) {
-           window.location.replace("/store/"+shopID);
-        }
-      }).catch((e) => { console.log(e) })
-    
+    const d1 = new Date(values.manufacture_Date)
+    const d2 = new Date(values.Expiration_Date)
+    const diff = d2.getTime() - d1.getTime()
+    if (values.name && values.manufacture_Date && values.Expiration_Date && values.count && values.category && values.price && diff > 0 &&  (!values.discount || values.discount < 99 )) {
+      const fd = new FormData()
+      console.log('if');
+      fd.append('name', values.name)
+      fd.append('photo', values.src)
+      fd.append('description', values.description)
+      fd.append('manufacture_Date', values.manufacture_Date)
+      fd.append('Expiration_Date', values.Expiration_Date)
+      fd.append('count', values.count)
+      fd.append('price', values.price)
+      fd.append('discount', values.discount)
+      fd.append('category', values.category)
+  
+        fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/", {
+          method: 'POST',
+          headers: {
+            "Authorization": "Token " + localStorage.getItem("token")
+          }
+          ,body:fd
+        }).then((resp) => {
+          if (resp.status === 201) {
+             window.location.replace("/store/"+itemID);
+          }
+        }).catch((e) => { console.log(e.response.data) })  
+    } else {
+      console.log('else');
+      if (!values.name) snack.error('نام محصول را وارد کنید')
+      // if (!values.src) snack.error('عکس محصول را انتخاب کنید')
+      if (!values.price) snack.error('قیمت محصول را وارد کنید')
+      // if (!values.description) snack.error('توضیحات محصول را بنویسد')
+      if (!values.manufacture_Date) snack.error('تاریخ تولید را وارد کنید')
+      if (!values.Expiration_Date) snack.error('تاریخ انقضا را وارد کنید')
+      if (!values.count) snack.error('تعداد محصول را وارد کنید')
+      if (!values.category) snack.error('دسته بندی محصول را وارد کنید')
+      if (values.discount && values.discount > 99) snack.error('درصد تخفیف باید عددی کمتر از ۱۰۰ باشد')
+      if (diff < 0) snack.error('تاریخ انقضا باید بعد از تاریخ تولید باشد')
+    }
 
   }
   return (
@@ -76,6 +100,7 @@ const AddItem = () => {
           نام محصول
         </label>
         <input
+          data-testid="add-item-name"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.name}
@@ -90,6 +115,7 @@ const AddItem = () => {
           توضیحات محصول
         </label>
         <input
+          data-testid="add-item-description"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.description}
@@ -104,6 +130,7 @@ const AddItem = () => {
           تاریخ تولید محصول
         </label>
         <input
+          data-testid="add-item-manufacture_Date"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.manufacture_Date}
@@ -118,6 +145,7 @@ const AddItem = () => {
           تاریخ انقضا
         </label>
         <input
+          data-testid="add-item-Expiration_Date"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.Expiration_Date}
@@ -132,6 +160,7 @@ const AddItem = () => {
           تعداد محصول
         </label>
         <input
+          data-testid="add-item-count"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.count}
@@ -146,6 +175,7 @@ const AddItem = () => {
           قیمت محصول
         </label>
         <input
+        data-testid="add-item-price"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.price}
@@ -160,6 +190,7 @@ const AddItem = () => {
           درصد تخفیف محصول
         </label>
         <input
+          data-testid="add-item-discount"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.discount}
