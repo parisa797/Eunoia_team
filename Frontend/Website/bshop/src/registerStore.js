@@ -50,7 +50,8 @@ const RegisterStore = () => {
     if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName > 4 && values.storeName > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
-        fetch("http://127.0.0.1:8000/users/profile", {
+        console.log();
+        fetch("https://iust-bshop.herokuapp.com/users/profile", {
           method: "GET",
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
@@ -75,7 +76,7 @@ const RegisterStore = () => {
               },
               body: fd,
             };
-            fetch("http://127.0.0.1:8000/users/profile", requestOptions)
+            fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
               .then(async (response) => {
                 if (response.status === 200) {
                   localStorage.setItem("role", "seller");

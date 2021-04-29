@@ -120,7 +120,8 @@ import { Link } from "react-router-dom";
 import { createUser } from "./api";
 import logo from "./assets/logo.png";
 import snack from "./libs/snack";
-import { validateEmail } from "./libs/utils";
+import { validateEmail } from "./libs/utils"
+import errorjson from './errorhandling'
 
 const Register = () => {
   const [values, setValues] = useState({
@@ -146,19 +147,22 @@ const Register = () => {
       })
         .then((res) => res.data)
         .then((res) => {
+          localStorage.setItem('token', res.key)
           console.log(res);
           if (
-            !!res &&
-            !!res.detail &&
-            res.detail === "Verification e-mail sent."
+            !!res
+            // !!res.detail 
+            // res.detail === "Verification e-mail sent."
           ) {
             window.location.replace("/login");
           }
         })
         .catch((e) => {
-          const msgs = Object.values(e.response?.data)
-          msgs.forEach(i => i.forEach(j => snack.error(j)))
-          console.log(msgs);
+          const msgs = Object.values(e.response.data)
+          console.log(e.response.data);
+          // console.log(e.response.);
+          msgs.forEach(i => i.forEach(j => snack.error(errorjson[j])))
+           console.log(msgs);
           // snack.error("اشتباهی رخ داده است...");
         });
     } else {
@@ -225,7 +229,7 @@ const Register = () => {
         </button>
         <p className="mt-5 mb-3 text-muted">
           اگر قبلا اکانت ساخته اید
-          <Link to="/login"> وارد شوید </Link>
+          <a href="/login"> وارد شوید </a>
         </p>
       </form>
     </div>
