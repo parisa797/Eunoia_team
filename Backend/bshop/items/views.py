@@ -18,6 +18,8 @@ import datetime
 from django.db.models import Count
 from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta
+from jalali_date import date2jalali
+from persiantools.jdatetime import JalaliDate
 
 
 # from django.http import HttpResponse
@@ -88,15 +90,17 @@ class CreateItem(generics.ListCreateAPIView):
         shop = self.get_object()
         if shop == None:
             return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
-        # delta=parse_date(request.data['manufacture_Date'])-datetime.now().date()
-        # if delta<= timedelta(days=0): ##darbareye
-        #     return Response(data="manufacture_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before today", status=status.HTTP_400_BAD_REQUEST)
+        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
+            temp=request.data['manufacture_Date'].split("-")
+            Ma=JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            temp=request.data['Expiration_Date'].split("-")
+            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
 
-        delta= parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
-        if delta< timedelta(days=0): ##darbareye
-            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
-        elif delta == timedelta(days=0): ##darbareye
-            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+            delta = (Ex) - (Ma)
+            if delta< timedelta(days=0): ##darbareye
+                return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+       # elif delta == timedelta(days=0): ##darbareye
+           # return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -127,11 +131,17 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
             items = None
         return items
     def update(self, request, *args, **kwargs):
-        delta = parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
-        if delta < timedelta(days=0): ##darbareye
-            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
-        elif delta == timedelta(days=0): ##darbareye
-            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
+            temp = request.data['manufacture_Date'].split("-")
+            Ma = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            temp = request.data['Expiration_Date'].split("-")
+            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            delta = (Ex) - (Ma)
+
+            if delta < timedelta(days=0):  ##darbareye
+                return Response(data="Expiration_Date is " + str(delta).split("-")[1].split(",")[0] + "  before manufacture_Date",
+                    status=status.HTTP_400_BAD_REQUEST)
+
         return super().update(request)
 
     def retrieve(self, request, *args, **kwargs):
