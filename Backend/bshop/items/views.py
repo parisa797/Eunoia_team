@@ -116,16 +116,15 @@ class CreateItem(generics.ListCreateAPIView):
 
 class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
-    serializer_class = ItemSerializer ###in havaset bashe
-    #permission_classes = [IsUser,IsAuthenticated] #felan bashe
-    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly] #felan bashe
+    serializer_class = ItemSerializer 
+    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         shop_id = self.kwargs.get('pk')
         item_id = self.kwargs.get('id')
         shops = Shop.objects.get(id=shop_id)
         items = Item.objects.get(id=item_id)
-        self.check_object_permissions(self.request,items) ##permission
+        self.check_object_permissions(self.request,items)
         # check whether the post belongs to the community
         if items.shopID != shops:
             items = None
@@ -138,7 +137,7 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
             Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
             delta = (Ex) - (Ma)
 
-            if delta < timedelta(days=0):  ##darbareye
+            if delta < timedelta(days=0):
                 return Response(data="Expiration_Date is " + str(delta).split("-")[1].split(",")[0] + "  before manufacture_Date",
                     status=status.HTTP_400_BAD_REQUEST)
 

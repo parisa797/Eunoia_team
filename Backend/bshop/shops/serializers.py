@@ -28,7 +28,6 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)
-        # return json.dumps(serial, indent=4, sort_keys=True, default=str)
         return str(serial)
 
     
@@ -44,7 +43,6 @@ class ListCommentSerializer(serializers.ModelSerializer):
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)
-        # return json.dumps(serial, indent=4, sort_keys=True, default=str)
         return str(serial)
     
     class Meta: 

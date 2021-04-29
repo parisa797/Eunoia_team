@@ -12,30 +12,17 @@ class ShopSerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    #Liked_By = UsersInfoserializer(source='liked_by', read_only=True, many=True)
     shop_id = serializers.IntegerField(source='shopID.id', read_only=True)
     ItemShop = ShopSerializer(source='shopID', read_only=True)
-    # manufacture_jalali = serializers.SerializerMethodField('get_jalali_date')
-    # Expiration_jalali = serializers.SerializerMethodField('get_jalali_Expiration_Date')
-    #
-    # def get_jalali_date(self, id):
-    #     temp = JalaliDate.to_jalali(id.manufacture_Date)
-    #     return str(temp)
-    # def get_jalali_Expiration_Date(self, id):
-    #     temp = JalaliDate.to_jalali(id.Expiration_Date)
-    #     return str(temp)
     manufacture_jalali = serializers.SerializerMethodField('get_miladi_date')
     Expiration_jalali = serializers.SerializerMethodField('get_miladi_Expiration_Date')
     def get_miladi_date(self, id):
         temp = JalaliDate.to_gregorian(id.manufacture_Date)
-        # return str(temp)
         str=correct_date(temp)
         return str
     def get_miladi_Expiration_Date(self, id):
         temp = JalaliDate.to_gregorian(id.Expiration_Date)
-        #return str(temp)
         str=correct_date(temp)
-        print('str',str)
         return str
 
 
@@ -50,7 +37,6 @@ class CreateListItemSerializer(serializers.ModelSerializer):
 
     def get_miladi_date(self, id):
         temp = JalaliDate.to_gregorian(id.manufacture_Date)
-        #print(temp.strftime('%Y'))
         str=correct_date(temp)
         return str
     def get_miladi_Expiration_Date(self, id):
@@ -93,7 +79,6 @@ def correct_date(date):
             return year+'-'+month+'-'+day
 
     elif year=='1403'and int(month)>3:
-        print("aaaaaaaaaa")
         if int(day)==31 or int(day)==30  :
             if int(month)<=6 and int(month)>=1 and int(day)==31:
                 month=str(int(month)+1)
