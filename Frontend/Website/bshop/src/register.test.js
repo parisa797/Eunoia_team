@@ -22,18 +22,18 @@ afterEach(() => {
 
 
 test("register users", async () => {
-    const Register = {
-        email: "fj.1403@yahoo.com",
-        password: "12345",
-        username: "setare1"
-    };
+    // const Register = {
+    //     email: "fj.1403@yahoo.com",
+    //     password: "12345",
+    //     username: "setare1"
+    // };
     jest.spyOn(global, "fetch").mockImplementation(() =>
         Promise.resolve({
-        json: () => Promise.resolve(Register)
+        json: () => Promise.resolve({})
         })
     );
     var page;
     await act(async () => {
-        page = await render(<register />);
+        page = await render(<Register />);
     });
 });
