@@ -5,7 +5,7 @@
 // function Itemslist(props){
 //     const [items,setItems] = useState([]);
 //     useEffect(()=>{
-//         fetch("http://127.0.0.1:8000/shops/1/items/",{
+//         fetch("https://iust-bshop.herokuapp.com/shops/1/items/",{
 //         method: "GET",
 //         headers: {
 //             "Authorization" : "Token " + localStorage.getItem("token")
@@ -70,7 +70,7 @@ function Itemslist(props) {
     const [shopInfo, setShopInfo] = useState({});
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/", {
+        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
             method: "GET",
         }).then((res) => {
             if (res.status === 200) {
@@ -79,7 +79,7 @@ function Itemslist(props) {
         }).then(res => {
             setItems(res);
         })
-        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')

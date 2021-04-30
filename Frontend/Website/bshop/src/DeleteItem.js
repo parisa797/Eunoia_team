@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 function DeleteItem(props){
     
     const deleteItem=()=>{
-        fetch("http://127.0.0.1:8000/shops/"+props.shopID+"/items/"+props.showDeleteModal.id,{
+        fetch("https://iust-bshop.herokuapp.com/shops/"+props.shopID+"/items/"+props.showDeleteModal.id,{
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')

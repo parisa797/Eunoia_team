@@ -63,11 +63,11 @@ test("shop and shop ratings for unsigned users", async () => {
 
     var page;
     fetchMock
-        .get("http://127.0.0.1:8000/api/v1/shops/user/", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/comment/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/rate/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/1", shop)
-        .get("http://127.0.0.1:8000/shops/1/items/", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/user/", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/1", shop)
+        .get("https://iust-bshop.herokuapp.com/shops/1/items/", [])
     await act(async () => {
         // const flushPromises = () => new Promise(setImmediate);
         page = await render(<Shop  userState={"u"}/>);
@@ -94,11 +94,11 @@ test("shop and shop ratings for signed (buyer) users", async () => {
 
     var page;
     fetchMock
-        .get("http://127.0.0.1:8000/api/v1/shops/user/", usersShops)
-        .get("http://127.0.0.1:8000/api/v1/shops/comment/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/rate/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/1", shop)
-        .get("http://127.0.0.1:8000/shops/1/items/", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/user/", usersShops)
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/1", shop)
+        .get("https://iust-bshop.herokuapp.com/shops/1/items/", [])
     await act(async () => {
         page = await render(<Shop  userState={"l"}/>);
     });
@@ -124,11 +124,11 @@ test("shop and shop ratings for shop owner", async () => {
 
     var page;
     fetchMock
-        .get("http://127.0.0.1:8000/api/v1/shops/user/", usersShops)
-        .get("http://127.0.0.1:8000/api/v1/shops/comment/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/rate/list/1", [])
-        .get("http://127.0.0.1:8000/api/v1/shops/1", shop)
-        .get("http://127.0.0.1:8000/shops/1/items/", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/user/", usersShops)
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/1", [])
+        .get("https://iust-bshop.herokuapp.com/api/v1/shops/1", shop)
+        .get("https://iust-bshop.herokuapp.com/shops/1/items/", [])
     await act(async () => {
         page = await render(<Shop userState={"m"}/>);
     });

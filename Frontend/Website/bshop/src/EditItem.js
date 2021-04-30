@@ -68,7 +68,7 @@ function EditItem(props) {
         let prof = {};
         console.log(itemID)
         console.log(shopID)
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/" + itemID, {
+        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/" + itemID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -108,8 +108,14 @@ function EditItem(props) {
                 // if (!prof.onlineShop)
                 //     prof.onlineShop = false;
                 prof.category = categories[prof.category]
-                prof.Expiration_Date = prof.Expiration_jalali.split("-")
-                prof.manufacture_Date = prof.manufacture_jalali.split("-")
+                if(prof.Expiration_jalali)
+                    prof.Expiration_Date = prof.Expiration_jalali.split("-")
+                else if(prof.Expiration_Date)
+                prof.Expiration_Date = prof.Expiration_Date.split("-")
+                if(prof.manufacture_jalali)
+                    prof.manufacture_Date = prof.manufacture_jalali.split("-")
+                else if(prof.manufacture_Date)
+                    prof.manufacture_Date = prof.manufacture_Date.split("-")
                 //set prof in profile and other state variables
                 setProfile(prof)
                 setName(prof.name);
@@ -361,7 +367,7 @@ function EditItem(props) {
             body: fd,
         };
         console.log(Expiration_Date.join("-"))
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/" + itemID, requestOptions)
+        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/" + itemID, requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {

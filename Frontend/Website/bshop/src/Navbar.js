@@ -21,7 +21,7 @@ function CustomNavbar(props) {
       return;
     }
     //set profile if exists
-    fetch("http://127.0.0.1:8000/users/profile", {
+    fetch("https://iust-bshop.herokuapp.com/users/profile", {
       method: 'GET',
       headers: {
         "Authorization": "Token " + localStorage.getItem('token')

@@ -22,7 +22,7 @@ function Shop(props) {
 
     useEffect(() => {
         console.log(props.userState)
-        fetch("http://127.0.0.1:8000/api/v1/shops/rate/list/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -48,7 +48,7 @@ function Shop(props) {
     }, [])
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -65,7 +65,7 @@ function Shop(props) {
                 setShopInfo(d);
                 console.log(d)
             });
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/", {
+        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
             method: 'GET'
         }).then((res) => {
             if (res.status === 200) {
@@ -85,7 +85,7 @@ function Shop(props) {
         fd.append("rate", new_rating)
         if (!rated) {
             fd.append("shop", shopID)
-            fetch("http://127.0.0.1:8000/api/v1/shops/rate/create/", {
+            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/create/", {
                 method: 'POST',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -109,7 +109,7 @@ function Shop(props) {
             })
         }
         else {
-            fetch("http://127.0.0.1:8000/api/v1/shops/rate/" + rateID, {
+            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/" + rateID, {
                 method: 'PUT',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')

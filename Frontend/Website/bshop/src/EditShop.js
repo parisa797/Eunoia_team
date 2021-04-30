@@ -37,7 +37,7 @@ function EditShop(props) {
         }
         //fetch all shops of this user, if he's not the owner of the shop with the url's shopID, go back to shop
         let prof = {};
-        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -199,7 +199,7 @@ function EditShop(props) {
             },
             body: fd,
         };
-        fetch("http://127.0.0.1:8000/api/v1/shops/update/" + shopID, requestOptions)
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/update/" + shopID, requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {
@@ -217,7 +217,7 @@ function EditShop(props) {
     }
 
     const deleteShop = () => {
-        fetch("http://127.0.0.1:8000/api/v1/shops/delete/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/delete/" + shopID, {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')

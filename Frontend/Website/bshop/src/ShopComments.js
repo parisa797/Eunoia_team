@@ -7,7 +7,7 @@ function ShopComments(props){
     const [updateComments,setUpdateComments] = useState(false);
     const months=["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"]
     useEffect(()=>{
-        fetch("http://127.0.0.1:8000/api/v1/shops/comment/list/"+props.shopID,{
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/"+props.shopID,{
             method:"GET",
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -22,6 +22,8 @@ function ShopComments(props){
             if(res)
                 {
                     for(let i in res){
+                        if(!res[i].date_jalali)
+                            continue;
                         let str = res[i].date_jalali.split(' ').join('.').split('.').join('-').split('-');
                         console.log(str)
                         str[1]= months[parseInt(str[1])-1]
@@ -41,7 +43,7 @@ function ShopComments(props){
         let fd = new FormData()
         fd.append("text",writtenComment);
         fd.append("shop",props.shopID)
-        fetch("http://127.0.0.1:8000/api/v1/shops/comment/create/",{
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/create/",{
             method:"POST",
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
