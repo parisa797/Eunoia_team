@@ -50,8 +50,7 @@ const RegisterStore = () => {
     if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName > 4 && values.storeName > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
-        console.log();
-        fetch("https://iust-bshop.herokuapp.com/users/profile", {
+        fetch("http://127.0.0.1:8000/users/profile", {
           method: "GET",
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
@@ -76,7 +75,7 @@ const RegisterStore = () => {
               },
               body: fd,
             };
-            fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
+            fetch("http://127.0.0.1:8000/users/profile", requestOptions)
               .then(async (response) => {
                 if (response.status === 200) {
                   localStorage.setItem("role", "seller");
@@ -129,6 +128,7 @@ const RegisterStore = () => {
           نام فروشگاه
         </label>
         <input
+        data-testid="register-shop-name"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.storeName}
@@ -143,6 +143,7 @@ const RegisterStore = () => {
           نام مدیر فروشگاه
         </label>
         <input
+        data-testid="register-shop-ownername"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.ownerName}
@@ -171,6 +172,7 @@ const RegisterStore = () => {
           شماره موبایل
         </label>
         <input
+        data-testid="register-shop-phone"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.phone}
@@ -198,6 +200,7 @@ const RegisterStore = () => {
           آدرس
         </label>
         <input
+        data-testid="register-shop-address"
           style={{ textAlign: "right", marginBottom: "10px" }}
           value={values.address}
           onChange={(e) => handleChange("address", e.target.value)}
@@ -210,6 +213,7 @@ const RegisterStore = () => {
           کد فروشگاه
         </label>
         <input
+        data-testid="register-shop-code"
           style={{ textAlign: "right", marginBottom: "10px" }}
           value={values.code}
           onChange={(e) => handleChange("code", e.target.value)}
