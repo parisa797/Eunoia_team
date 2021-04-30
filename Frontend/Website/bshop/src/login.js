@@ -43,7 +43,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="homepage">
+    <div className="homepage" data-testid="login-user">
       <form
         style={{ maxWidth: "768px", margin: "20px auto", padding: "20px" }}
         className="form-signin"
@@ -54,6 +54,7 @@ const Login = () => {
           Username
         </label>
         <input
+         data-testid="login-email"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.username}

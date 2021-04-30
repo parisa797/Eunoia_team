@@ -181,6 +181,7 @@ const Register = () => {
           نام فروشگاه
         </label>
         <input
+          data-testid="register-username"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.username}
@@ -195,6 +196,7 @@ const Register = () => {
           ایمیل
         </label>
         <input
+          data-testid="register-email"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="email"
           value={values.email}
@@ -209,6 +211,7 @@ const Register = () => {
           پسورد
         </label>
         <input
+          data-testid="register-password"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="password"
           value={values.password}
