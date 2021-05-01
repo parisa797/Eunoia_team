@@ -7,7 +7,7 @@ function ShopList(props) {
     const [shops, setShops] = useState([]);
     const [myshops, setMyShops] = useState([]);
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/v1/shops/user/", {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/user/", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -23,7 +23,7 @@ function ShopList(props) {
             .then((d) => {
                 setMyShops(d);
             });
-        fetch("http://127.0.0.1:8000/api/v1/shops/", {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
