@@ -128,6 +128,7 @@ const RegisterStore = () => {
           نام فروشگاه
         </label>
         <input
+        data-testid="register-shop-name"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.storeName}
@@ -142,6 +143,7 @@ const RegisterStore = () => {
           نام مدیر فروشگاه
         </label>
         <input
+        data-testid="register-shop-ownername"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.ownerName}
@@ -170,6 +172,7 @@ const RegisterStore = () => {
           شماره موبایل
         </label>
         <input
+        data-testid="register-shop-phone"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.phone}
@@ -197,6 +200,7 @@ const RegisterStore = () => {
           آدرس
         </label>
         <input
+        data-testid="register-shop-address"
           style={{ textAlign: "right", marginBottom: "10px" }}
           value={values.address}
           onChange={(e) => handleChange("address", e.target.value)}
@@ -209,6 +213,7 @@ const RegisterStore = () => {
           کد فروشگاه
         </label>
         <input
+        data-testid="register-shop-code"
           style={{ textAlign: "right", marginBottom: "10px" }}
           value={values.code}
           onChange={(e) => handleChange("code", e.target.value)}
