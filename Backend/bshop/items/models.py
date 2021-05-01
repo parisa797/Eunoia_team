@@ -1,6 +1,10 @@
 from django.db import models
 from users.models import MyUser
 from shops.models import Shop
+<<<<<<< HEAD
+=======
+from django_jalali.db import models as jmodels
+>>>>>>> feature/v1.0.0/login-signup-back
 
 # Create your models here.
 class Item(models.Model):
@@ -8,8 +12,10 @@ class Item(models.Model):
     shopID = models.ForeignKey(Shop,blank=True, null=True, on_delete=models.CASCADE, related_name='shopid')
     photo = models.ImageField(upload_to='items/' , max_length=100 , null=True, blank=True)
     description = models.TextField(blank=True)
-    manufacture_Date=models.DateField(auto_now=False, auto_now_add=False, blank=True)
-    Expiration_Date=models.DateField(auto_now=False, auto_now_add=False, blank=True)
+    #manufacture_Date=models.DateField(auto_now=False, auto_now_add=False, blank=True)
+    manufacture_Date=jmodels.jDateField(blank=True,auto_now=False, auto_now_add=False)
+    #Expiration_Date=models.DateField(auto_now=False, auto_now_add=False, blank=True)
+    Expiration_Date = jmodels.jDateField(blank=True,auto_now=False, auto_now_add=False)
     count=models.IntegerField(default=0,blank=True)
     price = models.IntegerField(default=0, blank=True)
     discount = models.IntegerField(default=0, blank=True)
