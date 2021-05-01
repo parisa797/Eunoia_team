@@ -347,7 +347,8 @@
     display: grid;
     grid-template-columns: 50px auto;
     border: 2px solid var(--bg-color3);
-    border-radius: 10px 10px 0 0;
+    /* border-radius: 10px 10px 0 0; */
+    border-radius: 10px;
     text-align: right;
     padding:10px 20px;
     margin: 0;
@@ -368,5 +369,6 @@
 }
 
 .shop-page .write-comment svg{
-    color: var(--primary-color)
+    color: var(--primary-color);
+    cursor: pointer;
 }

@@ -37,30 +37,20 @@ function EditShop(props) {
         }
         //fetch all shops of this user, if he's not the owner of the shop with the url's shopID, go back to shop
         let prof = {};
-        fetch("http://127.0.0.1:8000/api/v1/shops/user/", {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(
-            res => {
+        })
+            .then((res) => {
                 if (res.status === 200) {
                     return res.json()
                 }
-                return null;
+                return {};
             }
-        ).then(
-            response => {
-                let res = null
-                for (let i in response) {
-                    if (response[i].id === parseInt(shopID)) {
-                        res = response[i]
-                    }
-                }
-                if (!res) {
-                    window.location.replace("/store/" + shopID);
-                    return;
-                }
+            )
+            .then((res) => {
                 console.log(res)
                 prof = res;
                 if (!prof.title)
@@ -117,7 +107,7 @@ function EditShop(props) {
             userError = "تنها عدد وارد کنید";
         }
         else if (p.length !== 11) {
-            userError = "شماره همراه درست نیست!";
+            userError = "شماره درست نیست!";
         }
 
         if (whose === "m") {
@@ -209,11 +199,12 @@ function EditShop(props) {
             },
             body: fd,
         };
-        fetch("http://127.0.0.1:8000/api/v1/shops/update/" + shopID, requestOptions)
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/update/" + shopID, requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {
                     setReloadProfile(!reloadProfile);
+                    props.setTriggerReload(!props.triggerReload)
                     SetToastState({ text: "اطلاعات جدید ذخیره شد", show: true })
                     await timeout(4000)
                     SetToastState({ show: false })
@@ -226,7 +217,7 @@ function EditShop(props) {
     }
 
     const deleteShop = () => {
-        fetch("http://127.0.0.1:8000/api/v1/shops/delete/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/delete/" + shopID, {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
