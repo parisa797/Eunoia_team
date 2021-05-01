@@ -47,10 +47,10 @@ const RegisterStore = () => {
     fd.append("shomare_sabt", values.code);
     fd.append("phone", values.phone);
     //code bishtar az 4 ragham farz shode
-    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName > 4 && values.storeName > 4  && values.code.length > 4 ) {
+    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
-        fetch("http://127.0.0.1:8000/users/profile", {
+        fetch("https://iust-bshop.herokuapp.com/users/profile", {
           method: "GET",
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
@@ -75,7 +75,7 @@ const RegisterStore = () => {
               },
               body: fd,
             };
-            fetch("http://127.0.0.1:8000/users/profile", requestOptions)
+            fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
               .then(async (response) => {
                 if (response.status === 200) {
                   localStorage.setItem("role", "seller");

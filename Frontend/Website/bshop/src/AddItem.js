@@ -70,7 +70,7 @@ const AddItem = () => {
           ,body:fd
         }).then((resp) => {
           if (resp.status === 201) {
-             window.location.replace("/store/"+itemID);
+             window.location.replace("/store/"+shopID);
           }
         }).catch((e) => { console.log(e.response.data) })  
     } else {

@@ -227,10 +227,10 @@ function Shop(props) {
                     </Carousel>
                     {props.userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
                 </div>
-                {(allItems.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
+                {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
                     <div className="page-contents-item">
                         <div className="horizontal-list ">
-                            {allItems.map((item, i) => {
+                            {allItems?.map((item, i) => {
                                 if (item)
                                     return (
                                         <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">

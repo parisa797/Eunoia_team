@@ -8,7 +8,7 @@ function Item(props) {
     // let itemId = window.location.pathname.match.items(/[^\/]+/g)[3]
     // let shopID = window.location.pathname.match(/[^\/]+/g)[1]
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/shops/"+shopID+"/items/"+itemID, {
+        fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/"+itemID, {
             method: 'GET',
             // headers: {
             //     "Authorization": "Token " + localStorage.getItem('token')
