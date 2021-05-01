@@ -14,40 +14,11 @@ function ProfilePage(props) {
     const [address, setAddress] = useState("");
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    const [proPic, setProPic] = useState("./../profile.png");
+    const [proPic, setProPic] = useState("/profile.png");
     const [newPicInfo, setNewPicInfo] = useState(null);
     const [proPicID, setProPicID] = useState(0);
     const [reloadProfile, setReloadProfile] = useState(false);
     const [edit, setEdit] = useState(false);
-    // var whichChanged = [0,0,0,0,0]; //there are 5 fields, any of them that is changed will be set to 1;
-    // function checkIsChanged(num, newval, oldval){
-    //     if(!newval){
-    //         whichChanged[num] = 0;
-    //     }
-    //     // else if(oldval === "نام خود را وارد کنید..." ||
-    //     //     oldval === "نام خانوادگی خود را وارد کنید..." ||
-    //     //     oldval === "شماره تلفن همراه را وارد کنید..." ||
-    //     //     oldval === "آدرس را وارد کنید..." ){
-    //     //     if(newval !== oldval)
-    //     //         whichChanged = '1';
-    //     // }
-    //     else if(newval !== oldval){
-    //         whichChanged[num] = 1;
-    //     }
-    //     else
-    //         whichChanged[num] = 0;
-
-    //     if(whichChanged !== [0,0,0,0,0] ){
-    //         setEdit(true);
-    //     }
-    //     else
-    //         setEdit(false);
-    // }
-
-    // let prof = {
-    //     files: null, username: "ShMob", role: "buyer",
-    //     email: "mobashers313@gmail.com", FirstName: "ششششششش", LastName: null, phone: "", address: ""
-    // };
 
     useEffect(() => {
         //if not signed in, redirect to home page
@@ -58,7 +29,7 @@ function ProfilePage(props) {
         //fetch profile and set it in "prof" variable
 
         let prof = {};
-        fetch("http://127.0.0.1:8000/users/profile", {
+        fetch("https://iust-bshop.herokuapp.com/users/profile", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -82,7 +53,7 @@ function ProfilePage(props) {
                 if (!prof.address)
                     prof.address = "آدرس را وارد کنید...";
                 if (!(prof?.urls?.length > 0)) {
-                    prof.urls = [{ uploaded_file: "./../profile.png" }];
+                    prof.urls = [{ uploaded_file: "/profile.png" }];
                     prof.files = [-1];
                 }
 
@@ -105,7 +76,6 @@ function ProfilePage(props) {
     const emailregex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     //saves email and checks if the email is in a valid format
     function validateEmail(e) {
-        //checkIsChanged(2, e, profile.email)
         if (!e) {
             setEmail(profile.email);
             setEmailErr("");
@@ -119,7 +89,6 @@ function ProfilePage(props) {
     }
 
     function validatePhone(p) {
-        //checkIsChanged(3, p, profile.phone)
         if (!p || p === "0") {
             setPhone(profile.phone);
             setPhoneErr("");
@@ -161,7 +130,7 @@ function ProfilePage(props) {
             headers: myHeaders,
             body: fd
         };
-        fetch("http://127.0.0.1:8000/users/profile/delete-file", requestOptions)
+        fetch("https://iust-bshop.herokuapp.com/users/profile/delete-file", requestOptions)
             .then(response => {
                 console.log("deleted file's status: " + response.status);
                 if (response.status === 200) {
@@ -210,7 +179,7 @@ function ProfilePage(props) {
 
 
             //delete last profile pic if exists
-            if (profile.files[0] != -1) {
+            if (profile.files[0] !== -1) {
                 DeleteLastProfilePic();
             }
 
@@ -224,7 +193,7 @@ function ProfilePage(props) {
                 headers: myHeaders,
                 body: fdimg
             };
-            await fetch("http://127.0.0.1:8000/users/profile/upload-file", requestOptions)
+            await fetch("https://iust-bshop.herokuapp.com/users/profile/upload-file", requestOptions)
                 .then(response => {
                     console.log("file's status: " + response.status);
                     if (response.status === 201) {
@@ -253,7 +222,7 @@ function ProfilePage(props) {
             },
             body: fd,
         };
-        fetch("http://127.0.0.1:8000/users/profile", requestOptions)
+        fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {
@@ -273,7 +242,7 @@ function ProfilePage(props) {
     }
 
     const deleteProfile = () => {
-        fetch("http://127.0.0.1:8000/users/profile", {
+        fetch("https://iust-bshop.herokuapp.com/users/profile", {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -323,7 +292,6 @@ function ProfilePage(props) {
                     <div className="custom-container ">
                         <div style={{ display: 'flex', direction: "rtl" }}>
                             <h4>اطلاعات کاربری</h4>
-                            {/* <div className="edit-button btn">ویرایش پروفایل</div> */}
                         </div>
                         <form>
                             <div className="row">
@@ -332,7 +300,7 @@ function ProfilePage(props) {
                                     <input id="prof-page-fname" type="text" className="input" value={fname} data-testid="first-name" maxLength={20}
                                         onFocus={() => { setEdit(true); if (fname === "نام خود را وارد کنید...") setFname("") }}
                                         onChange={(e) => setFname(e.target.value)}
-                                        onBlur={(e) => {/*checkIsChanged(0, e.target.value, profile.FirstName);*/ if (!e.target.value) setFname(profile.FirstName); }}
+                                        onBlur={(e) => { if (!e.target.value) setFname(profile.FirstName); }}
                                     />
                                 </div>
 
@@ -341,7 +309,7 @@ function ProfilePage(props) {
                                     <input id="prof-page-lname" type="text" className="input" value={lname} data-testid="last-name" maxLength={20}
                                         onFocus={() => { setEdit(true); if (lname === "نام خانوادگی خود را وارد کنید...") setLname("") }}
                                         onChange={(e) => setLname(e.target.value)}
-                                        onBlur={(e) => { /*checkIsChanged(1, e.target.value, profile.LastName);*/ if (!e.target.value) setLname(profile.LastName) }}
+                                        onBlur={(e) => { if (!e.target.value) setLname(profile.LastName) }}
                                     />
                                 </div>
 
@@ -372,7 +340,7 @@ function ProfilePage(props) {
                                     <textarea id="prof-page-address" type="text" className="input" value={address} data-testid="address"
                                         onFocus={() => { setEdit(true); if (address === "آدرس را وارد کنید...") setAddress("") }}
                                         onChange={(e) => setAddress(e.target.value)}
-                                        onBlur={(e) => {/*checkIsChanged(4, e.target.value, profile.address);*/ if (!e.target.value) setAddress(profile.address) }}
+                                        onBlur={(e) => { if (!e.target.value) setAddress(profile.address) }}
                                     />
                                 </div>
                                 {!!edit &&
@@ -385,7 +353,7 @@ function ProfilePage(props) {
 
                         </form>
                     </div>
-                    <a href="/registerstore" className="be-admin-notif" data-testid="become-a-seller">{profile.role === "buyer"? "میخواهید فروشگاه خود را ثبت کنید؟" : "می خواهید فروشگاه جدیدی ثبت کنید؟"}</a>
+                    <a href="/registerstore" className="be-admin-notif" data-testid="become-a-seller">{profile.role === "buyer" ? "میخواهید فروشگاه خود را ثبت کنید؟" : "می خواهید فروشگاه جدیدی ثبت کنید؟"}</a>
                 </div>
             </div>
         </div>
