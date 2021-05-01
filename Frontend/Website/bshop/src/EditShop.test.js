@@ -36,7 +36,7 @@ test("edit shop page", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   await act(async () => {
@@ -69,7 +69,7 @@ test("title input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;
@@ -115,7 +115,7 @@ test("manager name input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;
@@ -158,7 +158,7 @@ test("shop phone input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;
@@ -194,14 +194,14 @@ test("shop phone input in all possible ways", async () => {
     expect(phone).toHaveValue("099");
     await phone.blur();
     expect(page.queryByTestId("edit-shop-shop-phone-err")).not.toBeNull();
-    expect(page.queryByTestId("edit-shop-shop-phone-err")).toHaveTextContent("شماره همراه درست نیست!");
+    expect(page.queryByTestId("edit-shop-shop-phone-err")).toHaveTextContent("شماره درست نیست!");
 
     await phone.focus();
     await fireEvent.change(phone, { target: { value: '093480234' } });
     expect(phone).toHaveValue("093480234");
     await phone.blur();
     expect(page.queryByTestId("edit-shop-shop-phone-err")).not.toBeNull();
-    expect(page.queryByTestId("edit-shop-shop-phone-err")).toHaveTextContent("شماره همراه درست نیست!");
+    expect(page.queryByTestId("edit-shop-shop-phone-err")).toHaveTextContent("شماره درست نیست!");
 
     await phone.focus();
     await fireEvent.change(phone, { target: { value: '' } });
@@ -228,7 +228,7 @@ test("manager's phone input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;
@@ -264,14 +264,14 @@ test("manager's phone input in all possible ways", async () => {
     expect(phone).toHaveValue("099");
     await phone.blur();
     expect(page.queryByTestId("edit-shop-phone-err")).not.toBeNull();
-    expect(page.queryByTestId("edit-shop-phone-err")).toHaveTextContent("شماره همراه درست نیست!");
+    expect(page.queryByTestId("edit-shop-phone-err")).toHaveTextContent("شماره درست نیست!");
 
     await phone.focus();
     await fireEvent.change(phone, { target: { value: '093480234' } });
     expect(phone).toHaveValue("093480234");
     await phone.blur();
     expect(page.queryByTestId("edit-shop-phone-err")).not.toBeNull();
-    expect(page.queryByTestId("edit-shop-phone-err")).toHaveTextContent("شماره همراه درست نیست!");
+    expect(page.queryByTestId("edit-shop-phone-err")).toHaveTextContent("شماره درست نیست!");
 
     await phone.focus();
     await fireEvent.change(phone, { target: { value: '' } });
@@ -298,7 +298,7 @@ test("address input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;
@@ -372,7 +372,7 @@ test("cancel button", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
 
@@ -426,7 +426,7 @@ test("region input in all possible ways", async () => {
   jest.spyOn(global, "fetch").mockImplementation(() =>
     Promise.resolve({
       status: 200,
-      json: () => shop
+      json: () => shop[0]
     })
   );
   var page;

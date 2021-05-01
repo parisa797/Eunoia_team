@@ -59,7 +59,7 @@
 //             <Route path='/store/:id/edit-info' component={EditShop} />
 //             <Route path='/store/:id' component={Shop} /> 
 //             {/* <Route exact path='/Items' component={Items} /> */}
-            
+
 //           </Switch>
 //         </Router>
 //         <PageFooter />
@@ -90,13 +90,9 @@ import Login from "./login";
 import Register from "./register";
 //import LoginStore from './loginstore';
 import RegisterStore from "./registerStore";
-import Shop from "./Shop";
 import PageFooter from "./PageFooter";
-import EditShop from "./EditShop";
 import LoadingPage from "./LoadingPage";
-import ItemsList from "./ItemsList";
-import Item from './Item';
-import AddItem from "./AddItem";
+import ShopDispatcher from './ShopDispatcher';
 import { SnackbarProvider } from "notistack";
 import { Snackbar } from "./libs/snack";
 
@@ -104,6 +100,7 @@ function App() {
   //for the themes, the first character is either l (light) or d (dark), the second one is the number of the theme selected (for those shops that have their own custom theme)
   const [theme, setThemeVar] = useState("l0"); //l = light, 0 = main theme
   const [triggerNavbarUpdate, setTriggerNavUpdate] = useState(false);
+  const [showCompletePage,] = useState(window.location.pathname !== "/login" && window.location.pathname !== "/register")
   useEffect(() => {
     // localStorage.removeItem("token");
     let mode = localStorage.getItem("mode");
@@ -136,40 +133,47 @@ function App() {
         }}
       >
         <Snackbar />
-        <CustomNavbar
-          setMode={setMode}
-          theme={theme}
-          triggerNavbarUpdate={triggerNavbarUpdate}
-          setTriggerNavUpdate={setTriggerNavUpdate}
-        />
-        <div className="page-holder">
+        
+          <CustomNavbar
+            setMode={setMode}
+            theme={theme}
+            triggerNavbarUpdate={triggerNavbarUpdate}
+            setTriggerNavUpdate={setTriggerNavUpdate}
+            showNavOptions={showCompletePage}
+          />
+          
+          <div className="page-holder">
+          {showCompletePage ?<>
+            <Router>
+              <Switch>
+                <Route exact path="/" component={LoadingPage} />
+                <Route
+                  path="/profile"
+                  render={(props) => (
+                    <ProfilePage
+                      triggerNavbarUpdate={triggerNavbarUpdate}
+                      setTriggerNavUpdate={setTriggerNavUpdate}
+                      {...props}
+                    />
+                  )}
+                />
+
+                {/* <Route exact path='/loginstore' component={LoginStore} /> */}
+                <Route exact path="/registerstore" component={RegisterStore} />
+                <Route path="/store/:id" component={ShopDispatcher} />
+                {/* <Route exact path='/Items' component={Items} /> */}
+              </Switch>
+            </Router>
+            <PageFooter /> </>
+          
+        :
           <Router>
             <Switch>
-              <Route exact path="/" component={LoadingPage} />
-              <Route
-                path="/profile"
-                render={(props) => (
-                  <ProfilePage
-                    triggerNavbarUpdate={triggerNavbarUpdate}
-                    setTriggerNavUpdate={setTriggerNavUpdate}
-                    {...props}
-                  />
-                )}
-              />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              {/* <Route exact path='/loginstore' component={LoginStore} /> */}
-              <Route exact path="/registerstore" component={RegisterStore} />
-              <Route exact path="/store/:id/itemslist" component={ItemsList} />
-              <Route exact path="/store/:id/AddItem" component={AddItem} />
-              <Route exact path="/store/:id/items/:itemid" component={Item} />
-              <Route path="/store/:id/edit-info" component={EditShop} />
-              <Route path="/store/:id" component={Shop} />
-              {/* <Route exact path='/Items' component={Items} /> */}
             </Switch>
-          </Router>
-          <PageFooter />
-        </div>
+          </Router>}
+          </div>
       </SnackbarProvider>
     </div>
   );
