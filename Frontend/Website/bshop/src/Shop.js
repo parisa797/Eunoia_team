@@ -8,46 +8,21 @@ import ItemCard from './ItemCard';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import SendIcon from '@material-ui/icons/Send';
+import ShopComments from './ShopComments'
 
 function Shop(props) {
     const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
     const [shopInfo, setShopInfo] = useState({})
     const [allItems, setAllItem] = useState([])
     const [discountedItems, setDiscountedItem] = useState([])
-    const [userState, setUserState] = useState('u') //u for user, m for manager
     const [rated, setRated] = useState(false)
     const [rateID, setRateId] = useState(null)
-    const [comments, setComments] = useState([{ title: "شلوغ!", user: { user_name: "KhaRidAr" }, date: "20 فروردین 1400", text: "خیلی شلوغ بود\n حتی سبد خرید هم پیدا نمیشد:|" }, { title: "شلوغ!", user: { user_name: "اسمم خریداره", }, date: "23 اسفند 1399", text: "کارمندان بسیار خوشرو بودند." }, { title: "شلوغ!", user: { user_name: "یک خریدار دیگر" }, date: "1 اردیبهشت 1400", text: "هر چی میخواستم داشت:)" }])
-    const [triggerReload, setTriggerReload] = useState(false)
+    // const [triggerReload, setTriggerReload] = useState(false)
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
 
     useEffect(() => {
-        if (!localStorage.getItem("token"))
-            return
-        fetch("http://127.0.0.1:8000/api/v1/shops/user/", {
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.json()
-                }
-                return {};
-            }
-            )
-            .then((d) => {
-                for (let shop in d) {
-                    if (d[shop].id === parseInt(shopID)) {
-                        console.log("im here")
-                        setUserState('m') //is a manager
-                        break
-                    }
-                }
-            });
-        fetch("http://127.0.0.1:8000/api/v1/shops/rate/list/" + shopID, {
+        console.log(props.userState)
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -73,7 +48,7 @@ function Shop(props) {
     }, [])
 
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
+        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -90,7 +65,7 @@ function Shop(props) {
                 setShopInfo(d);
                 console.log(d)
             });
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/", {
+        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
             method: 'GET'
         }).then((res) => {
             if (res.status === 200) {
@@ -102,7 +77,7 @@ function Shop(props) {
             setDiscountedItem(res.filter(r => !!r.discount && r.discount > 0))
         })
 
-    }, [triggerReload])
+    }, [props.triggerReload])
 
     function ratingChanged(new_rating) {
         let fd = new FormData()
@@ -110,7 +85,7 @@ function Shop(props) {
         fd.append("rate", new_rating)
         if (!rated) {
             fd.append("shop", shopID)
-            fetch("http://127.0.0.1:8000/api/v1/shops/rate/create/", {
+            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/create/", {
                 method: 'POST',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -128,13 +103,13 @@ function Shop(props) {
                 if (res) {
                     setRateId(res.id)
                     setRated(true)
-                    setTriggerReload(!triggerReload)
+                    props.setTriggerReload(!props.triggerReload)
                 }
 
             })
         }
         else {
-            fetch("http://127.0.0.1:8000/api/v1/shops/rate/" + rateID, {
+            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/" + rateID, {
                 method: 'PUT',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -144,7 +119,7 @@ function Shop(props) {
             }).then(res => {
                 if (res.status === 200) {
                     setRated(true)
-                    setTriggerReload(!triggerReload)
+                    props.setTriggerReload(!props.triggerReload)
                 }
                 console.log(res.status)
             })
@@ -172,21 +147,31 @@ function Shop(props) {
                             </div>
                             <div className="title-buttons">
                                 <h3 data-testid={"shop-title"}>{shopInfo.title}</h3>
-                                {userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
+                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
                                     <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
                                  <><p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {Math.round(shopInfo.rate_value * 10) / 10}  </p>
-                                    <ReactStars
-                                        edit={!!localStorage.getItem("token")}
-                                        value={shopInfo.rate_value?Math.round(shopInfo.rate_value):0}
+                                    {!!shopInfo.rate_value && <ReactStars
+                                        edit={props.userState!=="u"}
+                                        value={Math.round(shopInfo.rate_value)}
                                         isHalf={false}
                                         classNames="stars"
                                         data-testid="shop-rate-stars"
                                         size={25}
                                         onChange={ratingChanged}
                                         activeColor={"var(--primary-color)"}
-                                    />
+                                    />}
+                                    {!shopInfo.rate_value && <ReactStars
+                                        edit={!!localStorage.getItem("token")}
+                                        value={0}
+                                        isHalf={false}
+                                        classNames="stars"
+                                        data-testid="shop-rate-stars"
+                                        size={25}
+                                        onChange={ratingChanged}
+                                        activeColor={"var(--primary-color)"}
+                                    />}
                                     <p data-testid={"shop-rate-count"}>‌({shopInfo.rate_count})</p>
                                 </>
                                 <p className="comment-info" data-testid={"shop-comment-count"}>نظرات: {shopInfo.comment_count} </p>
@@ -240,16 +225,16 @@ function Shop(props) {
                                 </Carousel.Item>)
                         })}
                     </Carousel>
-                    {userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
+                    {props.userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
                 </div>
-                {(allItems.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
+                {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
                     <div className="page-contents-item">
                         <div className="horizontal-list ">
-                            {allItems.map((item, i) => {
+                            {allItems?.map((item, i) => {
                                 if (item)
                                     return (
                                         <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} />
+                                            <ItemCard item={item} id={"all-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                         </div>
                                     )
                             })}
@@ -268,7 +253,7 @@ function Shop(props) {
                                 if (item)
                                     return (
                                         <div key={"discount-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} />
+                                            <ItemCard item={item} id={"discount-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                         </div>
                                     )
                             })}
@@ -287,7 +272,7 @@ function Shop(props) {
                                 if (item)
                                     return (
                                         <div key={"popular-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} />
+                                            <ItemCard item={item} id={"loved-items-"+item.id} onlineShop={shopInfo.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
                                         </div>
                                     )
                             })}
@@ -301,24 +286,7 @@ function Shop(props) {
                     </div></>}
                 <h4 className="header"><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">
-                    <div className="shop-comments">
-                        {comments.map(comment => {
-                            if (comment) return (
-                                <div className="shop-comment">
-                                    {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
-                                    <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
-                                        <p className="shop-comment-author">{comment.user.user_name}</p>
-                                        <p className="shop-comment-date">{comment.date}</p>
-                                    </div>
-                                    <p className="shop-comment-desc">{comment.text}</p>
-                                </div>
-                            )
-                        })}
-                        {!!localStorage.getItem("token") && <div className="shop-comment write-comment">
-                            <SendIcon />
-                            <textarea type="text" placeholder="نظر خود را بنویسید..." style={{ border: "none", height: "calc(20vh - 20px)" }}></textarea>
-                        </div>}
-                    </div>
+                    <ShopComments shopID={shopID}/>
                 </div>
 
             </div>

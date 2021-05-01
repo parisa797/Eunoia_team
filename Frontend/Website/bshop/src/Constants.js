@@ -1,2 +1,2 @@
-const ServerURL = "http://127.0.0.1:8000";
+const ServerURL = "https://iust-bshop.herokuapp.com";
 export default ServerURL;
