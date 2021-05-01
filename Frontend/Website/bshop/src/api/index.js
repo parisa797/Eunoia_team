@@ -1,6 +1,6 @@
 const { default: axios } = require("axios")
 
-const baseUrl = 'http://127.0.0.1:8000/'
+const baseUrl = 'https://iust-bshop.herokuapp.com/'
 
 const Api = axios.create({
   baseURL: baseUrl

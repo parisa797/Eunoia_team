@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^account/', include('allauth.urls')),
     path('', include('users.urls')),
     path('api/v1/shops/', include('shops.urls')),
+    path('', include('items.urls')),
 ]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
