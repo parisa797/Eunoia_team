@@ -1,10 +1,7 @@
 from django.db import models
 from users.models import MyUser
 from shops.models import Shop
-<<<<<<< HEAD
-=======
 from django_jalali.db import models as jmodels
->>>>>>> feature/v1.0.0/login-signup-back
 
 # Create your models here.
 class Item(models.Model):
