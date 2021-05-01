@@ -28,11 +28,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model= Item
-<<<<<<< HEAD
-        fields=['ItemShop','photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','category','id','discount','price']
-=======
         fields=['ItemShop','photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count','category','id','discount','price']
->>>>>>> feature/v1.0.0/login-signup-back
 
 class CreateListItemSerializer(serializers.ModelSerializer):
     shop_id = serializers.IntegerField(source='shopID.id', read_only=True)
@@ -50,9 +46,6 @@ class CreateListItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model= Item
-<<<<<<< HEAD
-        fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','count','category','discount','price','id']
-=======
         fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count','category','discount','price','id']
 
 def correct_date(date):
@@ -161,4 +154,3 @@ def correct_date(date):
             return year+'-'+month+'-'+day
 
     return year+'-'+month+'-'+day
->>>>>>> feature/v1.0.0/login-signup-back
