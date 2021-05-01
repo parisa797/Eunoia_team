@@ -53,9 +53,9 @@ test("loading page for signed users", async () => {
     })
   );
   fetchMock
-    .get("http://127.0.0.1:8000/users/profile", newUserInfo)
-    .get("http://127.0.0.1:8000/api/v1/shops/user/", {})
-    .get("http://127.0.0.1:8000/api/v1/shops/", [])
+    .get("https://iust-bshop.herokuapp.com/users/profile", newUserInfo)
+    .get("https://iust-bshop.herokuapp.com/api/v1/shops/user/", {})
+    .get("https://iust-bshop.herokuapp.com/api/v1/shops/", [])
   var page;
   await act(async () => {
     page = await render(<LoadingPage />);
@@ -73,9 +73,9 @@ test("loading page when it's not connected to backend server", async () => {
   let newUserInfo = { role: "seller", user_name: "lkfje" }
 
   fetchMock
-    .get("http://127.0.0.1:8000/users/profile", 404)
-    .get("http://127.0.0.1:8000/api/v1/shops/user/", {})
-    .get("http://127.0.0.1:8000/api/v1/shops/", [])
+    .get("https://iust-bshop.herokuapp.com/users/profile", 404)
+    .get("https://iust-bshop.herokuapp.com/api/v1/shops/user/", {})
+    .get("https://iust-bshop.herokuapp.com/api/v1/shops/", [])
   var page;
   await act(async () => {
     page = await render(<LoadingPage />);

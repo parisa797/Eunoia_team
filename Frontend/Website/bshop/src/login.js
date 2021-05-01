@@ -4,6 +4,7 @@ import { loginUser } from "./api";
 import logo from "./assets/logo.png";
 import snack from "./libs/snack";
 import { validateEmail } from "./libs/utils";
+import errorjson from './errorhandling'
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -32,15 +33,17 @@ const Login = () => {
           }
         })
         .catch((e) => {
-          console.log(e);
-          snack.error("اشتباهی رخ داده است...");
+          console.log(e.response.data);
+          const msgs = Object.values(e.response.data)
+          // snack.error("اشتباهی رخ داده است...");
+          msgs.forEach(i => snack.error(errorjson[i]))
         });
     } else {
       snack.error("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.");
     }
   };
   return (
-    <div className="homepage">
+    <div className="homepage" data-testid="login-user">
       <form
         style={{ maxWidth: "768px", margin: "20px auto", padding: "20px" }}
         className="form-signin"
@@ -51,6 +54,7 @@ const Login = () => {
           Username
         </label>
         <input
+         data-testid="login-email"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.username}
