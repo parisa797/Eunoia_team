@@ -23,6 +23,19 @@ class FilterItem(APITestCase):
         sh1 = Shop.objects.create(title="shop 1", user=test_user, manager="zahra", logo=None, address="address 1", theme=1, shomare_sabt="1111", phone="111111")
         
 
+<<<<<<< HEAD
+        I1 = Item.objects.create(name= "item 1", description= "Test description", manufacture_Date= "2020-12-01",
+                Expiration_Date= "2020-12-04", count= "4", price= "1",
+                discount= "10", category= "Dairy")
+        I2 = Item.objects.create(name= "item 2", description= "Test description", manufacture_Date= "2020-12-02",
+                Expiration_Date= "2020-12-04", count= "4", price= "2",
+                discount= "20", category= "Dairy")
+        I3 = Item.objects.create(name= "item 3", description= "Test description", manufacture_Date= "2020-12-03",
+                Expiration_Date= "2020-12-04", count= "4", price= "3",
+                discount= "30", category= "Dairy")
+        I4 = Item.objects.create(name= "item 4", description= "Test description", manufacture_Date= "2020-12-04",
+                Expiration_Date= "2020-12-04", count= "4", price= "4",
+=======
         I1 = Item.objects.create(name= "item 1", description= "Test description", manufacture_Date= "1400-12-01",
                 Expiration_Date= "1400-12-04", count= "4", price= "1",
                 discount= "10", category= "Dairy")
@@ -34,6 +47,7 @@ class FilterItem(APITestCase):
                 discount= "30", category= "Dairy")
         I4 = Item.objects.create(name= "item 4", description= "Test description", manufacture_Date= "1400-12-04",
                 Expiration_Date= "1400-12-04", count= "4", price= "4",
+>>>>>>> feature/v1.0.0/login-signup-back
                 discount= "40", category= "Dairy")
         
         response=self.client.get("/items/expensive/")
@@ -85,7 +99,11 @@ class CreateItemTest(APITestCase):
                 "Expiration_Date": "2020-12-01", "count": "4", "price": "12000",
                 "discount": "20"}
         response3 = self.client.post("/shops/1/items/", data)
+<<<<<<< HEAD
+        self.assertEqual(response3.status_code, status.HTTP_400_BAD_REQUEST)
+=======
         self.assertEqual(response3.status_code, status.HTTP_201_CREATED)
+>>>>>>> feature/v1.0.0/login-signup-back
 
         data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-11-02", "count": "4", "price": "12000",
@@ -165,14 +183,24 @@ class EditItemTest(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
+<<<<<<< HEAD
+        data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
+                "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
+=======
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "1400-12-01",
                 "Expiration_Date": "1400-12-04", "count": "4", "price": "12000",
+>>>>>>> feature/v1.0.0/login-signup-back
                 "discount": "20", "category": "Dairy"}
         response = self.client.post("/shops/4/items/", data)
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
+<<<<<<< HEAD
+        data1 = {"name": "testItemforedit", "description": "Test description Edit", "manufacture_Date": "2020-11-01",
+                "Expiration_Date": "2020-12-04", "count": "4", "price": "10000",
+=======
         data1 = {"name": "testItemforedit", "description": "Test description Edit", "count": "4", "price": "10000",
+>>>>>>> feature/v1.0.0/login-signup-back
                 "discount": "0", "category": "others"}
 
         response1 = self.client.put("/shops/4/items/11",data1)
@@ -181,8 +209,13 @@ class EditItemTest(APITestCase):
         self.assertEqual(response1.data,choosenSerializer.data)
         self.assertEqual(response1.status_code, status.HTTP_200_OK)
 
+<<<<<<< HEAD
+        data2 = { "description": "Test description Edit", "manufacture_Date": "2020-11-01",
+                 "Expiration_Date": "2020-12-04", "count": "4", "price": "10000",
+=======
         data2 = { "description": "Test description Edit", "manufacture_Date": "1400-11-01",
                  "Expiration_Date": "1400-12-04", "count": "4", "price": "10000",
+>>>>>>> feature/v1.0.0/login-signup-back
                  "discount": "0", "category": "others"}
 
         response1 = self.client.put("/shops/4/items/11", data2)
@@ -205,6 +238,25 @@ class EditItemTest(APITestCase):
                 "Expiration_Date": "1399-12-01", "count": "4", "price": "12000",
                 "discount": "20"}
         response1 = self.client.put("/shops/4/items/11", data)
+        self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+        data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
+                "Expiration_Date": "2020-12-01", "count": "4", "price": "12000",
+                "discount": "20"}
+        response1 = self.client.put("/shops/4/items/10", data)
+        self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
+                "Expiration_Date": "2020-11-02", "count": "4", "price": "12000",
+                "discount": "20"}
+        response1 = self.client.put("/shops/4/items/10", data)
+        self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
+
+        data = {"description": "Test description", "manufacture_Date": "2020-12-01",
+                "Expiration_Date": "2019-12-01", "count": "4", "price": "12000",
+                "discount": "20"}
+        response1 = self.client.put("/shops/4/items/10", data)
         self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
 
 class GetOneItemTest(APITestCase):
@@ -296,7 +348,11 @@ class SearchItemOneShop(APITestCase):
         self.assertEqual(len(response.data), 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = self.client.get("/shops/9/items/search/?q=life")
+<<<<<<< HEAD
+        searcheOne = Item.objects.get(id=21)
+=======
         searcheOne = Item.objects.get(id=22)
+>>>>>>> feature/v1.0.0/login-signup-back
         chooseSerializer = ItemSerializer(searcheOne)
         self.assertEqual(response.data[0]['id'], chooseSerializer.data['id'])
         self.assertEqual(len(response.data), 1)

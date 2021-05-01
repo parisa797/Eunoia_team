@@ -60,10 +60,13 @@
       <workItem from="1618128202651" duration="20490000" />
       <workItem from="1618648536576" duration="22050000" />
       <workItem from="1619446467320" duration="21340000" />
+<<<<<<< HEAD
+=======
       <workItem from="1619542896496" duration="13246000" />
       <workItem from="1619590325241" duration="1403000" />
       <workItem from="1619622820673" duration="1841000" />
       <workItem from="1619625248448" duration="5956000" />
+>>>>>>> feature/v1.0.0/login-signup-back
     </task>
     <servers />
   </component>
