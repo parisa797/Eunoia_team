@@ -16,6 +16,14 @@ from .permission import *
 from rest_framework.pagination import PageNumberPagination
 import datetime
 from django.db.models import Count
+from django.utils.dateparse import parse_date
+from datetime import datetime, timedelta
+<<<<<<< HEAD
+=======
+from jalali_date import date2jalali
+from persiantools.jdatetime import JalaliDate
+>>>>>>> feature/v1.0.0/login-signup-back
+
 
 # from django.http import HttpResponse
 # Create your views here.
@@ -85,6 +93,29 @@ class CreateItem(generics.ListCreateAPIView):
         shop = self.get_object()
         if shop == None:
             return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+<<<<<<< HEAD
+        # delta=parse_date(request.data['manufacture_Date'])-datetime.now().date()
+        # if delta<= timedelta(days=0): ##darbareye
+        #     return Response(data="manufacture_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before today", status=status.HTTP_400_BAD_REQUEST)
+
+        delta= parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
+        if delta< timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        elif delta == timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+=======
+        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
+            temp=request.data['manufacture_Date'].split("-")
+            Ma=JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            temp=request.data['Expiration_Date'].split("-")
+            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+
+            delta = (Ex) - (Ma)
+            if delta< timedelta(days=0): ##darbareye
+                return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+       # elif delta == timedelta(days=0): ##darbareye
+           # return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> feature/v1.0.0/login-signup-back
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -100,20 +131,40 @@ class CreateItem(generics.ListCreateAPIView):
 
 class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
-    serializer_class = ItemSerializer ###in havaset bashe
-    #permission_classes = [IsUser,IsAuthenticated] #felan bashe
-    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly] #felan bashe
+    serializer_class = ItemSerializer 
+    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         shop_id = self.kwargs.get('pk')
         item_id = self.kwargs.get('id')
         shops = Shop.objects.get(id=shop_id)
         items = Item.objects.get(id=item_id)
-        self.check_object_permissions(self.request,items) ##permission
+        self.check_object_permissions(self.request,items)
         # check whether the post belongs to the community
         if items.shopID != shops:
             items = None
         return items
+    def update(self, request, *args, **kwargs):
+<<<<<<< HEAD
+        delta = parse_date(request.data["Expiration_Date"]) - parse_date(request.data['manufacture_Date'])
+        if delta < timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+        elif delta == timedelta(days=0): ##darbareye
+            return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+=======
+        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
+            temp = request.data['manufacture_Date'].split("-")
+            Ma = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            temp = request.data['Expiration_Date'].split("-")
+            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            delta = (Ex) - (Ma)
+
+            if delta < timedelta(days=0):
+                return Response(data="Expiration_Date is " + str(delta).split("-")[1].split(",")[0] + "  before manufacture_Date",
+                    status=status.HTTP_400_BAD_REQUEST)
+
+>>>>>>> feature/v1.0.0/login-signup-back
+        return super().update(request)
 
     def retrieve(self, request, *args, **kwargs):
         items = self.get_object()
@@ -207,3 +258,4 @@ class DiscountsFilterItemListAPIView(generics.ListAPIView):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-discount')
+
