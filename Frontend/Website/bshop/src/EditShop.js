@@ -3,6 +3,8 @@ import './EditShop.css';
 import { useEffect, useState } from 'react';
 import EditShopLogo from './EditShopLogo';
 import { Modal, Toast } from "react-bootstrap";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 
 function EditShop(props) {
     const [profile, setProfile] = useState({});
@@ -324,8 +326,8 @@ function EditShop(props) {
                 </div>
 
                 <div className="col-12 col-sm-4 col-md-3 order-sm-3 right-content">
-
-                    <div className="custom-container custom-box-container">
+                    <div className="custom-container">
+                    <div className="custom-box-container">
                         <div className="btn custom-box-btn">کارکنان فروشگاه</div>
                         <div className="btn custom-box-btn">تنظیمات</div>
                         <div className="btn custom-box-btn" onClick={() => setShowDeleteModal(true)} >حذف فروشگاه</div>
@@ -346,6 +348,8 @@ function EditShop(props) {
 
                         </Modal>
 
+                    </div>
+                    <a href={"/store/" + shopID} className="back-to-shop">بازگشت به فروشگاه<ArrowBackIosIcon /></a>
                     </div>
                 </div>
 

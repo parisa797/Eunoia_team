@@ -112,3 +112,13 @@
     border: 1px solid var(--secondary-color); 
     margin: 0 3px;
 }
+
+.item-profile .edit-header a{
+    margin-right:auto;
+    color:var(--primary-color);
+}
+
+.item-profile .edit-header a:hover{
+    text-decoration: none;
+    color:var(--primary-color);
+}
