@@ -16,8 +16,6 @@ function ShopComments(props) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         // setLoading(true)
-        console.log()
-        console.log(props.userState)
         fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/" + props.shopID, {
             method: "GET",
             headers: {
@@ -124,19 +122,19 @@ function ShopComments(props) {
     <div className="shop-comments">
         {loading?<p>در حال به روز رسانی نظرات...</p>:
          <><div className="comments-container">
-            {comments.length === 0 ? <p>نظری ثبت نشده است.</p> : comments.map(comment => {
+            {comments.length === 0 ? <p data-testid="comment-nocomment">نظری ثبت نشده است.</p> : comments.map(comment => {
                 if (comment) return (
-                    <div className="shop-comment">
+                    <div className="shop-comment" key={comment.id} data-testid={"comment"+comment.id}>
                         {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
-                            <p className="shop-comment-author">{comment.user.user_name}</p>
-                            <p className="shop-comment-date">{comment.date_jalali}</p>
-                            {selfComments.includes(comment.id) && <div className="comment-edit-delete">
-                                <p className="comment-edit" onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
-                                <p className="comment-delete" onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
+                            <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
+                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
+                            {selfComments.includes(comment.id) && <div className="comment-edit-delete" data-testid={"comment-edit-delete-options"+comment.id}>
+                                <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
+                                <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
                             </div>}
                         </div>
-                        <p className="shop-comment-desc">{comment.text}</p>
+                        <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
                 )
             })}
