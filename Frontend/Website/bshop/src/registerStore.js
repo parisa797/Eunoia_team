@@ -87,6 +87,7 @@ const RegisterStore = () => {
                     })
                     .catch((e) => {
                       console.log(e);
+                      snack.error("اشتباهی رخ داده است...");
                     });
                 }
               })

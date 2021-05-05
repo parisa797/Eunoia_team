@@ -3,15 +3,46 @@ import { render, fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import Login from './login';
 import '@testing-library/jest-dom';
-import { loginUser } from "./api";
+import * as Snackbar from 'notistack';
+import * as api from "./api";
 
 
 
 let container = null;
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
+const flushPromises = () => new Promise(setImmediate)
 beforeEach(() => {
   // setup a DOM element as a render target
   container = document.createElement("div");
   document.body.appendChild(container);
+
+  //mocking snackbar
+  jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({ enqueueSnackbar: enqueueSnackbarMock, closeSnackbar: closeSnackbarMock }))
+
+  //mocking loginUser in './api' which has an api call with axios inside
+  const loginUserMock = jest.fn().mockImplementation((_body) => {
+    const usersInDatabase = [{email:"mailll@mail.mai", password:"hahaha22"},{email:"aaa@aaa.aa", password:"22hah222"}]
+    let response = []
+    if (!usersInDatabase.includes({email:_body.email,password:_body.password})) {
+      response.push("Unable to log in with provided credentials.")
+    }
+    if (response.length > 0) {
+      return Promise.reject({
+        response: {
+          status: 400,
+          data: response
+        }
+      })
+    }
+    else return Promise.resolve({
+      status: 200,
+      data: () => ({ key: "lsjflekjfifilsijflj" })
+    })
+
+  })
+  jest.spyOn(api, 'loginUser').mockImplementation(loginUserMock)
+
 });
 
 afterEach(() => {
@@ -22,19 +53,13 @@ afterEach(() => {
 });
 
 test("login user", async () => {
-        const Login = [{ username: "setare1",password: '12345'}
-        ,{ username: "setare2",password: '00123'}
-        ,{ username: "setare3",password: '02314'}
-        ,{ username: "setare4",password: '35688'}
-    ];
-    jest.spyOn(global, "fetch").mockImplementation(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(Login)
-      })
-    );
-    var page;
+  var page;
+  var btn;
   await act(async () => {
-    page = await render(<loginUser />);
+      page = await render(<Login />);
+      btn = await page.getByTestId("login-button")
+      await fireEvent.change(await page.getByTestId("login-email"), { target: { value: 'aaaaa@aaa.aa' } });
+      await fireEvent.change(await page.getByTestId("login-password"), { target: { value: 'hahahaaaa' } });
   });
 
 });
@@ -42,36 +67,24 @@ test("login user", async () => {
 
 
 test("login user with email", async () => {
-  const Login = [{ username: "setare1",password: '12345'}
-  ,{ username: "ستاره",password: '00123'}
-  ,{ username: " ",password: '02314'}
-];
-jest.spyOn(global, "fetch").mockImplementation(() =>
-Promise.resolve({
-  json: () => Promise.resolve(Login)
-})
-);
-var page;
-await act(async () => {
-page = await render(<loginUser />);
-});
+  var page;
+  var email;
+  var pass;
+  var btn;
+  await act(async () => {
+      page = await render(<Login />);
+      btn = await page.getByTestId("login-button")
+      email = await page.getByTestId("login-email")
+      pass = await page.getByTestId("login-password")
+  });
 
 });
 
 test("login user with psdd", async () => {
-  const Login = [{ username: "setare1",password: '12345'}
-  ,{ username: "setare1",password: ''}
-  ,{ username: "setare1",password: 'setare666878'}
-];
-jest.spyOn(global, "fetch").mockImplementation(() =>
-Promise.resolve({
-  json: () => Promise.resolve(Login)
-})
-);
-var page;
-await act(async () => {
-page = await render(<loginUser />);
-});
+  var page;
+  await act(async () => {
+    page = await render(<Login />);
+  });
 
 });
 
@@ -96,5 +109,5 @@ page = await render(<loginUser />);
 //   // expect(email).toHaveValue("ایمیل خود را وارد کنید");
 //   expect(page.queryByTestId("login-email")).not.toBeNull();
 //   // expect(page.queryByTestId("item-Expiration_jalali")).not.toBeNull();
- 
+
 // });
