@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './Item.css'
+import ShopSideBar from './ShopSideBar';
 function Item(props) {
     // console.log("Token "+localStorage.getItem("token"))
     const [items, setItems] = useState({});
@@ -27,10 +28,10 @@ function Item(props) {
   
     console.log(items);
     return (
-
+        <div style={{padding: "5vh 2vw" }}>
+            <ShopSideBar />
+            <div className="page-contents">
         <div className="item-page" >
-
-
             
             <div className="sub-container">
                 
@@ -46,12 +47,13 @@ function Item(props) {
                         {!!items.Expiration_jalali&&<><div className="Expiration_jalali"  data-testid="item-Expiration_jalali" >تاریخ انقضا : {items.Expiration_jalali}</div></>}
                         {!!items.count&&<><div data-testid="item-count"> موجودی : {items.count}</div></>}
                         {!!items.phone&&<><div data-testid="item-phone">شماره فروشگاه : {items.ItemShop?.phone}</div></>}
-                        <a href="#" className="btn btn-primary" >خرید</a>
+                        {props.userState !== "m" && <a href="#" className="btn btn-primary" >خرید</a>}
                     </div>
                 </div>
             </div>
         </div>
-
+        </div>
+        </div>
 
     )
 }
