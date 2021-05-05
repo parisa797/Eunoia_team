@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Shop.css';
 import ShopSideBar from './ShopSideBar';
 import ReactStars from "react-rating-stars-component";
@@ -19,6 +19,7 @@ function Shop(props) {
     const [rateID, setRateId] = useState(null)
     // const [triggerReload, setTriggerReload] = useState(false)
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
+    let commentsRef = useRef();
 
     useEffect(() => {
         console.log(props.userState)
@@ -133,6 +134,13 @@ function Shop(props) {
         document.getElementById("shop-search-dropdown").classList.toggle("show");
     }
 
+    function scrollToComments(){
+        window.scrollTo({
+            behavior: "smooth",
+            top: commentsRef.current.offsetTop
+          });
+    }
+
     return (
         <div className="shop-page">
             <ShopSideBar />
@@ -151,7 +159,7 @@ function Shop(props) {
                                     <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
-                                 <><p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {Math.round(shopInfo.rate_value * 10) / 10}  </p>
+                            <> <p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {shopInfo.rate_value?Math.round(shopInfo.rate_value * 10) / 10 :0} </p>
                                     {!!shopInfo.rate_value && <ReactStars
                                         edit={props.userState!=="u"}
                                         value={Math.round(shopInfo.rate_value)}
@@ -174,7 +182,7 @@ function Shop(props) {
                                     />}
                                     <p data-testid={"shop-rate-count"}>‌({shopInfo.rate_count})</p>
                                 </>
-                                <p className="comment-info" data-testid={"shop-comment-count"}>نظرات: {shopInfo.comment_count} </p>
+                                <p className="comment-info" onClick={scrollToComments} data-testid={"shop-comment-count"}>نظرات: {shopInfo.comment_count} </p>
                             </div>
                             <div className="options">
                                 {shopInfo.online ? <p style={{ color: "green" }} data-testid={"shop-online"}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red" }}>امکان خرید آنلاین ندارد</p>}
@@ -284,9 +292,9 @@ function Shop(props) {
                             </div>
                         </div>
                     </div></>}
-                <h4 className="header"><span className="header-span">نظرات</span></h4>
+                <h4 className="header" ref={commentsRef}><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">
-                    <ShopComments shopID={shopID}/>
+                    <ShopComments shopID={shopID} userState={props.userState}/>
                 </div>
 
             </div>

@@ -6,6 +6,8 @@ import { Toast } from "react-bootstrap";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import deleteItem from './DeleteItem';
 import DeleteItem from "./DeleteItem";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 
 function EditItem(props) {
     const [profile, setProfile] = useState({});
@@ -394,6 +396,7 @@ function EditItem(props) {
                     <h4>اطلاعات کالا</h4>
                     <div className="delete-item btn" onClick={() => props.showDeleteItemModal(profile.id,profile.name)} data-testid="edit-shop-delete-button" ><DeleteForeverIcon /></div>
                     <DeleteItem url={"/store/"+shopID} showDeleteModal={props.deleteItemModal} setShowDeleteModal={props.setDeleteItemModal} shopID={shopID} setTriggerReload={props.setTriggerReload}  triggerReload={props.triggerReload} />
+                    <a href={"/store/" + shopID}>بازگشت به فروشگاه<ArrowBackIosIcon /></a>
                 </div>
                 <EditItemPhoto pic={proPic} setPic={setProPic} newPicInfo={newPicInfo} setNewPicInfo={setNewPicInfo} />
                 <form>
