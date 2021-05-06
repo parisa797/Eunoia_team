@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import EditItemPhoto from './EditItemPhoto';
 import { Toast } from "react-bootstrap";
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import deleteItem from './DeleteItem';
 import DeleteItem from "./DeleteItem";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
@@ -66,10 +65,8 @@ function EditItem(props) {
             window.location.replace("/store/" + shopID);
             return;
         }
-        //fetch all shops of this user, if he's not the owner of the shop with the url's shopID, go back to shop
+        //fetch item info for the owner
         let prof = {};
-        console.log(itemID)
-        console.log(shopID)
         fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/" + itemID, {
             method: 'GET',
             headers: {
@@ -88,10 +85,6 @@ function EditItem(props) {
                 prof = res;
                 if (!prof.name)
                     prof.name = "نام کالا را وارد کنید...";
-                // if (!prof.category)
-                //     prof.category = "نام مدیر فروشگاه را وارد کنید...";
-                // if (!prof.manufacture_Date)
-                //     prof.manufacture_Date = "تاریخ تولید کالا را وارد کنید";
                 if (!prof.count)
                     prof.count = "تعداد موجودی کالا را وارد کنید...";
                 if (!prof.price) {
@@ -101,14 +94,10 @@ function EditItem(props) {
                 else prof.hasPrice = true;
                 if (!prof.discount)
                     prof.discount = "تخفیف کالا را وارد کنید...";
-                // if (!prof.Expiration_Date)
-                //     prof.Expiration_Date = "تاریخ انقضای کالا را وارد کنید...";
                 if (!prof.description)
                     prof.description = "توضیحات مربوط به کالا را وارد کنید...";
                 if (!prof.photo)
                     prof.photo = "/no-image-icon-0.jpg";
-                // if (!prof.onlineShop)
-                //     prof.onlineShop = false;
                 prof.category = categories[prof.category]
                 if(prof.Expiration_jalali)
                     prof.Expiration_Date = prof.Expiration_jalali.split("-")
@@ -128,7 +117,6 @@ function EditItem(props) {
                 setHasPrice(prof.hasPrice);
                 setDiscount(prof.discount);
                 setExpirationDate(prof.Expiration_Date);
-                // setOnline(prof.onlineShop)
                 setDescription(prof.description);
                 setProPic(prof.photo);
 
@@ -197,12 +185,12 @@ function EditItem(props) {
 
         let userError = "";
         if (val.match(/^\d+$/) === null) {
-            userError = "تنها عدد وارد کنید";
+            userError = "تنها عدد برای "+pos+" وارد کنید ";
         }
         else if (val.length !== true_length) {
             userError = pos + " باید " + true_length + "رقمی باشد ";
         }
-        else if (!arrayElementsNotEmpty(DateErr[whose].filter((e,i)=>i!=pos_num)) && ! /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|([1-2][0-9])|(0[1-9]))))$/.test(new_date.join("/"))) {
+        else if (!arrayElementsNotEmpty(DateErr[whose].filter((e,i)=>i!=pos_num)) && ( new_date[1]>"12" || ! /^[1-4]\d{3}\/((0[1-6]\/((3[0-1])|([1-2][0-9])|(0[1-9])))|((1[0-2]|(0[7-9]))\/(30|([1-2][0-9])|(0[1-9]))))$/.test(new_date.join("/")))) {
             changeDateErr("تاریخ وارد شده وجود ندارد", whose, 3);
         } else changeDateErr("", whose, 3);
 
@@ -283,8 +271,8 @@ function EditItem(props) {
     }
 
     async function submitChanges() {
-        await document.getElementById("prof-page-fname").blur()
-        await document.getElementById("prof-page-lname").blur()
+        await document.getElementById("prof-page-name").blur()
+        await document.getElementById("prof-page-category").blur()
         await document.getElementById("prof-page-count").blur()
         await document.getElementById("prof-page-price").blur()
         await document.getElementById("prof-page-discount").blur()
@@ -403,7 +391,7 @@ function EditItem(props) {
                     <div className="row">
                         <div className=" form-group input-container col-12 col-md-6">
                             <label>نام کالا</label>
-                            <input id="prof-page-fname" type="text" className="input" value={name} data-testid="edit-item-name" maxLength={20}
+                            <input id="prof-page-name" type="text" className="input" value={name} data-testid="edit-item-name" maxLength={20}
                                 onFocus={() => { if (name === "نام کالا را وارد کنید...") setName("") }}
                                 onChange={(e) => setName(e.target.value)}
                                 onBlur={(e) => { if (!e.target.value) setName(profile.name); }}
@@ -411,7 +399,7 @@ function EditItem(props) {
                         </div>
                         <div className=" form-group input-container col-12 col-md-6">
                             <label>دسته بندی</label>
-                            <input id="prof-page-lname" type="text" className="input dropdown-toggle" defaultValue={category} data-testid="edit-shop-category" placeholder={category}
+                            <input id="prof-page-category" type="text" className="input dropdown-toggle" defaultValue={category} data-testid="edit-item-category" placeholder={category}
                                 onFocus={(e) => document.getElementById("category-dropdown").classList.toggle("show")}
                             />
                             <div className="dropdown-menu" id="category-dropdown" style={{ right: 0, top: "calc(100% - 10px)" }}>
@@ -435,32 +423,32 @@ function EditItem(props) {
                             <label>تاریخ تولید کالا</label>
                             <div className="input-group" style={{ direction: "ltr", justifyContent: "space-evenly" }}>
 
-                                <input id="prof-page-manufacture-date-year" type="text" className="input" value={manufacture_Date[0]} data-testid="edit-manufacture-date-year" maxLength="4"
+                                <input id="prof-page-manufacture-date-year" type="text" className="input" value={manufacture_Date[0]} data-testid="edit-item-manufacture-date-year" maxLength="4"
                                     style={{ width: "calc( 33% - 0.3rem)" }}
                                     // onFocus={() => { if (manufacture_Date[0] !== "0") setManufactureDate("0") }}
                                     onChange={(e) => changeManufactureDate(e.target.value, 0)}
                                     onBlur={(e) => validate_Date(e.target.value, "سال", 0, "m", 4, 3000)}
                                 />
                             /
-                            <input id="prof-page-manufacture-date-month" type="text" className="input" value={manufacture_Date[1]} data-testid="edit-manufacture-date-month" maxLength="2"
+                            <input id="prof-page-manufacture-date-month" type="text" className="input" value={manufacture_Date[1]} data-testid="edit-item-manufacture-date-month" maxLength="2"
                                     style={{ width: "calc( 34% - 0.5rem)" }}
                                     // onFocus={() => { if (manufacture_Date[0] !== "0") setManufactureDate("0") }}
                                     onChange={(e) => changeManufactureDate(e.target.value, 1)}
                                     onBlur={(e) => validate_Date(e.target.value, "ماه", 1, "m", 2, 12)}
                                 />
                             /
-                            <input id="prof-page-manufacture-date-day" type="text" className="input" value={manufacture_Date[2]} data-testid="edit-manufacture-date-day" maxLength="2"
+                            <input id="prof-page-manufacture-date-day" type="text" className="input" value={manufacture_Date[2]} data-testid="edit-item-manufacture-date-day" maxLength="2"
                                     style={{ width: "calc( 33% - 0.3rem)" }}
                                     // onFocus={() => { if (manufacture_Date[0] !== "0") setManufactureDate("0") }}
                                     onChange={(e) => changeManufactureDate(e.target.value, 2)}
                                     onBlur={(e) => validate_Date(e.target.value, "روز", 2, "m", 2, 31)}
                                 />
                             </div>
-                            {!!DateErr.m && DateErr.m.map((err) => {
+                            {!!DateErr.m && DateErr.m.map((err,i) => {
                                 if (err)
-                                    return <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {err}</p>
+                                    return <p className="feedback-text" data-testid={"edit-item-manufacture-err"+i}> {err}</p>
                             })}
-                            {!!DateErr.a && !!DateErr.a[0] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err">{DateErr.a[0]}</p>}
+                            {!!DateErr.a && !!DateErr.a[0] && <p className="feedback-text" data-testid="edit-item-overall-date-err">{DateErr.a[0]}</p>}
                         </div>
 
 
@@ -499,16 +487,16 @@ function EditItem(props) {
                                     onBlur={(e) => validate_Date(e.target.value, "روز", 2, "e", 2)}
                                 />
                             </div>
-                            {!!DateErr.e && DateErr.e.map((err) => {
+                            {!!DateErr.e && DateErr.e.map((err,i) => {
                                 if (err)
-                                    return <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {err}</p>
+                                    return <p className="feedback-text" data-testid={"edit-item-expiration-err"+i}> {err}</p>
                             })}
                         </div>
 
 
                         <div className=" form-group input-container col-12">
                             <label>مشخصات کالا</label>
-                            <textarea id="prof-page-description" type="text" className="input" value={description} data-testid="edit-shop-description"
+                            <textarea id="prof-page-description" type="text" className="input" value={description} data-testid="edit-item-description"
                                 onFocus={() => { if (description === "توضیحات مربوط به کالا را وارد کنید...") setDescription("") }}
                                 onChange={(e) => setDescription(e.target.value)}
                                 onBlur={(e) => { if (!e.target.value) setDescription(profile.description) }}
@@ -523,36 +511,36 @@ function EditItem(props) {
 
                         <div className=" form-group input-container col-12 col-md-4">
                             <label>تعداد</label>
-                            <input id="prof-page-count" type="text" className="input" value={count} data-testid="edit-shop-count" maxLength={20}
+                            <input id="prof-page-count" type="text" className="input" value={count} data-testid="edit-item-count" maxLength={20}
                                 onFocus={() => { if (count === "تعداد موجودی کالا را وارد کنید...") setCount("") }}
                                 onChange={(e) => setCount(e.target.value)}
                                 onBlur={(e) => validate_Numerical_Fields(e.target.value, 0)}
                             />
-                            {OtherErrs[0] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[0]}</p>}
+                            {OtherErrs[0] && <p className="feedback-text" data-testid="edit-item-count-err"> {OtherErrs[0]}</p>}
                         </div>
 
                         <div className=" form-group input-container col-12 col-sm-6 col-md-4">
                             <label>قیمت کالا (به ریال)</label>
-                            <input id="prof-page-price" type="text" className="input" value={price} data-testid="edit-shop-price" maxLength={20}
+                            <input id="prof-page-price" type="text" className="input" value={price} data-testid="edit-item-price" maxLength={20}
                                 onFocus={() => { if (price === "قیمت کالا را وارد کنید...") setPrice("") }}
                                 onChange={(e) => setPrice(e.target.value)}
                                 onBlur={(e) => validate_Numerical_Fields(e.target.value, 1)}
                             />
-                            {OtherErrs[1] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[1]}</p>}
+                            {OtherErrs[1] && <p className="feedback-text" data-testid="edit-item-price-err"> {OtherErrs[1]}</p>}
                         </div>
                         <div className=" form-group input-container col-12 col-sm-6 col-md-4">
                             <label>درصد تخفیف</label>
-                            <input id="prof-page-discount" type="text" className="input" value={hasPrice ? discount : "ابتدا قیمت کالا را مشخص کنید"} data-testid="edit-shop-discount" maxLength={20} readOnly={!hasPrice}
+                            <input id="prof-page-discount" type="text" className="input" value={hasPrice ? discount : "ابتدا قیمت کالا را مشخص کنید"} data-testid="edit-item-discount" maxLength={20} readOnly={!hasPrice}
                                 onFocus={() => { if (discount === "تخفیف کالا را وارد کنید...") setDiscount("") }}
                                 onChange={(e) => setDiscount(e.target.value)}
                                 onBlur={(e) => {if(hasPrice)validate_Numerical_Fields(e.target.value, 2)}}
                             />
-                            {OtherErrs[2] && <p className="feedback-text" data-testid="edit-shop-Expiration_Date-err"> {OtherErrs[2]}</p>}
+                            {OtherErrs[2] && <p className="feedback-text" data-testid="edit-item-discount-err"> {OtherErrs[2]}</p>}
                         </div>
 
                         <div style={{ margin: "auto" }}>
-                            <div className="save btn" onClick={() => submitChanges()} data-testid="edit-shop-save-button" >ذخیره</div>
-                            <div className="cancel btn" onClick={() => cancelChanges()} data-testid="edit-shop-cancel-button" >لغو تغییرات</div>
+                            <div className="save btn" onClick={() => submitChanges()} data-testid="edit-item-save-button" >ذخیره</div>
+                            <div className="cancel btn" onClick={() => cancelChanges()} data-testid="edit-item-cancel-button" >لغو تغییرات</div>
                         </div>
 
                     </div>
