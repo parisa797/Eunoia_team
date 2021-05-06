@@ -1,19 +1,9 @@
-import React, { useRef, useState } from "react";
-// import { TextInput as RNTextInput } from "react-native";
-import { CommonActions } from "@react-navigation/native";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Container, Button, Box } from "../components";
-import { AuthNavigationProps } from "../components/Navigation";
-// import TextInput from "../components/Form/TextInput";
-import Checkbox from "../components/Form/Checkbox";
-import Footer from "./components/Footer";
-
 import { StatusBar } from "expo-status-bar";
+import { enableExpoCliLogging } from "expo/build/logs/Logs";
+import React, { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
-import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from "react-native-flash-message";
+// import FlashMessage from "react-native-flash-message";
+// import { showMessage, hideMessage } from "react-native-flash-message";
 import {
   StyleSheet,
   Text,
@@ -24,80 +14,74 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  ToastAndroid,
 } from "react-native";
-// import { useSelector, useDispatch } from "react-redux";
-// const LoginSchema = Yup.object().shape({
-//   email: Yup.string().email("Invalid email").required("Required"),
-//   password: Yup.string()
-//     .min(2, "بسیار کوتاهه! دوباره تلاش کن")
-//     .max(50, "خیلی طولانیه! دوباره تلاش کن")
-//     .required("Required"),
-// });
 
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
-const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
 
-  // const count = useSelector((state) => state.counter.value);
-  // const count = useSelector((state) => state.isLoggedin.value);
-  // console.log(count);
-
-  // const dispatch = useDispatch();
-
   const HandleLogin = (email, pass) => {
-    // const dispatch = useDispatch();
-    console.log("in handle login");
-    console.log(email);
-    // console.log(dispatch(increment()));
-    // if (email == undefined && pass == undefined) {
+    Keyboard.dismiss();
+
     if (email.length == 0 && pass.length == 0) {
-      showMessage({
-        message: "لطفا اطلاعات کاربری خود را وارد کنید.",
-        type: "warning",
-        backgroundColor: "#f1f1f2", // background color
-        color: "#000", // text color
-        statusBarHeight: "8",
-        titleStyle: {
-          fontSize: 15,
-        },
-      });
+      // showMessage({
+      //   message: "لطفا اطلاعات کاربری خود را وارد کنید.",
+      //   type: "warning",
+      //   backgroundColor: "#f1f1f2", // background color
+      //   color: "#000", // text color
+      //   statusBarHeight: "8",
+      //   titleStyle: {
+      //     fontSize: 15,
+      //   },
+      // });
+      // console.log("enter info");
+      ToastAndroid.show(
+        "لطفا اطلاعات کاربری خود را وارد کنید.",
+        ToastAndroid.SHORT
+      );
     } else {
       if (email.length == 0) {
         // alert("Please enter your email");
-        showMessage({
-          message: "لطفا ایمیل خود را وارد کنید.",
-          type: "warning",
-          backgroundColor: "#f1f1f2", // background color
-          color: "#000", // text color
-          statusBarHeight: "8",
-          titleStyle: {
-            fontSize: 15,
-          },
-        });
+        // showMessage({
+        //   message: "لطفا ایمیل خود را وارد کنید.",
+        //   type: "warning",
+        //   backgroundColor: "#f1f1f2", // background color
+        //   color: "#000", // text color
+        //   statusBarHeight: "8",
+        //   titleStyle: {
+        //     fontSize: 15,
+        //   },
+        // });
+        // console.log("enter email");
+        ToastAndroid.show("لطفا ایمیل خود را وارد کنید.", ToastAndroid.SHORT);
         // jest.spyOn(Alert, "alert");
       } else {
         if (pass.length == 0) {
           // alert("Please enter your password");
-          showMessage({
-            message: "لطفا پسورد خود را وارد کنید.",
-            type: "warning",
-            backgroundColor: "#f1f1f2", // background color
-            color: "#000", // text color
-            statusBarHeight: "8",
-            titleStyle: {
-              fontSize: 15,
-            },
-          });
+          // showMessage({
+          //   message: "لطفا پسورد خود را وارد کنید.",
+          //   type: "warning",
+          //   backgroundColor: "#f1f1f2", // background color
+          //   color: "#000", // text color
+          //   statusBarHeight: "8",
+          //   titleStyle: {
+          //     fontSize: 15,
+          //   },
+          // });
+          // console.log("enter pass");
+          ToastAndroid.show("لطفا پسورد خود را وارد کنید.", ToastAndroid.SHORT);
         } else {
           LoginFetch(email, pass);
         }
       }
     }
   };
+
   const LoginFetch = (email, pass) => {
     const requestOptions = {
       method: "POST",
@@ -116,28 +100,44 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
       .then((response) => {
         console.log(response);
         console.log(response.status);
-        if (response.status == 200) {
-          alert("You've logged in successfully");
-        } else alert("Incorrect email or password");
+        // if (response.status == 200) {
+        //   alert("You've logged in successfully");
+        // } else alert("Incorrect email or password");
 
         return response.json();
       })
       .then(async (result) => {
         console.log("hi", result);
-        if (result.key != undefined) {
+        // if (result.key != undefined) {
+        //   save("token", result.key);
+        //   navigation.navigate("Home");
+        // }
+        var keys = Object.keys(result);
+        if (keys.some((x) => x == "non_field_errors")) {
+          if (result["non_field_errors"].includes("E-mail is not verified."))
+            ToastAndroid.show(
+              "ایمیل خود را تائید نکرده اید. لطفا برای ورود، پس از تائید ایمیل دوباره مراجعه کنید.",
+              ToastAndroid.SHORT
+            );
+          if (
+            result["non_field_errors"].includes(
+              "Unable to log in with provided credentials."
+            )
+          )
+            ToastAndroid.show(
+              "ایمیل یا رمزعبور خود را به درستی وارد نکرده اید. لطفا مجددا تلاش کنید.",
+              ToastAndroid.SHORT
+            );
+        }
+        if (keys.some((x) => x == "key")) {
           save("token", result.key);
-          navigation.dispatch(
-            CommonActions.reset({
-              index: 0,
-              routes: [{ name: "Home" }],
-            })
-          );
+          navigation.navigate("Home");
         }
       })
       .catch((error) => console.log("error", error));
   };
   const pressSignUp = () => {
-    navigation.navigate("SignUp"); //this line
+    navigation.navigate("Signup"); //this line
     //navigation.push("signup")
   };
 
@@ -192,7 +192,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           ثبت نام
         </Text>
 
-        <FlashMessage position="top" />
+        {/* <FlashMessage position="top" /> */}
       </View>
     </TouchableWithoutFeedback>
   );
