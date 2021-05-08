@@ -1,19 +1,11 @@
 import React, { useRef, useState } from "react";
-// import { TextInput as RNTextInput } from "react-native";
-import { CommonActions } from "@react-navigation/native";
-import { BorderlessButton } from "react-native-gesture-handler";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Container, Button, Box } from "../components";
-import { AuthNavigationProps } from "../components/Navigation";
-// import TextInput from "../components/Form/TextInput";
-import Checkbox from "../components/Form/Checkbox";
-import Footer from "./components/Footer";
 
 import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
-import FlashMessage from "react-native-flash-message";
-import { showMessage, hideMessage } from "react-native-flash-message";
+// import FlashMessage from "react-native-flash-message";
+// import { showMessage, hideMessage } from "react-native-flash-message";
+// import Snackbar from "react-native-snackbar";
+import SnackBar from "react-native-snackbar-component";
 import {
   StyleSheet,
   Text,
@@ -24,16 +16,17 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  // ToastAndroid,
 } from "react-native";
 
-const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
+const SignUp = ({ navigation }) => {
   const [user, setUsername] = useState("");
   const [pass, setPassword] = useState("");
   const [confpass, setconferm_Password] = useState("");
   const [eml, setemail] = useState("");
 
-  const password = useRef<RNTextInput>(null);
-  const confirmPassword = useRef<RNTextInput>(null);
+  //   const password = useRef < RNTextInput > null;
+  //   const confirmPassword = useRef < RNTextInput > null;
 
   const pressLogin = () => {
     console.log("im in kuft method");
@@ -59,16 +52,29 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
       pass.length == 0 ||
       confpass.lengh == 0
     ) {
-      showMessage({
-        message: "لطفا اطلاعات کاربری خود را کامل وارد کنید.",
-        type: "warning",
-        backgroundColor: "#f1f1f2",
-        color: "#000",
-        statusBarHeight: "8",
-        titleStyle: {
-          fontSize: 15,
-        },
-      });
+      // ToastAndroid.show("A pikachu appeared nearby !", ToastAndroid.SHORT);
+      // ToastAndroid.show("appeared nearby !", ToastAndroid.SHORT);
+
+      //   showMessage({
+      //     message: "لطفا اطلاعات کاربری خود را کامل وارد کنید.",
+      //     type: "warning",
+      //     backgroundColor: "#f1f1f2",
+      //     color: "#000",
+      //     statusBarHeight: "8",
+      //     titleStyle: {
+      //       fontSize: 15,
+      //     },
+      //   });
+
+      // <SnackBar
+      //   visible={true}
+      //   textMessage="Hello There!"
+      //   actionHandler={() => {
+      //     console.log("snackbar button clicked!");
+      //   }}
+      //   actionText="let's go"
+      // />
+      console.log("enter info");
     } else {
       const requestOptions = {
         method: "POST",
@@ -125,7 +131,7 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
       }}
     >
       <View style={styles.container}>
-        {/* <Image style={styles.image} source={require("./assets/signup.png")}/> */}
+        <Image style={styles.image} source={require("../assets/signup.png")} />
 
         <View style={styles.inputView}>
           <TextInput
@@ -137,6 +143,12 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
             testID={"user_check"}
             onChangeText={(user) => setUsername(user)}
             onBlur={() => {
+              // if (user == undefined)
+              //   Snackbar.show({
+              //     text: "Hello world",
+              //     duration: Snackbar.LENGTH_SHORT,
+              //   });
+
               const v = validateUser(user);
               console.log(v);
               if (v == false)
@@ -196,8 +208,14 @@ const SignUp = ({ navigation }: AuthNavigationProps<"SignUp">) => {
         >
           <Text style={styles.SignUpText}>ثبت نام</Text>
         </TouchableOpacity>
-        <Text style={{ fontSize: 20 }}>حساب کاربری دارید؟</Text>
-        <Text style={{ color: "#b31414", fontSize: 20 }} onPress={pressLogin}>
+
+        <Text
+          style={{ color: "#b31414", fontSize: 20, marginTop: -15 }}
+          onPress={pressLogin}
+        >
+          <Text style={{ fontSize: 20, color: "black" }}>
+            حساب کاربری دارید؟
+          </Text>
           ورود
         </Text>
       </View>
@@ -218,6 +236,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     textAlign: "center",
+    marginTop: -10,
   },
   // downpage: {
   //   marginBottom: 40,
@@ -237,10 +256,11 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     fontSize: 20,
   },
-  // image:{
-  // width: "90%",
-  // height:"50%",
-  // },
+  image: {
+    width: "80%",
+    height: "50%",
+    marginTop: -35,
+  },
 
   SignUpBtn: {
     width: 90,
@@ -248,7 +268,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 20,
     backgroundColor: "#b31414",
   },
