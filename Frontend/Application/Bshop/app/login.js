@@ -158,6 +158,8 @@ const Login = ({ navigation }) => {
           <TextInput
             // data-testID="usernameInput"
             style={styles.TextInput}
+            testID={"email_check"}
+            value={email}
             placeholder="ایمیل"
             placeholderTextColor="#000"
             onChangeText={(email) => setEmail(email)}
@@ -166,6 +168,8 @@ const Login = ({ navigation }) => {
         <View style={styles.inputView}>
           <TextInput
             style={styles.TextInput}
+            testID={"pass_check"}
+            value={pass}
             placeholder="رمز عبور"
             placeholderTextColor="#000"
             secureTextEntry={true}
