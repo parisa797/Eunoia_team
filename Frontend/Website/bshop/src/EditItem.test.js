@@ -67,13 +67,13 @@ test("edit item page", async () => {
         container.querySelector('[data-testid="edit-item-manufacture-date-day"]').getAttribute('value')
     ).toEqual("31");
     expect(
-        container.querySelector('[data-testid="edit-expiration-date-year"]').getAttribute('value')
+        container.querySelector('[data-testid="edit-item-expiration-date-year"]').getAttribute('value')
     ).toEqual("1400");
     expect(
-        container.querySelector('[data-testid="edit-expiration-date-month"]').getAttribute('value')
+        container.querySelector('[data-testid="edit-item-expiration-date-month"]').getAttribute('value')
     ).toEqual("03");
     expect(
-        container.querySelector('[data-testid="edit-expiration-date-day"]').getAttribute('value')
+        container.querySelector('[data-testid="edit-item-expiration-date-day"]').getAttribute('value')
     ).toEqual("09");
     expect(
         container.querySelector('[data-testid="edit-item-description"]').textContent
@@ -684,9 +684,8 @@ test("manufacture date input in all possible ways", async () => {
         await fireEvent.change(month, { target: { value: "30" } });
         expect(month).toHaveValue("30");
         await month.blur();
-        expect(page.queryByTestId("edit-item-manufacture-err1")).toBeNull();
-        // expect(page.queryByTestId("edit-item-manufacture-err3")).not.toBeNull();
-        // expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+        expect(page.queryByTestId("edit-item-manufacture-err3")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
 
         await month.focus();
         await fireEvent.change(month, { target: { value: '05' } });
@@ -721,6 +720,13 @@ test("manufacture date input in all possible ways", async () => {
         expect(page.queryByTestId("edit-item-manufacture-err2")).toHaveTextContent("تنها عدد برای روز وارد کنید");
 
         await day.focus();
+        await fireEvent.change(day, { target: { value: '-1' } });
+        await day.blur();
+        expect(day).toHaveValue("-1");
+        expect(page.queryByTestId("edit-item-manufacture-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-manufacture-err2")).toHaveTextContent("تنها عدد برای روز وارد کنید");
+
+        await day.focus();
         await fireEvent.change(day, { target: { value: '@#$24' } });
         expect(day).toHaveValue("@#$24");
         await day.blur();
@@ -745,8 +751,6 @@ test("manufacture date input in all possible ways", async () => {
         await fireEvent.change(day, { target: { value: "40" } });
         expect(day).toHaveValue("40");
         await day.blur();
-        expect(page.queryByTestId("edit-item-manufacture-err2")).toBeNull();
-        // expect(page.queryByTestId("edit-item-manufacture-err3")).not.toBeNull();
         expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
 
         await day.focus();
@@ -770,13 +774,352 @@ test("manufacture date input in all possible ways", async () => {
         expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
 
         await month.focus();
-        await fireEvent.change(month, { target: { value: '11' } });
+        await fireEvent.change(month, { target: { value: '12' } });
+        await month.blur();
+        expect(page.queryByTestId("edit-item-manufacture-err0")).toBeNull()
+        expect(page.queryByTestId("edit-item-manufacture-err1")).toBeNull()
+        expect(page.queryByTestId("edit-item-manufacture-err2")).toBeNull()
+        expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '13' } });
+        await month.blur();
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '01' } });
+        await day.blur();
+        expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '31' } });
         await month.blur();
         expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+    })
+});
+
+test("expiration date input in all possible ways", async () => {
+    const item = {
+        price: 200000,
+        discount: 0,
+        photo: "/sth.png",
+        Expiration_jalali: "1400-02-31",
+        manufacture_jalali: "1400-02-29",
+        category: 'Dairy'
+    };
+    jest.spyOn(global, "fetch").mockImplementation(() =>
+        Promise.resolve({
+            status: 200,
+            json: () => item
+        })
+    );
+    var page;
+    var year;
+    var month;
+    var day;
+    await act(async () => {
+        page = await render(<EditItem deleteItemModal={{ show: false }} />);
+        year = await page.getByTestId("edit-item-expiration-date-year");
+        month = await page.getByTestId("edit-item-expiration-date-month");
+        day = await page.getByTestId("edit-item-expiration-date-day");
+    });
+    expect(year).toHaveValue("1400");
+    expect(month).toHaveValue("02");
+    expect(day).toHaveValue("31");
+    for(let i in [...Array(4).keys()])
+    {
+        expect(page.queryByTestId("edit-item-expiration-err"+i)).toBeNull();
+    }
+
+    await act(async () => {
+        //year
+        await year.focus();
+        expect(year).toHaveValue("1400");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: '1401' } });
+        await year.blur();
+        expect(year).toHaveValue("1401");
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull();
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: '' } });
+        await year.blur();
+        expect(year).toHaveValue("1400");
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull();
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: 'من' } });
+        expect(year).toHaveValue("من");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toHaveTextContent("تنها عدد برای سال وارد کنید");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: '@#$24' } });
+        expect(year).toHaveValue("@#$24");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toHaveTextContent("تنها عدد برای سال وارد کنید");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: 140 } });
+        expect(year).toHaveValue("140");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toHaveTextContent("سال باید 4رقمی باشد");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: 14000 } });
+        expect(year).toHaveValue("14000");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toHaveTextContent("سال باید 4رقمی باشد");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: "11" } });
+        expect(year).toHaveValue("11");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toHaveTextContent("سال باید 4رقمی باشد");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: "0000" } });
+        expect(year).toHaveValue("0000");
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await year.focus();
+        await fireEvent.change(year, { target: { value: '1401' } });
+        await year.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toBeNull();
+
+        //month
+        await month.focus();
+        expect(month).toHaveValue("02");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '12' } });
+        await month.blur();
+        expect(month).toHaveValue("12");
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull();
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '' } });
+        await month.blur();
+        expect(month).toHaveValue("02");
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull();
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: 'من' } });
+        await month.blur();
+        expect(month).toHaveValue("من");
+        expect(page.queryByTestId("edit-item-expiration-err1")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toHaveTextContent("تنها عدد برای ماه وارد کنید");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '@#$24' } });
+        expect(month).toHaveValue("@#$24");
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err1")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toHaveTextContent("تنها عدد برای ماه وارد کنید");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: 140 } });
+        expect(month).toHaveValue("140");
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err1")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toHaveTextContent("ماه باید 2رقمی باشد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: "1" } });
+        expect(month).toHaveValue("1");
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err1")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toHaveTextContent("ماه باید 2رقمی باشد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: "30" } });
+        expect(month).toHaveValue("30");
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '05' } });
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toBeNull();
+
+
+        //day
+        await day.focus();
+        expect(day).toHaveValue("31");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '12' } });
+        await day.blur();
+        expect(day).toHaveValue("12");
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull();
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '' } });
+        await day.blur();
+        expect(day).toHaveValue("31");
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull();
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: 'من' } });
+        await day.blur();
+        expect(day).toHaveValue("من");
+        expect(page.queryByTestId("edit-item-expiration-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toHaveTextContent("تنها عدد برای روز وارد کنید");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '-1' } });
+        await day.blur();
+        expect(day).toHaveValue("-1");
+        expect(page.queryByTestId("edit-item-expiration-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toHaveTextContent("تنها عدد برای روز وارد کنید");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '@#$24' } });
+        expect(day).toHaveValue("@#$24");
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toHaveTextContent("تنها عدد برای روز وارد کنید");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: 140 } });
+        expect(day).toHaveValue("140");
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toHaveTextContent("روز باید 2رقمی باشد");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: "1" } });
+        expect(day).toHaveValue("1");
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err2")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toHaveTextContent("روز باید 2رقمی باشد");
+
+        await day.focus();
+        await fireEvent.change(day, { target: { value: "40" } });
+        expect(day).toHaveValue("40");
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
 
         await day.focus();
         await fireEvent.change(day, { target: { value: '30' } });
         await day.blur();
-        expect(page.queryByTestId("edit-item-manufacture-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toBeNull();
+
+        //manufacture date as whole
+        await year.focus();
+        await fireEvent.change(year, { target: { value: '1400' } });
+        await year.blur();
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '07' } });
+        await month.blur();
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '31' } });
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '12' } });
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err0")).toBeNull()
+        expect(page.queryByTestId("edit-item-expiration-err1")).toBeNull()
+        expect(page.queryByTestId("edit-item-expiration-err2")).toBeNull()
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '13' } });
+        await month.blur();
+        await day.focus();
+        await fireEvent.change(day, { target: { value: '01' } });
+        await day.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
+
+        await month.focus();
+        await fireEvent.change(month, { target: { value: '31' } });
+        await month.blur();
+        expect(page.queryByTestId("edit-item-expiration-err3")).toHaveTextContent("تاریخ وارد شده وجود ندارد");
     })
 });
+
+
+test("expiration date should be after manufacture date", async () => {
+    const item = {
+        price: 200000,
+        discount: 0,
+        photo: "/sth.png",
+        Expiration_jalali: "1400-02-30",
+        manufacture_jalali: "1400-02-29",
+        category: 'Dairy'
+    };
+    jest.spyOn(global, "fetch").mockImplementation(() =>
+        Promise.resolve({
+            status: 200,
+            json: () => item
+        })
+    );
+    var page;
+    var man_year;
+    var man_month;
+    var man_day;
+    var exp_year;
+    var exp_month;
+    var exp_day;
+    await act(async () => {
+        page = await render(<EditItem deleteItemModal={{ show: false }} />);
+        man_year = await page.getByTestId("edit-item-manufacture-date-year");
+        man_month = await page.getByTestId("edit-item-manufacture-date-month");
+        man_day = await page.getByTestId("edit-item-manufacture-date-day");
+        exp_year = await page.getByTestId("edit-item-expiration-date-year");
+        exp_month = await page.getByTestId("edit-item-expiration-date-month");
+        exp_day = await page.getByTestId("edit-item-expiration-date-day");
+    });
+
+    await act(async () => {
+        //manufacture year after expriration
+        await man_year.focus();
+        await fireEvent.change(man_year, { target: { value: '1401' } });
+        await man_year.blur();
+
+        await exp_year.focus();
+        await fireEvent.change(exp_year, { target: { value: '1400' } });
+        await exp_year.blur();
+        expect(page.queryByTestId("edit-item-overall-date-err")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-overall-date-err")).toHaveTextContent("تاریخ انقضا باید پس از تاریخ تولید باشد");
+
+        //manufacture month after expiration
+        await man_year.focus();
+        await fireEvent.change(man_year, { target: { value: '1400' } });
+        await man_year.blur();
+        await man_month.focus();
+        await fireEvent.change(man_month, { target: { value: '06' } });
+        await man_month.blur();
+        expect(page.queryByTestId("edit-item-overall-date-err")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-overall-date-err")).toHaveTextContent("تاریخ انقضا باید پس از تاریخ تولید باشد");
+
+        //manufacture day after expiration
+        await man_month.focus();
+        await fireEvent.change(man_month, { target: { value: '02' } });
+        await man_month.blur();
+        await man_day.focus();
+        await fireEvent.change(man_day, { target: { value: '31' } });
+        await man_day.blur();
+        expect(page.queryByTestId("edit-item-overall-date-err")).not.toBeNull();
+        expect(page.queryByTestId("edit-item-overall-date-err")).toHaveTextContent("تاریخ انقضا باید پس از تاریخ تولید باشد");
+    })
+});
+
