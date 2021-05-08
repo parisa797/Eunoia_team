@@ -20,10 +20,10 @@ const Welcome = ({ navigation }) => {
   return (
     <View>
       <Image style={styles.image} source={require("../assets/cart.png")} />
-      <Text style={styles.text1}>
+      <Text style={styles.text}>
         اگر قبلا ثبت نام کرده اید وارد حساب کاربری خود شوید.
         {"\n"}
-        در غیر اینصورت برای شروعی هیجان انگیز ثبت نام کنید.
+        در غیر اینصورت برای شروعی هیجان انگیز ثبت نام کنید
       </Text>
       <Text style={styles.text} onPress={pressLogin}>
         ورود به حساب کاربری

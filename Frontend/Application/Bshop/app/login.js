@@ -14,15 +14,20 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  ToastAndroid,
 } from "react-native";
+
+async function save(key, value) {
+  await SecureStore.setItemAsync(key, value);
+}
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
 
   const HandleLogin = (email, pass) => {
-    console.log("in handle login");
-    console.log(email);
+    Keyboard.dismiss();
+
     if (email.length == 0 && pass.length == 0) {
       // showMessage({
       //   message: "لطفا اطلاعات کاربری خود را وارد کنید.",
@@ -34,7 +39,11 @@ const Login = ({ navigation }) => {
       //     fontSize: 15,
       //   },
       // });
-      console.log("enter info");
+      // console.log("enter info");
+      ToastAndroid.show(
+        "لطفا اطلاعات کاربری خود را وارد کنید.",
+        ToastAndroid.SHORT
+      );
     } else {
       if (email.length == 0) {
         // alert("Please enter your email");
@@ -48,7 +57,8 @@ const Login = ({ navigation }) => {
         //     fontSize: 15,
         //   },
         // });
-        console.log("enter email");
+        // console.log("enter email");
+        ToastAndroid.show("لطفا ایمیل خود را وارد کنید.", ToastAndroid.SHORT);
         // jest.spyOn(Alert, "alert");
       } else {
         if (pass.length == 0) {
@@ -63,7 +73,8 @@ const Login = ({ navigation }) => {
           //     fontSize: 15,
           //   },
           // });
-          console.log("enter pass");
+          // console.log("enter pass");
+          ToastAndroid.show("لطفا پسورد خود را وارد کنید.", ToastAndroid.SHORT);
         } else {
           LoginFetch(email, pass);
         }
@@ -89,15 +100,36 @@ const Login = ({ navigation }) => {
       .then((response) => {
         console.log(response);
         console.log(response.status);
-        if (response.status == 200) {
-          alert("You've logged in successfully");
-        } else alert("Incorrect email or password");
+        // if (response.status == 200) {
+        //   alert("You've logged in successfully");
+        // } else alert("Incorrect email or password");
 
         return response.json();
       })
       .then(async (result) => {
         console.log("hi", result);
-        if (result.key != undefined) {
+        // if (result.key != undefined) {
+        //   save("token", result.key);
+        //   navigation.navigate("Home");
+        // }
+        var keys = Object.keys(result);
+        if (keys.some((x) => x == "non_field_errors")) {
+          if (result["non_field_errors"].includes("E-mail is not verified."))
+            ToastAndroid.show(
+              "ایمیل خود را تائید نکرده اید. لطفا برای ورود، پس از تائید ایمیل دوباره مراجعه کنید.",
+              ToastAndroid.SHORT
+            );
+          if (
+            result["non_field_errors"].includes(
+              "Unable to log in with provided credentials."
+            )
+          )
+            ToastAndroid.show(
+              "ایمیل یا رمزعبور خود را به درستی وارد نکرده اید. لطفا مجددا تلاش کنید.",
+              ToastAndroid.SHORT
+            );
+        }
+        if (keys.some((x) => x == "key")) {
           save("token", result.key);
           navigation.navigate("Home");
         }

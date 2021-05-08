@@ -29,10 +29,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Welcome from "./app/welcome";
 import Login from "./app/login";
 import SignUp from "./app/signup";
+
+// import { SnackbarProvider } from "notistack";
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
+    // <SnackbarProvider maxSnack={3}>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen
@@ -44,5 +47,6 @@ export default function App() {
         <Stack.Screen name="Signup" component={SignUp} />
       </Stack.Navigator>
     </NavigationContainer>
+    // </SnackbarProvider>
   );
 }
