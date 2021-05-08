@@ -16,7 +16,7 @@ function ShopComments(props) {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         // setLoading(true)
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/list/" + props.shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/" + props.shopID, {
             method: "GET",
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -24,7 +24,10 @@ function ShopComments(props) {
 
         }).then(res => {
             if (res.status === 200)
-                return res.json();
+                {
+                    console.log(res)
+                    return res.json();
+                }
             setLoading(false)
             return null;
         }).then(res => {
@@ -66,7 +69,7 @@ function ShopComments(props) {
             let fd = new FormData()
             fd.append("text", writtenComment);
             //fd.append("shop", props.shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/"+edittingID, {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+edittingID, {
                 method: "PUT",
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -84,7 +87,7 @@ function ShopComments(props) {
             let fd = new FormData()
             fd.append("text", writtenComment);
             fd.append("shop", props.shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/create/", {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {
                 method: "POST",
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -101,7 +104,7 @@ function ShopComments(props) {
     }
 
     const deleteComment=()=>{
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/"+deletingComment.id,{
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+deletingComment.id,{
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -139,13 +142,13 @@ function ShopComments(props) {
                 )
             })}
         </div>
-        {(props.userState === "l") && <div className="write-comment-container">
+        {(props.userState === "l") && <div className="write-comment-container" data-testid="write-comment">
             {edittingID && <div className="comment-editting-indicator" >
-                <p><CloseIcon onClick={stopEditting} />در حال ویرایش نظر...</p>
+                <p><div className="btn" onClick={stopEditting} data-testid="stop-editing-btn" style={{padding:0}}> <CloseIcon /></div>در حال ویرایش نظر...</p>
             </div>}
             <div className="write-comment">
-                <SendIcon onClick={SendComment} />
-                <textarea type="text" placeholder="نظر خود را بنویسید..." value={writtenComment} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setWrittenComment(e.target.value)}></textarea>
+                <div onClick={SendComment} data-testid="send-comment-button"><SendIcon /></div>
+                <textarea type="text" placeholder="نظر خود را بنویسید..." value={writtenComment} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setWrittenComment(e.target.value)} data-testid="write-comment-input" ></textarea>
             </div>
         </div>}</>}
         {deletingComment && <Modal show={deletingComment} onHide={() => setDeletingComment(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
