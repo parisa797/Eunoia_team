@@ -29,6 +29,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Welcome from "./app/welcome";
 import Login from "./app/login";
 import SignUp from "./app/signup";
+import Home from "./app/homepage";
+import ShopDetail from "./app/shopDetails";
 
 // import { SnackbarProvider } from "notistack";
 const Stack = createStackNavigator();
@@ -45,6 +47,8 @@ export default function App() {
         />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup" component={SignUp} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="ShopDetail" component={ShopDetail} />
       </Stack.Navigator>
     </NavigationContainer>
     // </SnackbarProvider>
