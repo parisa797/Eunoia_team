@@ -3,20 +3,21 @@ import { Link } from "react-router-dom";
 import logo from "./assets/logo.png";
 import { createStore } from "./api";
 import snack from "./libs/snack";
-import {isPhoneValid} from './libs/utils'
+import {isPhoneValid} from './libs/utils';
+import errorjson from './errorhandling';
 // import RegisterStore from './registerStore';
+import { useSnackbar } from 'notistack';
 
 const RegisterStore = () => {
-  const [values, setValues] = useState({
-    // email: "",
-    // password: "",
+  // const [values, setValues] = useState({
+    const { enqueueSnackbar } = useSnackbar();
+    const [values, setValues] = useState({
     storeName: "",
     src: "",
     ownerName: "",
     address: "",
     code: "",
     phone: "",
-    region:""
   });
   const handleChange = (n, v) => {
     setValues((prev) => ({
@@ -49,10 +50,10 @@ const RegisterStore = () => {
     fd.append("phone", values.phone);
     fd.append("region",values.region);
     //code bishtar az 4 ragham farz shode
-    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 && values.region.length<3 ) {
+    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
-        fetch("https://iust-bshop.herokuapp.com/users/profile", {
+        fetch("http://eunoia-bshop.ir:8000/users/profile", {
           method: "GET",
           headers: {
             Authorization: "Token " + localStorage.getItem("token"),
@@ -77,7 +78,7 @@ const RegisterStore = () => {
               },
               body: fd,
             };
-            fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
+            fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
               .then(async (response) => {
                 if (response.status === 200) {
                   localStorage.setItem("role", "seller");
@@ -88,7 +89,13 @@ const RegisterStore = () => {
                       }
                     })
                     .catch((e) => {
-                      console.log(e);
+                      const msgs = Object.values(e.response.data)
+                      console.log(e.response.data);
+                      // console.log(e);
+                      // snack.error("اشتباهی رخ داده است...");
+                      msgs.forEach(i => i.forEach(j => enqueueSnackbar(errorjson[j], { 
+                        variant: 'error',
+                    })))
                     });
                 }
               })
@@ -98,8 +105,13 @@ const RegisterStore = () => {
               });
           })
           .catch((e) => {
+            const msgs = Object.values(e.response.data)
+          console.log(e.response.data);
             console.log(e);
-            snack.error("اشتباهی رخ داده است...");
+            msgs.forEach(i => i.forEach(j => enqueueSnackbar(errorjson[j], { 
+              variant: 'error',
+          })))
+            // snack.error("اشتباهی رخ داده است...");
           });
       } else {
         createStore(fd)
@@ -109,13 +121,23 @@ const RegisterStore = () => {
             }
           })
           .catch((e) => {
-            console.log(e);
-            snack.error("اشتباهی رخ داده است...");
+            const msgs = Object.values(e.response.data)
+            console.log(e.response.data);
+            // console.log(e.response.);
+            // msgs.forEach(i => i.forEach(j => snack.error(errorjson[j])))
+            msgs.forEach(i => i.forEach(j => enqueueSnackbar(errorjson[j], { 
+              variant: 'error',
+          })))
+             console.log(msgs);
+            // snack.error("اشتباهی رخ داده است...");
           });
-      }
+        }
     } else {
       // inja bayad snack biad
-      snack.error('تمامی اطلاعات را به درستی وارد نمایید.')
+      // snack.error('تمامی اطلاعات را به درستی وارد نمایید.')
+      enqueueSnackbar("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.", { 
+        variant: 'error',
+      });
     }
   };
   return (
@@ -156,20 +178,6 @@ const RegisterStore = () => {
           required
           autofocus
         />
-        {/* <label for="inputEmail" className="sr-only">
-          ایمیل
-        </label>
-        <input
-          style={{ textAlign: "right", marginBottom: "10px" }}
-          type="email"
-          value={values.email}
-          onChange={(e) => handleChange("email", e.target.value)}
-          id="inputEmail"
-          className="form-control"
-          placeholder="ایمیل خود را وارد کنید"
-          required
-          autofocus
-        /> */}
         <label for="phone" className="sr-only">
           شماره موبایل
         </label>
@@ -185,19 +193,6 @@ const RegisterStore = () => {
           required
           autofocus
         />
-        {/* <label for="inputPassword" className="sr-only">
-          پسورد
-        </label>
-        <input
-          style={{ textAlign: "right", marginBottom: "10px" }}
-          type="password"
-          value={values.password}
-          onChange={(e) => handleChange("password", e.target.value)}
-          id="inputPassword"
-          className="form-control"
-          placeholder="پسورد خود را وارد کنید"
-          required
-        /> */}
         <label for="address" className="sr-only">
           آدرس
         </label>
@@ -255,6 +250,7 @@ const RegisterStore = () => {
           className="btn btn-lg btn-primary btn-block"
           type="submit"
           style={{backgroundColor: 'var(--primary-color)',border: "none"}}
+          data-testid="register-shop-button"
         >
           ورود
         </button>
