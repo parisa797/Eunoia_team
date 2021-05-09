@@ -16,6 +16,7 @@ const RegisterStore = () => {
     address: "",
     code: "",
     phone: "",
+    region:""
   });
   const handleChange = (n, v) => {
     setValues((prev) => ({
@@ -46,8 +47,9 @@ const RegisterStore = () => {
     fd.append("mantaghe", "12");
     fd.append("shomare_sabt", values.code);
     fd.append("phone", values.phone);
+    fd.append("region",values.region);
     //code bishtar az 4 ragham farz shode
-    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
+    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 && values.region.length<3 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
         fetch("https://iust-bshop.herokuapp.com/users/profile", {
@@ -207,6 +209,19 @@ const RegisterStore = () => {
           id="address"
           className="form-control"
           placeholder="آدرس خود را وارد کنید"
+          required
+        />
+        <label for="region" className="sr-only">
+          منطقه
+        </label>
+        <input
+        data-testid="register-shop-region"
+          style={{ textAlign: "right", marginBottom: "10px" }}
+          value={values.region}
+          onChange={(e) => handleChange("region", e.target.value)}
+          id="region"
+          className="form-control"
+          placeholder="منطقه خود را وارد کنید"
           required
         />
         <label for="code" className="sr-only">

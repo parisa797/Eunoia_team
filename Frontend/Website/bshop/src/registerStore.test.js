@@ -4,8 +4,6 @@ import { act } from "react-dom/test-utils";
 import RegisterStore from './registerStore';
 import '@testing-library/jest-dom';
 
-
-
 let container = null;
 beforeEach(() => {
   // setup a DOM element as a render target
@@ -31,7 +29,6 @@ test("register for store", async () => {
   await act(async () => {
     page = await render(<RegisterStore />);
   });
-
 });
 
 test("register shop storename ", async () => {
@@ -74,11 +71,6 @@ test("register shop username ", async () => {
     code: "123456",
     phone: "09122111111"
   };
-  // jest.spyOn(global, "fetch").mockImplementation(() =>
-  //     Promise.resolve({
-  //     json: () => Promise.resolve(RegisterStore)
-  //     })
-  // );
   var page;
   var username;
   await act(async () => {
@@ -106,11 +98,6 @@ test("register shop phone ", async () => {
     code: "123456",
     phone: "09122111111"
   };
-  // jest.spyOn(global, "fetch").mockImplementation(() =>
-  //     Promise.resolve({
-  //     json: () => Promise.resolve(RegisterStore)
-  //     })
-  // );
   var page;
   var phone;
   await act(async () => {
@@ -139,11 +126,6 @@ test("register shop code ", async () => {
     code: "123456",
     phone: "09122111111"
   };
-  // jest.spyOn(global, "fetch").mockImplementation(() =>
-  //     Promise.resolve({
-  //     json: () => Promise.resolve(RegisterStore)
-  //     })
-  // );
   var page;
   var code;
   await act(async () => {
@@ -161,3 +143,53 @@ test("register shop code ", async () => {
   })
 });
 
+test("register shop region ", async () => {
+  const Register = {
+    storeName: "هایپراستار",
+    ownerName: "setare",
+    address: "khonamon",
+    code: "123456",
+    phone: "09122111111",
+    region:"22"
+  };
+
+  var page;
+  var region;
+  await act(async () => {
+      page = await render(<RegisterStore />);
+      region = await page.getByTestId("register-shop-region");
+  });
+  await act(async () => {
+    await region.focus();
+    expect(region).toHaveValue("");
+    await fireEvent.change(region, { target: { value: '22' } });
+    expect(region).toHaveValue("22");
+    await fireEvent.change(region, { target: { value: '' } });
+    expect(region).toHaveValue('');
+  })
+});
+
+test("register shop address length ", async () => {
+  const Register = {
+    storeName: "هایپراستار",
+    ownerName: "setare",
+    address: "onja",
+    code: "123456",
+    phone: "09122111111"
+  };
+  var page;
+  var address;
+  await act(async () => {
+      page = await render(<RegisterStore />);
+      address = await page.getByTestId("register-shop-address");
+  });
+
+  await act(async () => {
+    await fireEvent.change(username, { target: { value: 'a' } });
+    expect(address).toHaveValue("a");
+    await btn.click();
+    expect(enqueueSnackbarMock).toBeCalledTimes(1);
+    expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
+
+  })
+});
