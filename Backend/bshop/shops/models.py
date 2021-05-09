@@ -55,3 +55,12 @@ class Rate(models.Model):
 
     def str(self):
         return self.shop
+
+class Board(models.Model):
+	image = models.ImageField(blank=True , upload_to='image/', null=True)
+	image_url = models.CharField(max_length = 500,blank=True, null=True)
+	user = models.ForeignKey(MyUser,related_name='shop_board_user',on_delete=models.CASCADE,blank=True)
+	shop = models.ForeignKey(Shop,related_name='shop_board_shop',on_delete=models.CASCADE,blank=True)
+
+	def str(self):
+		return self.image_url
