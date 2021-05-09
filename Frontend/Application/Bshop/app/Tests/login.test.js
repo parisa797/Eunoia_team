@@ -10,42 +10,8 @@ import {
   cleanup,
   waitFor,
 } from "react-native-testing-library";
-// import ReactDOM from "react-dom";
-// // import { TouchableOpacity } from "react-native";
-// import FlashMessage from "react-native-flash-message";
-// import { showMessage } from "react-native-flash-message";
-
-// global.fetch = jest.fn();
-
-// // mocking an API success response once
-// fetch.mockResponseIsSuccess = (body) => {
-// fetch.mockImplementationForOnce(() =>
-// Promise.resolve({ json: () => Promise.resolve(JSON.parse(body)) })
-// );
-// };
-
-// // mocking an API failure response for once
-// fetch.mockResponseIsFailure = (error) => {
-// fetch.mockImplementationForOnce(() => Promise.reject(error));
-// };
 
 describe("Login component be tested", () => {
-  // jest.mock(
-  //   "react-native/Libraries/Components/Touchable/TouchableOpacity.js",
-  //   () => {
-  //     const { TouchableHighlight } = require("react-native");
-  //     const MockTouchable = (props) => {
-  //       return <TouchableHighlight {...props} />;
-  //     };
-  //     MockTouchable.displayName = "TouchableOpacity";
-
-  //     return MockTouchable;
-  //   }
-  // );
-  // jest.mock(
-  //   "react-native/Libraries/Components/Touchable/TouchableOpacity",
-  //   () => "TouchableOpacity"
-  // );
   //snapshot test
   it("renders correctly", () => {
     const tree = renderer.create(<Login />).toJSON();

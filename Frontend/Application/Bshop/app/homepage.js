@@ -24,8 +24,8 @@ export default Home = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const loadProducts = useEffect(() => {
-    setError(null);
-    setIsRefreshing(true);
+    // setError(null);
+    // setIsRefreshing(true);
 
     var requestOptions = {
       method: "GET",
@@ -35,16 +35,16 @@ export default Home = ({ navigation }) => {
     fetch("http://iust-bshop.herokuapp.com/api/v1/shops/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        // setShops([]);
         setShops(result);
         console.log(result);
       })
       .catch((error) => {
-        setError(error.message);
+        // setError(error.message);
         console.log("error", error);
       });
-    setIsRefreshing(false);
-  }, [setIsLoading, setError]);
+    // setIsRefreshing(false);
+    // }, [setIsLoading, setError]);
+  }, []);
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.inputView}>
@@ -56,9 +56,10 @@ export default Home = ({ navigation }) => {
       </View>
 
       <FlatList
+        testID={"shops-list"}
         nestedScrollEnabled={true}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
+        // onRefresh={loadProducts}
+        // refreshing={isRefreshing}
         data={shops}
         keyExtractor={(item) => item.id.toString()}
         renderItem={(itemData) => (
@@ -68,6 +69,7 @@ export default Home = ({ navigation }) => {
             image={itemData.item.logo}
             rate_value={itemData.item.rate_value}
             online={itemData.item.online}
+            index={itemData.item.id}
             onSelect={() => {
               navigation.navigate("ShopDetail", itemData.item);
             }}
