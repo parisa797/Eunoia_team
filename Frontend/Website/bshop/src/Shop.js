@@ -9,6 +9,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
+import LocationOnIcon from '@material-ui/icons/LocationOn'
+
 
 function Shop(props) {
     const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
@@ -23,7 +25,7 @@ function Shop(props) {
 
     useEffect(() => {
         console.log(props.userState)
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -49,7 +51,7 @@ function Shop(props) {
     }, [])
 
     useEffect(() => {
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -66,7 +68,7 @@ function Shop(props) {
                 setShopInfo(d);
                 console.log(d)
             });
-        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
+        fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
             method: 'GET'
         }).then((res) => {
             if (res.status === 200) {
@@ -86,7 +88,7 @@ function Shop(props) {
         fd.append("rate", new_rating)
         if (!rated) {
             fd.append("shop", shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/create/", {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/create/", {
                 method: 'POST',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -110,7 +112,7 @@ function Shop(props) {
             })
         }
         else {
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/" + rateID, {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/" + rateID, {
                 method: 'PUT',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -195,7 +197,8 @@ function Shop(props) {
                             </div>}
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
-                                <a href="/">نمایش در نقشه</a>
+                                <p> (منطقه {shopInfo.mantaghe}) </p>
+                                <a href="/">نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
                             </div>}
                         </div>
                     </div>
