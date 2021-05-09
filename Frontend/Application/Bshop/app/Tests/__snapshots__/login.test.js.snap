@@ -124,6 +124,7 @@ exports[`Login component be tested renders correctly 1`] = `
         "width": "40%",
       }
     }
+    testID="login-button"
   >
     <Text
       style={

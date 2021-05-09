@@ -180,6 +180,7 @@ const Login = ({ navigation }) => {
         <Text style={styles.forgot_button}>Forgot Password?</Text>
         </TouchableOpacity> */}
         <TouchableOpacity
+          testID={"login-button"}
           style={styles.loginBtn}
           onPress={() => {
             // login();

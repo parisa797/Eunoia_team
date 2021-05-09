@@ -9,9 +9,7 @@ import {
   cleanup,
   waitFor,
 } from "react-native-testing-library";
-// import ReactDOM from "react-dom";
-// import { Alert } from "react-native";
-// import "jest-dom/extend-expect";
+import { ToastAndroid } from "react-native";
 
 global.fetch = jest.fn();
 
@@ -28,7 +26,7 @@ fetch.mockResponseIsFailure = (error) => {
 };
 
 describe("SignUp component be tested", () => {
-  // afterEach(cleanup);
+  afterEach(cleanup);
 
   it("renders correctly", () => {
     const tree = renderer.create(<SignUp />).toJSON();
@@ -75,53 +73,91 @@ describe("SignUp component be tested", () => {
     expect(getByTestId("confpass_check").props.value).toBe(confpass);
   });
 
-  //   it("check email validation", async () => {
-  //     const push = jest.fn();
-  //     const { getByTestId, getByPlaceholderText } = await render(
-  //       <SignUp navigation={{ push }} />
-  //     );
+  it("check invalid email", async () => {
+    const showMock = jest.fn();
+    jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
 
-  //     errorMessageText = "لطفا ایمیل خود را درست وارد کنید.";
-  //     Alert.alert = jest.fn().mockResolvedValue(errorMessageText);
-  //     // jest.spyOn(Alert, "alert");
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <SignUp navigation={{ push }} />
+    );
 
-  //     const emailvalidation = "phj.com";
-  //     await fireEvent.changeText(getByTestId("eml_check"), emailvalidation);
-  //     // expect(getByTestId("eml_check").props.value).toBe(emailvalidation);
-  //     // expect(Alert.alert).toHaveBeenCalledWith(errorMessageText);
-  //   });
+    const message = "لطفا یک ایمیل معتبر وارد کنید.";
+    var email = "higmail.com";
+    await fireEvent.changeText(getByTestId("eml_check"), email);
+    await fireEvent(getByTestId("eml_check"), "blur");
+    expect(showMock).toHaveBeenLastCalledWith(message, undefined);
 
-  //   it("check same pass and confpass", async () => {
-  //     const push = jest.fn();
-  //     const { getByTestId, getByPlaceholderText } = await render(
-  //       <SignUp navigation={{ push }} />
-  //     );
+    email = "hi@gmailcom";
+    await fireEvent.changeText(getByTestId("eml_check"), email);
+    await fireEvent(getByTestId("eml_check"), "blur");
+    expect(showMock).toHaveBeenLastCalledWith(message, undefined);
+  });
 
-  //     errorMessageText = "رمزعبورهای وارد شده باید با هم مطابقت داشته باشند.";
-  //     Alert.alert = jest.fn().mockResolvedValue(errorMessageText);
-  //     // jest.spyOn(Alert, "alert");
-  //     const pass = "13799731p";
-  //     await fireEvent.changeText(getByTestId("pass_check"), pass);
-  //     const samepass = "13799731pp";
-  //     await fireEvent.changeText(getByTestId("confpass_check"), samepass);
-  //     // expect(getByTestId("eml_check").props.value).toBe(emailvalidation);
-  //     // expect(Alert.alert).toHaveBeenCalledWith(errorMessageText);
-  //   });
+  it("check valid email, not to call toastAndroid", async () => {
+    const showMock = jest.fn();
+    jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <SignUp navigation={{ push }} />
+    );
 
-  //   it("check username has number and alphabet", async () => {
-  //     const push = jest.fn();
-  //     const { getByTestId, getByPlaceholderText } = await render(
-  //       <SignUp navigation={{ push }} />
-  //     );
+    var email = "hi@gmail.com";
+    await fireEvent.changeText(getByTestId("eml_check"), email);
+    await fireEvent(getByTestId("eml_check"), "blur");
+    expect(showMock).toHaveBeenCalledTimes(0);
+  });
 
-  //     errorMessageText =
-  //       "نام کاربری نمیتواند شامل ارقام باشد! لطفا از ترکیبی از حرف و عدد استفاده کنید.";
-  //     Alert.alert = jest.fn().mockResolvedValue(errorMessageText);
-  //     // jest.spyOn(Alert, "alert");
+  it("check numeric username", async () => {
+    const showMock = jest.fn();
+    jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <SignUp navigation={{ push }} />
+    );
 
-  //     const cheakboathuserform = "1254";
-  //     await fireEvent.changeText(getByTestId("user_check"), cheakboathuserform);
-  //     // expect(getByTestId("eml_check").props.value).toBe(emailvalidation);
-  //     // expect(Alert.alert).toHaveBeenCalledWith(errorMessageText);
-  //   });
+    const message =
+      "نام کاربری نمیتواند تنها شامل ارقام باشد! لطفا از ترکیبی از حرف و عدد استفاده کنید.";
+    var username = "1234";
+    await fireEvent.changeText(getByTestId("user_check"), username);
+    await fireEvent(getByTestId("user_check"), "blur");
+    expect(showMock).toHaveBeenLastCalledWith(message, undefined);
+  });
+
+  it("check empty username", async () => {
+    const showMock = jest.fn();
+    jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <SignUp navigation={{ push }} />
+    );
+
+    const message = "فیلد نام کاربری نمی تواند خالی باشد.";
+    var username = "";
+    await fireEvent.changeText(getByTestId("user_check"), username);
+    await fireEvent(getByTestId("user_check"), "blur");
+    expect(showMock).toHaveBeenLastCalledWith(message, undefined);
+  });
+
+  it("check whether pass1 == pass2", async () => {
+    const showMock = jest.fn();
+    jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <SignUp navigation={{ push }} />
+    );
+
+    const message = "رمزعبورهای وارد شده باید با هم مطابقت داشته باشند.";
+    var pass1 = "boredfromtest";
+    var pass2 = "boredfromtest";
+    await fireEvent.changeText(getByTestId("pass_check"), pass1);
+    await fireEvent.changeText(getByTestId("confpass_check"), pass2);
+    await fireEvent(getByTestId("confpass_check"), "blur");
+    expect(showMock).toHaveBeenCalledTimes(0);
+
+    pass2 = "boredfromtes";
+    await fireEvent.changeText(getByTestId("confpass_check"), pass2);
+    await fireEvent(getByTestId("confpass_check"), "blur");
+    expect(showMock).toHaveBeenLastCalledWith(message, undefined);
+  });
 });

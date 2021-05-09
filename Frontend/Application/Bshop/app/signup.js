@@ -71,26 +71,6 @@ const SignUp = ({ navigation }) => {
         "لطفا اطلاعات کاربری خود را کامل وارد کنید.",
         ToastAndroid.SHORT
       );
-
-      // showMessage({
-      //   message: "لطفا اطلاعات کاربری خود را کامل وارد کنید.",
-      //   type: "warning",
-      //   backgroundColor: "#f1f1f2",
-      //   color: "#000",
-      //   statusBarHeight: "8",
-      //   titleStyle: {
-      //     fontSize: 15,
-      //   },
-      // });
-
-      // <SnackBar
-      //   visible={true}
-      //   textMessage="Hello There!"
-      //   actionHandler={() => {
-      //     console.log("snackbar button clicked!");
-      //   }}
-      //   actionText="let's go"
-      // />
     } else {
       const requestOptions = {
         method: "POST",
@@ -120,22 +100,6 @@ const SignUp = ({ navigation }) => {
           var keys = Object.keys(result);
           console.log("keys are:", keys);
 
-          // if (keys.some((x) => x == "password1")) {
-          //   alert(
-          //     "توجه" +
-          //       "\n" +
-          //       "*رمز عبور باید شامل حداقل هشت کارکتر باشد." +
-          //       "*رمز عبور شما باید شامل اعداد و حروف باشد." +
-          //       "*رمز عبور باید پیچیده باشد.(لطفا از رمز عبور های رایج استفاده نکنید.)"
-          //   );
-          // } else {
-          //   if (keys.some((x) => x == "detail")) {
-          //     alert(
-          //       "ثبت نام شما با موفقیت انجام شد ! لطفا جهت ادامه و ورود ایمیل ارسالی را تایید کنید"
-          //     );
-          //     pressLogin();
-          //   }
-          // }
           if (keys.some((x) => x == "username")) {
             console.log("in include");
             if (
