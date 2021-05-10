@@ -60,6 +60,8 @@ afterEach(() => {
         var description;
         await act(async () => {
             page = await render(<Item />); 
+            await new Promise(resolve => setImmediate(resolve));
+
             description = await page.getByTestId("item");
         });
         expect(page.queryByTestId("item-name")).not.toBeNull();
@@ -97,6 +99,8 @@ afterEach(() => {
             var description;
             await act(async () => {
                 page = await render(<Item />); 
+                await new Promise(resolve => setImmediate(resolve));
+
                 description = await page.getByTestId("item");
             });
             expect(page.queryByTestId("item-description")).not.toBeNull();
@@ -132,6 +136,7 @@ afterEach(() => {
         var description;
         await act(async () => {
             page = await render(<Item />); 
+            await new Promise(resolve => setImmediate(resolve));
             description = await page.getByTestId("item");
         });
         expect(page.queryByTestId("item-manufacture_jalali")).toBeNull();
@@ -167,6 +172,7 @@ afterEach(() => {
         var page;
         await act(async () => {
             page = await render(<Item />); 
+            await new Promise(resolve => setImmediate(resolve));
 
         });
 
@@ -205,6 +211,8 @@ afterEach(() => {
             var description;
             await act(async () => {
                 page = await render(<Item />); 
+                await new Promise(resolve => setImmediate(resolve));
+
                 description = await page.getByTestId("item");
             });
             expect(page.queryByTestId("item-manufacture_jalali")).not.toBeNull();
