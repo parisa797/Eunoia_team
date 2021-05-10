@@ -66,7 +66,7 @@ const Login = ({ navigation }) => {
         password: pass,
       }),
     };
-    fetch("http://iust-bshop.herokuapp.com/rest-auth/login/", requestOptions)
+    fetch("http://eunoia-bshop.ir:8000/rest-auth/login/", requestOptions)
       .then((response) => {
         console.log(response);
         console.log(response.status);

@@ -32,7 +32,7 @@ export default Home = ({ navigation }) => {
       redirect: "follow",
     };
 
-    fetch("http://iust-bshop.herokuapp.com/api/v1/shops/", requestOptions)
+    fetch("http://eunoia-bshop.ir:8000/api/v1/shops/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setShops(result);

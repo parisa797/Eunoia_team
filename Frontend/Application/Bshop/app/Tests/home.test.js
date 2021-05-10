@@ -52,7 +52,7 @@ describe("Home page with shops be tested", () => {
       },
     ];
 
-    fetchMock.get("http://iust-bshop.herokuapp.com/api/v1/shops/", shops);
+    fetchMock.get("http://eunoia-bshop.ir:8000/api/v1/shops/", shops);
 
     const push = jest.fn();
     const { getByTestId, queryByTestId } = await render(
@@ -61,7 +61,7 @@ describe("Home page with shops be tested", () => {
     await new Promise((resolve) => setImmediate(resolve));
 
     expect(fetchMock).toHaveFetched(
-      "http://iust-bshop.herokuapp.com/api/v1/shops/",
+      "http://eunoia-bshop.ir:8000/api/v1/shops/",
       "get"
     );
     expect(getByTestId("shops-list").props.data.length).toBe(shops.length);

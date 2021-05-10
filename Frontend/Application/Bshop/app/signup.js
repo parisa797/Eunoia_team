@@ -88,7 +88,7 @@ const SignUp = ({ navigation }) => {
         }),
       };
       fetch(
-        "http://iust-bshop.herokuapp.com/rest-auth/registration/",
+        "http://eunoia-bshop.ir:8000/rest-auth/registration/",
         requestOptions
       )
         .then((response) => {
