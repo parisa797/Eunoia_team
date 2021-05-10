@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { loginUser } from "./api";
 import logo from "./assets/logo.png";
-import snack from "./libs/snack";
+// import snack from "./libs/snack";
+import { useSnackbar } from 'notistack';
 import { validateEmail } from "./libs/utils";
 import errorjson from './errorhandling'
 
 const Login = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -36,10 +37,14 @@ const Login = () => {
           console.log(e.response.data);
           const msgs = Object.values(e.response.data)
           // snack.error("اشتباهی رخ داده است...");
-          msgs.forEach(i => snack.error(errorjson[i]))
+          msgs.forEach(i => enqueueSnackbar(errorjson[i], { 
+            variant: 'error',
+        }))
         });
     } else {
-      snack.error("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.");
+      enqueueSnackbar("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.", { 
+        variant: 'error',
+    });
     }
   };
   return (
@@ -69,6 +74,7 @@ const Login = () => {
           پسورد
         </label>
         <input
+          data-testid="login-password"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="password"
           value={values.password}
@@ -84,6 +90,7 @@ const Login = () => {
         </label> */}
         </div>
         <button
+          data-testid="login-button"
           onClick={handleSubmit}
           className="btn btn-lg btn-primary btn-block"
           type="submit"
@@ -93,7 +100,7 @@ const Login = () => {
         </button>
         <p className="mt-5 mb-3 text-muted">
           اگر تا به الان اکانت نساخته اید!
-          <Link to="/register"> الان بسازید </Link>
+          <a href="/register"> الان بسازید </a>
         </p>
       </form>
     </div>

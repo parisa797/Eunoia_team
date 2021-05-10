@@ -31,18 +31,9 @@ class LoginTest(APITestCase):
         response=self.client.post("/rest-auth/login/",data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    # def test_login_with_varify_email(self):
-    #     self.user = MyUser.objects.create_user(username='testcase', email='email@tesr.com', password="strong_Pass")
-    #     self.token = Token.objects.create(user=self.user)
-    #     self.client.credentials(HTTP_AUTHORIZATION="Token "+ self.token.key)
-    #     data = {"username": "amyrose", "password": "googooly","email":"amy78rose@gmail.com"}
-    #     response=self.client.post("/rest-auth/login/",data)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-
 class LogoutTest(APITestCase):
     def test_logout(self):
         self.user=MyUser.objects.create_user(username='testcase',email='email@tesr.com',password="strong_Pass")
-        #credential=self.client.credentials(username="testcase",password="strong_Pass")
         self.token=Token.objects.create(user=self.user)
         data = {"username": "testcase", "password": "strong_Pass"}
         self.client.post("/rest-auth/login/",data)
@@ -70,7 +61,6 @@ class ProfileTest(APITestCase):
 
     def test_profile_detials(self):
         response=self.client.get(self.url)
-        #print(ProfileInfo.as_view()(response))
         self.assertEqual(response.data["user_name"],self.user.username)
         self.assertEqual(response.data["FirstName"], self.user.FirstName)
         self.assertEqual(response.data["LastName"], self.user.LastName)
@@ -100,8 +90,6 @@ class ProfileTest(APITestCase):
         with open(tmp_file.name, 'rb') as data:
             response = self.client.post('/users/profile/upload-file',
                                         {"image": data, "item": 1}, format='multipart')
-            #print(response.data,'data')
-            #print(tmp_file.name,"temp name")
             self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
             ##check on edit file
