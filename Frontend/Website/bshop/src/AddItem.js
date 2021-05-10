@@ -62,7 +62,7 @@ const AddItem = () => {
       fd.append('discount', values.discount)
       fd.append('category', values.category)
   
-        fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/", {
+        fetch("http://eunoia-bshop.ir:8000/shops/"+shopID+"/items/", {
           method: 'POST',
           headers: {
             "Authorization": "Token " + localStorage.getItem("token")
