@@ -45,10 +45,9 @@ const RegisterStore = () => {
     // theme is not selected!
     fd.append("online", true);
     fd.append("theme", 2);
-    fd.append("mantaghe", "12");
     fd.append("shomare_sabt", values.code);
     fd.append("phone", values.phone);
-    fd.append("region",values.region);
+    fd.append("mantaghe",values.region);
     //code bishtar az 4 ragham farz shode
     if (isPhoneValid(values.phone) && values.address.length > 6 && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {

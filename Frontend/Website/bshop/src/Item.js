@@ -94,7 +94,7 @@ function Item(props) {
   return (
     <div style={{ padding: "5vh 2vw" }}>
       <ShopSideBar />
-      <div className="page-contents">
+      <div className="page-contents" data-testid="item">
         <div className="item-page">
           <div className="sub-container">
             <div className="col-12 d-flex flex-wrap">
@@ -102,12 +102,12 @@ function Item(props) {
                 <img style={{ width: "110%" }} src={items.photo} alt="" />
               </div>
               <div className="lead text-right col-sm-12 col-md-6">
-                <h1 className="my-3">{items.name}</h1>
+                <h1 className="my-3" data-testid="item-name">{items.name}</h1>
                 <hr></hr>
                 {!!items.description && (
                   <>
                     <h3 className="text-right mb-3">ویژگی های کالا:</h3>
-                    <p className="lead text-right">{items.description}</p>
+                    <p className="lead text-right" data-testid="item-description">{items.description}</p>
                   </>
                 )}
                 {!!items.count && (
@@ -125,13 +125,13 @@ function Item(props) {
                 {!!items.manufacture_jalali && (
                   <div className="col-12 d-flex flex-justify-between p-0 my-2">
                     <div className="col-6 p-0 text-right">تاریخ تولید:</div>
-                    <div className="col-6 p-0 ">{items.manufacture_jalali}</div>
+                    <div className="col-6 p-0 " data-testid="item-manufacture_jalali">{items.manufacture_jalali}</div>
                   </div>
                 )}
                  {!!items.Expiration_jalali && (
                   <div className="col-12 d-flex flex-justify-between p-0 my-2">
                     <div className="col-6 p-0 text-right">تاریخ انقضا:</div>
-                    <div className="col-6 p-0 ">{items.Expiration_jalali}</div>
+                    <div className="col-6 p-0 " data-testid="item-Expiration_jalali">{items.Expiration_jalali}</div>
                   </div>
                 )}
 
