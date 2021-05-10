@@ -3,6 +3,8 @@ import './EditShop.css';
 import { useEffect, useState } from 'react';
 import EditShopLogo from './EditShopLogo';
 import { Modal, Toast } from "react-bootstrap";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+
 
 function EditShop(props) {
     const [profile, setProfile] = useState({});
@@ -37,7 +39,7 @@ function EditShop(props) {
         }
         //fetch all shops of this user, if he's not the owner of the shop with the url's shopID, go back to shop
         let prof = {};
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -199,7 +201,7 @@ function EditShop(props) {
             },
             body: fd,
         };
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/update/" + shopID, requestOptions)
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/update/" + shopID, requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {
@@ -217,7 +219,7 @@ function EditShop(props) {
     }
 
     const deleteShop = () => {
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/delete/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/delete/" + shopID, {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -247,7 +249,7 @@ function EditShop(props) {
                             <div className="row">
                                 <div className=" form-group input-container col-12 col-md-6">
                                     <label>عنوان</label>
-                                    <input id="prof-page-fname" type="text" className="input" value={title} data-testid="edit-shop-title" maxLength={20}
+                                    <input id="prof-page-fname" type="text" className="input" value={title} data-testid="edit-shop-title" maxLength={30}
                                         onFocus={() => { if (title === "عنوان فروشگاه را وارد کنید...") setTitle("") }}
                                         onChange={(e) => setTitle(e.target.value)}
                                         onBlur={(e) => { if (!e.target.value) setTitle(profile.title); }}
@@ -266,7 +268,7 @@ function EditShop(props) {
 
                                 <div className=" form-group input-container col-12 col-md-6">
                                     <label>نام مدیر</label>
-                                    <input id="prof-page-lname" type="text" className="input" value={manager} data-testid="edit-shop-manager" maxLength={20}
+                                    <input id="prof-page-lname" type="text" className="input" value={manager} data-testid="edit-shop-manager" maxLength={30}
                                         onFocus={() => { if (manager === "نام مدیر فروشگاه را وارد کنید...") setManager("") }}
                                         onChange={(e) => setManager(e.target.value)}
                                         onBlur={(e) => { if (!e.target.value) setManager(profile.manager) }}
@@ -294,7 +296,7 @@ function EditShop(props) {
 
                                 <div className=" form-group input-container col-6 col-md-3">
                                     <label>شهر</label>
-                                    <input id="prof-page-city" type="text" className="input" defaultValue={"تهران"} data-testid="edit-shop-city" maxLength={20}
+                                    <input id="prof-page-city" type="text" className="input" defaultValue={"تهران"} data-testid="edit-shop-city" maxLength={20} readOnly="true"
                                     />
                                 </div>
 
@@ -324,8 +326,8 @@ function EditShop(props) {
                 </div>
 
                 <div className="col-12 col-sm-4 col-md-3 order-sm-3 right-content">
-
-                    <div className="custom-container custom-box-container">
+                    <div className="custom-container">
+                    <div className="custom-box-container">
                         <div className="btn custom-box-btn">کارکنان فروشگاه</div>
                         <div className="btn custom-box-btn">تنظیمات</div>
                         <div className="btn custom-box-btn" onClick={() => setShowDeleteModal(true)} >حذف فروشگاه</div>
@@ -346,6 +348,8 @@ function EditShop(props) {
 
                         </Modal>
 
+                    </div>
+                    <a href={"/store/" + shopID} className="back-to-shop">بازگشت به فروشگاه<ArrowBackIosIcon /></a>
                     </div>
                 </div>
 

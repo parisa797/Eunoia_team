@@ -33,10 +33,6 @@ import Shop from "./shop";
 //   });
 // };
 
-
-
-
-
 const OutfitIdeas = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const animatedIndex = useTiming(currentIndex);
@@ -54,7 +50,7 @@ const OutfitIdeas = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
       redirect: "follow",
     };
 
-    fetch("http://10.0.2.2:8000/api/v1/shops/", requestOptions)
+    fetch("http://iust-bshop.herokuapp.com/api/v1/shops/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         // setShops([]);
@@ -76,100 +72,79 @@ const OutfitIdeas = ({ navigation }: HomeNavigationProps<"OutfitIdeas">) => {
       />
       <Categories />
       <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="جستجو"
-          placeholderTextColor="#000"
-        />
-      </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="جستجو"
+            placeholderTextColor="#000"
+          />
+        </View>
 
-      <FlatList
-        nestedScrollEnabled={true}
-        onRefresh={loadProducts}
-        refreshing={isRefreshing}
-        data={shops}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={(itemData) => (
-          <Shop
-            title={itemData.item.title}
-            address={itemData.item.address}
-            image={itemData.item.logo}
-            rate_value={itemData.item.rate_value}
-            online={itemData.item.online}
-            onSelect={() => {
-              navigation.navigate("ShopDetail", itemData.item);
-            }}
-          ></Shop>
-        )}
-      />
-    </ScrollView>
+        <FlatList
+          nestedScrollEnabled={true}
+          onRefresh={loadProducts}
+          refreshing={isRefreshing}
+          data={shops}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={(itemData) => (
+            <Shop
+              title={itemData.item.title}
+              address={itemData.item.address}
+              image={itemData.item.logo}
+              rate_value={itemData.item.rate_value}
+              online={itemData.item.online}
+              onSelect={() => {
+                navigation.navigate("ShopDetail", itemData.item);
+              }}
+            ></Shop>
+          )}
+        />
+      </ScrollView>
     </Box>
   );
 };
 
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-// alignItems: "center",
-// justifyContent: "center",
-marginTop: "5%",
-// width: "50%",
-// height: "50%",
-marginBottom: "5%",
-},
-card: {
-shadowColor: "black",
-shadowOpacity: 0.26,
-shadowOffset: { width: 0, height: 2 },
-shadowRadius: 8,
-elevation: 5,
-borderRadius: 10,
-backgroundColor: "white",
-},
-inputView: {
-backgroundColor: "#f1f1f2",
-borderRadius: 10,
-width: "90%",
-height: 45,
-marginTop: "10%",
-marginBottom: "5%",
-alignSelf: "center",
-alignItems: "center",
-alignContent: "center",
-},
-TextInput: {
-height: 50,
-flex: 1,
-padding: 10,
-// marginLeft: 20,
-fontSize: 20,
-},
-title: {
-fontSize: 32,
-},
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "center",
+    // justifyContent: "center",
+    marginTop: "5%",
+    // width: "50%",
+    // height: "50%",
+    marginBottom: "5%",
+  },
+  card: {
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 5,
+    borderRadius: 10,
+    backgroundColor: "white",
+  },
+  inputView: {
+    backgroundColor: "#f1f1f2",
+    borderRadius: 10,
+    width: "90%",
+    height: 45,
+    marginTop: "10%",
+    marginBottom: "5%",
+    alignSelf: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    // marginLeft: 20,
+    fontSize: 20,
+  },
+  title: {
+    fontSize: 32,
+  },
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
 export default OutfitIdeas;
-
-
-
-
-
-
-
-
-
