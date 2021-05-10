@@ -2,6 +2,7 @@ from django.db import models
 from django.apps import apps
 from django.db.models import Avg
 
+
 from users.models import MyUser
 
 class Shop(models.Model):
@@ -46,6 +47,7 @@ class Comment(models.Model):
 
     def str(self):
         return self.text
+
 
 class Rate(models.Model):
 
