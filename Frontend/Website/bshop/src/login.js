@@ -37,7 +37,7 @@ const Login = () => {
           console.log(e.response.data);
           const msgs = Object.values(e.response.data)
           // snack.error("اشتباهی رخ داده است...");
-          msgs.forEach(i => enqueueSnackbar(errorjson[j], { 
+          msgs.forEach(i => enqueueSnackbar(errorjson[i], { 
             variant: 'error',
         }))
         });
