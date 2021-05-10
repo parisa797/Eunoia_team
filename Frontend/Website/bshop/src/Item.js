@@ -119,7 +119,7 @@ function Item(props) {
                 {!!items.price && (
                   <div className="col-12 d-flex flex-justify-between p-0 my-2">
                     <div className="col-6 p-0 text-right">قیمت:</div>
-                    <div className="col-6 p-0 ">{items.price}</div>
+                    <div className="col-6 p-0 ">{items.price} ریال</div>
                   </div>
                 )}
                 {!!items.manufacture_jalali && (
@@ -134,42 +134,9 @@ function Item(props) {
                     <div className="col-6 p-0 ">{items.Expiration_jalali}</div>
                   </div>
                 )}
-                {/* {!!items?.ItemShop?.phone && (
-                  <div className="col-12 d-flex p-0 my-2">
-                  <div className="col-6 p-0 text-right">شماره تماس فروشگاه:</div>
-                  <div className="col-6 p-0 ">{items.ItemShop?.phone}</div>
-                </div>  
-                )} */}
-                {/* <div className="col-sm-12 col-md-6 my-3">
-                {!!items.manufacture_jalali && (
-                  <div className="col-12 d-flex flex-justify-between">
-                    <div className="col-9">تاریخ تولید:</div>
-                    <div className="col-9">{items.manufacture_jalali}</div>
-                  </div>
-                )}
-                {!!items.Expiration_jalali && (
-                  <div className="col-12 d-flex flex-justify-between">
-                    <div className="col-5">تاریخ انقضا:</div>
-                    <div className="col-5">{items.Expiration_jalali}</div>
-                  </div>
-                )}
-              </div> */}
+
               {props.userState !== "m" && <a href="#" className="btn btn-lg btn-primary my-3" >افزودن به سبد خرید</a>}
               </div>
-              {/* <div className="col-sm-12 col-md-6 my-3">
-                {!!items.price && (
-                  <div className="col-12 d-flex flex-justify-between">
-                    <div className="col-5"> قیمت:</div>
-                    <div className="col-5">{items.manufacture_jalali}</div>
-                  </div>
-                )}
-                {/* {!!items.Expiration_jalali && (
-                  <div className="col-12 d-flex flex-justify-between">
-                    <div className="col-5">تاریخ انقضا:</div>
-                    <div className="col-5">{items.Expiration_jalali}</div>
-                  </div>
-                )} */}
-             {/* </div> */}
             </div>
           </div>
         </div>
