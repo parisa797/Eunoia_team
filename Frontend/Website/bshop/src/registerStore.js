@@ -50,7 +50,7 @@ const RegisterStore = () => {
     fd.append("phone", values.phone);
     fd.append("region",values.region);
     //code bishtar az 4 ragham farz shode
-    if (isPhoneValid(values.phone) && values.address.length > 6 && values.src && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
+    if (isPhoneValid(values.phone) && values.address.length > 6 && values.ownerName.length > 4 && values.storeName.length > 4  && values.code.length > 4 ) {
       if (localStorage.getItem("role") !== "seller") {
         var email = "";
         fetch("http://eunoia-bshop.ir:8000/users/profile", {
@@ -234,6 +234,7 @@ const RegisterStore = () => {
         />
         <div class="custom-file">
           <input
+          data-testid="register-shop-image"
             type="file"
             onChange={imageInsert}
             class="custom-file-input"
