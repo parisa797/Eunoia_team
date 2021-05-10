@@ -1,4 +1,4 @@
-import React, { useRef , useState } from "react";
+import React, { useRef, useState } from "react";
 // import { TextInput as RNTextInput } from "react-native";
 import { CommonActions } from "@react-navigation/native";
 import { BorderlessButton } from "react-native-gesture-handler";
@@ -9,7 +9,6 @@ import { AuthNavigationProps } from "../components/Navigation";
 // import TextInput from "../components/Form/TextInput";
 import Checkbox from "../components/Form/Checkbox";
 import Footer from "./components/Footer";
-
 
 import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
@@ -34,13 +33,13 @@ import {
 //     .max(50, "خیلی طولانیه! دوباره تلاش کن")
 //     .required("Required"),
 // });
+
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
-
 const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
-   const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
 
   // const count = useSelector((state) => state.counter.value);
@@ -49,29 +48,15 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
 
   // const dispatch = useDispatch();
 
-
-   const HandleLogin = (email, pass) => {
-  // const dispatch = useDispatch();
-  console.log("in handle login");
-  console.log(email);
-  // console.log(dispatch(increment()));
-  // if (email == undefined && pass == undefined) {
-  if (email.length == 0 && pass.length == 0) {
-    showMessage({
-      message: "لطفا اطلاعات کاربری خود را وارد کنید.",
-      type: "warning",
-      backgroundColor: "#f1f1f2", // background color
-      color: "#000", // text color
-      statusBarHeight: "8",
-      titleStyle: {
-        fontSize: 15,
-      },
-    });
-  } else {
-    if (email.length == 0) {
-      // alert("Please enter your email");
+  const HandleLogin = (email, pass) => {
+    // const dispatch = useDispatch();
+    console.log("in handle login");
+    console.log(email);
+    // console.log(dispatch(increment()));
+    // if (email == undefined && pass == undefined) {
+    if (email.length == 0 && pass.length == 0) {
       showMessage({
-        message: "لطفا ایمیل خود را وارد کنید.",
+        message: "لطفا اطلاعات کاربری خود را وارد کنید.",
         type: "warning",
         backgroundColor: "#f1f1f2", // background color
         color: "#000", // text color
@@ -80,12 +65,11 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           fontSize: 15,
         },
       });
-      // jest.spyOn(Alert, "alert");
     } else {
-      if (pass.length == 0) {
-        // alert("Please enter your password");
+      if (email.length == 0) {
+        // alert("Please enter your email");
         showMessage({
-          message: "لطفا پسورد خود را وارد کنید.",
+          message: "لطفا ایمیل خود را وارد کنید.",
           type: "warning",
           backgroundColor: "#f1f1f2", // background color
           color: "#000", // text color
@@ -94,68 +78,69 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
             fontSize: 15,
           },
         });
+        // jest.spyOn(Alert, "alert");
       } else {
-        LoginFetch(email, pass);
+        if (pass.length == 0) {
+          // alert("Please enter your password");
+          showMessage({
+            message: "لطفا پسورد خود را وارد کنید.",
+            type: "warning",
+            backgroundColor: "#f1f1f2", // background color
+            color: "#000", // text color
+            statusBarHeight: "8",
+            titleStyle: {
+              fontSize: 15,
+            },
+          });
+        } else {
+          LoginFetch(email, pass);
+        }
       }
     }
-  }
-}; 
- const LoginFetch = (email, pass) => {
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-    },
-    body: JSON.stringify({
-      email: email, //change this!!!
-      password: pass,
-    }),
   };
-  fetch("http://10.0.2.2:8000/rest-auth/login/", requestOptions)
-    .then((response) => {
-      console.log(response);
-      console.log(response.status);
-      if (response.status == 200) {
-        alert("You've logged in successfully");
-        
-        
-      } else alert("Incorrect email or password");
+  const LoginFetch = (email, pass) => {
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "*",
+      },
+      body: JSON.stringify({
+        email: email, //change this!!!
+        password: pass,
+      }),
+    };
+    fetch("http://iust-bshop.herokuapp.com/rest-auth/login/", requestOptions)
+      .then((response) => {
+        console.log(response);
+        console.log(response.status);
+        if (response.status == 200) {
+          alert("You've logged in successfully");
+        } else alert("Incorrect email or password");
 
-      return response.json();
-    })
-    .then(async (result) => {
-      console.log(result);
-      save("token", result.key);
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        })
-      );
-      // for (let key in result) {
-      //   switch (key) {
-      //     case "non_field_errors": //put different errors
-      //       break;
-
-      //     case "key":
-      //       save("token", result.key);
-      //       break;
-
-      //     default:
-      //       console.log(result);
-      //   }
-      // }
-      // save("token", result.key);
-    })
-    .catch((error) => console.log("error", error));
-};
-  const pressSignup = () => {
+        return response.json();
+      })
+      .then(async (result) => {
+        console.log("hi", result);
+        if (result.key != undefined) {
+          save("token", result.key);
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            })
+          );
+        }
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const pressSignUp = () => {
     navigation.navigate("SignUp"); //this line
     //navigation.push("signup")
   };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -189,11 +174,9 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
         </View>
         {/* <TouchableOpacity>
         <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity> */}
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={styles.loginBtn}
-          // onPress={() => HandleLogin(email, pass)}
-          // onPress={() => dispatch(increment())}
           onPress={() => {
             // login();
             HandleLogin(email, pass);
@@ -205,7 +188,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
         </TouchableOpacity>
 
         <Text style={{ fontSize: 20 }}>حساب کاربری ندارید؟</Text>
-        <Text style={{ color: "#b31414", fontSize: 20 }} onPress={pressSignup}>
+        <Text style={{ color: "#b31414", fontSize: 20 }} onPress={pressSignUp}>
           ثبت نام
         </Text>
 
@@ -253,6 +236,14 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 20,
     fontSize: 20,
+    color: "black",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginTop: "-5%",
   },
 
   // forgot_button: {
@@ -278,4 +269,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-

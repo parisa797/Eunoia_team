@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Shop.css';
 import ShopSideBar from './ShopSideBar';
 import ReactStars from "react-rating-stars-component";
@@ -9,6 +9,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
+import LocationOnIcon from '@material-ui/icons/LocationOn'
+
 
 function Shop(props) {
     const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
@@ -19,10 +21,11 @@ function Shop(props) {
     const [rateID, setRateId] = useState(null)
     // const [triggerReload, setTriggerReload] = useState(false)
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
+    let commentsRef = useRef();
 
     useEffect(() => {
         console.log(props.userState)
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/list/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -48,7 +51,7 @@ function Shop(props) {
     }, [])
 
     useEffect(() => {
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -65,7 +68,7 @@ function Shop(props) {
                 setShopInfo(d);
                 console.log(d)
             });
-        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
+        fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
             method: 'GET'
         }).then((res) => {
             if (res.status === 200) {
@@ -85,7 +88,7 @@ function Shop(props) {
         fd.append("rate", new_rating)
         if (!rated) {
             fd.append("shop", shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/create/", {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/create/", {
                 method: 'POST',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -109,7 +112,7 @@ function Shop(props) {
             })
         }
         else {
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/rate/" + rateID, {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/" + rateID, {
                 method: 'PUT',
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -133,6 +136,13 @@ function Shop(props) {
         document.getElementById("shop-search-dropdown").classList.toggle("show");
     }
 
+    function scrollToComments(){
+        window.scrollTo({
+            behavior: "smooth",
+            top: commentsRef.current.offsetTop
+          });
+    }
+
     return (
         <div className="shop-page">
             <ShopSideBar />
@@ -151,7 +161,7 @@ function Shop(props) {
                                     <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
-                                 <><p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {Math.round(shopInfo.rate_value * 10) / 10}  </p>
+                            <> <p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {shopInfo.rate_value?Math.round(shopInfo.rate_value * 10) / 10 :0} </p>
                                     {!!shopInfo.rate_value && <ReactStars
                                         edit={props.userState!=="u"}
                                         value={Math.round(shopInfo.rate_value)}
@@ -174,7 +184,7 @@ function Shop(props) {
                                     />}
                                     <p data-testid={"shop-rate-count"}>‌({shopInfo.rate_count})</p>
                                 </>
-                                <p className="comment-info" data-testid={"shop-comment-count"}>نظرات: {shopInfo.comment_count} </p>
+                                <p className="comment-info" onClick={scrollToComments} data-testid={"shop-comment-count"}>نظرات: {shopInfo.comment_count} </p>
                             </div>
                             <div className="options">
                                 {shopInfo.online ? <p style={{ color: "green" }} data-testid={"shop-online"}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red" }}>امکان خرید آنلاین ندارد</p>}
@@ -187,7 +197,8 @@ function Shop(props) {
                             </div>}
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
-                                <a href="/">نمایش در نقشه</a>
+                                <p> (منطقه {shopInfo.mantaghe}) </p>
+                                <a href="/">نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
                             </div>}
                         </div>
                     </div>
@@ -284,9 +295,9 @@ function Shop(props) {
                             </div>
                         </div>
                     </div></>}
-                <h4 className="header"><span className="header-span">نظرات</span></h4>
+                <h4 className="header" ref={commentsRef}><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">
-                    <ShopComments shopID={shopID}/>
+                    <ShopComments shopID={shopID} userState={props.userState}/>
                 </div>
 
             </div>

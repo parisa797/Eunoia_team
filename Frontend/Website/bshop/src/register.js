@@ -119,11 +119,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createUser } from "./api";
 import logo from "./assets/logo.png";
-import snack from "./libs/snack";
+// import snack from "./libs/snack";
+import { useSnackbar } from 'notistack';
 import { validateEmail } from "./libs/utils"
 import errorjson from './errorhandling'
 
 const Register = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -140,10 +142,10 @@ const Register = () => {
     const { email, password, username } = values;
     if (validateEmail(email) && password.length > 4 && username.length > 4) {
       createUser({
-        email,
+        email:email,
         password1: password,
         password2: password,
-        username,
+        username:username,
       })
         .then((res) => res.data)
         .then((res) => {
@@ -161,12 +163,18 @@ const Register = () => {
           const msgs = Object.values(e.response.data)
           console.log(e.response.data);
           // console.log(e.response.);
-          msgs.forEach(i => i.forEach(j => snack.error(errorjson[j])))
+          // msgs.forEach(i => i.forEach(j => snack.error(errorjson[j])))
+          msgs.forEach(i => i.forEach(j => enqueueSnackbar(errorjson[j], { 
+            variant: 'error',
+        })))
            console.log(msgs);
           // snack.error("اشتباهی رخ داده است...");
         });
     } else {
-      snack.error("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.");
+      // snack.error("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.");
+      enqueueSnackbar("در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.", { 
+        variant: 'error',
+    });
     }
   };
   return (
@@ -227,6 +235,7 @@ const Register = () => {
           className="btn btn-lg btn-primary btn-block"
           type="submit"
           style={{backgroundColor: 'var(--primary-color)',border: "none"}}
+          data-testid="register-button"
         >
           ورود
         </button>
