@@ -208,20 +208,6 @@ test("register shop address length ", async () => {
     expect(enqueueSnackbarMock).toBeCalledTimes(1);
     expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
 
-    
-    // await fireEvent.change(code, { target: { value: 'abc' } });
-    // expect(address).toHaveValue("abc");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(2);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-    // await fireEvent.change(code, { target: { value: 'ستی' } });
-    // expect(address).toHaveValue("ستی");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(3);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-
   })
 });
 
@@ -246,25 +232,6 @@ test("register shop ownerName length ", async () => {
     expect(enqueueSnackbarMock).toBeCalledTimes(1);
     expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
 
-    // await fireEvent.change(code, { target: { value: 'ab' } });
-    // expect(ownerName).toHaveValue("ab");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(2);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-
-
-    // await fireEvent.change(code, { target: { value: 'abc' } });
-    // expect(ownerName).toHaveValue("abc");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(2);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-    // await fireEvent.change(code, { target: { value: 'ستی' } });
-    // expect(ownerName).toHaveValue("ستی");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(3);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
 
 
   })
@@ -290,24 +257,6 @@ test("register shop storeName length ", async () => {
     await btn.click();
     expect(enqueueSnackbarMock).toBeCalledTimes(1);
     expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-    // await fireEvent.change(code, { target: { value: 'ab' } });
-    // expect(storeName).toHaveValue("ab");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(2);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-    // await fireEvent.change(code, { target: { value: 'abc' } });
-    // expect(storeName).toHaveValue("abc");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(2);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
-
-    // await fireEvent.change(code, { target: { value: 'سلا' } });
-    // expect(storeName).toHaveValue("سلا");
-    // await btn.click();
-    // expect(enqueueSnackbarMock).toBeCalledTimes(4);
-    // expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('در پر کردن اطلاعات دقت بیشتری لحاظ نمایید.', { variant: 'error',})
 
   })
 });
