@@ -28,7 +28,7 @@ function ShopDispatcher() {
             setUserState("u")
             return;
         }
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/user/", {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')

@@ -21,7 +21,7 @@ function CustomNavbar(props) {
       return;
     }
     //set profile if exists
-    fetch("https://iust-bshop.herokuapp.com/users/profile", {
+    fetch("http://eunoia-bshop.ir:8000/users/profile", {
       method: 'GET',
       headers: {
         "Authorization": "Token " + localStorage.getItem('token')
