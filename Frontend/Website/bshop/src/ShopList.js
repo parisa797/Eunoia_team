@@ -7,7 +7,7 @@ function ShopList(props) {
     const [shops, setShops] = useState([]);
     const [myshops, setMyShops] = useState([]);
     useEffect(() => {
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/user/", {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -15,15 +15,19 @@ function ShopList(props) {
         })
             .then((res) => {
                 if (res.status === 200) {
+                    console.log("my shops is 200")
+                    console.log("my role is "+localStorage.getItem("role"))
                     return res.json()
                 }
                 return [];
             }
             )
             .then((d) => {
+                console.log("my shops are")
+                console.log(d)
                 setMyShops(d);
             });
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/", {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -44,9 +48,9 @@ function ShopList(props) {
     }, [])
 
     return (<div className="all-shops-list-container">
-        {(localStorage.getItem("role") === "seller") && <>
+        {!!myshops && myshops.length>0 && <>
             <h3>فروشگاه های شما</h3>
-            <div className=" container-fluid row your-shops" data-testid="myshops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0 0 10vh 0" }}  >
+            <div className=" container-fluid row your-shops" data-testid="myshops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0 0 5vh 0" }}  >
                 {myshops?.map((shop) => {
                     if (shop) return (
                         <div className="shop-outer-container col-12 col-sm-6 col-md-4 col-xl-3" key={shop.id} data-testid={"myshop-" + shop.id}>

@@ -43,13 +43,13 @@ function EditShopLogo(props) {
                     </div>
                 </div>
             </div>
-            <input type="file" id="photo-upload" accept="image/*" className="img-uploader" onChange={uploadPic} />
+            {/* <input type="file" id="photo-upload" accept="image/*" className="img-uploader" onChange={uploadPic} />
             <label htmlFor="photo-upload" className=" btn"
             >
                 تغییر عکس
                     <EditIcon className=" fas" htmlFor="photo-upload" style={{ fontSize: "xx-large" }} />
 
-            </label>
+            </label> */}
             <input type="file" id="logo-upload" accept="image/*" className="img-uploader" onChange={uploadLogo} />
             <label htmlFor="logo-upload" className=" btn"
             >

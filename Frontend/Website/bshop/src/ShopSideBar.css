@@ -27,6 +27,7 @@
         position: sticky;
         top:56px;
         width:22vw;
+        height: calc( 100vh - 67px);
         float:right;
         /* display: block; */
     }
