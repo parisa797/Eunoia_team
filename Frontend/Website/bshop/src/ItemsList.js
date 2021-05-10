@@ -5,7 +5,7 @@
 // function Itemslist(props){
 //     const [items,setItems] = useState([]);
 //     useEffect(()=>{
-//         fetch("https://iust-bshop.herokuapp.com/shops/1/items/",{
+//         fetch("http://eunoia-bshop.ir:8000/shops/1/items/",{
 //         method: "GET",
 //         headers: {
 //             "Authorization" : "Token " + localStorage.getItem("token")
@@ -70,7 +70,7 @@ function Itemslist(props) {
     const [shopInfo, setShopInfo] = useState({});
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
     useEffect(() => {
-        fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/", {
+        fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
             method: "GET",
         }).then((res) => {
             if (res.status === 200) {
@@ -79,7 +79,7 @@ function Itemslist(props) {
         }).then(res => {
             setItems(res);
         })
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -98,7 +98,7 @@ function Itemslist(props) {
     }, [props.triggerReload])
 
     return (
-        <div style={{ direction: "rtl", padding: "5vh 5vw" }}>
+        <div style={{ direction: "rtl", padding: "5vh 5vw", fontFamily:"Vazir" }}>
             <ShopSideBar />
             <div className="page-contents" style={{ position: "relative" }}>
                 <div className="Items_list-header">

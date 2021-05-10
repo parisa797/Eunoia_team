@@ -123,14 +123,15 @@
 }
 
 .shop-more-info .address a{
-    color:var(--secondary-color);
-    margin-right: 5px;
+    color:var(--primary-color);
+    margin-right: 15px;
     cursor: pointer;
+    font-family: 'Vazir-Bold';
 }
 
-.shop-more-info .address a:hover{
+/* .shop-more-info .address a:hover{
     color:var(--primary-color)
-}
+} */
 
 .shop-page .section-break{
     margin: 2vh auto;
@@ -419,4 +420,10 @@
     font-family: 'Vazir-Bold';
     color: var(--font-color2);
     text-align-last: center;
+}
+
+.shop-page .location-icon{
+    color: lightseagreen;
+    margin-top: -10px;
+    margin-right: -2px;
 }
