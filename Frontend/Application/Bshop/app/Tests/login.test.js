@@ -93,7 +93,78 @@ describe("Login component be tested", () => {
     expect(showMock).toHaveBeenLastCalledWith(message, undefined);
   });
 
-  //authentication failed
-
   //auth successfull
+  // it("failed auth", async () => {
+  //   const fetchMock = require("fetch-mock-jest");
+
+  //   const database_users = [
+  //     { email: "gh@iust.ac.ir", password: "thisIsme567" },
+  //     { email: "gh@ac.ir", password: "thisIme567" },
+  //   ];
+  //   await fetchMock.post(
+  //     "http://iust-bshop.herokuapp.com/rest-auth/login/",
+  //     (url, options) => {
+  //       // if (typeof options.body.name === 'string') {
+  //       // 	users.push(options.body);
+  //       // 	return 201;
+  //       // }
+  //       // return 400;
+  //       // console.log(JSON.stringify(options.body));
+  //       var e = "email";
+  //       console.log("body is: ", options.body);
+  //       // console.log(options.body.e);
+  //       console.log(options.body["email"]);
+  //       // console.log(options.body.get("email"));
+
+  //       // var dict = [{ hi: "pleas" }];
+  //       // console.log(dict["hi"]);
+  //       // console.log(dict[0]["hi"]);
+  //       console.log("here here", options.body.email);
+
+  //       if (
+  //         database_users.includes({
+  //           email: options.body.get("email"),
+  //           password: options.body.get("password"),
+  //         })
+  //       ) {
+  //         console.log("reached here");
+  //         return 200;
+  //       }
+  //       console.log("raeched bad!");
+  //       return 400;
+  //     }
+  //   );
+  //   const push = jest.fn();
+  //   const { getByTestId, getByPlaceholderText } = await render(
+  //     <Login navigation={{ push }} />
+  //   );
+  //   await new Promise((resolve) => setImmediate(resolve));
+
+  //   const pass = "thisIme567";
+  //   await fireEvent.changeText(getByTestId("pass_check"), pass);
+  //   const email = "gh@ac.ir";
+  //   await fireEvent.changeText(getByTestId("email_check"), email);
+  //   await fireEvent.press(getByTestId("login-button"));
+  //   // var bdy = JSON.stringify({ email: mail, password: pass });
+  //   // console.log(bdy);
+  //   var dict = {
+  //     email: email,
+  //     password: pass,
+  //   };
+  //   expect(fetchMock).toHaveLastFetched(
+  //     "http://iust-bshop.herokuapp.com/rest-auth/login/",
+  //     {
+  //       // url: "http://iust-bshop.herokuapp.com/rest-auth/login/",
+  //       options: { body: dict },
+  //     },
+
+  //     // {
+  //     //   url: "http://iust-bshop.herokuapp.com/rest-auth/login/",
+  //     //   options: { body: JSON.stringify({ email: email, password: pass }) },
+  //     // },
+  //     "post"
+  //   );
+  // });
+
+  //authentication failed
 });

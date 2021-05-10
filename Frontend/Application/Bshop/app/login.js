@@ -26,54 +26,21 @@ const Login = ({ navigation }) => {
   const [pass, setPassword] = useState("");
 
   const HandleLogin = (email, pass) => {
+    // console.log("so check here");
+    // console.log(email);
+    // console.log(pass);
     Keyboard.dismiss();
 
     if (email.length == 0 && pass.length == 0) {
-      // showMessage({
-      //   message: "لطفا اطلاعات کاربری خود را وارد کنید.",
-      //   type: "warning",
-      //   backgroundColor: "#f1f1f2", // background color
-      //   color: "#000", // text color
-      //   statusBarHeight: "8",
-      //   titleStyle: {
-      //     fontSize: 15,
-      //   },
-      // });
-      // console.log("enter info");
       ToastAndroid.show(
         "لطفا اطلاعات کاربری خود را وارد کنید.",
         ToastAndroid.SHORT
       );
     } else {
       if (email.length == 0) {
-        // alert("Please enter your email");
-        // showMessage({
-        //   message: "لطفا ایمیل خود را وارد کنید.",
-        //   type: "warning",
-        //   backgroundColor: "#f1f1f2", // background color
-        //   color: "#000", // text color
-        //   statusBarHeight: "8",
-        //   titleStyle: {
-        //     fontSize: 15,
-        //   },
-        // });
-        // console.log("enter email");
         ToastAndroid.show("لطفا ایمیل خود را وارد کنید.", ToastAndroid.SHORT);
-        // jest.spyOn(Alert, "alert");
       } else {
         if (pass.length == 0) {
-          // alert("Please enter your password");
-          // showMessage({
-          //   message: "لطفا پسورد خود را وارد کنید.",
-          //   type: "warning",
-          //   backgroundColor: "#f1f1f2", // background color
-          //   color: "#000", // text color
-          //   statusBarHeight: "8",
-          //   titleStyle: {
-          //     fontSize: 15,
-          //   },
-          // });
-          // console.log("enter pass");
           ToastAndroid.show("لطفا پسورد خود را وارد کنید.", ToastAndroid.SHORT);
         } else {
           LoginFetch(email, pass);
@@ -83,6 +50,9 @@ const Login = ({ navigation }) => {
   };
 
   const LoginFetch = (email, pass) => {
+    console.log("this u want:");
+    console.log(email);
+    console.log(pass);
     const requestOptions = {
       method: "POST",
       headers: {
@@ -92,7 +62,7 @@ const Login = ({ navigation }) => {
         "Access-Control-Allow-Headers": "*",
       },
       body: JSON.stringify({
-        email: email, //change this!!!
+        email: email,
         password: pass,
       }),
     };

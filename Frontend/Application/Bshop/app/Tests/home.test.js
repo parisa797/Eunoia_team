@@ -60,6 +60,10 @@ describe("Home page with shops be tested", () => {
     );
     await new Promise((resolve) => setImmediate(resolve));
 
+    expect(fetchMock).toHaveFetched(
+      "http://iust-bshop.herokuapp.com/api/v1/shops/",
+      "get"
+    );
     expect(getByTestId("shops-list").props.data.length).toBe(shops.length);
 
     for (var i = 0; i < 4; i++) {
