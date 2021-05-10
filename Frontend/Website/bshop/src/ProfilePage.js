@@ -29,7 +29,7 @@ function ProfilePage(props) {
         //fetch profile and set it in "prof" variable
 
         let prof = {};
-        fetch("https://iust-bshop.herokuapp.com/users/profile", {
+        fetch("http://eunoia-bshop.ir:8000/users/profile", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -130,7 +130,7 @@ function ProfilePage(props) {
             headers: myHeaders,
             body: fd
         };
-        fetch("https://iust-bshop.herokuapp.com/users/profile/delete-file", requestOptions)
+        fetch("http://eunoia-bshop.ir:8000/users/profile/delete-file", requestOptions)
             .then(response => {
                 console.log("deleted file's status: " + response.status);
                 if (response.status === 200) {
@@ -193,7 +193,7 @@ function ProfilePage(props) {
                 headers: myHeaders,
                 body: fdimg
             };
-            await fetch("https://iust-bshop.herokuapp.com/users/profile/upload-file", requestOptions)
+            await fetch("http://eunoia-bshop.ir:8000/users/profile/upload-file", requestOptions)
                 .then(response => {
                     console.log("file's status: " + response.status);
                     if (response.status === 201) {
@@ -222,7 +222,7 @@ function ProfilePage(props) {
             },
             body: fd,
         };
-        fetch("https://iust-bshop.herokuapp.com/users/profile", requestOptions)
+        fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
             .then(async (response) => {
 
                 if (response.status === 200) {
@@ -242,7 +242,7 @@ function ProfilePage(props) {
     }
 
     const deleteProfile = () => {
-        fetch("https://iust-bshop.herokuapp.com/users/profile", {
+        fetch("http://eunoia-bshop.ir:8000/users/profile", {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')

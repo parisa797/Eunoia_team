@@ -21,7 +21,7 @@
     width: 100%;
     position: relative;
     align-items: center;
-    border: 1px solid var(--bg-color2-2);
+    border: 1px solid var(--bg-color2);
     word-wrap: break-word;
     color: var(--font-color);
 }

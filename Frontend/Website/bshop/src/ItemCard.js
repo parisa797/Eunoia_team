@@ -84,7 +84,7 @@ function ItemCard(props) {
 
                     </div>
                     : <p className="item-card-price item-card-price-text">{!!props.item.price ? props.item.price + "ریال" : "قیمت نامشخص"}</p>}
-                {<p className="item-card-count"> {props.item.count} عدد مانده </p>}
+                {<p className="item-card-count"> {props.item?.count? props.item.count + " عدد مانده " : "ناموجود"}</p>}
 
 
             </div>
