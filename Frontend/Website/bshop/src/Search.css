@@ -1,0 +1,96 @@
+
+.search .searchbar{
+    /* margin: 5vh 20px 10vh 20px; */
+    direction: ltr;
+}
+
+.search .searchbar .dropdown-toggle{
+    height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 0 5px 5px 0;
+    color: var(--font-always-light-color);
+    width: 6rem;
+}
+
+.search .searchbar .dropdown-toggle:focus{
+    outline:none;
+    box-shadow: none;
+}
+
+.search .searchbar input{
+    height: 40px;
+    border: 1px solid var(--primary-color);
+    border-left: none;
+    font-size: medium;
+    background-color: var(--bg-color2-2);
+    color:var(--font-color);
+    border-radius: 0;
+    direction: rtl;
+}
+
+.custom-nav .search .searchbar input{
+    border: none;
+}
+
+.custom-nav .search .searchbar .search-btn{
+    border: none;
+}
+
+.search .searchbar .dropdown-item{
+    color: var(--primary-color);
+}
+
+.search .searchbar .dropdown-item:hover{
+    background-color: var(--bg-color2);
+}
+
+.search .searchbar .dropdown-menu{
+    background-color: var(--bg-color);
+}
+
+.search .searchbar input:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.search .searchbar .search-btn{
+    height: 40px;
+    border: 1px solid var(--primary-color);
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    color: var(--primary-color);
+    background-color: var(--bg-color2-2);
+    transition: none;
+}
+
+.search .searchbar .dropdown-menu{
+    width:6rem;
+    min-width: 6rem;
+}
+
+@media(min-width:641px){
+    .custom-nav .search{
+      width: 60vw;
+    }
+}
+
+.search .searchbar .item-search-holder{
+    display: inline-flex;
+    direction: rtl;
+    margin: 0 -2px;
+}
+
+.search .search-btn:focus{
+    box-shadow: none;
+}
+
+.search-results{
+    direction: rtl; 
+    padding: 5vh 5vw; 
+    font-family:"Vazir"; 
+    color:var(--font-color);
+}
+
+.search-results .search{
+    margin:5vh 2vw;
+}

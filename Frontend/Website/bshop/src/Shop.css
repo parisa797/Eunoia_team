@@ -244,9 +244,10 @@
 
 .shop-page .searchbar{
     margin: 5vh 20px 10vh 20px;
+    direction: ltr;
 }
 
-.shop-page .searchbar .dropdown-toggle{
+/* .shop-page .searchbar .dropdown-toggle{
     height: 40px;
     background-color: var(--primary-color);
     border-radius: 0 5px 5px 0;
@@ -257,9 +258,9 @@
 .shop-page .searchbar .dropdown-toggle:focus{
     outline:none;
     box-shadow: none;
-}
+} */
 
-.shop-page .searchbar input{
+/* .shop-page .searchbar input{
     height: 40px;
     border: 1px solid var(--primary-color);
     border-left: none;
@@ -281,7 +282,7 @@
     color: var(--primary-color);
     background-color: var(--bg-color2-2);
     transition: none;
-}
+} */
 
 .shop-page .horizontal-list::-webkit-scrollbar{
     width: 5px; 

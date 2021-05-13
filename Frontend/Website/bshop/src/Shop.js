@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
+import SearchBar from './SearchBar';
 
 
 function Shop(props) {
@@ -204,7 +205,7 @@ function Shop(props) {
                     </div>
 
                 </div>
-                <div className="searchbar" >
+                {/* <div className="searchbar" >
                     <form inline="true" className="input-group input-group-lg">
                         <div className="dropdown">
                             <button className="btn dropdown-toggle input-group-btn" data-testid="shop-filterby-button" onClick={(e) => { e.preventDefault(); SearchDropDownToggle() }}>
@@ -220,6 +221,9 @@ function Shop(props) {
                         <div className="btn search-btn input-group-btn" type="submit"><SearchIcon /></div>
 
                     </form>
+                </div> */}
+                <div className="search" >
+                <SearchBar thisShop={shopID}  id="shop"/>
                 </div>
                 <div className="page-contents-item">
                     <Carousel interval={null} className="carousel">

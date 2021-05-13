@@ -8,6 +8,7 @@ import OnlineGroceries from './medias/OnlineGroceries-amico.svg';
 import DiscountPic from './medias/Discount-pana.svg';
 import { useState } from 'react';
 import LocationOnIcon from '@material-ui/icons/LocationOn'
+import SearchBar from './SearchBar';
 
 
 function HomePage(props) {
@@ -87,6 +88,10 @@ function HomePage(props) {
                             })}
                         </Carousel>
                         <div className="searchbar" >
+                            
+                            <div className="search">
+                                <SearchBar id="home"/>
+                            </div>
                             <form inline="true" className="input-group input-group-lg">
                                 <div className="dropdown">
                                     <button className="btn dropdown-toggle filter-btn" onClick={(e) => { e.preventDefault(); SearchDropDownToggle("search-dropdown-type") }}>
@@ -118,11 +123,6 @@ function HomePage(props) {
                                         <a className="dropdown-item" href="#">محبوب‌ترین‌ها</a>
                                     </div>
                                 </div>
-                            </form>
-                            <form inline="true" className="input-group input-group-lg">
-                                <input type="text" className="form-control input-lg" placeholder="جستجو " />
-                                <div className="btn search-btn input-group-btn" type="submit"><SearchIcon /></div>
-
                             </form>
                             <div style={{ paddingTop: "5vh" }}><a href="/" style={{ fontSize: "larger", color: "var(--font-color2)" }}>...یا از روی نقشه فروشگاه نزدیک خود را پیدا کنید<LocationOnIcon className="icon" /></a></div>
                         </div>

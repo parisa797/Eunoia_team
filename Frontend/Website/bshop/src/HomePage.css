@@ -140,7 +140,7 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
 }
 
 .homepage .header-content p, .homepage .header-content .btn, .homepage .header-content a{
-    color : var(--font-color);
+    /* color : var(--font-color); */
     font-family: Roya;
     font-size: larger;
 }
@@ -171,46 +171,14 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     padding-top: 5vh;
 }
 
-.homepage .shop-container{
-    border-radius: 5px;
-     /* border: 1px solid var(--primary-color); */
-    padding: 5%;
-    height:100%;
-    cursor: pointer;
-    background-color: var(--bg-color2);
-    /* box-shadow: var(--bg-color3) 0px 7px 29px 0px; */
-}
-
-.homepage .search-btn{
+/* .homepage .search-btn{
     margin-bottom: 5px;
     background-color: var(--primary-color);
 }
 
 .homepage .search-btn .search-icon{
     color:var(--font-always-light-color);
-}
-
-.homepage .shop-upper{
-    /* display: flex;
-    flex-direction: row-reverse; */
-    display: grid;
-    grid-template-columns: auto 30%;
-    grid-template-rows: auto auto;
-    /* direction: rtl; */
-    padding-bottom: 5%;
-}
-
-.homepage .shop-lower{
-    direction: rtl;
-    /* border-top: 1px solid var(--heading-color); */
-}
-
-.homepage .shop-lower p{
-    margin-bottom: 0;
-    text-align: right;
-    font-size: 0.93rem;
-    opacity: 0.6;
-}
+} */
 
 .homepage .img-outer-container{
     width:100%;
@@ -224,9 +192,6 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     direction: ltr;
 }
 
-.homepage .shop-container:hover{
-    transform: scale(1.03);
-}
 
 .homepage .img-container{
     width:100%;
@@ -236,47 +201,10 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     
 }
 
-.homepage .shop-upper img{
-    
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: inherit;
-    border-radius: 5px;
-    height:100%;
-}
-
-.homepage .shop-upper h4{
-    margin-right: 10px;
-    color:var(--font-color2);
-    justify-self: right;
-    grid-column-start: 1;
-    grid-row-start: 1;
-}
-
 .homepage h3{
     color: var(--heading-color);
     text-align: right;
     margin: 0 10px 20px 0;
-}
-
-.homepage .all-shops-list-container .stars{
-    margin-right: 10px;
-}
-
-.homepage .all-shops-list-container .shop-stars{
-    grid-column-start: 1;
-    grid-row-start: 2;
-    display: inline-flex;
-}
-.homepage .all-shops-list-container .shop-stars p{
-    margin: 0;
-    margin-top: 3px;
-
 }
 
 .homepage .not-logged-header .read-more-below{
@@ -361,7 +289,7 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
 
 .homepage .searchbar{
     margin: 5vh 20px 5vh 20px;
-    direction: rtl;
+    direction: ltr;
 }
 
 @media(min-width:640px){
@@ -370,7 +298,7 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     }
 }
 
-.homepage .searchbar .dropdown-toggle{
+.homepage .searchbar .filter-btn{
     height: 40px;
     background-color: var(--primary-color);
     margin-left: 5px;
@@ -378,7 +306,7 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     color: var(--font-always-light-color);
     
 }
-
+/* 
 .homepage .searchbar .dropdown-toggle:focus{
     outline:none;
     box-shadow: none;
@@ -407,7 +335,7 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     color: var(--primary-color);
     background-color: var(--bg-color2-2);
     transition: none;
-}
+} */
 
 .homepage .searchbar a{
     font-family: 'Vazir-Bold';

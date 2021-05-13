@@ -3,8 +3,10 @@ import Nav from 'react-bootstrap/Nav';
 import { Form, FormControl } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
+import './Search.css';
 import { useEffect, useState } from 'react';
 import CloseIcon from '@material-ui/icons/Close';
+import SearchBar from './SearchBar';
 
 function CustomNavbar(props) {
   const [profile, setProfile] = useState(null);
@@ -13,7 +15,6 @@ function CustomNavbar(props) {
   useEffect(() => {
     console.log(window.location.pathname)
     if(window.location.pathname === "/login" || window.location.pathname === "/register"){
-      console.log("yupp??")
       return;
     }
     if (!localStorage.getItem("token")) {
@@ -112,10 +113,14 @@ function CustomNavbar(props) {
       </div>
        <Navbar.Toggle aria-controls="basic-navbar-nav" />
       {/* <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav"> */}
-      {showNavOptions &&<Form inline className="search-form">
-        <FormControl type="text" placeholder="جستجو..." className=" mr-sm-2" className="search-bar" />
-        {/* <div className="btn" type="submit" >Submit</div> */}
-      </Form>}
+      {showNavOptions &&
+      // <Form inline className="search-form">
+      //   <FormControl type="text" placeholder="جستجو..." className=" mr-sm-2" className="search-bar" />
+        // </Form>
+        <div className="search search-form">
+        <SearchBar id="nav"/>
+        </div>
+      }
       {/* </Navbar.Collapse> */}
     </Navbar>
   )
