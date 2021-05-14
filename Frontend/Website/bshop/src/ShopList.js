@@ -2,6 +2,7 @@ import './HomePage.css';
 import { useEffect, useState } from 'react';
 import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import ShopCard from './ShopCard';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 function ShopList(props) {
     const [shops, setShops] = useState([]);
@@ -91,7 +92,7 @@ function ShopList(props) {
             </div>
         </>
         }
-        <h3>فروشگاه های برگزیده</h3>
+        <h3><a className="header-list-link" href="/stores/newest"><ChevronLeftIcon />موارد بیشتر</a>فروشگاه های برگزیده</h3>
         <div className=" container-fluid row" data-testid="shops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0" }}  >
             {shops?.map((shop) => {
                 if (shop) return (
@@ -101,9 +102,12 @@ function ShopList(props) {
                 )
             })}
         </div>
-        <h3><input value={region} onChange={changeRegion} style={{width:"3rem", color:"var(--primary-color)"}} /> فروشگاه های منطقه </h3>
+        <h3><a className="header-list-link" href={"/stores/region?="+region}><ChevronLeftIcon />موارد بیشتر</a><input value={region} onChange={changeRegion} style={{width:"3rem", color:"var(--primary-color)"}} /> فروشگاه های منطقه </h3>
         <div className=" container-fluid row" data-testid="region-shops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0" }}  >
-            {regionalShops?.map((shop) => {
+            {!regionalShops || regionalShops.length===0?
+            <p style={{margin:"2vh auto"}}>نتیجه‌ای وجود ندارد!</p>
+            :
+            regionalShops?.map((shop) => {
                 if (shop) return (
                     <div className="shop-outer-container col-12 col-sm-6 col-md-4 col-xl-3" key={shop.id} data-testid={"region-shop-" + shop.id}>
                         <ShopCard shop={shop} />

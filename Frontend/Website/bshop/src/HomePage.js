@@ -9,11 +9,12 @@ import DiscountPic from './medias/Discount-pana.svg';
 import { useState } from 'react';
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import SearchBar from './SearchBar';
-
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import HomeItemList from './HomeItemList';
 
 function HomePage(props) {
     const [homeBoard, setHomeBoard] = useState([{ image: "/yalda-slider-without-ad.png", url: "/shop/14" }, { image: "/special-offer.jpg", url: "/" }, { image: "/am65tyeqh1y1.jpeg", url: "/register" }])
-
+    // document.title = "فروشگاه اینترنتی بی‌شاپ"
 
     const SearchDropDownToggle = (id) => {
         var dropdowns = document.getElementsByClassName("dropdown-menu");
@@ -92,7 +93,10 @@ function HomePage(props) {
                             <div className="search">
                                 <SearchBar id="home"/>
                             </div>
+                            {/*<form>
                             <form inline="true" className="input-group input-group-lg">
+                                    <p>دیدن کالاهای دسته</p>
+                               
                                 <div className="dropdown">
                                     <button className="btn dropdown-toggle filter-btn" onClick={(e) => { e.preventDefault(); SearchDropDownToggle("search-dropdown-type") }}>
                                         نوع
@@ -103,6 +107,8 @@ function HomePage(props) {
                                         <a className="dropdown-item" href="#">همه</a>
                                     </div>
                                 </div>
+                                <p><ArrowBackIosIcon /></p>
+                                </form>
                                 <div className="dropdown">
                                     <button className="btn dropdown-toggle filter-btn" onClick={(e) => { e.preventDefault(); SearchDropDownToggle("search-dropdown-region") }}>
                                         منطقه
@@ -123,7 +129,7 @@ function HomePage(props) {
                                         <a className="dropdown-item" href="#">محبوب‌ترین‌ها</a>
                                     </div>
                                 </div>
-                            </form>
+                            </form> */}
                             <div style={{ paddingTop: "5vh" }}><a href="/" style={{ fontSize: "larger", color: "var(--font-color2)" }}>...یا از روی نقشه فروشگاه نزدیک خود را پیدا کنید<LocationOnIcon className="icon" /></a></div>
                         </div>
 
@@ -131,7 +137,7 @@ function HomePage(props) {
                 </div>
             </div>
             <ShopList />
-
+            <HomeItemList />
         </div>
     )
 }
