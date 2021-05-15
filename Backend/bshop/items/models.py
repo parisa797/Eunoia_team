@@ -1,10 +1,7 @@
 from django.db import models
 from users.models import MyUser
 from shops.models import Shop
-<<<<<<< HEAD
-=======
 from django_jalali.db import models as jmodels
->>>>>>> feature/v1.0.0/login-signup-back
 
 # Create your models here.
 class Item(models.Model):
@@ -35,5 +32,17 @@ class Item(models.Model):
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
     def __str__(self):
         return self.name
+
+class ListKharid(models.Model):
+
+    user = models.ForeignKey(MyUser,related_name='kharid_user',on_delete=models.CASCADE,blank=True)
+    shop = models.ForeignKey(Shop,related_name='kharid_shop',on_delete=models.CASCADE,blank=True)
+    item = models.ForeignKey(Item,related_name='kharid_item',on_delete=models.CASCADE,blank=True)
+    date = models.DateTimeField(auto_now_add=True,blank=True)
+    sabt = models.BooleanField(default=False,blank=True, null=True)
+    address = models.CharField(max_length = 500, blank=False)
+    phone = models.CharField(max_length = 100,blank=True, null=True)
+    online = models.BooleanField(default=False,blank=True, null=True)
+    
 
 
