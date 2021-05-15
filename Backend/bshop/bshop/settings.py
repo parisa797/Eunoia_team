@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'jalali_date',
     'django_jalali',
     'persiantools',
+    'shoppings',
 ]
 
 # defaults
