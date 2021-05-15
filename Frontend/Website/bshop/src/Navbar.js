@@ -9,13 +9,19 @@ import CloseIcon from '@material-ui/icons/Close';
 function CustomNavbar(props) {
   const [profile, setProfile] = useState(null);
   const [dropVis, setDropVis] = useState(false);
+  const [showNavOptions,setShowNavOptions] = useState(window.location.pathname !== "/login" && window.location.pathname !== "/register" )
   useEffect(() => {
+    console.log(window.location.pathname)
+    if(window.location.pathname === "/login" || window.location.pathname === "/register"){
+      console.log("yupp??")
+      return;
+    }
     if (!localStorage.getItem("token")) {
       setProfile(null);
       return;
     }
     //set profile if exists
-    fetch("http://127.0.0.1:8000/users/profile", {
+    fetch("http://eunoia-bshop.ir:8000/users/profile", {
       method: 'GET',
       headers: {
         "Authorization": "Token " + localStorage.getItem('token')
@@ -69,7 +75,7 @@ function CustomNavbar(props) {
     <Navbar fixed="top" className='custom-nav navbar-default'>
       <div className="nav-upper mr-auto">
         <Navbar.Brand ><a href="/">Bshop</a><div className="btn" data-testid="nav-theme-toggle" onClick={() => props.setMode(props.theme[0] === 'l' ? 'd' : 'l')}> {props.theme[0] === 'l' ? '☀' : '🌙'}</div></Navbar.Brand>
-        <Nav className="">
+        {showNavOptions && <Nav className="">
           {!profile ?
             <Nav.Link href="/login" data-testid="no-profile" className="no-profile">ورود / ثبت نام</Nav.Link>
             :
@@ -102,14 +108,14 @@ function CustomNavbar(props) {
               </div>
             </div>
           }
-        </Nav>
+        </Nav>}
       </div>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       {/* <Navbar.Collapse className="justify-content-end" id="basic-navbar-nav"> */}
-      <Form inline className="search-form">
+      {showNavOptions &&<Form inline className="search-form">
         <FormControl type="text" placeholder="جستجو..." className=" mr-sm-2" className="search-bar" />
         {/* <div className="btn" type="submit" >Submit</div> */}
-      </Form>
+      </Form>}
       {/* </Navbar.Collapse> */}
     </Navbar>
   )

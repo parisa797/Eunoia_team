@@ -12,7 +12,7 @@ function LoadingPage(props) {
         }
         localStorage.removeItem("username");
         localStorage.removeItem("role")
-        fetch("http://127.0.0.1:8000/users/profile", {
+        fetch("http://eunoia-bshop.ir:8000/users/profile", {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -30,7 +30,6 @@ function LoadingPage(props) {
                 if (res === null)
                     return;
                 localStorage.setItem("role", res.role);
-
                 localStorage.setItem("username", res.user_name);
                 setLoaded(true)
             }

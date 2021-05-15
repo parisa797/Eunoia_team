@@ -5,7 +5,7 @@
 // function Itemslist(props){
 //     const [items,setItems] = useState([]);
 //     useEffect(()=>{
-//         fetch("http://127.0.0.1:8000/shops/1/items/",{
+//         fetch("http://eunoia-bshop.ir:8000/shops/1/items/",{
 //         method: "GET",
 //         headers: {
 //             "Authorization" : "Token " + localStorage.getItem("token")
@@ -70,7 +70,7 @@ function Itemslist(props) {
     const [shopInfo, setShopInfo] = useState({});
     let shopID = window.location.pathname.match(/[^\/]+/g)[1]
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/shops/" + shopID + "/items/", {
+        fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
             method: "GET",
         }).then((res) => {
             if (res.status === 200) {
@@ -79,7 +79,7 @@ function Itemslist(props) {
         }).then(res => {
             setItems(res);
         })
-        fetch("http://127.0.0.1:8000/api/v1/shops/" + shopID, {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -95,10 +95,10 @@ function Itemslist(props) {
             .then((d) => {
                 setShopInfo(d);
             });
-    }, [])
+    }, [props.triggerReload])
 
     return (
-        <div style={{ direction: "rtl", padding: "5vh 5vw" }}>
+        <div style={{ direction: "rtl", padding: "5vh 5vw", fontFamily:"Vazir" }}>
             <ShopSideBar />
             <div className="page-contents" style={{ position: "relative" }}>
                 <div className="Items_list-header">
@@ -109,7 +109,7 @@ function Itemslist(props) {
                     {items.map((item) => {
                         if (!!item) return (
                             <div /*class="card col-12 col-sm-6 col-md-4 col-lg-3"*/ className="col-12 col-sm-6 col-md-4 col-lg-3" style={{ padding: "5px" }}>
-                                <ItemCard item={item} />
+                                <ItemCard item={item} id={props.id} onlineShop={shopInfo.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
                                 {/* <div class="card-body">
                 <h5 class="btn btn-primary" style={{backgroundColor :"var(--secondary-color)",width: "100%" }}>{item.name} </h5>
                 {item.photo && <img data-testid={"myitem-img-"} src={item.photo} />}

@@ -1,2 +1,2 @@
-const ServerURL = "http://127.0.0.1:8000";
+const ServerURL = "http://eunoia-bshop.ir:8000";
 export default ServerURL;

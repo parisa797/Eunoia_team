@@ -154,34 +154,3 @@ def correct_date(date):
             return year+'-'+month+'-'+day
 
     return year+'-'+month+'-'+day
-
-class KharidSerializer(serializers.ModelSerializer): 
-
-    kharid_user = serializers.RelatedField(read_only=True)
-    kharid_shop = serializers.RelatedField(read_only=True)
-    kharid_item = serializers.RelatedField(read_only=True)
-    date_jalali=serializers.SerializerMethodField('get_jalali_date')
-
-    def get_jalali_date(self,id):
-        serial=datetime2jalali(id.date)
-        return str(serial)
-
-    
-    class Meta: 
-        model = ListKharid 
-        fields = '__all__'
-
-class KharidListSerializer(serializers.ModelSerializer): 
-
-    user = Profileserializer(read_only=True)
-    kharid_shop = serializers.RelatedField(read_only=True)
-    kharid_item = serializers.RelatedField(read_only=True)
-    date_jalali=serializers.SerializerMethodField('get_jalali_date')
-
-    def get_jalali_date(self,id):
-        serial=datetime2jalali(id.date)
-        return str(serial)
-    
-    class Meta: 
-        model = ListKharid 
-        fields = '__all__'

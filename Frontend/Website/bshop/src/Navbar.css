@@ -133,6 +133,10 @@
     cursor: pointer;
 }
 
+.nav-profile .dropdown{
+    font-family: 'Vazir';
+}
+
 @media (max-width: 620px){
     .nav-profile .dropprofile{
         display: block;

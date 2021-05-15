@@ -29,11 +29,17 @@ test("shoplist for unsigned users", async () => {
     , { title: "shop3", rate_value: 2, id: 3, address: "addressssss", logo: "" }
     , { title: "shop4", rate_value: 2, id: 4, address: "addressssss", logo: "" }
   ];
-  jest.spyOn(global, "fetch").mockImplementation(() =>
-    Promise.resolve({
+  jest.spyOn(global, "fetch").mockImplementation((url,options) =>{
+    if(url.includes("user"))
+      return Promise.resolve({
+        status: 200,
+        json: () => []
+      })
+    return Promise.resolve({
       status: 200,
       json: () => shops
     })
+  }
   );
   var page;
   await act(async () => {
@@ -51,11 +57,17 @@ test("shoplist for signed (buyer) users", async () => {
     , { title: "shop3", rate_value: 2, id: 3, address: "addressssss", logo: "" }
     , { title: "shop4", rate_value: 2, id: 4, address: "addressssss", logo: "" }
   ];
-  jest.spyOn(global, "fetch").mockImplementation(() =>
-    Promise.resolve({
+  jest.spyOn(global, "fetch").mockImplementation((url,options) =>{
+    if(url.includes("user"))
+      return Promise.resolve({
+        status: 200,
+        json: () => []
+      })
+    return Promise.resolve({
       status: 200,
       json: () => shops
     })
+  }
   );
   var page;
   await act(async () => {
