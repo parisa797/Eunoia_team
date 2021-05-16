@@ -139,7 +139,7 @@ function ItemsListPage(props) {
 
     return <div className="search-results filtered-items">
         <div style={{ direction: "rtl"/*, padding: "5vh 5vw"*/, fontFamily: "Vazir" }}>
-            <ShopSideBar />
+            <ShopSideBar shopID={shopID}/>
             <div className="page-contents" style={{ position: "relative" }}>
                 <div className="Items_list-header">
                     <div className="Items_list-header-upper">
@@ -156,7 +156,7 @@ function ItemsListPage(props) {
                 {!loading &&
                     <div className="container-fluid row" data-testid="results" style={{ width: "100%", zIndex: "0", margin: "0 0 20vh 0", padding: "10" }}  >
                         {!results || results.length === 0 ?
-                            <p style={{ margin: "auto" }}>نتیجه‌ای یافت نشد! لطفا عبارات دیگری را امتحان کنید.</p>
+                            <p style={{ margin: "auto" }}>نتیجه‌ای یافت نشد!</p>
                             : 
                             // results.map((result) => {
                             //     if (!!result) return (
@@ -165,7 +165,7 @@ function ItemsListPage(props) {
                             //         </div>
                             //     )
                             // })
-                            <Itemslist url={"/store/"+shopID+"/itemslist"} items={results} listType="horizontal" online={shopInfo?.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" listType="page"  id="filtered" userState={props.userState?props.userState:"l"} showDeleteItemModal={props.showDeleteItemModal}/>
+                            <Itemslist url={"/store/"+shopID+"/itemslist"} items={results} listType="horizontal" online={shopInfo?.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" listType="page"  id="filtered" userState={props.userState?props.userState:null} showDeleteItemModal={props.showDeleteItemModal}/>
                             }
                     </div>}
             </div>

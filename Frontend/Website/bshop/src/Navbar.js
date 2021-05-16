@@ -52,6 +52,7 @@ function CustomNavbar(props) {
     localStorage.removeItem("username")
     localStorage.removeItem("token")
     localStorage.removeItem("role")
+    localStorage.removeItem("shops")
     window.location.replace("/");
   }
 

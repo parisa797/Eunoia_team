@@ -37,6 +37,7 @@ function Itemslist(props) {
     //             setShopInfo(d);
     //         });
     // }, [props.triggerReload])
+    const usersShops = localStorage.getItem("shops");
 
     return (
         <div className="items-list-component">
@@ -48,9 +49,21 @@ function Itemslist(props) {
                     </div> */}
                     <div className="Items_list container-fluid row your-shops" data-testid="myitems" style={{ width: "100%", zIndex: "0"/*, margin: "0 0 20vh 0"*/,margin:"0", padding: "10" }}  >
                         {props.items.map((item) => {
+                            let userState = "u";
+                            if(props.userState)
+                                userState = props.userState;
+                            else if(!localStorage.getItem("token")){
+                                userState = "u"
+                            }
+                            else if(usersShops.includes(item.shop_id))
+                                userState = "m"
+                            else
+                                userState = "l"
+                            console.log(userState)
+                            console.log(item)
                             if (!!item) return (
                                 <div className={props.itemHolderClass} style={{ padding: "5px" }}>
-                                    <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
+                                    <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} />
                                 </div>
                             )
                         })}
@@ -63,10 +76,20 @@ function Itemslist(props) {
                         :
                         <>
                             {props.items?.map((item, i) => {
+                                let userState = "u";
+                                if(props.userState)
+                                    userState = props.userState;
+                                else if(!localStorage.getItem("token")){
+                                    userState = "u"
+                                }
+                                else if(usersShops.includes(item.shop_id))
+                                    userState = "m"
+                                else
+                                    userState = "l"
                                 if (item)
                                     return (
                                         <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className={props.itemHolderClass}>
-                                            <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
+                                            <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} />
                                         </div>
                                     )
                             })}

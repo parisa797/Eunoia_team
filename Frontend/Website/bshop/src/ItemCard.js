@@ -40,7 +40,7 @@ function ItemCard(props) {
 
     const ToggleOptions=(e)=>{
         e.stopPropagation(); 
-        var el = document.getElementById("add-to-cart"+ (props.id? props.id : props.item.id)); 
+        var el = document.getElementById("add-to-cart"+(props.id? props.id : "")+props.item.shop_id +props.item.id); 
         setHideOptions(!hideOptions); 
         el.style.visibility = el.style.visibility==="hidden"?"visible":"hidden";
         el.style.opacity = 1- el.style.opacity;
@@ -49,7 +49,7 @@ function ItemCard(props) {
 
     return (
         <div className="item-card" >
-            <div id={"add-to-cart"+(props.id? props.id : props.item.id)} className="add-to-cart-card" style={{visibility:"hidden",opacity:"0"}} /*hidden="true"*/>
+            <div id={"add-to-cart"+(props.id? props.id : "")+props.item.shop_id +props.item.id} className="add-to-cart-card" style={{visibility:"hidden",opacity:"0"}} /*hidden="true"*/>
             <h5 className="item-card-title" >{props.item.name}</h5>
             {props.userState !== "m"?<><div><h1 className="cart-price">{cartPrice}</h1><p>ریال</p></div>
             <div className="count-div">
@@ -104,7 +104,7 @@ function ItemCard(props) {
                         //     </div>
                         <div className="cart-btn cart-btn-1">
                             <div className="cart-btn-1" style={{backgroundColor: "var(--primary-color)",color:"white",borderRadius:"5px"}}><SettingsIcon /></div>
-                            <div className="cart-btn-1" style={{backgroundColor: "red",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); props.showDeleteItemModal(props.item.id,props.item.name)}}><DeleteForeverIcon /></div>
+                            {props.showDeleteItemModal && <div className="cart-btn-1" style={{backgroundColor: "red",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); props.showDeleteItemModal(props.item.id,props.item.name)}}><DeleteForeverIcon /></div>}
                             <div className="cart-btn-1" style={{backgroundColor: "cadetblue",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); window.location.href = "/store/" + props.item.shop_id + "/items/" + props.item.id }}><VisibilityIcon /></div>
                             </div>
                             :

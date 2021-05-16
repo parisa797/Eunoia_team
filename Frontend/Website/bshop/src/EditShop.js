@@ -227,6 +227,7 @@ function EditShop(props) {
         }).then(
             res => {
                 if (res.status === 204) {
+                    localStorage.removeItem("role");
                     window.location.replace("/");
                 }
                 return null;

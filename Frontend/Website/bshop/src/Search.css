@@ -121,7 +121,7 @@
 
 .search .searchbar .search-list-item .desc{
     margin-right: 5px;
-    color: var(--primary-color);
+    color: var(--heading-color);
     font-size: 0.8rem;
 }
 
@@ -152,13 +152,18 @@
 }
 
 .filtered-items .filter-btn{
-    border:1px solid var(--primary-color);
+    /* border:1px solid var(--primary-color); */
+    border: none;
     color: var(--primary-color);
+    opacity: 0.8;
     background-color: transparent;
     margin: 0 3px;
 }
 
 .filtered-items .filters .active{
-    color: var(--font-always-light-color);
-    background-color: var(--primary-color);
+    /* color: var(--font-always-light-color); */
+    /* background-color: var(--primary-color); */
+    color: var(--primary-color);
+    opacity: 1;
+    border-bottom: 2px solid var(--primary-color);
 }

@@ -148,7 +148,7 @@ function Shop(props) {
 
     return (
         <div className="shop-page">
-            <ShopSideBar />
+            <ShopSideBar shopID={shopID} />
             <div className="page-contents">
                 <div className="page-contents-item">
                     <div className="shop-profile">
