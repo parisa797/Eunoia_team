@@ -10,7 +10,7 @@ class ShoppingListSerializer(serializers.ModelSerializer):
     shopping_list_user = serializers.RelatedField(read_only=True)
     shopping_list_shop = serializers.RelatedField(read_only=True)
     shopping_list_item = serializers.RelatedField(read_only=True)
-    date_jalali=serializers.SerializerMethodField('get_jalali_date')
+    date_jalali = serializers.SerializerMethodField('get_jalali_date')
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)

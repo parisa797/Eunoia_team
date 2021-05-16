@@ -13,13 +13,13 @@ class ShoppingItem(models.Model):
 
 class ShoppingList(models.Model):
 
-    user = models.ForeignKey(MyUser,related_name='shopping_list_user',on_delete=models.CASCADE,blank=True)
-    shop = models.ForeignKey(Shop,related_name='shopping_list_shop',on_delete=models.CASCADE,blank=True)
+    user = models.ForeignKey(MyUser,related_name='shopping_list_user',on_delete=models.CASCADE,blank=False)
+    shop = models.ForeignKey(Shop,related_name='shopping_list_shop',on_delete=models.CASCADE,blank=True,null=True)
     items = models.ForeignKey(ShoppingItem,related_name='shopping_list_items',on_delete=models.CASCADE,blank=True,null=True)
-    date = models.DateTimeField(auto_now_add=True,blank=True)
-    sabt = models.BooleanField(default=False,blank=True, null=True)
-    address = models.CharField(max_length = 500, blank=False)
-    phone = models.CharField(max_length = 100,blank=True, null=True)
-    online = models.BooleanField(default=False,blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=False,blank=True, null=True)
+    sabt = models.BooleanField(default=False)
+    address = models.CharField(max_length = 500, blank=False, null=True)
+    phone = models.CharField(max_length = 100,blank=False, null=True)
+    online = models.BooleanField(default=False,blank=False, null=True)
     max_cost = models.IntegerField(blank=True, null=True)
-    delivery_time = jmodels.jDateField(blank=True,auto_now=False, auto_now_add=False)
+    delivery_time = jmodels.jDateField(blank=True, null=True, auto_now=False, auto_now_add=False)
