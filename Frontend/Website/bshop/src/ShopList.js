@@ -32,9 +32,9 @@ function ShopList(props) {
             });
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/top/", {
             method: 'GET',
-            headers: {
+            /*headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
-            }
+            }*/
         })
             .then((res) => {
                 if (res.status === 200) {
@@ -85,7 +85,7 @@ function ShopList(props) {
                 {myshops?.map((shop) => {
                     if (shop) return (
                         <div className="shop-outer-container col-12 col-sm-6 col-md-4 col-xl-3" key={shop.id} data-testid={"myshop-" + shop.id}>
-                            <ShopCard shop={shop} />
+                            <ShopCard id={"my"} shop={shop} />
                         </div>
                     )
                 })}
@@ -97,7 +97,7 @@ function ShopList(props) {
             {shops?.map((shop) => {
                 if (shop) return (
                     <div className="shop-outer-container col-12 col-sm-6 col-md-4 col-xl-3" key={shop.id} data-testid={"shop-" + shop.id}>
-                        <ShopCard shop={shop} />
+                        <ShopCard id="" shop={shop} />
                     </div>
                 )
             })}
@@ -110,7 +110,7 @@ function ShopList(props) {
             regionalShops?.map((shop) => {
                 if (shop) return (
                     <div className="shop-outer-container col-12 col-sm-6 col-md-4 col-xl-3" key={shop.id} data-testid={"region-shop-" + shop.id}>
-                        <ShopCard shop={shop} />
+                        <ShopCard id="regional" shop={shop} />
                     </div>
                 )
             })}

@@ -9,7 +9,7 @@ import RegisterStore from "./registerStore";
 import ProfilePage from "./ProfilePage";
 import Login from "./login";
 import Register from "./register";
-// import ShopsListPage from "./ShopsListPage";
+import ShopsListPage from "./ShopsListPage";
 import {
     BrowserRouter as Router,
     Switch,
@@ -115,11 +115,11 @@ function LoadingPage(props) {
                 <Route exact path="/" component={HomePage} />
                 <Route
                   path="/profile"
-                  render={(props) => (
+                  render={(p) => (
                     <ProfilePage
                       triggerNavbarUpdate={props.triggerNavbarUpdate}
                       setTriggerNavUpdate={props.setTriggerNavUpdate}
-                      {...props}
+                      {...p}
                     />
                   )}
                 />
@@ -128,7 +128,7 @@ function LoadingPage(props) {
                 <Route exact path="/registerstore" component={RegisterStore} />
                 <Route path="/store/search" component={SearchResults}/>
                 <Route path="/items/search" component={SearchResults}/>
-                <Route path="/stores/" component={ItemsListPage}/>
+                <Route path="/stores/" component={ShopsListPage}/>
                 <Route path="/items/" component={ItemsListPage}/>
                 <Route path="/store/:storeid/items/search" component={SearchResults}/>
                 <Route path="/store/:id" component={ShopDispatcher} />

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import './Search.css';
-import { propTypes } from 'react-bootstrap/esm/Image';
 function SearchBar(props){
     const [type, setType] = useState("فروشگاه")
     const [shopName,setShopName] = useState("");

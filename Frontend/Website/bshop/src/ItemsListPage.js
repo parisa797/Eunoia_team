@@ -143,20 +143,20 @@ function ItemsListPage(props) {
             <div className="page-contents" style={{ position: "relative" }}>
                 <div className="Items_list-header">
                     <div className="Items_list-header-upper">
-                    <h1>{!category?"همه کالاها":categories[category]} </h1>
+                    <h1 data-testid="header">{!category?"همه کالاها":categories[category]} </h1>
                     {!!shopID && <a href={"/store/" + shopID}>بازگشت به فروشگاه<ArrowBackIosIcon /></a>}
                     </div>
                     <div className="filters">
-                        <button className="filter-btn" id="newest-btn" onClick={()=>changeFilter("newest")}>جدیدترین‌ها</button>
-                        <button className="filter-btn" id="mostexpensive-btn" onClick={()=>changeFilter("mostexpensive")}>گران‌ترین‌ها</button>
-                        <button className="filter-btn" id="cheapest-btn" onClick={()=>changeFilter("cheapest")}>ارزان‌ترین‌ها</button>
-                        <button className="filter-btn" id="discounted-btn" onClick={()=>changeFilter("discounted")}>تخفیف‌دارها</button>
+                        <button className="filter-btn" id="newest-btn" data-testid="newest-btn" onClick={()=>changeFilter("newest")}>جدیدترین‌ها</button>
+                        <button className="filter-btn" id="discounted-btn" data-testid="discounted-btn" onClick={()=>changeFilter("discounted")}>تخفیف‌دارها</button>
+                        <button className="filter-btn" id="cheapest-btn" data-testid="cheapest-btn" onClick={()=>changeFilter("cheapest")}>ارزان‌ترین‌ها</button>
+                        <button className="filter-btn" id="mostexpensive-btn" data-testid="mostexpensive-btn" onClick={()=>changeFilter("mostexpensive")}>گران‌ترین‌ها</button>
                     </div>
                 </div>
                 {!loading &&
-                    <div className="container-fluid row" data-testid="results" style={{ width: "100%", zIndex: "0", margin: "0 0 20vh 0", padding: "10" }}  >
+                    <div className="container-fluid row" style={{ width: "100%", zIndex: "0", margin: "0 0 20vh 0", padding: "10" }}  >
                         {!results || results.length === 0 ?
-                            <p style={{ margin: "auto" }}>نتیجه‌ای یافت نشد!</p>
+                            <p style={{ margin: "auto" }} id="no-items">نتیجه‌ای یافت نشد!</p>
                             : 
                             // results.map((result) => {
                             //     if (!!result) return (
