@@ -62,8 +62,8 @@ function Itemslist(props) {
                             console.log(userState)
                             console.log(item)
                             if (!!item) return (
-                                <div className={props.itemHolderClass} style={{ padding: "5px" }}>
-                                    <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} />
+                                <div className={props.itemHolderClass} style={{ padding: "5px" }} key={item.id}>
+                                    <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} showShopName={props.showShopName} />
                                 </div>
                             )
                         })}
@@ -88,8 +88,8 @@ function Itemslist(props) {
                                     userState = "l"
                                 if (item)
                                     return (
-                                        <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className={props.itemHolderClass}>
-                                            <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} />
+                                        <div key={props.id+item.shop_id+item.id} data-testid={"shop-all-items-" + i} className={props.itemHolderClass}>
+                                            <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} showShopName={props.showShopName} />
                                         </div>
                                     )
                             })}

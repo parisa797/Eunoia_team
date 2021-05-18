@@ -108,14 +108,14 @@ function HomeItemList(props) {
         {!!newest && newest.length > 0 && <>
             <h3>جدیدترین کالاها</h3>
             <div data-testid="myshops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0 0 5vh 0" }}  >
-                <ItemsList url={"/items/newest"} id="newest" items={newest} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" />
+                <ItemsList url={"/items/newest"} id="newest" items={newest} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" showShopName={true}/>
             </div>
         </>
         }
         {!!discounted && discounted.length > 0 && <>
         <h3>!با تخفیف بخرید</h3>
         <div data-testid="shops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0" }}  >
-            <ItemsList url={"/items/discounted"} id="discounted" items={discounted} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" />
+            <ItemsList url={"/items/discounted"} id="discounted" items={discounted} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" showShopName={true}/>
         </div>
         </>
         }
@@ -131,7 +131,7 @@ function HomeItemList(props) {
         غذا، کنسرو و سبزیجات </h3>
         
         <div data-testid="region-shops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0" }}  >
-            <ItemsList url={"/items/category?=Fruits and vegetables"} id="fruits" items={thisCategoryItems} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" />
+            <ItemsList url={"/items/category?=Fruits and vegetables"} id="fruits" items={thisCategoryItems} listType="horizontal" itemHolderClass="col-12 col-sm-4 col-md-3 col-lg-2" showShopName={true}/>
         </div>
         </>
         }
