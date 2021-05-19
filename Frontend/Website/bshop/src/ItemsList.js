@@ -55,12 +55,10 @@ function Itemslist(props) {
                             else if(!localStorage.getItem("token")){
                                 userState = "u"
                             }
-                            else if(usersShops.includes(item.shop_id))
+                            else if(!!usersShops && usersShops.includes(item.shop_id))
                                 userState = "m"
                             else
                                 userState = "l"
-                            console.log(userState)
-                            console.log(item)
                             if (!!item) return (
                                 <div className={props.itemHolderClass} style={{ padding: "5px" }} key={item.id}>
                                     <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} showShopName={props.showShopName} />
@@ -82,7 +80,7 @@ function Itemslist(props) {
                                 else if(!localStorage.getItem("token")){
                                     userState = "u"
                                 }
-                                else if(usersShops.includes(item.shop_id))
+                                else if(!!usersShops && usersShops.includes(item.shop_id))
                                     userState = "m"
                                 else
                                     userState = "l"
