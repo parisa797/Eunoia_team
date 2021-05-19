@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   Container,
 } from "react-native";
-import axios from "axios";
+// import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 
 const PersonalInfo = ({ navigation }) => {
@@ -123,34 +123,34 @@ const PersonalInfo = ({ navigation }) => {
       body: formdata,
     };
 
-    //   fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
-    //     .then((response) => {
-    //       console.log("parisaaa");
-    //       if (response.status == 200) {
-    //         alert("heeeeeeelo");
-    //         return response.json();
-    //       }
-    //     })
-    //     .then((result) => console.log(result))
-    //     .catch((error) => console.log("error", error));
-    // }
-
-    const response = await axios
-      .put("http://eunoia-bshop.ir:8000/users/profile", formdata, {
-        headers: {
-          "Content-Type":
-            "multipart/form-data; boundary=<calculated when request is sent>",
-          Authorization:
-            "Token " + (await SecureStore.getItemAsync("token")).toString(),
-        },
+    fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+      .then((response) => {
+        console.log("parisaaa");
+        if (response.status == 200) {
+          alert("heeeeeeelo");
+          return response.json();
+        }
       })
-      .then(function (response) {
-        console.log("setayesh");
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   }
+
+  // const response = await axios
+  //   .put("http://eunoia-bshop.ir:8000/users/profile", formdata, {
+  //     headers: {
+  //       "Content-Type":
+  //         "multipart/form-data; boundary=<calculated when request is sent>",
+  //       Authorization:
+  //         "Token " + (await SecureStore.getItemAsync("token")).toString(),
+  //     },
+  //   })
+  //   .then(function (response) {
+  //     console.log("setayesh");
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+  // }
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.kooft}>
