@@ -1,0 +1,8 @@
+.one-shopping-list .right-content{
+    border-left: 2px solid var(--bg-color3);
+    padding: 10vh 20px;
+}
+
+.one-shopping-list .col-12{
+    padding:0;
+}

@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import Itemslist from "./ItemsList";
 import ItemsListPage from "./ItemsListPage";
+import ShoppingList from "./ShoppingList";
 
 function ShopDispatcher() {
     const [userState, setUserState] = useState(null) //u for unsigned user, l for logged in, m for manager
@@ -111,6 +112,15 @@ function ShopDispatcher() {
                         userState={userState}
                         {...props}
                     />)}
+                    />
+                    <Route exact path="/store/:id/shopping-list" render={(props) => (
+                        <ShoppingList
+                            // triggerReload={triggerReload}
+                            // setTriggerReload={setTriggerReload}
+                            userState={userState}
+                            // showDeleteItemModal={showDeleteItemModal}
+                            {...props}
+                        />)}
                     />
                     <Route path="/store/:id/edit-info" render={(props) => (
                         <EditShop
