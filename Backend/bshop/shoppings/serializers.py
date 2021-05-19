@@ -1,15 +1,30 @@
 from rest_framework import serializers
 
-from .models import ShoppingList
+from .models import *
 from users.models import MyUser
 from users.serializers import Profileserializer
+from items.serializers import ItemShoppnigSerializer
 from jalali_date import date2jalali,datetime2jalali
+
+class CreateShoppingItemSerializer(serializers.ModelSerializer):
+    
+    class Meta: 
+        model = ShoppingItem 
+        fields = '__all__'
+
+class ShoppingItemSerializer(serializers.ModelSerializer):
+
+    item = ItemShoppnigSerializer(read_only=True)
+    
+    class Meta: 
+        model = ShoppingItem 
+        fields = '__all__'
+
 
 class ShoppingListSerializer(serializers.ModelSerializer): 
 
     shopping_list_user = serializers.RelatedField(read_only=True)
     shopping_list_shop = serializers.RelatedField(read_only=True)
-    shopping_list_item = serializers.RelatedField(read_only=True)
     date_jalali = serializers.SerializerMethodField('get_jalali_date')
 
     def get_jalali_date(self,id):
@@ -23,9 +38,8 @@ class ShoppingListSerializer(serializers.ModelSerializer):
 
 class AllShoppingListSerializer(serializers.ModelSerializer): 
 
-    user = Profileserializer(read_only=True)
     shopping_list_shop = serializers.RelatedField(read_only=True)
-    kshopping_list_item = serializers.RelatedField(read_only=True)
+    shopping_list_items = ShoppingItemSerializer(many=True)
     date_jalali=serializers.SerializerMethodField('get_jalali_date')
 
     def get_jalali_date(self,id):

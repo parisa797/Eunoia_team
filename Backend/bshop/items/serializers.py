@@ -48,6 +48,26 @@ class CreateListItemSerializer(serializers.ModelSerializer):
         model= Item
         fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count','category','discount','price','id']
 
+
+class ItemShoppnigSerializer(serializers.ModelSerializer):
+    shop_id = serializers.IntegerField(source='shopID.id', read_only=True)
+    manufacture_jalali = serializers.SerializerMethodField('get_miladi_date')
+    Expiration_jalali = serializers.SerializerMethodField('get_miladi_Expiration_Date')
+    def get_miladi_date(self, id):
+        temp = JalaliDate.to_gregorian(id.manufacture_Date)
+        str=correct_date(temp)
+        return str
+    def get_miladi_Expiration_Date(self, id):
+        temp = JalaliDate.to_gregorian(id.Expiration_Date)
+        str=correct_date(temp)
+        return str
+
+
+    class Meta:
+        model= Item
+        fields=['photo','name','shop_id','description', 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count','category','id','discount','price']
+
+
 def correct_date(date):
     year=date.strftime('%Y')
     month=date.strftime('%m')
