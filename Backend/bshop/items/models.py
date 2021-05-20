@@ -30,7 +30,7 @@ class Item(models.Model):
                   ('Washing and Cleaning Equipment','Washing and Cleaning Equipment'),
                   ('others','others'),]
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name 
 
 

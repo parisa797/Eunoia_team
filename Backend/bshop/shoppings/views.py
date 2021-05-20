@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import status
 from django.utils import timezone
 from datetime import timedelta
+import requests
 
 from .models import *
 from .serializers import *
@@ -79,6 +80,10 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+
+        if (instance.address is None or instance.phone is None):
+            return Response(data="address and phone should be defined",status=status.HTTP_400_BAD_REQUEST)
+
         instance.sabt = request.data.get('sabt', instance.sabt)
         instance.date = request.data.get('date', timezone.now())
         instance.save()
@@ -104,6 +109,13 @@ class MaxCostShoppingListUpdateAPIView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        if(int(request.data.get('max_cost')) == 0):
+            instance.max_cost = request.data.get('max_cost', instance.max_cost)
+            instance.save()
+            serializer = AllShoppingListSerializer(instance)
+            return Response(serializer.data)
+        if((ShoppingList.objects.get(id = self.kwargs['pk']).sum_price) > int(request.data.get('max_cost'))):
+            return Response(data="max_cost should be smaller than sum_price",status=status.HTTP_400_BAD_REQUEST)
         instance.max_cost = request.data.get('max_cost', instance.max_cost)
         instance.save()
         serializer = AllShoppingListSerializer(instance)
@@ -118,11 +130,21 @@ class ShoppingListUpdateAPIView(generics.UpdateAPIView):
         instance = self.get_object()
         instance.address = request.data.get('address', instance.address)
         instance.phone = request.data.get('phone', instance.phone)
-        # instance.delivery_times = request.data.get(timezone.now() + timedelta(days=1), instance.delivery_times)
         instance.save()
         serializer = AllShoppingListSerializer(instance)
         return Response(serializer.data)
 
+class DeliveryShoppingListUpdateAPIView(generics.UpdateAPIView):
+
+    queryset = ShoppingList.objects.all()
+    serializer_class = AllShoppingListSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.delivery_time = request.data.get('delivery_time', instance.delivery_time)
+        instance.save()
+        serializer = AllShoppingListSerializer(instance)
+        return Response(serializer.data)
 
 class ShoppingListDestroyAPIView(generics.DestroyAPIView):
 
@@ -135,7 +157,18 @@ class ShoppingItemCreateAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.copy()
+        if(ShoppingList.objects.get(id = request.data['shopping_list']).max_cost == 0):
+            serializer_data.update({'user':request.user.id})
+            serializer_data.update({'price':Item.objects.get(id = request.data['item']).price})
+            serializer = self.get_serializer(data=serializer_data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        if((ShoppingList.objects.get(id = request.data['shopping_list']).sum_price) + (Item.objects.get(id = request.data['item']).price) > ShoppingList.objects.get(id = request.data['shopping_list']).max_cost):
+            return Response(data="sum_price should be smaller than max_cost",status=status.HTTP_400_BAD_REQUEST)
         serializer_data.update({'user':request.user.id})
+        serializer_data.update({'price':Item.objects.get(id = request.data['item']).price})
         serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
