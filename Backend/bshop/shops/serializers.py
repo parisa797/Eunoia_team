@@ -3,8 +3,13 @@ from rest_framework import serializers
 from .models import Shop
 from .models import Rate
 from .models import Comment
+from .models import Board
 from users.models import MyUser
 from users.serializers import Profileserializer
+from jalali_date import date2jalali,datetime2jalali
+#import json
+#import datetime
+
 
 class ShopSerializer(serializers.ModelSerializer): 
 
@@ -20,6 +25,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
     comments_user = serializers.RelatedField(read_only=True)
     comments_shop = serializers.RelatedField(read_only=True)
+    date_jalali=serializers.SerializerMethodField('get_jalali_date')
+
+    def get_jalali_date(self,id):
+        serial=datetime2jalali(id.date)
+        return str(serial)
+
     
     class Meta: 
         model = Comment 
@@ -29,6 +40,11 @@ class ListCommentSerializer(serializers.ModelSerializer):
 
     user = Profileserializer(read_only=True)
     comments_shop = serializers.RelatedField(read_only=True)
+    date_jalali=serializers.SerializerMethodField('get_jalali_date')
+
+    def get_jalali_date(self,id):
+        serial=datetime2jalali(id.date)
+        return str(serial)
     
     class Meta: 
         model = Comment 
@@ -51,4 +67,10 @@ class ListRateSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = Rate 
+        fields = '__all__'
+
+class BoardSerializer(serializers.ModelSerializer): 
+
+    class Meta: 
+        model = Board 
         fields = '__all__'

@@ -4,6 +4,7 @@
     background-color: var(--bg-color);
      padding: 5vh 0; 
     justify-content: center;
+    font-family: 'Vazir';
 }
 
 .profile-page .row{
@@ -43,14 +44,9 @@
 }
 
 .profile-page .prof-pic-selector .custom-file-upload{
-    /* background-color: var(--primary-color);
-    color: var(--bg-color); */
     border-radius: 50%;
     font-size: large;
     padding: 0;
-    /* position: absolute;
-    top:14%;
-    right:15%; */
     color: var(--primary-color);
     margin-top: 5px;
     padding-left:3px;
@@ -66,6 +62,15 @@
 .profile-outer-modal .modal-content{
     background-color: transparent;
     border: 1px solid var(--primary-color)
+}
+
+.profile-outer-modal .modal-title{
+    align-self: right;
+}
+
+.profile-outer-modal .modal-content p{
+    text-align: right;
+    margin-bottom: 0.5rem;
 }
 
 .profile-outer-modal .modal-header{
@@ -85,7 +90,6 @@
     color:var(--primary-color)
 }
 .profile-page .prof-img{
-    /* overflow: hidden; */
     object-fit: cover;
     position: absolute;
     top: 0;
@@ -99,9 +103,6 @@
 }
 
 .custom-container{
-    /* background-color: var(--bg-color);
-    border: 1px solid var(--secondary-color);
-    border-radius: 5px; */
     color: var(--font-color);
     padding: 2vh 2vw;
 }
@@ -117,10 +118,6 @@
 .profile-page .edit-button{
     color: var(--secondary-color);
     background-color: var(--bg-color);
-    /* float: right;
-    position: absolute;
-    margin-top: -20px;
-    margin-left: 10vw; */
     padding-top: 3px;
 }
 .profile-page .input{
@@ -157,8 +154,6 @@
 }
 
 .profile-page .left-content .btn{
-    /* background-color: var(--primary-color);
-    color: var(--font-color); */
     margin: 0 5px;
     border-color: var(--secondary-color);
     color: var(--primary-color);

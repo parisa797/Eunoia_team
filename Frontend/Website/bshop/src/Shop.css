@@ -1,0 +1,429 @@
+
+.shop-page{
+    padding: 5vh 5vw;
+    direction: rtl;
+    font-family: Vazir;
+    color: var(--font-color2);
+    position: relative;
+}
+
+/* .shop-page .page-contents{ */
+    /* width: 100%; */
+    /* height:100vh; */
+    /* background-color: aquamarine; */
+/* } */
+
+.shop-page .page-contents-item{
+    padding:10px;
+    margin-bottom: 5vh;
+}
+
+.shop-page .shop-profile{
+    padding:10px;
+    border-radius: 10px;
+    width: 100%;
+    display: grid;
+    grid-template-rows: auto auto;
+}
+
+.shop-page .shop-info{
+    width: 100%;
+    display:grid;
+    grid-template-columns: 20% auto;
+    grid-template-rows: 50% 25% 25%;
+}
+
+.shop-page .logo-container-2{
+    width: 100%;
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-row-end: 4;
+}
+
+.shop-page .logo-container{
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+.shop-page .shop-info img{
+    border-radius: 5%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height:100%;
+}
+
+.shop-page .shop-info h3{
+    align-self: center;
+    justify-self: start;
+    margin-right: 10px;
+    font-family: Vazir-Bold;
+    color:var(--heading-color)
+}
+
+.shop-page .rating-comment{
+    margin-right: 10px;
+    direction: ltr;
+    display: inline-flex;
+    flex-direction: row-reverse;
+}
+
+.shop-page .rating-comment p{
+    font-size: 1rem;
+    margin-top: 8px;
+}
+
+.shop-page .stars{
+    overflow: initial !important;
+}
+
+.shop-page .comment-info{
+    color: var(--secondary-color);
+    margin-right: 2rem;
+    cursor: pointer;
+}
+
+.shop-page .comment-info:hover{
+    color: var(--primary-color)
+}
+.shop-page .options{
+    margin-right: 10px;
+    text-align: center;
+    align-self: end;
+    grid-row-start: 3;
+    justify-self: start;
+    color: var(--font-color2);
+    height: fit-content;
+    font-size: small;
+}
+
+.shop-page .options p{
+    margin: 0;
+}
+
+.shop-page .shop-more-info{
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.shop-more-info .phone, .shop-more-info .address{
+    display: inline-flex;
+    font-size: .9rem;
+}
+
+.shop-more-info p{
+    margin: 0;
+}
+
+.shop-more-info .address a{
+    color:var(--primary-color);
+    margin-right: 15px;
+    cursor: pointer;
+    font-family: 'Vazir-Bold';
+}
+
+/* .shop-more-info .address a:hover{
+    color:var(--primary-color)
+} */
+
+.shop-page .section-break{
+    margin: 2vh auto;
+    height:1px;
+    width: 85%;
+    border-bottom: 2px solid var(--bg-color2);
+}
+
+.shop-page .carousel{
+    direction: ltr;
+    margin-bottom: 5px;
+}
+
+.shop-page .carousel .carousel-inner{
+    border-radius: 10px;
+}
+
+.shop-page .board-item{
+    width:100%;
+}
+
+.shop-page .board-item img{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    object-fit: cover;
+    height: 100%;
+    width:100%
+}
+
+.shop-page .board-item .img-container{
+    padding-top: 35.0%; /* aspect ratio: height 35% of width*/
+    position: relative;
+}
+
+.shop-page .edit-info{
+    margin-right: auto;
+    align-self: center;
+    margin-left: 5px;
+}
+
+.shop-page .title-buttons{
+    grid-column-start: 2;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    align-self: stretch;
+    display: inline-flex;
+}
+
+@media(max-width:640px){
+    .shop-page .title-buttons{
+        display: flex;
+    }
+    .shop-page .title-buttons svg{
+        display: none;
+    }
+}
+.shop-page .edit-info .btn{
+    color: var(--font-always-light-color);
+    background-color: var(--secondary-color);
+    font-weight: 500;
+    margin: 2px;
+}
+
+.shop-page .edit-info .btn:hover{
+    background-color: var(--primary-color);
+} 
+
+.shop-page .header{
+   text-align:right; 
+   border-bottom: 2px solid var(--bg-color2); 
+   line-height: 0.1em;
+   color: var(--primary-color);
+   margin: 10px 5% 20px 5%; 
+}
+
+.shop-page .header-span{ 
+    background:var(--bg-color); 
+    padding:0 10px; 
+}
+
+.shop-page .edit-board{
+    margin:10px 5px;
+    color: var(--secondary-color);
+    font-size: large;
+}
+
+.shop-page .edit-board:hover{
+    color:var(--primary-color);
+    text-decoration: none;
+}
+
+.shop-page .horizontal-list{
+    overflow: auto;
+  white-space: nowrap;
+    overflow-x:scroll;
+    width: 100%;
+}
+
+.shop-page .col-12{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.react-stars:focus{
+    outline: none;
+}
+
+.shop-page .searchbar{
+    margin: 5vh 20px 10vh 20px;
+}
+
+.shop-page .searchbar .dropdown-toggle{
+    height: 40px;
+    background-color: var(--primary-color);
+    border-radius: 0 5px 5px 0;
+    color: var(--font-always-light-color);
+    
+}
+
+.shop-page .searchbar .dropdown-toggle:focus{
+    outline:none;
+    box-shadow: none;
+}
+
+.shop-page .searchbar input{
+    height: 40px;
+    border: 1px solid var(--primary-color);
+    border-left: none;
+    font-size: medium;
+    background-color: var(--bg-color2-2);
+    color:var(--font-color)
+}
+
+.shop-page .searchbar input:focus{
+    outline: none;
+    box-shadow: none;
+}
+
+.shop-page .searchbar .search-btn{
+    height: 40px;
+    border: 1px solid var(--primary-color);
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    color: var(--primary-color);
+    background-color: var(--bg-color2-2);
+    transition: none;
+}
+
+.shop-page .horizontal-list::-webkit-scrollbar{
+    width: 5px; 
+    background: transparent;
+}
+
+.shop-page .horizontal-list::-webkit-scrollbar-thumb {
+    background: var(--bg-color3);
+    height: 5px;
+    width: 5px;
+}
+
+.shop-page .see-more{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.shop-page .see-more a{
+    color:var(--secondary-color)
+}
+
+.shop-page a:hover{
+    text-decoration: none;
+}
+
+.shop-page .shop-comments{
+    position:relative;
+}
+
+.shop-page .shop-comment{
+    display: grid;
+    /* grid-template-rows: 1.5rem 1rem auto; */
+    grid-template-rows: 1.5rem auto;
+    /* grid-template-columns: auto auto; */
+    border: 1px solid var(--bg-color3);
+    border-radius: 10px;
+    text-align: right;
+    padding:10px 20px;
+    margin: 2% 0;
+}
+
+.shop-page .shop-comment-title{
+    font-size: 1.5rem;
+}
+
+.shop-page .shop-comment-date{
+    font-size: 0.8rem;
+    margin-right: 5px;
+    color: var(--secondary-color);
+}
+
+.shop-page .shop-comment-author{
+    font-size: 0.9rem;
+    font-family: 'Vazir-Bold';
+}
+
+.shop-page .shop-comment-desc{
+    margin: 5px 0 5px 0;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+}
+
+.shop-page .write-comment{
+    height:20vh;
+    display: grid;
+    grid-template-columns: 50px auto;
+}
+
+.shop-page .write-comment-container{
+    border: 2px solid var(--bg-color3);
+    /* border-radius: 10px 10px 0 0; */
+    border-radius: 10px;
+    text-align: right;
+    padding:10px 20px;
+    margin: 0;
+    position: sticky;
+    bottom:0;
+    
+    background-color: var(--bg-color);
+}
+
+.shop-page .write-comment textarea{
+    background-color: transparent;
+    color: var(--font-color2);
+    resize: none;
+}
+
+.shop-page .write-comment textarea:focus{
+    outline: none;
+}
+
+.shop-page .write-comment svg{
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.shop-page .comment-edit-delete{
+    display: inline-flex;
+    margin-right: auto;
+    color: var(--primary-color)
+}
+
+.shop-page .comment-edit{
+    font-size: 0.8rem;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.shop-page .comment-delete{
+    font-size: 0.8rem;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.shop-page .comment-editting-indicator{
+    border-bottom: 1px solid var(--bg-color3);
+    margin-bottom: 10px;
+    /* padding: 0 3px 3px; */
+}
+
+.shop-page .comment-editting-indicator p{
+    font-size:0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.shop-page .comment-editting-indicator svg{
+    cursor: pointer;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+}
+
+.comment-modal .delete-comment-text{
+    font-style: italic;
+    white-space: break-spaces;
+    font-size: 0.9rem;
+    font-family: 'Vazir-Bold';
+    color: var(--font-color2);
+    text-align-last: center;
+}
+
+.shop-page .location-icon{
+    color: lightseagreen;
+    margin-top: -10px;
+    margin-right: -2px;
+}

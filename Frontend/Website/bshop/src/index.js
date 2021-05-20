@@ -3,6 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './fonts/Far_Nazanin.ttf'
+import './fonts/Far_Roya.ttf'
+import './fonts/Far_CasablancaHeavy.ttf'
+import './fonts/Rezvan.ttf'
+import './fonts/Rezvan-fat.ttf'
+import './fonts/Far_Yekan.ttf'
+import './fonts/Vazir.ttf'
+import './fonts/Vazir-Bold.ttf'
 
 ReactDOM.render(
   <React.StrictMode>

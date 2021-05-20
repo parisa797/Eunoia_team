@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated,AllowAny
@@ -6,14 +6,9 @@ from rest_framework.exceptions import ParseError
 from rest_framework import filters
 from django.db.models import Q
 from django.http import Http404
-
-from django.db.models import Q
-from django.http import Http404
 from rest_framework.authentication import TokenAuthentication
 from django.core.exceptions import ValidationError
-from rest_framework.response import Response
 from rest_framework import status
-
 
 from .models import Shop
 from .serializers import ShopSerializer
@@ -24,6 +19,8 @@ from .serializers import ListCommentSerializer
 from .models import Rate
 from .serializers import RateSerializer
 from .serializers import ListRateSerializer
+from .models import Board
+from .serializers import BoardSerializer
 
 class ShopCreateAPIView(generics.CreateAPIView):
 
@@ -213,3 +210,58 @@ class MantagheShopListAPIView(generics.ListAPIView):
             if len(queryset) == 0:
                 raise Http404
         return queryset
+
+class BoardCreateAPIView(generics.CreateAPIView):
+
+    serializer_class = BoardSerializer
+
+    def get_queryset(self):
+        queryset = Board.objects.filter(shop=self.kwargs['pk'])
+        return queryset
+
+    def create(self, request, *args, **kwargs):
+        serializer_data = request.data.copy()
+        serializer_data.update({'user':request.user.id})
+        serializer = self.get_serializer(data=serializer_data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+class BoardListAPIView(generics.ListAPIView):
+
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    serializer_class = BoardSerializer
+
+    def get_queryset(self):
+        queryset = Board.objects.filter(shop=self.kwargs['pk'])
+        return queryset
+
+
+class BoardRetrieveAPIView(generics.RetrieveAPIView):
+
+    queryset = Board.objects.all()
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    serializer_class = BoardSerializer
+
+
+class BoardUpdateAPIView(generics.UpdateAPIView):
+
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.image = request.data.get('image', instance.image)
+        instance.image_url = request.data.get('image_url', instance.image_url)
+        instance.save()
+        serializer = BoardSerializer(instance)
+        return Response(serializer.data)
+
+
+class BoardDestroyAPIView(generics.DestroyAPIView):
+
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
