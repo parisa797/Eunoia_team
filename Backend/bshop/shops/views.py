@@ -197,18 +197,8 @@ class MantagheShopListAPIView(generics.ListAPIView):
     authentication_classes = []
 
     def get_queryset(self):
-        searchedword = self.request.query_params.get('q', None)
-        queryset = Shop.objects.all()
-        if searchedword is None:
-            return queryset
-        if searchedword is not None:
-            if searchedword == "":
-                raise Http404
-            queryset = queryset.filter(
-                Q(mantaghe__icontains=searchedword)
-            )
-            if len(queryset) == 0:
-                raise Http404
+        q = self.request.query_params.get('q', None)
+        queryset = Shop.objects.filter(mantaghe=q)
         return queryset
 
 class BoardCreateAPIView(generics.CreateAPIView):

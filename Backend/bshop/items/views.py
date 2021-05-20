@@ -236,3 +236,89 @@ class DiscountsFilterItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-discount')
 
+class MostExpensiveAllItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.filter(shopID=self.kwargs['pk'])
+        return queryset.order_by('-price')
+
+class CheapestAllItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.filter(shopID=self.kwargs['pk'])
+        return queryset.order_by('price')
+
+class NewestAllItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.filter(shopID=self.kwargs['pk'])
+        return queryset.order_by('-manufacture_Date')
+
+class MostDiscountsOneShopAllItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        queryset = Item.objects.filter(shopID=self.kwargs['pk'])
+        return queryset.order_by('-discount')
+
+class FilterCategoryItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        return queryset
+
+class ExpensiveFilterItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        return queryset.order_by('-price')
+
+class CheapFilterItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        return queryset.order_by('price')
+
+class NewFilterItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        return queryset.order_by('-manufacture_Date')
+
+class DiscountsFilterItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        return queryset.order_by('-discount')
+
