@@ -15,6 +15,10 @@ function ItemCard(props) {
     const [cartCount,setCartCount] = useState(1)
     const [hideOptions,setHideOptions] = useState(true);
     const [id,setId] = useState((props.id? props.id : "")+props.item.shop_id +props.item.id);
+    const [bought,setBought] = useState(false);
+    function timeout(delay) {
+        return new Promise(res => setTimeout(res, delay));
+    }
 
     useEffect(()=>{
         setId((props.id? props.id : "")+props.item.shop_id +props.item.id);
@@ -52,6 +56,122 @@ function ItemCard(props) {
         // el.hidden=!el.hidden
     }
 
+    function addToCart(){
+        console.dir(!!localStorage.getItem("shoplists"))
+        console.log(localStorage.getItem("shoplists")[props.item.shop_id])
+        if(!JSON.parse(localStorage.getItem("shoplists"))[props.item.shop_id]){
+            //create shopppinglist
+            let fd = new FormData();
+            fd.append("shop",props.item.shop_id)
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/create/",{
+                method:"POST",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                },
+                body: fd
+            }).then(res=>{
+                console.log(res)
+                if(res.ok)
+                    return res.json();
+                return {};
+            }).then(r=>{
+                console.log(r)
+                if(!r)
+                    return;
+                let list = JSON.parse(localStorage.getItem("shoplists"));
+                list[r.shop] = r.id;
+                localStorage.setItem("shoplists",JSON.stringify(list));
+                console.log(list)
+                fd =new FormData();
+                fd.append("item",props.item.id)
+                fd.append("number",cartCount)
+                fd.append("shopping_list",r.id)
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/",{
+                    method:"POST",
+                    headers: {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    body: fd 
+                }).then(async res=>{
+                    if(res.ok)
+                        {
+                            setBought(true);
+                            await timeout(3000);
+                            setBought(false);
+                        }
+                }).catch(err=>console.error(err))
+            })
+            .catch(err=>console.error(err))
+        }else{
+            let shopping_id=JSON.parse(localStorage.getItem("shoplists"))[props.item.shop_id];
+            alert(shopping_id);
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/list/"+shopping_id,{
+                method:"GET",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                }
+            }).then(res=>{
+                console.log(res)
+                if(res.ok)
+                    return res.json();
+                return {};
+            }).then(r=>{
+                let list_id = null;
+                let number = null;
+                console.log(r)
+                if(!r)
+                    return;
+                r.forEach(element => {
+                    if(element.item.id === props.item.id)
+                    {
+                        list_id = element.id;
+                        number = element.number
+                    }
+                });
+                if(list_id===null){
+                    let fd = new FormData()
+                    fd.append("item",props.item.id)
+                    fd.append("number",cartCount)
+                    fd.append("shopping_list",shopping_id)
+                    fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/",{
+                    method:"POST",
+                    headers: {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    body: fd
+                }).then(async res=>{
+                    if(res.ok)
+                        {
+                            setBought(true);
+                            await timeout(1000);
+                            setBought(false);
+                        }
+                }).catch(err=>console.error(err))
+                }
+                else{
+                    let fd = new FormData()
+                    fd.append("number",cartCount+number)
+                    fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+list_id,{
+                    method:"PUT",
+                    headers: {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    body: fd
+                }).then(async res=>{
+                    if(res.ok)
+                        {
+                            setBought(true);
+                            await timeout(1000);
+                            setBought(false);
+                        }
+                }).catch(err=>console.error(err))
+                }
+                
+            })
+            .catch(err=>console.error(err))
+        }
+    }
+
     return (
         <div className="item-card" >
             <div id={"add-to-cart"+id} className="add-to-cart-card" style={{visibility:"hidden",opacity:"0"}} /*hidden="true"*/>
@@ -62,7 +182,9 @@ function ItemCard(props) {
                 <input type="text" value={cartCount} onChange={(e)=>changeCartCount(e.target.value)} />
                 <div className="count-btn btn" onClick={()=>changeCartCount(cartCount-1)}>-</div>
             </div>
-            <div className="btn add-to-cart-btn">افزودن به سبد خرید</div></>
+            {!bought?<div className="btn add-to-cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
+                <div className="btn add-to-cart-btn" >اضافه شد!</div>
+            }</>
             :
             <div className="manager-btns">
                 {/* <div className="btn add-to-cart-btn">ویرایش اطلاعات</div>
@@ -109,7 +231,6 @@ function ItemCard(props) {
 
                     <div className="count"></div>
                     </div>
-                    
                     </div>
         </div>)
 }

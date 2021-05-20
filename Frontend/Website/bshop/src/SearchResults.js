@@ -12,7 +12,7 @@ function SearchResults(props) {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
-    const usersShops = localStorage.getItem("shops");
+    const usersShops = JSON.parse(localStorage.getItem("shops"));
     useEffect(() => {
         //parsing url
         let shop = null, q = null, t = null, url = "";

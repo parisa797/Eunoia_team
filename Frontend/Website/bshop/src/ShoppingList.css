@@ -1,8 +1,43 @@
 .one-shopping-list .right-content{
     border-left: 2px solid var(--bg-color3);
     padding: 10vh 20px;
+    min-height: calc( 100vh - 56px - 4rem);
+    /* overflow-y: scroll; */
+}
+
+.one-shopping-list .left-content{
+    min-height: calc( 100vh - 56px - 4rem);
+    display: flex;
+    justify-content: center;
+    /* overflow-y: scroll; */   
 }
 
 .one-shopping-list .col-12{
     padding:0;
+}
+
+.one-shopping-list .make-list{
+    /* width:100vw;
+    height: 100vh;
+    position: fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index: 100000; */
+    min-height: calc( 100vh - 56px - 4rem);
+    background-color:var(--bg-color);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.one-shopping-list .no-items-added{
+    align-self: center;
+}
+
+.one-shopping-list .shopping-item{
+    width: 100%;
+    display: grid;
 }

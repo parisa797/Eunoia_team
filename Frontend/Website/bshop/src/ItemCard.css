@@ -49,11 +49,15 @@
 .item-card h5{
     font-size: medium;
     font-family: 'Vazir';
-    margin:0
+    margin:0;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 .item-card .item-card-count{
     justify-self: right;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 .item-card .item-card-price{
@@ -64,7 +68,9 @@
 .item-card .item-card-price-text{
     font-size:medium;
     font-weight:bold;
-    color: var(--heading-color)
+    color: var(--heading-color);
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 .item-card .item-card-real-price{
     font-size: 0.9rem;

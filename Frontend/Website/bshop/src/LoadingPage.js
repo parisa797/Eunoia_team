@@ -17,7 +17,7 @@ import {
     Link,
     Redirect,
     NavLink,
-  } from "react-router-dom";
+} from "react-router-dom";
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -26,21 +26,31 @@ function LoadingPage(props) {
         return new Promise(res => setTimeout(res, delay));
     }
     useEffect(() => {
+        console.log(localStorage.getItem("shoplists"))
         if ((!localStorage.getItem("token"))) {
-            if(!localStorage.getItem("shops")){
-                localStorage.setItem("shops",[])
+            if (!localStorage.getItem("shops") || !JSON.parse(localStorage.getItem("shops"))) {
+                localStorage.setItem("shops", JSON.stringify([]))
+                timeout(100);
+            }
+            if (!localStorage.getItem("shoplists") || !JSON.parse(localStorage.getItem("shoplists"))) {
+                localStorage.setItem("shoplists", JSON.stringify({}))
                 timeout(100);
             }
             setLoaded(true);
             return;
         }
-        if(!!localStorage.getItem("username") && !!localStorage.getItem("role")){
+        console.log(JSON.parse(localStorage.getItem("shops")) )
+        if (!!localStorage.getItem("username") && !!localStorage.getItem("role")
+         && !!localStorage.getItem("shops") && !!JSON.parse(localStorage.getItem("shops"))
+         && !!localStorage.getItem("shoplists") && !!JSON.parse(localStorage.getItem("shoplists"))) {
             setLoaded(true)
             return;
         }
+        alert("what am i doing here")
         localStorage.removeItem("username");
         localStorage.removeItem("role");
         localStorage.removeItem("shops");
+        localStorage.removeItem("shoplists");
         fetch("http://eunoia-bshop.ir:8000/users/profile", {
             method: 'GET',
             headers: {
@@ -60,36 +70,59 @@ function LoadingPage(props) {
                     return;
                 localStorage.setItem("role", res.role);
                 localStorage.setItem("username", res.user_name);
-                if (res.role === "seller") {
-                    fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
-                        method: 'GET',
-                        headers: {
-                            "Authorization": "Token " + localStorage.getItem('token')
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/", {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    }
+                })
+                    .then((res) => {
+                        if (res.status === 200) {
+                            return res.json()
                         }
-                    })
-                        .then((res) => {
-                            if (res.status === 200) {
-                                return res.json()
-                            }
-                            return [];
+                        return [];
+                    }
+                    )
+                    .then((d) => {
+                        let usersLists = {}
+                        if(!!d)
+                            d.forEach((e)=>usersLists[""+e.shop]=e.id)
+                        localStorage.setItem("shoplists",JSON.stringify( usersLists))
+                        console.log(usersLists)
+                        if (res.role === "seller") {
+                            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
+                                method: 'GET',
+                                headers: {
+                                    "Authorization": "Token " + localStorage.getItem('token')
+                                }
+                            })
+                                .then((res) => {
+                                    if (res.status === 200) {
+                                        return res.json()
+                                    }
+                                    return [];
+                                }
+                                )
+                                .then((d) => {
+                                    let usersShops = []
+                                    for (let shop in d) {
+                                        usersShops.push(d[shop].id)
+                                    }
+                                    localStorage.setItem("shops", JSON.stringify(usersShops))
+                                    console.log(usersShops);
+                                    timeout(100);
+                                    setLoaded(true)
+                                }).catch(e => { console.log(e); });
                         }
-                        )
-                        .then((d) => {
-                            let usersShops = []
-                            for (let shop in d) {
-                                usersShops.push(d[shop].id)
-                            }
-                            localStorage.setItem("shops",usersShops)
-                            console.log(usersShops);
+                        else {
+                            localStorage.setItem("shops", JSON.stringify([]))
                             timeout(100);
+                            console.log(localStorage.getItem("shoplists"))
+                            console.log(JSON.parse(localStorage.getItem("shops")))
                             setLoaded(true)
-                        }).catch(e => { console.log(e); });
-                }
-                else{
-                    localStorage.setItem("shops",[])
-                    timeout(100);
-                    setLoaded(true)
-                }
+                        }
+                    }).catch(e => { console.log(e); });
+
             }
         )
             .catch(e => { console.log(e); setText("ارتباط با سرور ممکن نیست، دوباره امتحان کنید.") });
@@ -111,30 +144,30 @@ function LoadingPage(props) {
     </div>
         :
         <Router>
-              <Switch>
+            <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route
-                  path="/profile"
-                  render={(p) => (
-                    <ProfilePage
-                      triggerNavbarUpdate={props.triggerNavbarUpdate}
-                      setTriggerNavUpdate={props.setTriggerNavUpdate}
-                      {...p}
-                    />
-                  )}
+                    path="/profile"
+                    render={(p) => (
+                        <ProfilePage
+                            triggerNavbarUpdate={props.triggerNavbarUpdate}
+                            setTriggerNavUpdate={props.setTriggerNavUpdate}
+                            {...p}
+                        />
+                    )}
                 />
 
                 {/* <Route exact path='/loginstore' component={LoginStore} /> */}
                 <Route exact path="/registerstore" component={RegisterStore} />
-                <Route path="/store/search" component={SearchResults}/>
-                <Route path="/items/search" component={SearchResults}/>
-                <Route path="/stores/" component={ShopsListPage}/>
-                <Route path="/items/" component={ItemsListPage}/>
-                <Route path="/store/:storeid/items/search" component={SearchResults}/>
+                <Route path="/store/search" component={SearchResults} />
+                <Route path="/items/search" component={SearchResults} />
+                <Route path="/stores/" component={ShopsListPage} />
+                <Route path="/items/" component={ItemsListPage} />
+                <Route path="/store/:storeid/items/search" component={SearchResults} />
                 <Route path="/store/:id" component={ShopDispatcher} />
                 {/* <Route exact path='/Items' component={Items} /> */}
-              </Switch>
-            </Router>
+            </Switch>
+        </Router>
     )
 }
 

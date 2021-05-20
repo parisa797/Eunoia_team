@@ -37,7 +37,7 @@ function Itemslist(props) {
     //             setShopInfo(d);
     //         });
     // }, [props.triggerReload])
-    const usersShops = localStorage.getItem("shops");
+    const usersShops = JSON.parse(localStorage.getItem("shops"));
 
     return (
         <div className="items-list-component">

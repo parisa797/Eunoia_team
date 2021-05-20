@@ -35,7 +35,7 @@ function ShopDispatcher() {
             setUserState("l");
             return;
         }
-        let usersShops = localStorage.getItem("shops");
+        let usersShops = JSON.parse(localStorage.getItem("shops"));
         if(!!usersShops && usersShops.includes(shopID)){
             setUserState("m");
         }
