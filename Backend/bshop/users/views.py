@@ -4,6 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .serializers import *
 from .permission import *
+from items.models import Item,ItemLike
+from items.serializers import ItemSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import *
@@ -43,4 +45,22 @@ class DeleteImg(generics.UpdateAPIView):
         Media.objects.get(id=request.data['files']).delete()
         user.save()
         serializer = self.get_serializer(user)
+        return Response(serializer.data)
+
+class UserItem(generics.ListAPIView):
+    queryset = MyUser.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = [IsAuthenticated]
+    #pagination_class = PageNumberPagination
+
+    def get_object(self):
+        likedones=ItemLike.objects.filter(liked_by=self.request.user)
+        item=[]
+        for like in likedones:
+            item.append(like.liked_item)
+        return item
+
+    def list(self, request, *args, **kwargs):
+        item = self.get_object()
+        serializer = ItemSerializer(item, many=True)
         return Response(serializer.data)
