@@ -16,6 +16,7 @@ import {
 import Itemslist from "./ItemsList";
 import ItemsListPage from "./ItemsListPage";
 import ShoppingList from "./ShoppingList";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 function ShopDispatcher() {
     const [userState, setUserState] = useState(null) //u for unsigned user, l for logged in, m for manager
@@ -36,7 +37,7 @@ function ShopDispatcher() {
             return;
         }
         let usersShops = JSON.parse(localStorage.getItem("shops"));
-        if(!!usersShops && usersShops.includes(shopID)){
+        if(!!usersShops && usersShops.includes(parseInt(shopID))){
             setUserState("m");
         }
         else setUserState("l");

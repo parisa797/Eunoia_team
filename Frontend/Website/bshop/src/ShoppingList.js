@@ -1,42 +1,15 @@
-
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { useEffect, useState } from 'react';
-import './ShoppingList.css'
+import './ShoppingList.css';
+import { useSnackbar } from 'notistack';
 function ShoppingList(props) {
     const [shoppingList, setShoppingList] = useState({});
     const shopID = window.location.pathname.match(/[^\/]+/g)[1];
     const [shopInfo, setShopInfo] = useState({});
-    useEffect(() => {
-        if (props.userState !== "l")
-            window.location.href = "/store/" + shopID;
-        // setShoppingList(
-        //     {
-        //         price_limit: 0,
-        //         items: [
-        //             { item: { name: "items", description: "the first item", id: 1, photo: "/no-image-icon-0.jpg" }, count: 3, price: 32000 },
-        //             { item: { name: "جدیدددد", description: "این کالا جدید است", id: 2, photo: "/no-image-icon-0.jpg" }, count: 4, price: 32000 },
-        //             { item: { name: "2048203498", description: "2349810 میتبمنس", id: 3, photo: "/no-image-icon-0.jpg" }, count: 3, price: 32000 },
-        //             { item: { name: "#@$@#^!ینتب", description: "مشخصات 543", id: 4, photo: "/no-image-icon-0.jpg" }, count: 1, price: 32000 },
-        //             { item: { name: "nothingهیچ چیز", description: "سلام the description is...", id: 5, photo: "/no-image-icon-0.jpg" }, count: 3, price: 32000 }
-        //         ]
-        //     })
-        if (!JSON.parse(localStorage.getItem("shoplists")) || !JSON.parse(localStorage.getItem("shoplists"))[shopID]) {
-            setShoppingList(null);
-            return;
-        }
-        // setShoppingList("not made");
-        let shopping_id = JSON.parse(localStorage.getItem("shoplists"))[shopID];
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/" + shopping_id, {
-            method: "GET",
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-        }).then(res => {
-            if (res.ok)
-                return res.json();
-        }).then(r => {
-            console.log(r)
-            setShoppingList(r);
-        }).catch(err => console.error(err))
+    const [reload, setReload] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
+
+    useEffect(()=>{
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
@@ -53,30 +26,128 @@ function ShoppingList(props) {
             .then((d) => {
                 setShopInfo(d);
             });
+    },[])
 
-    }, [])
+    useEffect(() => {
+        if (props.userState !== "l")
+            window.location.href = "/store/" + shopID;
+        if (!JSON.parse(localStorage.getItem("shoplists")) || !(JSON.parse(localStorage.getItem("shoplists"))[shopID])) {
+            setShoppingList(null);
+            return;
+        }
+        let shopping_id = JSON.parse(localStorage.getItem("shoplists"))[shopID];
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/" + shopping_id, {
+            method: "GET",
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res => {
+            if (res.ok)
+                return res.json();
+        }).then(r => {
+            if (!!r && !!r.shopping_list_items) {
+                let templist = [...r.shopping_list_items];
+                templist.forEach(e => {
+                    let totalPrice;
+                    if (e.item?.discount && parseInt(e.item.discount) > 0) {
+                        totalPrice = parseInt(Math.round((100 - e.item.discount) * e.item.price / 100))
+                    }
+                    else {
+                        totalPrice = e.item.price
+                    }
+                    e.totalPrice = totalPrice * e.number;
+                    e.rawTotalPrice = e.item.price * e.number;
+                })
+                r.shopping_list_items = [...templist]
+            }
+            r.totalPrice = r.shopping_list_items.map(e => e.totalPrice).reduce((a, b) => a + b, 0)
+            r.rawTotalPrice = r.shopping_list_items.map(e => e.rawTotalPrice).reduce((a, b) => a + b, 0)
+            console.log(r)
+            setShoppingList(r);
+        }).catch(err => console.error(err))
+
+    }, [reload])
+
+    function hideSubmitCancel(id,val){
+        document.getElementById("count-btns"+id).hidden = val;
+    }
+
+    function changeCount(id,true_num,idx, op){
+        let input = document.getElementById("item-input"+id);
+        if(!parseInt(input.value)){
+            return;
+        }
+        if(op==="+")
+            input.value = parseInt(input.value)+1;
+        else if(op==="-"){
+            if(parseInt(input.value)===1)
+                return;
+            input.value = parseInt(input.value)-1;
+        }
+        hideSubmitCancel(id,true_num === parseInt(input.value))
+    }
+
+    function submitCountChange(id,idx){
+        let input = document.getElementById("item-input"+id);
+        if(!parseInt(input.value)){
+            cancelCountChange(id,idx);
+            return;
+        }
+        let fd= new FormData();
+        fd.append("number",parseInt(input.value));
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+id,{
+            method: 'PUT',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            },
+            body: fd
+        }).then(res=>{
+            if(res.ok){
+                setReload(!reload);
+            }
+        }).catch(err=>console.error(err))
+    }
+
+    const cancelCountChange = (id,idx) => {
+        document.getElementById("item-input"+id).value = shoppingList.shopping_list_items[idx].number;
+        hideSubmitCancel(id,true)
+    }
+
+    function deleteItem(id,name){
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+id,{
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res=>{
+            if(res.ok)
+                {
+                    setReload(!reload);
+                    enqueueSnackbar("!"+name+" حذف شد")
+                }
+        })
+    }
 
     return (
         <div className="one-shopping-list">
             {
-                // shoppingList==="not made"?
-                // <div className="make-list">
-                //     <h1>کالایی در لیست خرید شما وجود ندارد!</h1>
-                //     <p>می‌توانید قبل از اضافه کردن کالاها برای خریدتان از این فروشگاه محدودیت قیمت تعیین کنید.</p>
-                // </div>
-                // :
                 <div className=" row">
                     <div className="col-12 col-md-4 order-md-2">
                         <div className="right-content">
-                            <h1>فروشگاه {shopInfo.title}</h1>
+                            <h1 onClick={()=>window.location.href="/store/"+shopID}>فروشگاه {shopInfo.title}</h1>
                             {!!shoppingList?.max_cost ?
-                                <p>محدودیت قیمت: {shoppingList.push.max_cost}</p>
+                                <p className="max-price">محدودیت قیمت: {shoppingList.max_cost}</p>
                                 :
-                                <>
-                                    <p>محدودیت قیمت ندارید</p>
-                                    <button className="">ایجاد</button>
-                                </>
+                                <div className="max-price">
+                                    <p className="no-max-price">محدودیت قیمت ندارید</p>
+                                    <div className="btn max-price-btn">ایجاد محدودیت قیمت</div>
+                                </div>
                             }
+                            <div className="price">
+                                {!!shoppingList && (shoppingList.rawTotalPrice !== shoppingList.totalPrice) && <h6>{shoppingList.rawTotalPrice}</h6>}
+                               {!!shoppingList && <h3>{shoppingList.totalPrice} ریال</h3>}
+                            </div>
+                            <div className="btn submit-btn">ثبت خرید<ChevronLeftIcon /></div>
                         </div>
                     </div>
                     <div className="col-12 col-md-8 order-md-1">
@@ -87,15 +158,31 @@ function ShoppingList(props) {
                                     :
                                     <div className="shopping-items-holder">
                                         {
-                                            shoppingList.shopping_list_items.map(el =>
+                                            shoppingList.shopping_list_items.map((el,idx) =>
                                                 <div className="shopping-item">
                                                     <div className="shopping-img-holder">
                                                         <img alt={el.item.name} src={el.item.photo} />
                                                     </div>
                                                     <div className="shopping-item-info">
-                                                        <h4>{el.item.name}</h4>
-                                                        <p className="shopping-count">تعداد: {el.number}</p>
-                                                        <p className="shopping-price">{el.item.price}</p>
+                                                        <h5 onClick={()=>window.location.href="/store/"+el.item.shop_id+"/items/"+el.item.id}>{el.item.name}</h5>
+                                                        <div className="shopping-count">
+                                                            <p>تعداد: {el.number}</p>
+                                                        </div>
+                                                        {!!el.item?.discount && el.item.discount > 0 ?
+                                                            <div className="shopping-price">
+                                                                <div style={{ display: "inline-flex" }}><p className="item-card-real-price" data-testid={"item-price"}>{el.rawTotalPrice}</p><div className="item-card-discount" data-testid={"item-discount"}>{el.item.discount}%</div></div>
+                                                                <p className="item-card-price-text" data-testid={"item-overallprice"}>{el.totalPrice} ریال</p>
+
+                                                            </div>
+                                                            : <p className="shopping-price item-card-price-text" data-testid={"item-price-without-discount"}>{el.rawTotalPrice + "ریال"}</p>}
+                                                        <form inline className="count-form">
+                                                            <div className="count-changer btn" onClick={()=>changeCount(el.id,el.number,idx,"+")}>+</div>
+                                                            <input type="text" defaultValue={el.number} id={"item-input"+el.id} onChange={()=>changeCount(el.id,el.number,idx,"")}/>
+                                                            <div className="count-changer btn" onClick={()=>changeCount(el.id,el.number,idx,"-")}>-</div>
+                                                             <div id={"count-btns"+el.id} hidden={true} style={{display:"contents"}}><div className="count-submit btn" onClick={()=>submitCountChange(el.id,idx)}>ذخیره</div>
+                                                            <div className="count-cancel btn" onClick={()=>cancelCountChange(el.id,idx)}>لغو</div></div>
+                                                        </form>
+                                                        <p className="delete-item btn" onClick={()=>deleteItem(el.id,el.item.name)}>حذف از سبد</p>
                                                     </div>
                                                 </div>
                                             )

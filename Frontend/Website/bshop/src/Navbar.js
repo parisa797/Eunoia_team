@@ -16,7 +16,6 @@ function CustomNavbar(props) {
   const [shopID, setShopID] = useState(null);
   const [shoppingList, setShoppingList] = useState([]);
   useEffect(() => {
-    console.log(window.location.pathname)
     if (window.location.pathname === "/login" || window.location.pathname === "/register") {
       return;
     }
@@ -55,15 +54,12 @@ function CustomNavbar(props) {
   }, [props.triggerNavbarUpdate])
 
   useEffect(() => {
-    console.log(JSON.parse(localStorage.getItem("shoplists")))
-    // console.log(localStorage.getItem("shoplists")[""+shopID+""])
     if (!shopID)
       return;
     if (!JSON.parse(localStorage.getItem("shoplists")) || !JSON.parse(localStorage.getItem("shoplists"))[shopID]) {
       setShoppingList([]);
       return;
     }
-    console.log("i passed")
     let shopping_id = JSON.parse(localStorage.getItem("shoplists"))[shopID];
     fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/list/" + shopping_id, {
       method: "GET",
@@ -128,7 +124,7 @@ return (
                     <p className="name" data-testid="dropdown-fullname" >{profile?.FirstName || profile.LastName ? (profile?.FirstName + " " + profile?.LastName) : "بدون نام"}</p>
                     <p className="username" data-testid="dropdown-username" >{profile?.user_name}</p>
                   </div>
-                  <a href="/profile" className="drop-continue">
+                  <a href="/profile/info" className="drop-continue">
                     مشاهده پروفایل
             </a>
                 </div>
@@ -146,7 +142,7 @@ return (
             </div>
             <>
               <div className="shopping-list" >
-                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "stores/shopping-list"}>
+                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "profile/shoppinglists"}>
                   <ShoppingCartIcon className="shoppinglist-icon" />
                   {!!shopID && <p>{shoppingList?.length}</p>}
                 </div>

@@ -14,10 +14,8 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link,
-    Redirect,
-    NavLink,
 } from "react-router-dom";
+import ProfileDispatcher from './ProfileDispatcher';
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -26,7 +24,6 @@ function LoadingPage(props) {
         return new Promise(res => setTimeout(res, delay));
     }
     useEffect(() => {
-        console.log(localStorage.getItem("shoplists"))
         if ((!localStorage.getItem("token"))) {
             if (!localStorage.getItem("shops") || !JSON.parse(localStorage.getItem("shops"))) {
                 localStorage.setItem("shops", JSON.stringify([]))
@@ -39,14 +36,12 @@ function LoadingPage(props) {
             setLoaded(true);
             return;
         }
-        console.log(JSON.parse(localStorage.getItem("shops")) )
         if (!!localStorage.getItem("username") && !!localStorage.getItem("role")
-         && !!localStorage.getItem("shops") && !!JSON.parse(localStorage.getItem("shops"))
-         && !!localStorage.getItem("shoplists") && !!JSON.parse(localStorage.getItem("shoplists"))) {
+            && !!localStorage.getItem("shops") && !!JSON.parse(localStorage.getItem("shops"))
+            && !!localStorage.getItem("shoplists") && !!JSON.parse(localStorage.getItem("shoplists"))) {
             setLoaded(true)
             return;
         }
-        alert("what am i doing here")
         localStorage.removeItem("username");
         localStorage.removeItem("role");
         localStorage.removeItem("shops");
@@ -85,10 +80,9 @@ function LoadingPage(props) {
                     )
                     .then((d) => {
                         let usersLists = {}
-                        if(!!d)
-                            d.forEach((e)=>usersLists[""+e.shop]=e.id)
-                        localStorage.setItem("shoplists",JSON.stringify( usersLists))
-                        console.log(usersLists)
+                        if (!!d)
+                            d.forEach((e) => usersLists["" + e.shop] = e.id)
+                        localStorage.setItem("shoplists", JSON.stringify(usersLists))
                         if (res.role === "seller") {
                             fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
                                 method: 'GET',
@@ -109,7 +103,6 @@ function LoadingPage(props) {
                                         usersShops.push(d[shop].id)
                                     }
                                     localStorage.setItem("shops", JSON.stringify(usersShops))
-                                    console.log(usersShops);
                                     timeout(100);
                                     setLoaded(true)
                                 }).catch(e => { console.log(e); });
@@ -117,8 +110,6 @@ function LoadingPage(props) {
                         else {
                             localStorage.setItem("shops", JSON.stringify([]))
                             timeout(100);
-                            console.log(localStorage.getItem("shoplists"))
-                            console.log(JSON.parse(localStorage.getItem("shops")))
                             setLoaded(true)
                         }
                     }).catch(e => { console.log(e); });
@@ -147,7 +138,7 @@ function LoadingPage(props) {
             <Switch>
                 <Route exact path="/" component={HomePage} />
                 <Route
-                    path="/profile"
+                    path="/profile/info"
                     render={(p) => (
                         <ProfilePage
                             triggerNavbarUpdate={props.triggerNavbarUpdate}
@@ -156,7 +147,7 @@ function LoadingPage(props) {
                         />
                     )}
                 />
-
+                <Route path="/profile" component={ProfileDispatcher} />
                 {/* <Route exact path='/loginstore' component={LoginStore} /> */}
                 <Route exact path="/registerstore" component={RegisterStore} />
                 <Route path="/store/search" component={SearchResults} />

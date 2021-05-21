@@ -365,6 +365,8 @@
     left:0;
     width:100%;
     border-radius: 5px;
+    height:100%;
+    object-fit: cover;
 }
 
 .custom-nav .shopping-dropdown-price{

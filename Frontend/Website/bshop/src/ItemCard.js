@@ -33,7 +33,6 @@ function ItemCard(props) {
     }
 
     useEffect(() => {
-        console.log(props.item)
         if (props.item?.discount && parseInt(props.item.discount) > 0) {
             setOverallPrice(Math.round((100 - props.item.discount) * props.item.price / 100)) ///MAKE ALL OF THEM INT
         }
@@ -57,8 +56,6 @@ function ItemCard(props) {
     }
 
     function addToCart(){
-        console.dir(!!localStorage.getItem("shoplists"))
-        console.log(localStorage.getItem("shoplists")[props.item.shop_id])
         if(!JSON.parse(localStorage.getItem("shoplists"))[props.item.shop_id]){
             //create shopppinglist
             let fd = new FormData();
@@ -70,18 +67,15 @@ function ItemCard(props) {
                 },
                 body: fd
             }).then(res=>{
-                console.log(res)
                 if(res.ok)
                     return res.json();
                 return {};
             }).then(r=>{
-                console.log(r)
                 if(!r)
                     return;
                 let list = JSON.parse(localStorage.getItem("shoplists"));
                 list[r.shop] = r.id;
                 localStorage.setItem("shoplists",JSON.stringify(list));
-                console.log(list)
                 fd =new FormData();
                 fd.append("item",props.item.id)
                 fd.append("number",cartCount)
@@ -104,21 +98,18 @@ function ItemCard(props) {
             .catch(err=>console.error(err))
         }else{
             let shopping_id=JSON.parse(localStorage.getItem("shoplists"))[props.item.shop_id];
-            alert(shopping_id);
             fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/list/"+shopping_id,{
                 method:"GET",
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
                 }
             }).then(res=>{
-                console.log(res)
                 if(res.ok)
                     return res.json();
                 return {};
             }).then(r=>{
                 let list_id = null;
                 let number = null;
-                console.log(r)
                 if(!r)
                     return;
                 r.forEach(element => {
@@ -143,7 +134,7 @@ function ItemCard(props) {
                     if(res.ok)
                         {
                             setBought(true);
-                            await timeout(1000);
+                            await timeout(3000);
                             setBought(false);
                         }
                 }).catch(err=>console.error(err))
