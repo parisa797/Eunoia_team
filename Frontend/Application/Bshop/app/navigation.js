@@ -5,9 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import * as SecureStore from "expo-secure-store";
 
-import Home from "./app/homepage";
-import ShopDetail from "./app/shopDetails";
-import PersonalInfo from "./app/PersonalInfo";
+import Home from "./homepage";
+import ShopDetail from "./shopDetails";
+import PersonalInfo from "./PersonalInfo";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -91,9 +91,10 @@ const Profile = ({ navigation }) => {
   );
 };
 
-const Sidebar = () => {
+export const Sidebar = () => {
   return (
-    <Drawer.Navigator drawerPosition="right">
+    // <Drawer.Navigator drawerPosition="right">
+    <Drawer.Navigator>
       <Drawer.Screen
         name="homepage"
         options={{

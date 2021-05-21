@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as SecureStore from "expo-secure-store";
 
-import Sidebar from "./app/navigation";
+import { Sidebar } from "./app/navigation";
 import Welcome from "./app/welcome";
 import Login from "./app/login";
 import SignUp from "./app/signup";
@@ -36,9 +36,9 @@ export default function App({ navigation }) {
       ) : (
         <Stack.Navigator>
           <Stack.Screen
-            name="drawer-stack"
+            name="drawer"
             component={Sidebar}
-            options={{ title: " " }}
+            // options={{ title: " " }}
           />
         </Stack.Navigator>
       )}

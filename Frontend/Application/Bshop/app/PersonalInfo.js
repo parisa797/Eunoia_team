@@ -24,54 +24,17 @@ const PersonalInfo = ({ navigation }) => {
   const [address, setaddress] = useState();
 
   const phoneLenght = (text) => {
-    console.log("text is", text, "09125831292");
     let pattern = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
     return pattern.test(String(text));
   };
 
-  //get user's info
-  // useEffect(async () => {
-  //   // (async () => {
-  //   var myHeaders = new Headers();
-  //   let result = await SecureStore.getItemAsync("token");
-  //   console.log("result");
-  //   var SaveInfo = "Token " + result;
-  //   // var SaveInfo ="Token " + getValueFor("token")
-  //   console.log("token is:");
-  //   console.log(SaveInfo);
-  //   myHeaders.append("Authorization", SaveInfo);
-
-  //   var requestOptions = {
-  //     method: "GET",
-  //     headers: myHeaders,
-  //     redirect: "follow",
-  //   };
-  //   getValueFor("token")
-  //   fetch("http://iust-bshop.herokuapp.com/users/profile", requestOptions)
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       setinfo(result);
-  //       setname(result.FirstName);
-  //       setfamilyname(result.LastName);
-  //       setphone(result.phone);
-  //       setaddress(result.address);
-  //       console.log(result);
-  //     })
-  //     .catch((error) => console.log("error", error));
-  //   })();
-  // }, []);
   const isFocused = useIsFocused();
-
   useEffect(() => {
     const getResult = async () => {
       var myHeaders = new Headers();
-      let result = await SecureStore.getItemAsync("token");
-      console.log("result");
-      var SaveInfo = "Token " + result;
-      // var SaveInfo ="Token " + getValueFor("token")
-      console.log("token is:");
-      console.log(SaveInfo);
-      myHeaders.append("Authorization", SaveInfo);
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
 
       var requestOptions = {
         method: "GET",
@@ -81,17 +44,11 @@ const PersonalInfo = ({ navigation }) => {
       fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log("hey");
           setinfo(result);
-
           setname(result.FirstName);
-
           setfamilyname(result.LastName);
-
           setphone(result.phone);
-
           setaddress(result.address);
-
           console.log(result);
         })
         .catch((error) => console.log("error", error));
@@ -101,23 +58,23 @@ const PersonalInfo = ({ navigation }) => {
   }, [isFocused]);
 
   //update user's info when pressing update button
-  async function beruzresani() {
-    console.log("beruzresani");
+  async function UpdateInfo() {
+    // console.log("beruzresani");
     var myHeaders = new Headers();
-    let result = await SecureStore.getItemAsync("token");
-    var SaveInfo = "Token " + result;
-    console.log("result is" + result);
-    myHeaders.append("Authorization", SaveInfo);
-    myHeaders.append("Content-Type", "multipart/form-data");
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    // console.log("result is" + result);
+    myHeaders.append("Authorization", authorization);
+    // myHeaders.append("Content-Type", "multipart/form-data");
     var formdata = new FormData();
     formdata.append("email", info.email);
     formdata.append("FirstName", name);
     formdata.append("LastName", familyname);
     formdata.append("address", address);
     formdata.append("phone", phone);
-    formdata.append("files", []);
+    // formdata.append("files", []);
     console.log(formdata);
-    console.log("formdata");
+    // console.log("formdata");
     var requestOptions = {
       method: "PUT",
       headers: myHeaders,
@@ -126,9 +83,12 @@ const PersonalInfo = ({ navigation }) => {
 
     fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
       .then((response) => {
-        console.log("parisaaa");
+        console.log("status is,", response.status);
         if (response.status == 200) {
-          alert("heeeeeeelo");
+          ToastAndroid.show(
+            "اطلاعات شما با موفقیت به روز رسانی شد.",
+            ToastAndroid.SHORT
+          );
           return response.json();
         }
       })
@@ -136,52 +96,67 @@ const PersonalInfo = ({ navigation }) => {
       .catch((error) => console.log("error", error));
   }
 
-  // const response = await axios
-  //   .put("http://eunoia-bshop.ir:8000/users/profile", formdata, {
-  //     headers: {
-  //       "Content-Type":
-  //         "multipart/form-data; boundary=<calculated when request is sent>",
-  //       Authorization:
-  //         "Token " + (await SecureStore.getItemAsync("token")).toString(),
-  //     },
-  //   })
-  //   .then(function (response) {
-  //     console.log("setayesh");
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
-  // }
+  const SureDelete = () => {
+    console.log("button pressed");
+    Alert.alert("", "آیا از حذف حساب کاربری خود اطمینان دارید؟", [
+      {
+        text: "خیر",
+        onPress: () => console.log("NO Pressed"),
+        // style: "cancel",
+      },
+      { text: "بله", onPress: () => DeleteAccount() },
+    ]);
+  };
+  async function DeleteAccount() {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+    fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+      .then(async (response) => {
+        console.log(response.status);
+        if (response.status == 204) await SecureStore.deleteItemAsync("token");
+        response.json();
+      })
+      .then((result) => {
+        console.log("result", result);
+        //delete token from expo cache
+        //then navigate to signup page  how??? with authcontext
+        //so for now navigate to shop page
+      })
+      .catch((error) => console.log("error", error));
+  }
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.kooft}>
       <View style={styles.container}>
         {/* <Image style={styles.image} source={require("../assets/profile.png")} /> */}
         <View style={styles.inputView}>
-          {/* <View style={styles.bazgasht}>
-            <TouchableOpacity
-              style={styles.Btn}
-              onPress={navigation.navigate("Home")}
-            >
-              <Text>بازگشت </Text>
-            </TouchableOpacity>
-          </View> */}
           <TextInput
             style={styles.input}
             value={name}
-            icon="user"
+            // icon="user"
             placeholder="نام"
             autoCapitalize="none"
             autoCompleteType="name"
             textAlign="center"
             testID={"namepersonal_check"}
             onChangeText={setname}
+            onBlur={() => {
+              if (name == "") placeholder = "نام";
+            }}
           />
         </View>
         <View style={styles.inputView}>
           <TextInput
             style={styles.input}
-            icon="user"
+            // icon="user"
             placeholder="نام خانوادگی"
             autoCapitalize="none"
             // autoCompleteType="familyname"
@@ -189,12 +164,15 @@ const PersonalInfo = ({ navigation }) => {
             value={familyname}
             testID={"family_check"}
             onChangeText={setfamilyname}
+            onBlur={() => {
+              if (familyname == "") placeholder = "نام خانوادگی";
+            }}
           />
         </View>
         <View style={styles.inputView}>
           <TextInput
             style={styles.input}
-            icon="phone"
+            // icon="phone"
             placeholder="شماره تلفن"
             // autoCompleteType="phone"
             autoCapitalize="none"
@@ -203,24 +181,30 @@ const PersonalInfo = ({ navigation }) => {
             testID={"phone_check"}
             onChangeText={setphone}
             onBlur={() => {
-              if (!phoneLenght(phone))
-                ToastAndroid.show(
-                  "لطفا شماره تلفن همراه خود را به صورت کامل وارد کنید. الگو : 091*******25",
-                  ToastAndroid.SHORT
-                );
+              if (phone.length == 0) placeholder = "شماره تلفن";
+              else {
+                if (!phoneLenght(phone))
+                  ToastAndroid.show(
+                    "لطفا شماره تلفن همراه خود را به صورت کامل وارد کنید. الگو : 091*******25",
+                    ToastAndroid.SHORT
+                  );
+              }
             }}
           />
         </View>
         <View style={styles.inputView}>
           <TextInput
             style={styles.input}
-            icon="map-pin"
+            // icon="map-pin"
             placeholder="آدرس"
             autoCapitalize="none"
             textAlign="center"
             value={address}
             testID={"address_check"}
             onChangeText={setaddress}
+            onBlur={() => {
+              if (address == "") placeholder = "آدرس";
+            }}
             // autoCompleteType="street-address"
           />
         </View>
@@ -237,10 +221,10 @@ const PersonalInfo = ({ navigation }) => {
           />
         </View>
         <View style={styles.kenareham}>
-          <TouchableOpacity style={styles.Btn} onPress={() => beruzresani()}>
+          <TouchableOpacity style={styles.Btn} onPress={() => UpdateInfo()}>
             <Text>ذخیره اطلاعات </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Btn}>
+          <TouchableOpacity style={styles.Btn} onPress={() => SureDelete()}>
             <Text>حذف حساب کاربری </Text>
           </TouchableOpacity>
         </View>
