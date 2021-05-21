@@ -302,4 +302,3 @@ class SearchItemOneShop(APITestCase):
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'jalali_date',
     'django_jalali',
     'persiantools',
+    'shoppings',
 ]
 
 # defaults
@@ -141,7 +142,7 @@ REST_FRAMEWORK = {
 ),
 
 # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-'PAGE_SIZE': 10
+# 'PAGE_SIZE': 10
 }
 
 AUTH_USER_MODEL = "users.MyUser"
@@ -233,6 +234,6 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = False
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = False
 # ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = 'http://127.0.0.1:8000/admin'
 # ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://127.0.0.1:8000/admin'
-django_heroku.settings(locals())
+
 
 django_heroku.settings(locals())

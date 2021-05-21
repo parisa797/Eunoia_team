@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework.permissions import IsAuthenticated,AllowAny,IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import ParseError
 from rest_framework import filters
 from django.db.models import Q
@@ -10,17 +10,10 @@ from rest_framework.authentication import TokenAuthentication
 from django.core.exceptions import ValidationError
 from rest_framework import status
 
-from .models import Shop
-from .serializers import ShopSerializer
+from .models import *
+from .serializers import *
 from users.models import MyUser
-from .models import Comment
-from .serializers import CommentSerializer
-from .serializers import ListCommentSerializer
-from .models import Rate
-from .serializers import RateSerializer
-from .serializers import ListRateSerializer
-from .models import Board
-from .serializers import BoardSerializer
+from .permission import *
 
 class ShopCreateAPIView(generics.CreateAPIView):
 
@@ -197,18 +190,8 @@ class MantagheShopListAPIView(generics.ListAPIView):
     authentication_classes = []
 
     def get_queryset(self):
-        searchedword = self.request.query_params.get('q', None)
-        queryset = Shop.objects.all()
-        if searchedword is None:
-            return queryset
-        if searchedword is not None:
-            if searchedword == "":
-                raise Http404
-            queryset = queryset.filter(
-                Q(mantaghe__icontains=searchedword)
-            )
-            if len(queryset) == 0:
-                raise Http404
+        q = self.request.query_params.get('q', None)
+        queryset = Shop.objects.filter(mantaghe=q)
         return queryset
 
 class BoardCreateAPIView(generics.CreateAPIView):
@@ -264,4 +247,249 @@ class BoardUpdateAPIView(generics.UpdateAPIView):
 class BoardDestroyAPIView(generics.DestroyAPIView):
 
     queryset = Board.objects.all()
-    serializer_class = 
+    serializer_class = BoardSerializer
+
+class LikeShop(generics.ListCreateAPIView):
+    queryset = ShopLike.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        shop_id = self.kwargs.get('id')
+        shop = Shop.objects.get(id=shop_id)
+
+        # if item.shopID != shop:
+        #     shop = None
+        return shop
+
+    def perform_create(self, serializer):
+        shop = self.get_object()
+        mem = []
+        mem.append(self.request.user)
+        serializer.save(shop_liked_shop=shop, shop_liked_by=mem)
+
+    def create(self, request, *args, **kwargs):
+        shop = self.get_object()
+        if shop == None:
+            return Response(data="shop Not found", status=status.HTTP_404_NOT_FOUND)
+        if ShopLike.objects.filter(shop_liked_shop=shop).exists():
+            shoplikeObj = ShopLike.objects.get(shop_liked_shop=shop)
+            if shoplikeObj.shop_liked_by.filter(username=self.request.user.username).exists():
+                shoplikeObj.shop_liked_by.remove(self.request.user)
+            else:
+                shoplikeObj.shop_liked_by.add(self.request.user)
+            return Response(data=LikeSerializer(shoplikeObj).data)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        shop = self.get_object()
+        if shop == None:
+            return Response(data="shop Not found", status=status.HTTP_404_NOT_FOUND)
+        queryset = ShopLike.objects.filter(shop_liked_shop=shop)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+class LikeComment(generics.ListCreateAPIView):
+    queryset = CommentLike.objects.all()
+    serializer_class = CommentLikeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        shop_id = self.kwargs.get('id')
+        comment_id = self.kwargs.get('cm_id')
+        shop = Shop.objects.get(id=shop_id)
+        comment = Comment.objects.get(id=comment_id)
+        #self.check_object_permissions(self.request, com)
+
+        # if item.shopID != shop:
+        #     item = None
+        # check whether the comment belongs to the community
+        # if comment.ShopID != shop:
+        #     comment = None
+        return (shop, comment)
+
+    def perform_create(self, serializer):
+        shop, comment = self.get_object()
+        mem = []
+        mem.append(self.request.user)
+        serializer.save(shop_liked_comment=comment, comment_liked_by=mem)
+
+    def create(self, request, *args, **kwargs):
+        shop, comment = self.get_object()
+        if shop == None:
+            return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+        if comment == None:
+            return Response(data="Comment Not found", status=status.HTTP_404_NOT_FOUND)
+        if CommentLike.objects.filter(shop_liked_comment=comment).exists():
+            commentlikeObj = CommentLike.objects.get(shop_liked_comment=comment)
+            if commentlikeObj.comment_liked_by.filter(username=self.request.user.username).exists():
+                commentlikeObj.comment_liked_by.remove(self.request.user)
+            else:
+                commentlikeObj.comment_liked_by.add(self.request.user)
+            return Response(data=CommentLikeSerializer(commentlikeObj).data)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        shop, comment = self.get_object()
+        if shop == None:
+            return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+        if comment == None:
+            return Response(data="Comment Not found", status=status.HTTP_404_NOT_FOUND)
+        queryset = CommentLike.objects.filter(shop_liked_comment=comment)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+########################################Reply
+
+class Replies(generics.ListCreateAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
+    permission_classes = [IsAuthor,IsAuthenticatedOrReadOnly] ##fagat owner
+
+    def get_object(self):
+        shop_id = self.kwargs.get('id')
+        comment_id = self.kwargs.get('cm_id')
+        shop = Shop.objects.get(id=shop_id)
+        comment = Comment.objects.get(id=comment_id)
+        # if comment.ShopID != shop:
+        #     comment = None
+
+        return (comment, shop)
+
+    def perform_create(self, serializer):
+        comment, shop = self.get_object()
+        serializer.save(commentID=comment, user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        comment, shop = self.get_object()
+        if shop == None or comment == None:
+            return Response(data="your request Not found", status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        comment, shop = self.get_object()
+        if shop == None or comment == None:
+            return Response(data="your request Not found", status=status.HTTP_404_NOT_FOUND)
+        queryset = Reply.objects.filter(commentID=comment)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class ReplyInfo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Reply.objects.all()
+    serializer_class = ReplySerializer
+    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]  # permission bayad dorost she
+
+    def get_object(self):
+        cm_id = self.kwargs.get('cm_id')
+        rp_id = self.kwargs.get('re_id')
+        reply = Reply.objects.get(id=rp_id)
+        comment = Comment.objects.get(id=cm_id)
+        if reply.commentID != comment:
+            reply = None
+        return reply
+
+    def retrieve(self, request, *args, **kwargs):
+        reply = self.get_object()
+        if reply == None:
+            return Response(data="reply Not found", status=status.HTTP_404_NOT_FOUND)
+        serializer = self.get_serializer(reply)
+        return Response(serializer.data)
+
+
+class LikeReply(generics.ListCreateAPIView):
+    queryset = ReplyLike.objects.all()
+    serializer_class = ReplyLikeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        shop_id = self.kwargs.get('id')
+        comment_id = self.kwargs.get('cm_id')
+        rp_id = self.kwargs.get('re_id')
+        shop = Shop.objects.get(id=shop_id)
+        comment = Comment.objects.get(id=comment_id)
+        reply = Reply.objects.get(id=rp_id)
+
+        # check whether the post belongs to the community
+        # if item.shopID != shop:
+        #     item = None
+        # check whether the comment belongs to the community
+        # if comment.ShopID != shop:
+        #     comment = None
+        if reply.commentID != comment:
+            reply = None
+        return (reply, comment, shop)
+
+    def perform_create(self, serializer):
+        reply, comment, shop = self.get_object()
+        mem = []
+        mem.append(self.request.user)
+        serializer.save(liked_reply=reply, reply_liked_by=mem)
+
+    def create(self, request, *args, **kwargs):
+        reply, comment, shop = self.get_object()
+        if shop == None:
+            return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+        if comment == None:
+            return Response(data="Comment Not found", status=status.HTTP_404_NOT_FOUND)
+        if reply == None:
+            return Response(data="Reply Not found", status=status.HTTP_404_NOT_FOUND)
+
+        if ReplyLike.objects.filter(liked_reply=reply).exists():
+            replylikeObj = ReplyLike.objects.get(liked_reply=reply)
+            if replylikeObj.reply_liked_by.filter(username=self.request.user.username).exists():
+                replylikeObj.reply_liked_by.remove(self.request.user)
+            else:
+                replylikeObj.reply_liked_by.add(self.request.user)
+            return Response(data=ReplyLikeSerializer(replylikeObj).data)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        reply, comment, shop = self.get_object()
+        if shop == None:
+            return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
+        if comment == None:
+            return Response(data="Comment Not found", status=status.HTTP_404_NOT_FOUND)
+        if reply == None:
+            return Response(data="Reply Not found", status=status.HTTP_404_NOT_FOUND)
+
+        queryset = ReplyLike.objects.filter(liked_reply=reply)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class CommentReply(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentReplySerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        comment = Comment.objects.all()
+        return comment
+
+    def list(self, request, *args, **kwargs):
+        comment = self.get_object()
+        serializer = CommentReplySerializer(comment, many=True)
+        return Response(serializer.data)
+

@@ -53,6 +53,7 @@ class CreateShopTest(APITestCase):
             'title': 'shop 1',
             'user': self.user1.id,
             'manager': 'manager 1',
+            # 'logo': tmp_file.name,
             'address': 'address 1',
             'theme': 1,
             'shomare_sabt': '11111',
