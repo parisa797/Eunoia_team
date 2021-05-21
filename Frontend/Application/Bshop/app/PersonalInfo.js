@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   Container,
 } from "react-native";
-// import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 
 const PersonalInfo = ({ navigation }) => {
@@ -60,6 +60,7 @@ const PersonalInfo = ({ navigation }) => {
   //     .catch((error) => console.log("error", error));
   //   })();
   // }, []);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const getResult = async () => {
@@ -97,7 +98,7 @@ const PersonalInfo = ({ navigation }) => {
     };
 
     getResult();
-  }, []);
+  }, [isFocused]);
 
   //update user's info when pressing update button
   async function beruzresani() {

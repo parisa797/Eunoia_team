@@ -1,48 +1,116 @@
 import * as React from "react";
-// import { View, Text } from "react-native";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
-
-import Welcome from "./welcome";
-import Login from "./login";
-import SignUp from "./signup";
-
-import Home from "./homepage";
-import shopDetail from "./shopDetails";
-
-// const Stack = createStackNavigator();
-
-// export default Navigations = () => {
-//   return (
-//     <NavigationContainer>
-//       <Stack.Navigator initialRouteName="Welcome">
-//         <Stack.Screen name="Welcome" component={Welcome} />
-//         <Stack.Screen name="Login" component={Login} />
-//       </Stack.Navigator>
-//     </NavigationContainer>
-//   );
-// };
-
-import { createStackNavigator } from "@react-navigation/stack";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import * as SecureStore from "expo-secure-store";
+
+import Home from "./app/homepage";
+import ShopDetail from "./app/shopDetails";
+import PersonalInfo from "./app/PersonalInfo";
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
-const AppStack = () => {
+//Structure for the navigatin Drawer
+const NavigationDrawerStructure = (props) => {
+  const toggleDrawer = () => {
+    //Props to open/close the drawer
+    props.navigationProps.openDrawer();
+  };
+
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="ShopDetail" component={ShopDetail} />
+    <View style={{ flexDirection: "row" }}>
+      <TouchableOpacity onPress={toggleDrawer}>
+        {/*Donute Button Image */}
+        <Image
+          source={{
+            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+          }}
+          style={{ width: 25, height: 25, marginLeft: 15 }}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const AppStack = ({ navigation }) => {
+  return (
+    <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: " ", //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: "#780909", //Set Header color
+          },
+          headerTintColor: "#fff", //Set Header text color
+          // headerTitleStyle: {
+          //   fontWeight: "bold", //Set Header text style
+          // },
+        }}
+      />
+      <Stack.Screen
+        name="ShopDetail"
+        component={ShopDetail}
+        options={{ title: "اطلاعات فروشگاه" }}
+      />
     </Stack.Navigator>
   );
 };
 
-const AuthStack = () => {
+const Profile = ({ navigation }) => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <stack.Screen name="SignUp" component={SignUp} />
+    <Stack.Navigator
+      initialRouteName="profile"
+      screenOptions={{
+        headerLeft: () => (
+          <NavigationDrawerStructure navigationProps={navigation} />
+        ),
+        headerStyle: {
+          backgroundColor: "#780909", //Set Header color
+        },
+        headerTintColor: "#fff", //Set Header text color
+        headerTitleStyle: {
+          fontWeight: "bold", //Set Header text style
+        },
+      }}
+    >
+      <Stack.Screen
+        name="profile"
+        component={PersonalInfo}
+        options={{
+          title: " ", //Set Header Title
+        }}
+      />
     </Stack.Navigator>
+  );
+};
+
+const Sidebar = () => {
+  return (
+    <Drawer.Navigator drawerPosition="right">
+      <Drawer.Screen
+        name="homepage"
+        options={{
+          drawerLabel: "صفحه اصلی",
+          activeTintColor: "#e91e63",
+        }}
+        component={AppStack}
+      />
+      <Drawer.Screen
+        name="profilepage"
+        options={{
+          drawerLabel: "پروفایل",
+          activeTintColor: "#e91e63",
+        }}
+        component={Profile}
+      />
+    </Drawer.Navigator>
   );
 };
 
