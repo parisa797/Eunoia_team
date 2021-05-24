@@ -61,6 +61,7 @@ test("loading page for signed users", async () => {
     .get("http://eunoia-bshop.ir:8000/items/new/", [])
     .get("http://eunoia-bshop.ir:8000/items/discount/", [])
     .get("http://eunoia-bshop.ir:8000/items/category/?q=Fruits%20and%20vegetables", [])
+    .get("http://eunoia-bshop.ir:8000/api/v1/shoppings/", [])
   var page;
   await act(async () => {
     page = await render(<LoadingPage />);
@@ -73,7 +74,9 @@ test("loading page for signed users", async () => {
 
 test("loading page when it's not connected to backend server", async () => {
   localStorage.setItem("token", "kjldkjf");
-  // localStorage.setItem("role", "buyer")
+  localStorage.removeItem("role");
+  localStorage.removeItem("shops");
+  localStorage.removeItem("shoplists");
 
   let newUserInfo = { role: "seller", user_name: "lkfje" }
 
@@ -86,6 +89,7 @@ test("loading page when it's not connected to backend server", async () => {
     .get("http://eunoia-bshop.ir:8000/items/new/", [])
     .get("http://eunoia-bshop.ir:8000/items/discount/", [])
     .get("http://eunoia-bshop.ir:8000/items/category/?q=Fruits%20and%20vegetables", [])
+    .get("http://eunoia-bshop.ir:8000/api/v1/shoppings/", [])
   var page;
   await act(async () => {
     page = await render(<LoadingPage />);

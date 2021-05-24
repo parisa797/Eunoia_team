@@ -92,7 +92,7 @@ function ShopList(props) {
             </div>
         </>
         }
-        <h3><a className="header-list-link" href="/stores/newest"><ChevronLeftIcon />موارد بیشتر</a>فروشگاه های برگزیده</h3>
+        <h3><a className="header-list-link" href="/stores/top"><ChevronLeftIcon />موارد بیشتر</a>فروشگاه های برگزیده</h3>
         <div className=" container-fluid row" data-testid="shops" style={{ width: "100%", direction: "rtl"/*, position: "absolute", top: "200px", left: "0px"*/, zIndex: "1", margin: "0" }}  >
             {shops?.map((shop) => {
                 if (shop) return (

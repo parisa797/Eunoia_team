@@ -19,6 +19,7 @@ function SearchResults(props) {
         q = decodeURI(window.location.href.match(/[^\=]+/g)[1]);
         console.log(q)
         if (!q || q === "undefined") {
+            q="";
             window.location.pathname = "/";
         }
         setQuery(q);
@@ -39,9 +40,6 @@ function SearchResults(props) {
             url = "http://eunoia-bshop.ir:8000/api/v1/shops/search?q=" + q;
         }
         let requestOptions = {
-            //     headers: {
-            //         "Authorization":"Token "+localStorage.getItem("token"),
-            // }
             method: "GET"
         }
         fetch(url, requestOptions)
@@ -71,8 +69,8 @@ function SearchResults(props) {
                     if (!!result)
                         if (type === "s")
                             return (
-                                <div className="col-12 col-sm-6 col-md-4 col-lg-3" style={{ padding: "5px" }}>
-                                    <ShopCard shop={result} />
+                                <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={"shop-"+result.title} style={{ padding: "5px" }}>
+                                    <ShopCard shop={result} id="" />
                                 </div>)
                         else {
                             let userState = "u";
@@ -85,8 +83,8 @@ function SearchResults(props) {
                                 userState = "m"
                             else
                                 userState = "l"
-                            return <div className="col-12 col-sm-4 col-md-3 col-lg-2" style={{ padding: "5px" }}>
-                                <ItemCard item={result} userState={userState} onlineShop={props.online?props.online:result.ItemShop?.online} showShopName={true} />
+                            return <div className="col-12 col-sm-4 col-md-3 col-lg-2" key={"item-"+result.name} style={{ padding: "5px" }}>
+                                <ItemCard item={result} userState={userState} onlineShop={props.online?props.online:result.ItemShop?.online} showShopName={!shopID} id="" />
                             </div>
                         }
             })}

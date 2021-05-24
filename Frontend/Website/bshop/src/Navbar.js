@@ -152,7 +152,7 @@ return (
                     <div className="shopping-dropdown">
                       <div className="shopping-dropdown-list">
                         {shoppingList?.map((el, i) =>
-                          <div key={i} className="shopping-dropdown-item" onClick={() => window.location.href = "/store/" + el.item.shop_id + "/item/" + el.item.id}>
+                          <div key={i} className="shopping-dropdown-item" onClick={() => window.location.href = "/store/" + el.item.shop_id + "/items/" + el.item.id}>
                             <div className="shopping-dropdown-img-holder">
                               <img alt={el.item.name} src={el.item.photo} />
                             </div>

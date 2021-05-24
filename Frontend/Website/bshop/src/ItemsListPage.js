@@ -7,7 +7,6 @@ import './Search.css';
 import ShopSideBar from './ShopSideBar';
 
 function ItemsListPage(props) {
-    // const [type, setType] = useState("s") //s or i for store or item
     const [shopID, setShopID] = useState("");
     const [filter, setFilter] = useState("");
     const [category, setCategory] = useState("");
@@ -41,7 +40,7 @@ function ItemsListPage(props) {
 
         if (window.location.pathname.includes("store")) {
             shop = decodeURI(window.location.pathname.match(/[^\/]+/g)[1]);
-            f = decodeURI(window.location.pathname.match(/[^\/]+/g)[3]);
+            f = decodeURI(window.location.pathname.match(/[^\/]+/g)[4]);
             if(f.includes("category"))
                 f=null;
             setFilter(f);
@@ -64,9 +63,7 @@ function ItemsListPage(props) {
             setFilter(f);
         }
         url = "http://eunoia-bshop.ir:8000/"
-        if(shop){
-            url = url + "shops/" + shop + "/";
-        }
+        
         url = url + "items/"
         if(c){
             url = url + "category/"
@@ -83,7 +80,11 @@ function ItemsListPage(props) {
                 break;
                 default:
             }
+            console.log(f)
             document.getElementById(f+"-btn").className += " active";
+        }
+        if(shop){
+            url = url + shop;
         }
         if(c)
             url = url + "?q=" + c
@@ -129,11 +130,12 @@ function ItemsListPage(props) {
     function changeFilter(f){
         let newLocation = "";
         if(shopID){
-            newLocation += "/store/" + shopID;
+            newLocation += "/store/" + shopID + "/items/list/" + f;
         }
-        newLocation += "/items/"+ f;
+        else
+            newLocation += "/items/"+ f;
         if(category)
-            newLocation += "category?="+category;
+            newLocation += "/category?="+category;
         window.location.href= newLocation;
     }
 
@@ -156,15 +158,8 @@ function ItemsListPage(props) {
                 {!loading &&
                     <div className="container-fluid row" style={{ width: "100%", zIndex: "0", margin: "0 0 20vh 0", padding: "10" }}  >
                         {!results || results.length === 0 ?
-                            <p style={{ margin: "auto" }} id="no-items">نتیجه‌ای یافت نشد!</p>
+                            <p style={{ margin: "auto" }} data-testid="no-items">نتیجه‌ای یافت نشد!</p>
                             : 
-                            // results.map((result) => {
-                            //     if (!!result) return (
-                            //         <div className="col-12 col-sm-4 col-md-3 col-lg-2" style={{ padding: "5px" }}>
-                            //             <ItemCard item={result} />
-                            //         </div>
-                            //     )
-                            // })
                             <Itemslist url={"/store/"+shopID+"/itemslist"} items={results} listType="horizontal"
                              online={shopInfo?.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3"
                              listType="page"  id="filtered" userState={props.userState?props.userState:null}

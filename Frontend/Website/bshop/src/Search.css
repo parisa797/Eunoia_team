@@ -56,7 +56,7 @@
 }
 
 .search .searchbar .search-btn{
-    /* height: 40px; */
+    height: 40px;
     border: 1px solid var(--primary-color);
     border-right: none;
     border-radius: 5px 0 0 5px;
@@ -110,6 +110,7 @@
 .search .searchbar .search-list-item p{
     margin: 0;
     font-family: 'Vazir';
+    align-self: center;
 }
 
 .search .searchbar .search-list-item .title{
@@ -123,6 +124,15 @@
     margin-right: 5px;
     color: var(--heading-color);
     font-size: 0.8rem;
+}
+
+.search .searchbar .search-list-item img{
+    width: 5rem;
+    height:5rem;
+    object-fit: cover;
+    align-self: center;
+    margin-left: 5px;
+    border-radius: 5px;
 }
 
 .search-results{
