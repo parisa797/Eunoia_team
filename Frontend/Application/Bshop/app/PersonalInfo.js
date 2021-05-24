@@ -14,8 +14,13 @@ import {
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import * as ImagePicker from "expo-image-picker";
+import { Avatar } from "react-native-paper";
 
 const PersonalInfo = ({ navigation }) => {
+  const [image, setImage] = useState(null);
+  const [newImage, setNewImage] = useState(false);
+
   const [info, setinfo] = useState("");
 
   const [name, setname] = useState();
@@ -23,12 +28,27 @@ const PersonalInfo = ({ navigation }) => {
   const [phone, setphone] = useState();
   const [address, setaddress] = useState();
 
+  const isFocused = useIsFocused();
+
   const phoneLenght = (text) => {
     let pattern = /^[0][1-9]\d{9}$|^[1-9]\d{9}$/;
     return pattern.test(String(text));
   };
 
-  const isFocused = useIsFocused();
+  //access to gallery
+  useEffect(() => {
+    (async () => {
+      // if (Platform.OS !== 'web') {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+      // }
+    })();
+  }, []);
+
+  //get info when user navigates to page
   useEffect(() => {
     const getResult = async () => {
       var myHeaders = new Headers();
@@ -49,7 +69,9 @@ const PersonalInfo = ({ navigation }) => {
           setfamilyname(result.LastName);
           setphone(result.phone);
           setaddress(result.address);
+          setImage(result.urls[0].uploaded_file);
           console.log(result);
+          // console.log("iside urls:", result.urls[0].uploaded_file);
         })
         .catch((error) => console.log("error", error));
     };
@@ -57,43 +79,131 @@ const PersonalInfo = ({ navigation }) => {
     getResult();
   }, [isFocused]);
 
-  //update user's info when pressing update button
-  async function UpdateInfo() {
-    // console.log("beruzresani");
+  async function pickImage() {
+    setNewImage(true);
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  }
+
+  async function UpdateWithImage() {
+    var fields = image.split("/");
+    var image_name = fields[fields.length - 1];
+    var f = image_name.split(".");
+    var type = f[f.length - 1];
+
     var myHeaders = new Headers();
     let t = await SecureStore.getItemAsync("token");
     var authorization = "Token " + t;
-    // console.log("result is" + result);
     myHeaders.append("Authorization", authorization);
-    // myHeaders.append("Content-Type", "multipart/form-data");
-    var formdata = new FormData();
-    formdata.append("email", info.email);
-    formdata.append("FirstName", name);
-    formdata.append("LastName", familyname);
-    formdata.append("address", address);
-    formdata.append("phone", phone);
-    // formdata.append("files", []);
-    console.log(formdata);
-    // console.log("formdata");
-    var requestOptions = {
-      method: "PUT",
-      headers: myHeaders,
-      body: formdata,
-    };
+    myHeaders.append("Content-Type", "multipart/form-data");
+    myHeaders.append("Accept", "application/json");
 
-    fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+    var form = new FormData();
+    form.append("uploaded_file", {
+      uri: image,
+      type: "image/" + type, // or photo.type
+      name: image_name,
+    });
+    // form.append("uploaded_file", image);
+    var requestOptions1 = {
+      method: "POST",
+      headers: myHeaders,
+      body: form,
+    };
+    fetch(
+      "http://eunoia-bshop.ir:8000/users/profile/upload-file",
+      requestOptions1
+    )
       .then((response) => {
-        console.log("status is,", response.status);
-        if (response.status == 200) {
-          ToastAndroid.show(
-            "اطلاعات شما با موفقیت به روز رسانی شد.",
-            ToastAndroid.SHORT
-          );
-          return response.json();
-        }
+        console.log("image status is,", response.status);
+        return response.json();
       })
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+      .then((result) => {
+        console.log("result of image", result);
+        var image_id = result.id;
+        var formdata = new FormData();
+        formdata.append("email", info.email);
+        formdata.append("FirstName", name);
+        formdata.append("LastName", familyname);
+        formdata.append("address", address);
+        formdata.append("phone", phone);
+        formdata.append("files", image_id);
+        // formdata.append("files", []);
+        // console.log(formdata);
+        // console.log("formdata");
+        var requestOptions2 = {
+          method: "PUT",
+          headers: myHeaders,
+          body: formdata,
+        };
+
+        fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions2)
+          .then((response) => {
+            console.log("info status is,", response.status);
+            if (response.status == 200) {
+              ToastAndroid.show(
+                "اطلاعات شما با موفقیت به روز رسانی شد.",
+                ToastAndroid.SHORT
+              );
+              return response.json();
+            }
+          })
+          .then((result) => console.log("result of info and image", result))
+          .catch((error) => console.log("error3", error));
+      })
+      .catch((error) => console.log("error1", error));
+  }
+
+  //update user's info when pressing update button
+  async function UpdateInfo() {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    console.log("image", image);
+    console.log("user uploaded a new photo", newImage);
+    //fetch photo if exists
+    if (image && newImage) {
+      UpdateWithImage();
+    } else {
+      // myHeaders.append("Content-Type", "multipart/form-data");
+      var formdata = new FormData();
+      formdata.append("email", info.email);
+      formdata.append("FirstName", name);
+      formdata.append("LastName", familyname);
+      formdata.append("address", address);
+      formdata.append("phone", phone);
+      var requestOptions2 = {
+        method: "PUT",
+        headers: myHeaders,
+        body: formdata,
+      };
+
+      fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions2)
+        .then((response) => {
+          console.log("info status is,", response.status);
+          if (response.status == 200) {
+            ToastAndroid.show(
+              "اطلاعات شما با موفقیت به روز رسانی شد.",
+              ToastAndroid.SHORT
+            );
+            return response.json();
+          }
+        })
+        .then((result) => console.log("result of info", result))
+        .catch((error) => console.log("error2", error));
+    }
   }
 
   const SureDelete = () => {
@@ -136,6 +246,11 @@ const PersonalInfo = ({ navigation }) => {
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.kooft}>
       <View style={styles.container}>
+        <Button title="Pick an image from camera roll" onPress={pickImage} />
+        {image && (
+          // <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <Avatar.Image size={200} source={{ uri: image }} />
+        )}
         {/* <Image style={styles.image} source={require("../assets/profile.png")} /> */}
         <View style={styles.inputView}>
           <TextInput
@@ -148,9 +263,9 @@ const PersonalInfo = ({ navigation }) => {
             textAlign="center"
             testID={"namepersonal_check"}
             onChangeText={setname}
-            onBlur={() => {
-              if (name == "") placeholder = "نام";
-            }}
+            // onBlur={() => {
+            //   if (name == "") placeholder = "نام";
+            // }}
           />
         </View>
         <View style={styles.inputView}>
