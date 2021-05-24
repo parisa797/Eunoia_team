@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,55 +13,77 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
+import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
-  console.log(route.params);
+  // console.log(route.params);
 
-  const shopitems = [
-    {
-      name: "پفک طلایی چی توز",
-      price: "7.000 : قیمت ",
-      image: require("../assets/pofak.png"),
-      id: 1,
-    },
-    {
-      name: "پاستیل شیبابا",
-      price: "9.000 : قیمت ",
-      image: require("../assets/pastil.jpg"),
-      id: 2,
-    },
-    {
-      name: "رب گوجه آتا",
-      price: "15.100 : قیمت ",
-      image: require("../assets/rob.png"),
-      id: 3,
-    },
-    {
-      name: "پف پفی شیبابا",
-      price: "7.000 : قیمت ",
-      image: require("../assets/pufpuf.jpg"),
-      id: 4,
-    },
-    {
-      name: "پودینگ کوپا",
-      price: "10.500 : قیمت ",
-      image: require("../assets/pudding.png"),
-      id: 5,
-    },
-    {
-      name: "چیپس قارچ و خامه چی توز",
-      price: "8.000 : قیمت ",
-      image: require("../assets/chips.png"),
-      id: 6,
-    },
-    {
-      name: "پودر شکلات پارمیدا",
-      price: "33.800 : قیمت ",
-      image: require("../assets/pudrchocolate.jpg"),
-      id: 7,
-    },
-  ];
+  const [shopitems, setItems] = useState();
+  const loadProducts = useEffect(() => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    var url =
+      "http://eunoia-bshop.ir:8000/shops/" + route.params.id + "/items/";
+    // console.log("used this url", url);
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setItems(result);
+        // console.log(result);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
+
+  // const shopitems = [
+  //   {
+  //     name: "پفک طلایی چی توز",
+  //     price: "7.000 : قیمت ",
+  //     image: require("../assets/pofak.png"),
+  //     id: 1,
+  //   },
+  //   {
+  //     name: "پاستیل شیبابا",
+  //     price: "9.000 : قیمت ",
+  //     image: require("../assets/pastil.jpg"),
+  //     id: 2,
+  //   },
+  //   {
+  //     name: "رب گوجه آتا",
+  //     price: "15.100 : قیمت ",
+  //     image: require("../assets/rob.png"),
+  //     id: 3,
+  //   },
+  //   {
+  //     name: "پف پفی شیبابا",
+  //     price: "7.000 : قیمت ",
+  //     image: require("../assets/pufpuf.jpg"),
+  //     id: 4,
+  //   },
+  //   {
+  //     name: "پودینگ کوپا",
+  //     price: "10.500 : قیمت ",
+  //     image: require("../assets/pudding.png"),
+  //     id: 5,
+  //   },
+  //   {
+  //     name: "چیپس قارچ و خامه چی توز",
+  //     price: "8.000 : قیمت ",
+  //     image: require("../assets/chips.png"),
+  //     id: 6,
+  //   },
+  //   {
+  //     name: "پودر شکلات پارمیدا",
+  //     price: "33.800 : قیمت ",
+  //     image: require("../assets/pudrchocolate.jpg"),
+  //     id: 7,
+  //   },
+  // ];
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View>
@@ -75,19 +97,20 @@ const ShopDetail = ({ route, navigation }) => {
           </View>
           <View style={styles.details}>
             <Text style={styles.title}>فروشگاه {route.params.title}</Text>
+            <View style={styles.icon}>
+              <Ionicon name="location-sharp" size={25} color="black"></Ionicon>
+              <Text style={styles.address}>{route.params.address}</Text>
+            </View>
 
-            <Text style={styles.address}>آدرس: {route.params.address}</Text>
+            <View style={styles.icon}>
+              <Icon name="phone" size={25} color="black"></Icon>
+              <Text style={styles.address}>{route.params.phone}</Text>
+            </View>
 
             {route.params.online == true && (
               <View style={styles.online_icon}>
                 <Icon name="check-circle" size={20} color="green"></Icon>
-                <Text style={styles.online}>
-                  {" "}
-                  آنلاین
-                  <Text style={styles.mantaghee}>
-                    منطقه {route.params.mantaghe}
-                  </Text>
-                </Text>
+                <Text style={styles.online}> آنلاین</Text>
               </View>
             )}
             {route.params.online == false && (
@@ -112,41 +135,27 @@ const ShopDetail = ({ route, navigation }) => {
           <Text style={styles.rowstext}>محصولات فروشگاه</Text>
         </View>
         <Text style={{ fontWeight: "bold" }}></Text>
-        <FlatList
-          style={{ marginTop: -30 }}
-          horizontal
-          data={shopitems}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
-            console.log(item.image);
-            console.log("item.image");
-            return (
-              <View style={{ padding: 10 }}>
-                <View style={styles.items}>
-                  <Image style={styles.image} source={item.image} />
-                </View>
-                <Text>{item.name}</Text>
+        {shopitems && (
+          <FlatList
+            style={{ marginTop: -30 }}
+            horizontal
+            data={shopitems}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={(itemData) => {
+              // console.log("item is", itemData.item);
+              return (
+                <Item
+                  name={itemData.item.name}
+                  image={itemData.item.photo}
+                  price={itemData.item.price}
+                  discount={itemData.item.discount}
+                  index={itemData.item.id}
+                ></Item>
+              );
+            }}
+          />
+        )}
 
-                <View style={styles.row}>
-                  <View style={styles.price}>
-                    <Text
-                      style={{
-                        textDecorationLine: "line-through",
-                        textDecorationStyle: "solid",
-                        textDecorationColor: "#b31414",
-                      }}
-                    >
-                      {item.price}
-                    </Text>
-                  </View>
-                  <View style={styles.price}>
-                    <Text>{item.price}بعد از تخفیف</Text>
-                  </View>
-                </View>
-              </View>
-            );
-          }}
-        />
         {/* </ImageBackground> */}
       </View>
     </ScrollView>
@@ -154,18 +163,23 @@ const ShopDetail = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  icon: {
+    justifyContent: "space-between",
+    flexDirection: "row-reverse",
+    alignItems: "baseline",
+  },
   hozuri: { fontSize: 20, color: "red" },
-  online: { fontSize: 20, color: "green", marginLeft: 50 },
+  online: { fontSize: 20, color: "green" },
   shop: {
     borderRadius: 10,
-    marginTop: 30,
+    marginTop: "3%",
     borderRadius: 10,
     shadowColor: "black",
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     backgroundColor: "#f1f1f2",
-    height: 250,
+    height: 300,
     width: 370,
     marginLeft: 18,
   },
@@ -248,7 +262,7 @@ const styles = StyleSheet.create({
   },
   title: {
     // fontFamily: "open-sans-bold",
-    fontSize: 19,
+    fontSize: 20,
     marginVertical: 5,
     // paddingTop: 3,
     marginLeft: "-1%",
@@ -262,7 +276,7 @@ const styles = StyleSheet.create({
   },
   address: {
     // fontFamily: "open-sans",
-    fontSize: 21,
+    fontSize: 20,
     color: "black",
   },
   mantaghee: {

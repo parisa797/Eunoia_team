@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   online: { fontSize: 20, color: "green" },
   shop: {
     height: 260,
-    width: 360,
+    width: "90%",
     margin: 20,
     borderRadius: 20,
     shadowColor: "black",
