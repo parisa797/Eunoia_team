@@ -83,7 +83,7 @@ export default Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
     marginTop: "5%",
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   inputView: {
-    backgroundColor: "#f1f1f2",
+    backgroundColor: "#fff",
     borderRadius: 10,
     width: "90%",
     height: 45,

@@ -49,13 +49,13 @@ const Shop = (props) => {
           {props.online == true && (
             <View style={styles.online_icon}>
               <Icon name="check-circle" size={20} color="green"></Icon>
-              <Text style={{ fontSize: 20 }}> فروش آنلاین دارد</Text>
+              <Text style={styles.online}> آنلاین</Text>
             </View>
           )}
           {props.online == false && (
             <View style={styles.online_icon}>
-              <Icon name="times-circle" size={20} color="red"></Icon>
-              <Text style={{ fontSize: 20 }}> فروش آنلاین ندارد</Text>
+              <Icon name="check-circle" size={20} color="red"></Icon>
+              <Text style={styles.hozuri}> حضوری</Text>
             </View>
           )}
         </View>
@@ -65,6 +65,8 @@ const Shop = (props) => {
 };
 
 const styles = StyleSheet.create({
+  hozuri: { fontSize: 20, color: "red" },
+  online: { fontSize: 20, color: "green" },
   shop: {
     height: 260,
     width: 360,
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 20,
     marginTop: -20,
+    marginLeft: 20,
   },
   image: {
     // backgroundColor: "#f1f1f2",
