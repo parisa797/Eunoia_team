@@ -5,15 +5,15 @@ import ShopSideBar from "./ShopSideBar";
 function Item(props) {
   // console.log("Token "+localStorage.getItem("token"))
   const [items, setItems] = useState({});
-  const [itemInfo, setItemInfo] = useState({})
   const [rated, setRated] = useState(false)
   const [rateID, setRateId] = useState(null)
+  const[triggerReload,setTriggerReload] = useState(false)
   var shopID = window.location.pathname.match(/[^\/]+/g)[1];
   var itemID = window.location.pathname.match(/[^\/]+/g)[3];
   // let itemId = window.location.pathname.match.items(/[^\/]+/g)[3]
   // let shopID = window.location.pathname.match(/[^\/]+/g)[1]
   useEffect(() => {
-    fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/" + itemID, {
+    fetch("https://iust-bshop.herokuapp.com/shops/" + shopID + "/items/" + itemID, {
       method: "GET",
       // headers: {
       //     "Authorization": "Token " + localStorage.getItem('token')
@@ -28,6 +28,33 @@ function Item(props) {
         setItems(res);
       });
   }, []);
+  useEffect(() => {
+    console.log(props.userState)
+    fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/"+itemID+"/rates/" , {
+        method: 'GET',
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    })
+        .then((res) => {
+            if (res.status === 200) {
+                return res.json()
+            }
+        }
+        ).then((res) => {
+            console.log("in list rate")
+            console.log(res)
+            let username = localStorage.getItem("username")
+            for (let i in res) {
+                if (res[i].user.user_name === username) {
+                    setRated(true)
+                    setRateId(res[i].id)
+                }
+            }
+        })
+    // })
+}, [])
+
   useEffect(() => {}, []);
   function ratingChanged(new_rating) {
     let fd = new FormData()
@@ -35,7 +62,7 @@ function Item(props) {
     fd.append("rate", new_rating)
     if (!rated) {
         fd.append("item", itemID)
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/rate/create/", {
+        fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/"+itemID+"/rates/", {
             method: 'POST',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -53,13 +80,13 @@ function Item(props) {
             if (res) {
                 setRateId(res.id)
                 setRated(true)
-                props.setTriggerReload(!props.triggerReload)
+                setTriggerReload(!triggerReload)
             }
 
         })
     }
     else {
-        fetch("http://eunoia-bshop.ir:8000/api/v1/items/rate/" + rateID, {
+        fetch("https://iust-bshop.herokuapp.com/shops/"+shopID+"/items/"+itemID+"/rates/" + rateID, {
             method: 'PUT',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -69,7 +96,7 @@ function Item(props) {
         }).then(res => {
             if (res.status === 200) {
                 setRated(true)
-                props.setTriggerReload(!props.triggerReload)
+                setTriggerReload(!triggerReload)
             }
             console.log(res.status)
         })
@@ -85,8 +112,9 @@ function Item(props) {
         <div className="item-page">
           <div className="sub-container">
             <div className="col-12 d-flex flex-wrap">
-              <div className="col-sm-12 col-md-5">
-                <img style={{ width: "100%", height: "100%" }} src={items.photo} alt="" />
+              <div className="col-sm-12 col-md-5 imageWrapper">
+              
+                <img className=" image " src={items.photo} alt="" />
               </div>
               <div className="lead text-right col-sm-12 col-md-6">
                 <h1 className="my-3" data-testid="item-name">{items.name}</h1>
@@ -98,10 +126,10 @@ function Item(props) {
                   </>
                 )}
                 <div className="rating-item">
-                            <> <p style={{ direction: "ltr" }} data-testid={"item-rate-value"}>امتیاز: {itemInfo.rate_value?Math.round(itemInfo.rate_value * 10) / 10 :0} </p>
-                                    {!!itemInfo.rate_value && <ReactStars
+                            <> <p style={{ direction: "ltr" }} data-testid={"item-rate-value"}>امتیاز: {items.rate_value?Math.round(items.rate_value * 10) / 10 :0} </p>
+                                    {!!items.rate_value && <ReactStars
                                         edit={props.userState!=="u"}
-                                        value={Math.round(itemInfo.rate_value)}
+                                        value={Math.round(items.rate_value)}
                                         isHalf={false}
                                         classNames="stars"
                                         data-testid="item-rate-stars"
@@ -109,7 +137,7 @@ function Item(props) {
                                         onChange={ratingChanged}
                                         activeColor={"var(--primary-color)"}
                                     />}
-                                    {!itemInfo.rate_value && <ReactStars
+                                    {!items.rate_value && <ReactStars
                                         edit={!!localStorage.getItem("token")}
                                         value={0}
                                         isHalf={false}
@@ -119,7 +147,7 @@ function Item(props) {
                                         onChange={ratingChanged}
                                         activeColor={"var(--primary-color)"}
                                     /> }
-                                    <p data-testid={"item-rate-count"}>‌({itemInfo.rate_count})</p>
+                                    <p data-testid={"item-rate-count"}>‌({items.rate_count})</p>
                                 </>
                             </div>
                  {/* <div className="items-stars">
