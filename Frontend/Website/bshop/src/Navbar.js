@@ -37,6 +37,9 @@ function CustomNavbar(props) {
         if (res.status === 200) {
           return res.json()
         }
+        else if(res.status === 401){
+          logout();
+        }
         return null;
       }
     ).then(
