@@ -275,6 +275,11 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     display: grid;
     grid-template-rows: auto 12vh;
+    cursor: pointer;
+}
+
+.shoppinglists .list-holder:hover{
+    transform: scale(1.05);
 }
 
 .shoppinglists .list-upper{
@@ -301,6 +306,7 @@
     align-items: center;
     overflow: hidden;
     position: relative;
+    padding: 0 3px;
 }
 
 .shoppinglists .list-lower p{

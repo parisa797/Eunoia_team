@@ -43,7 +43,7 @@ function ShoppingLists(props) {
                 :
                     lists.map(l =>
                         <div className="col-12 col-md-6 col-lg-4">
-                            <div className="list-holder">
+                            <div className="list-holder" onClick={()=>window.location.href="/store/"+l.shop+"/shopping-list"}>
                                 <div className="list-upper">
                                     <h3>فروشگاه شهروند</h3>
                                     
