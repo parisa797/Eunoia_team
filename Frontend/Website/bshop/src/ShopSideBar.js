@@ -45,7 +45,7 @@ function ShopSideBar(props) {
                             <div className="btn" onClick={() => toggleSection("sub-sub-section" + sectionNum)}>{section.name}</div>
                             <div className="sub-sub-section" id={"sub-sub-section" + sectionNum}>
                                 {section.sublist.map((subSection, subNum) =>
-                                    <a href={(props.shopID?"/store/"+props.shopID:"")+"/items/category?="+categories[subSection]} key={subSection + subNum}>{subSection}</a>
+                                    <a href={(props.shopID?"/store/"+props.shopID+"/items/list/category?=":"/items/category?=")+categories[subSection]} key={subSection + subNum}>{subSection}</a>
                                 )}
                             </div>
                         </div>)

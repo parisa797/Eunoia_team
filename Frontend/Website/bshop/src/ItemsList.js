@@ -7,36 +7,6 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { PinDropSharp } from "@material-ui/icons";
 
 function Itemslist(props) {
-    // const [items, setItems] = useState([]);
-    // const [shopInfo, setShopInfo] = useState({});
-    // let shopID = window.location.pathname.match(/[^\/]+/g)[1]
-    // useEffect(() => {
-    //     fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
-    //         method: "GET",
-    //     }).then((res) => {
-    //         if (res.status === 200) {
-    //             return res.json();
-    //         }
-    //     }).then(res => {
-    //         setItems(res);
-    //     })
-    //     fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
-    //         method: 'GET',
-    //         headers: {
-    //             "Authorization": "Token " + localStorage.getItem('token')
-    //         }
-    //     })
-    //         .then((res) => {
-    //             if (res.status === 200) {
-    //                 return res.json()
-    //             }
-    //             return {};
-    //         }
-    //         )
-    //         .then((d) => {
-    //             setShopInfo(d);
-    //         });
-    // }, [props.triggerReload])
     const usersShops = JSON.parse(localStorage.getItem("shops"));
 
     return (
@@ -60,7 +30,7 @@ function Itemslist(props) {
                             else
                                 userState = "l"
                             if (!!item) return (
-                                <div className={props.itemHolderClass} style={{ padding: "5px" }} key={item.id}>
+                                <div className={props.itemHolderClass} style={{ padding: "5px" }} key={item.shop_id+"-"+item.id}>
                                     <ItemCard item={item} id={props.id} onlineShop={props.online?props.online:item.ItemShop?.online} showDeleteItemModal={props.showDeleteItemModal} userState={userState} showShopName={props.showShopName} />
                                 </div>
                             )

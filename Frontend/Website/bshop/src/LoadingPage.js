@@ -117,7 +117,7 @@ function LoadingPage(props) {
             }
         )
             .catch(e => { console.log(e); setText("ارتباط با سرور ممکن نیست، دوباره امتحان کنید.") });
-    })
+    },[])
 
     return (!loaded ? <div style={{ position: "fixed", top: 0, bottom: 0, left: 0, right: 0, zIndex: "3000", background: "var(--bg-color)", alignItems: "center", display: "flex", flexDirection: "column", direction: "rtl", width: "100vw", height: "100vh" }}>
         <Lottie options={{

@@ -229,14 +229,14 @@ function Shop(props) {
                 </div>
                 {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
                     {/* <div className="page-contents-item"> */}
-                        <Itemslist url={"/store/"+shopID+"/items"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="all-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal}/>
+                        <Itemslist url={"/store/"+shopID+"/items/list/newest"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="all-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal}/>
                     {/* </div> */}
                     </>}
                 {(discountedItems.length > 0) && <> <h4 className="header"><span className="header-span">تخفیف‌دارها</span></h4>
-                    <Itemslist url={"/store/"+shopID+"/items/discounted"} items={discountedItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="discounted-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
+                    <Itemslist url={"/store/"+shopID+"/items/list/discounted"} items={discountedItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="discounted-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
                     </>}
                 {(allItems.length > 0) && <><h4 className="header"><span className="header-span">محبوب‌ترین‌ کالاها</span></h4>
-                    <Itemslist url={"/store/"+shopID+"/items"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="loved-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
+                    <Itemslist url={"/store/"+shopID+"/items/list/newest"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="loved-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
                     </>}
                 <h4 className="header" ref={commentsRef}><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">

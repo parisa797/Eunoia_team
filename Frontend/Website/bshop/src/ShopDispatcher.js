@@ -97,6 +97,11 @@ function ShopDispatcher() {
                         {...props}
                     />)}
                     />
+                    <Route path="/store/:id/items/list" render={(props) => (
+                        <ItemsListPage
+                        userState={userState}
+                        {...props}
+                    />)} />
                     <Route path="/store/:id/items/:itemid/edit" render={(props) => (
                         <EditItem
                         triggerReload={triggerReload}

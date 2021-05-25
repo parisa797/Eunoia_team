@@ -21,7 +21,7 @@ function ItemCard(props) {
     }
 
     useEffect(()=>{
-        setId((props.id? props.id : "")+props.item.shop_id +props.item.id);
+        setId((props.id? props.id : "")+"-"+props.item.shop_id+"-" +props.item.id);
     },[props.item,props.id])
 
     const changeCartCount = (count)=>{
@@ -187,7 +187,7 @@ function ItemCard(props) {
         }>
             <div className="card-img-container">
                 <img className="card-img-top" data-testid={"item-img"+id} src={props.item?.photo ? (props.item.photo.includes(ServerURL) ? props.item.photo : ServerURL + props.item.photo) : "/no-image-icon-0.jpg"} alt="Card image cap" />
-                {props.showShopName && <p className="shop-name">{props.item.ItemShop.title}</p>}
+                {props.showShopName && <p className="shop-name" data-testid={"item-shop-name"+id}>{props.item.ItemShop.title}</p>}
             </div>
             <div className="item-card-body">
                 <h5 className="item-card-title" data-testid={"item-name"+id}>{props.item.name}</h5>
