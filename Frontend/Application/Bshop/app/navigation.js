@@ -8,6 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import Home from "./homepage";
 import ShopDetail from "./shopDetails";
 import PersonalInfo from "./PersonalInfo";
+import Chat from "./chat";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -25,7 +26,8 @@ const NavigationDrawerStructure = (props) => {
         {/*Donute Button Image */}
         <Image
           source={{
-            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+            uri:
+              "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
           }}
           style={{ width: 25, height: 25, marginLeft: 15 }}
         />

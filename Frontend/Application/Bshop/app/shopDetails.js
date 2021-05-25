@@ -73,6 +73,7 @@ const ShopDetail = ({ route, navigation }) => {
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={{ uri: route.params.logo }} />
           </View>
+
           <View style={styles.details}>
             <Text style={styles.title}>فروشگاه {route.params.title}</Text>
 
