@@ -37,8 +37,7 @@ class ItemSerializer(serializers.ModelSerializer):
         model= Item
         fields=['ItemShop','photo','name','shop_id','description', 'manufacture_Date','Expiration_Date',
                 'manufacture_jalali','Expiration_jalali','count','category','id','discount',
-                'price','rate_count','rate_value','brand']
-                #'price','rate_count','rate_value']
+                'price','rate_count','rate_value','price_with_discount','brand']
 
 class CreateListItemSerializer(serializers.ModelSerializer):
     shop_id = serializers.IntegerField(source='shopID.id', read_only=True)
@@ -58,8 +57,7 @@ class CreateListItemSerializer(serializers.ModelSerializer):
         model= Item
         fields=['photo','name','shop_id','description',
                 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count',
-                'category','discount','price','rate_count','rate_value','brand','id']
-                # 'category','discount','price','rate_count','rate_value','id']
+                'category','discount','price','rate_count','rate_value','price_with_discount','brand','id']
 
 class CommentSerializer(serializers.ModelSerializer):
     AllPeopleLiked = serializers.SerializerMethodField('get_likes')
@@ -179,8 +177,7 @@ class ItemShoppnigSerializer(serializers.ModelSerializer):
         model = Item
         fields = ['photo', 'name', 'shop_id', 'description', 'manufacture_Date', 'Expiration_Date',
                   'manufacture_jalali', 'Expiration_jalali', 'count', 'category', 'id',
-                  'discount', 'price','brand','rate_count','rate_value']
-                  # 'discount', 'price','rate_count','rate_value']
+                  'discount', 'price','brand','rate_count','rate_value','price_with_discount']
 
 def correct_date(date):
     year=date.strftime('%Y')
