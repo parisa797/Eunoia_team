@@ -21,9 +21,18 @@ const Item = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.items}>
-        <Image style={styles.image} source={{ uri: photo }} />
+        <Image
+          testID={"item-image-" + props.index}
+          style={styles.image}
+          source={{ uri: photo }}
+        />
       </View>
-      <Text style={{ fontSize: 20, fontWeight: "bold" }}>{props.name}</Text>
+      <Text
+        testID={"item-name-" + props.index}
+        style={{ fontSize: 20, fontWeight: "bold" }}
+      >
+        {props.name}
+      </Text>
 
       {/* <View style={styles.rows}> */}
       {props.discount != 0 && (

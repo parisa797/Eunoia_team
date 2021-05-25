@@ -40,50 +40,6 @@ const ShopDetail = ({ route, navigation }) => {
       });
   }, []);
 
-  // const shopitems = [
-  //   {
-  //     name: "پفک طلایی چی توز",
-  //     price: "7.000 : قیمت ",
-  //     image: require("../assets/pofak.png"),
-  //     id: 1,
-  //   },
-  //   {
-  //     name: "پاستیل شیبابا",
-  //     price: "9.000 : قیمت ",
-  //     image: require("../assets/pastil.jpg"),
-  //     id: 2,
-  //   },
-  //   {
-  //     name: "رب گوجه آتا",
-  //     price: "15.100 : قیمت ",
-  //     image: require("../assets/rob.png"),
-  //     id: 3,
-  //   },
-  //   {
-  //     name: "پف پفی شیبابا",
-  //     price: "7.000 : قیمت ",
-  //     image: require("../assets/pufpuf.jpg"),
-  //     id: 4,
-  //   },
-  //   {
-  //     name: "پودینگ کوپا",
-  //     price: "10.500 : قیمت ",
-  //     image: require("../assets/pudding.png"),
-  //     id: 5,
-  //   },
-  //   {
-  //     name: "چیپس قارچ و خامه چی توز",
-  //     price: "8.000 : قیمت ",
-  //     image: require("../assets/chips.png"),
-  //     id: 6,
-  //   },
-  //   {
-  //     name: "پودر شکلات پارمیدا",
-  //     price: "33.800 : قیمت ",
-  //     image: require("../assets/pudrchocolate.jpg"),
-  //     id: 7,
-  //   },
-  // ];
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View>
@@ -137,6 +93,7 @@ const ShopDetail = ({ route, navigation }) => {
         <Text style={{ fontWeight: "bold" }}></Text>
         {shopitems && (
           <FlatList
+            testID={"items-list" + props.index}
             style={{ marginTop: -30 }}
             horizontal
             data={shopitems}

@@ -19,7 +19,7 @@ const Shop = (props) => {
   const shop_name = props.title.includes("فروشگاه")
     ? props.title
     : "فروشگاه " + props.title;
-
+  const shop_add = "آدرس: " + props.address;
   return (
     <View style={styles.shop}>
       <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
@@ -29,13 +29,23 @@ const Shop = (props) => {
           color={liked ? "red" : "black"}
         />
       </Pressable>
-      <TouchableOpacity onPress={props.onSelect} useForeground>
+      <TouchableOpacity
+        testID={"shop-" + props.index}
+        onPress={props.onSelect}
+        useForeground
+      >
         <View style={styles.name_logo}>
           <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{ uri: props.image }} />
+            <Image
+              testID={"shop-image-" + props.index}
+              style={styles.image}
+              source={{ uri: props.image }}
+            />
           </View>
           <View style={styles.name_star}>
-            <Text style={styles.title}>{shop_name}</Text>
+            <Text testID={"shop-name-" + props.index} style={styles.title}>
+              {shop_name}
+            </Text>
             <StarRating
               starSize={25}
               disabled={true}
@@ -45,7 +55,9 @@ const Shop = (props) => {
           </View>
         </View>
         <View style={styles.details}>
-          <Text style={styles.address}>آدرس: {props.address}</Text>
+          <Text testID={"shop-add-" + props.index} style={styles.address}>
+            {shop_add}
+          </Text>
           {props.online == true && (
             <View style={styles.online_icon}>
               <Icon name="check-circle" size={20} color="green"></Icon>
