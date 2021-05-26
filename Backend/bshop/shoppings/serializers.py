@@ -27,23 +27,15 @@ class ShoppingListSerializer(serializers.ModelSerializer):
     shopping_list_user = serializers.RelatedField(read_only=True)
     shopping_list_shop = serializers.RelatedField(read_only=True)
     date_jalali = serializers.SerializerMethodField('get_jalali_date')
-    # delivery_time_jalali = serializers.SerializerMethodField('get_miladi_date')
+    delivery_jalali = serializers.SerializerMethodField('get_jalali_delivery')
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)
         return str(serial)
 
-    # def get_miladi_date(self, id):
-    #     print(id.delivery_time.month,"delivery")
-    #     temp = JalaliDate.to_gregorian(id.delivery_time)
-    #     string=correct_date(temp)
-    #     min=str(id.delivery_time.minute)
-    #     hour=str(id.delivery_time.hour)
-    #     if len(min)==1:
-    #         min="0"+min
-    #     if len(hour)==1:
-    #         hour="0"+hour
-    #     return string+"T"+hour+":"+min
+    def get_jalali_delivery(self,id):
+        serial=datetime2jalali(id.delivery)
+        return str(serial)
 
     class Meta: 
         model = ShoppingList 
@@ -54,24 +46,28 @@ class AllShoppingListSerializer(serializers.ModelSerializer):
     shopping_list_shop = serializers.RelatedField(read_only=True)
     shopping_list_items = ShoppingItemSerializer(many=True)
     date_jalali=serializers.SerializerMethodField('get_jalali_date')
+    date_delivery=serializers.SerializerMethodField('get_jalali_delivery')
     sum_price = serializers.ReadOnlyField()
-    delivery_time_jalali = serializers.SerializerMethodField('get_miladi_date')
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)
         return str(serial)
 
-    def get_miladi_date(self, id):
-        return None
-        temp = JalaliDate.to_gregorian(id.delivery_time)
-        string=correct_date(temp)
-        min=str(id.delivery_time.minute)
-        hour=str(id.delivery_time.hour)
-        if len(min)==1:
-            min="0"+min
-        if len(hour)==1:
-            hour="0"+hour
-        return string+"T"+hour+":"+min
+    def get_jalali_delivery(self,id):
+        serial=datetime2jalali(id.delivery)
+        return str(serial)
+
+    # def get_miladi_date(self, id):
+    #     return None
+    #     temp = JalaliDate.to_gregorian(id.delivery_time)
+    #     string=correct_date(temp)
+    #     min=str(id.delivery_time.minute)
+    #     hour=str(id.delivery_time.hour)
+    #     if len(min)==1:
+    #         min="0"+min
+    #     if len(hour)==1:
+    #         hour="0"+hour
+    #     return string+"T"+hour+":"+min
 
     class Meta:
         model = ShoppingList

@@ -12,6 +12,8 @@ from rest_framework import status
 from django.utils import timezone
 from datetime import timedelta
 import requests
+from datetime import datetime
+
 
 from .models import *
 from .serializers import *
@@ -141,7 +143,10 @@ class DeliveryShoppingListUpdateAPIView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.delivery_time = request.data.get('delivery_time', instance.delivery_time)
+        # datetime.strptime(date_time_str, '%d/%m/%y %H:%M:%S')
+        print(type(request.data.get('delivery', instance.delivery)))
+        instance.delivery = request.data.get('delivery', instance.delivery)
+        instance.delivery =  datetime.strptime(instance.delivery, '%Y-%m-%d %H:%M')
         instance.save()
         serializer = AllShoppingListSerializer(instance)
         return Response(serializer.data)

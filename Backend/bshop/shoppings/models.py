@@ -18,7 +18,7 @@ class ShoppingList(models.Model):
     phone = models.CharField(max_length = 100,blank=False, null=True)
     online = models.BooleanField(default=False,blank=False, null=True)
     max_cost = models.IntegerField(default=0,blank=True, null=True)
-    delivery_time = jmodels.jDateTimeField(blank=True, null=True, auto_now=False, auto_now_add=False)
+    delivery = models.DateTimeField(auto_now_add=False,blank=True, null=True, auto_now=False)
 
     @property
     def sum_price(self):
