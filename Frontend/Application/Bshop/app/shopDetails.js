@@ -19,6 +19,7 @@ import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
+  // console.log("this is index", route.params.id);
 
   const [shopitems, setItems] = useState();
   const loadProducts = useEffect(() => {
@@ -47,6 +48,12 @@ const ShopDetail = ({ route, navigation }) => {
         source={require("../assets/lemon.jpg")}
         style={styles.imagebackk}
       > */}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Comment", route.params.id)}
+        >
+          <Text>press me</Text>
+        </TouchableOpacity>
+
         <View style={styles.shop}>
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={{ uri: route.params.logo }} />
@@ -93,7 +100,6 @@ const ShopDetail = ({ route, navigation }) => {
         <Text style={{ fontWeight: "bold" }}></Text>
         {shopitems && (
           <FlatList
-            testID={"items-list" + props.index}
             style={{ marginTop: -30 }}
             horizontal
             data={shopitems}
