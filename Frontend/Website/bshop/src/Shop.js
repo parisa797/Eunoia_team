@@ -19,6 +19,7 @@ function Shop(props) {
     const [shopInfo, setShopInfo] = useState({})
     const [allItems, setAllItem] = useState([])
     const [discountedItems, setDiscountedItem] = useState([])
+    const [foodItems, setFoodItems] = useState([])
     const [rated, setRated] = useState(false)
     const [rateID, setRateId] = useState(null)
     // const [triggerReload, setTriggerReload] = useState(false)
@@ -81,6 +82,17 @@ function Shop(props) {
             console.log(res)
             setAllItem(res)
             setDiscountedItem(res.filter(r => !!r.discount && r.discount > 0))
+        })
+
+        fetch("http://eunoia-bshop.ir:8000/items/category/"+shopID+"?q=Fruits and vegetables", {
+            method: 'GET'
+        }).then((res) => {
+            if (res.status === 200) {
+                return res.json()
+            }
+        }).then((res) => {
+            console.log(res)
+            setFoodItems(res)
         })
 
     }, [props.triggerReload])
@@ -232,11 +244,11 @@ function Shop(props) {
                         <Itemslist url={"/store/"+shopID+"/items/list/newest"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="all-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal}/>
                     {/* </div> */}
                     </>}
-                {(discountedItems.length > 0) && <> <h4 className="header"><span className="header-span">تخفیف‌دارها</span></h4>
+                {(discountedItems?.length > 0) && <> <h4 className="header"><span className="header-span">تخفیف‌دارها</span></h4>
                     <Itemslist url={"/store/"+shopID+"/items/list/discounted"} items={discountedItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="discounted-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
                     </>}
-                {(allItems.length > 0) && <><h4 className="header"><span className="header-span">محبوب‌ترین‌ کالاها</span></h4>
-                    <Itemslist url={"/store/"+shopID+"/items/list/newest"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="loved-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
+                {(foodItems?.length > 0) && <><h4 className="header"><span className="header-span">غذا، کنسرو و سبزیجات</span></h4>
+                    <Itemslist url={"/store/"+shopID+"/items/list/category?=Fruits and vegetables"} items={foodItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="food-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
                     </>}
                 <h4 className="header" ref={commentsRef}><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">

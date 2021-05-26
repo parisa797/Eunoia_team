@@ -48,6 +48,11 @@ function ItemCard(props) {
 
     const ToggleOptions=(e)=>{
         e.stopPropagation(); 
+        if(!localStorage.getItem("token"))
+        {
+            window.location.href = "/login"
+            return;
+        }
         var el = document.getElementById("add-to-cart"+id); 
         setHideOptions(!hideOptions); 
         el.style.visibility = el.style.visibility==="hidden"?"visible":"hidden";

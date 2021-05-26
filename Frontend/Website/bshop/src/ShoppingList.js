@@ -9,7 +9,7 @@ function ShoppingList(props) {
     const [reload, setReload] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/" + shopID, {
             method: 'GET',
             headers: {
@@ -26,7 +26,7 @@ function ShoppingList(props) {
             .then((d) => {
                 setShopInfo(d);
             });
-    },[])
+    }, [])
 
     useEffect(() => {
         if (props.userState !== "l")
@@ -68,63 +68,63 @@ function ShoppingList(props) {
 
     }, [reload])
 
-    function hideSubmitCancel(id,val){
-        document.getElementById("count-btns"+id).hidden = val;
+    function hideSubmitCancel(id, val) {
+        document.getElementById("count-btns" + id).hidden = val;
     }
 
-    function changeCount(id,true_num,idx, op){
-        let input = document.getElementById("item-input"+id);
-        if(!parseInt(input.value)){
+    function changeCount(id, true_num, idx, op) {
+        let input = document.getElementById("item-input" + id);
+        if (!parseInt(input.value)) {
             return;
         }
-        if(op==="+")
-            input.value = parseInt(input.value)+1;
-        else if(op==="-"){
-            if(parseInt(input.value)===1)
+        if (op === "+")
+            input.value = parseInt(input.value) + 1;
+        else if (op === "-") {
+            if (parseInt(input.value) === 1)
                 return;
-            input.value = parseInt(input.value)-1;
+            input.value = parseInt(input.value) - 1;
         }
-        hideSubmitCancel(id,true_num === parseInt(input.value))
+        hideSubmitCancel(id, true_num === parseInt(input.value))
     }
 
-    function submitCountChange(id,idx){
-        let input = document.getElementById("item-input"+id);
-        if(!parseInt(input.value)){
-            cancelCountChange(id,idx);
+    function submitCountChange(id, idx) {
+        let input = document.getElementById("item-input" + id);
+        if (!parseInt(input.value)) {
+            cancelCountChange(id, idx);
             return;
         }
-        let fd= new FormData();
-        fd.append("number",parseInt(input.value));
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+id,{
+        let fd = new FormData();
+        fd.append("number", parseInt(input.value));
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/" + id, {
             method: 'PUT',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             },
             body: fd
-        }).then(res=>{
-            if(res.ok){
+        }).then(res => {
+            if (res.ok) {
                 setReload(!reload);
+                hideSubmitCancel(id, true)
             }
-        }).catch(err=>console.error(err))
+        }).catch(err => console.error(err))
     }
 
-    const cancelCountChange = (id,idx) => {
-        document.getElementById("item-input"+id).value = shoppingList.shopping_list_items[idx].number;
-        hideSubmitCancel(id,true)
+    const cancelCountChange = (id, idx) => {
+        document.getElementById("item-input" + id).value = shoppingList.shopping_list_items[idx].number;
+        hideSubmitCancel(id, true)
     }
 
-    function deleteItem(id,name){
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+id,{
+    function deleteItem(id, name) {
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/" + id, {
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(res=>{
-            if(res.ok)
-                {
-                    setReload(!reload);
-                    enqueueSnackbar("!"+name+" حذف شد")
-                }
+        }).then(res => {
+            if (res.ok) {
+                setReload(!reload);
+                enqueueSnackbar("!" + name + " حذف شد")
+            }
         })
     }
 
@@ -134,7 +134,7 @@ function ShoppingList(props) {
                 <div className=" row">
                     <div className="col-12 col-md-4 order-md-2">
                         <div className="right-content">
-                            <h1 onClick={()=>window.location.href="/store/"+shopID}>فروشگاه {shopInfo.title}</h1>
+                            <h1 onClick={() => window.location.href = "/store/" + shopID}>فروشگاه {shopInfo.title}</h1>
                             {!!shoppingList?.max_cost ?
                                 <p className="max-price">محدودیت قیمت: {shoppingList.max_cost}</p>
                                 :
@@ -145,7 +145,7 @@ function ShoppingList(props) {
                             }
                             <div className="price">
                                 {!!shoppingList && (shoppingList.rawTotalPrice !== shoppingList.totalPrice) && <h6>{shoppingList.rawTotalPrice}</h6>}
-                               {!!shoppingList && <h3>{shoppingList.totalPrice} ریال</h3>}
+                                {!!shoppingList && <h3>{shoppingList.totalPrice} ریال</h3>}
                             </div>
                             <div className="btn submit-btn">ثبت خرید<ChevronLeftIcon /></div>
                         </div>
@@ -158,13 +158,13 @@ function ShoppingList(props) {
                                     :
                                     <div className="shopping-items-holder">
                                         {
-                                            shoppingList.shopping_list_items.map((el,idx) =>
+                                            shoppingList.shopping_list_items.map((el, idx) =>
                                                 <div className="shopping-item">
                                                     <div className="shopping-img-holder">
                                                         <img alt={el.item.name} src={el.item.photo} />
                                                     </div>
                                                     <div className="shopping-item-info">
-                                                        <h5 onClick={()=>window.location.href="/store/"+el.item.shop_id+"/items/"+el.item.id}>{el.item.name}</h5>
+                                                        <h5 onClick={() => window.location.href = "/store/" + el.item.shop_id + "/items/" + el.item.id}>{el.item.name}</h5>
                                                         <div className="shopping-count">
                                                             <p>تعداد: {el.number}</p>
                                                         </div>
@@ -176,13 +176,13 @@ function ShoppingList(props) {
                                                             </div>
                                                             : <p className="shopping-price item-card-price-text" data-testid={"item-price-without-discount"}>{el.rawTotalPrice + "ریال"}</p>}
                                                         <form inline className="count-form">
-                                                            <div className="count-changer btn" onClick={()=>changeCount(el.id,el.number,idx,"+")}>+</div>
-                                                            <input type="text" defaultValue={el.number} id={"item-input"+el.id} onChange={()=>changeCount(el.id,el.number,idx,"")}/>
-                                                            <div className="count-changer btn" onClick={()=>changeCount(el.id,el.number,idx,"-")}>-</div>
-                                                             <div id={"count-btns"+el.id} hidden={true} style={{display:"contents"}}><div className="count-submit btn" onClick={()=>submitCountChange(el.id,idx)}>ذخیره</div>
-                                                            <div className="count-cancel btn" onClick={()=>cancelCountChange(el.id,idx)}>لغو</div></div>
+                                                            <div className="count-changer btn" onClick={() => changeCount(el.id, el.number, idx, "+")}>+</div>
+                                                            <input type="text" defaultValue={el.number} id={"item-input" + el.id} onChange={() => changeCount(el.id, el.number, idx, "")} />
+                                                            <div className="count-changer btn" onClick={() => changeCount(el.id, el.number, idx, "-")}>-</div>
+                                                            <div id={"count-btns" + el.id} hidden={true} style={{ display: "contents" }}><div className="count-submit btn" onClick={() => submitCountChange(el.id, idx)}>ذخیره</div>
+                                                                <div className="count-cancel btn" onClick={() => cancelCountChange(el.id, idx)}>لغو</div></div>
                                                         </form>
-                                                        <p className="delete-item btn" onClick={()=>deleteItem(el.id,el.item.name)}>حذف از سبد</p>
+                                                        <p className="delete-item btn" onClick={() => deleteItem(el.id, el.item.name)}>حذف از سبد</p>
                                                     </div>
                                                 </div>
                                             )
