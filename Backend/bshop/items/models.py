@@ -35,6 +35,7 @@ class Item(models.Model):
     category= models.CharField(max_length=50, choices=categories_choices, default='others')
     brand = models.CharField(max_length=50,blank=True,null=True)
     price_with_discount = models.IntegerField(default=0, blank=True, null=True)
+    onlineShop = models.BooleanField(default=False, blank=True, null=True)
 
     @property
     def rate_count(self):
