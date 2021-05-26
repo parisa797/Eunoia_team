@@ -19,7 +19,6 @@ import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
-  // console.log("this is index", route.params.id);
 
   const [shopitems, setItems] = useState();
   const loadProducts = useEffect(() => {
@@ -48,16 +47,22 @@ const ShopDetail = ({ route, navigation }) => {
         source={require("../assets/lemon.jpg")}
         style={styles.imagebackk}
       > */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Comment", route.params.id)}
-        >
-          <Text>press me</Text>
-        </TouchableOpacity>
-
         <View style={styles.shop}>
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={{ uri: route.params.logo }} />
           </View>
+          {/* <TouchableOpacity
+            style={styles.naghsheBtn}
+            onPress={() => navigation.navigate("Comment", route.params.id)}
+          >
+            <Text style={styles.naghsheText}> نقشه</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity
+            style={styles.SignUpBtn}
+            onPress={() => navigation.navigate("Comment", route.params.id)}
+          >
+            <Text style={styles.SignUpText}> نظرات</Text>
+          </TouchableOpacity>
           <View style={styles.details}>
             <Text style={styles.title}>فروشگاه {route.params.title}</Text>
             <View style={styles.icon}>
@@ -100,6 +105,7 @@ const ShopDetail = ({ route, navigation }) => {
         <Text style={{ fontWeight: "bold" }}></Text>
         {shopitems && (
           <FlatList
+            // testID={"items-list" + props.index}
             style={{ marginTop: -30 }}
             horizontal
             data={shopitems}
@@ -126,6 +132,34 @@ const ShopDetail = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  SignUpBtn: {
+    width: 70,
+    borderRadius: 100,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: -60,
+    marginBottom: 20,
+    backgroundColor: "#b31414",
+    marginLeft: 10,
+  },
+  SignUpText: {
+    color: "white",
+  },
+  // naghsheBtn: {
+  //   width: 70,
+  //   borderRadius: 100,
+  //   height: 40,
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   marginTop: -60,
+  //   marginBottom: 20,
+  //   backgroundColor: "#b31414",
+  //   marginLeft: 10,
+  // },
+  // naghsheText: {
+  //   color: "white",
+  // },
   icon: {
     justifyContent: "space-between",
     flexDirection: "row-reverse",
@@ -135,7 +169,7 @@ const styles = StyleSheet.create({
   online: { fontSize: 20, color: "green" },
   shop: {
     borderRadius: 10,
-    marginTop: "3%",
+    marginTop: 1,
     borderRadius: 10,
     shadowColor: "black",
     shadowOpacity: 0.26,
