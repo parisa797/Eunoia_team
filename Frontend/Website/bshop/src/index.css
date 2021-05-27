@@ -11,3 +11,44 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Nazanin';
+  src: local('Far_Nazanin'), url(./fonts/Far_Nazanin.ttf) format('truetype');
+}
+
+
+@font-face {
+  font-family: 'Roya';
+  src: local('Far_Roya'), url(./fonts/Far_Roya.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Casablanca-Heavy';
+  src: local('Far_CasablancaHeavy'), url(./fonts/Far_CasablancaHeavy.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Rezvan';
+  src: local('Rezvan'), url(./fonts/Rezvan.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Rezvan-fat';
+  src: local('Rezvan-fat'), url(./fonts/Rezvan-fat.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'yekan';
+  src: local('Far_Yekan'), url(./fonts/Far_Yekan.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Vazir';
+  src: local('Vazir'), url(./fonts/Vazir.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Vazir-Bold';
+  src: local('Vazir-Bold'), url(./fonts/Vazir-Bold.ttf) format('truetype');
+}

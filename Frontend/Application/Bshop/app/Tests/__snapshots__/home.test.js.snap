@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home page with shops be tested renders correctly 1`] = `
+<RCTScrollView
+  nestedScrollEnabled={true}
+  style={
+    Object {
+      "flex": 1,
+      "marginBottom": "5%",
+      "marginTop": "5%",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        Object {
+          "alignContent": "center",
+          "alignItems": "center",
+          "alignSelf": "center",
+          "backgroundColor": "#fff",
+          "borderRadius": 10,
+          "height": 45,
+          "marginBottom": "5%",
+          "marginTop": "10%",
+          "width": "90%",
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        placeholder="جستجو"
+        placeholderTextColor="#000"
+        rejectResponderTermination={true}
+        style={
+          Object {
+            "flex": 1,
+            "fontSize": 20,
+            "height": 50,
+            "padding": 10,
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+    </View>
+    <RCTScrollView
+      data={Array []}
+      disableVirtualization={false}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={10}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      nestedScrollEnabled={true}
+      onContentSizeChange={[Function]}
+      onEndReachedThreshold={2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
+      testID="shops-list"
+      updateCellsBatchingPeriod={50}
+      viewabilityConfigCallbackPairs={Array []}
+      windowSize={21}
+    >
+      <View />
+    </RCTScrollView>
+  </View>
+</RCTScrollView>
+`;
