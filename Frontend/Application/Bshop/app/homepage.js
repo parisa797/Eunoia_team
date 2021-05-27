@@ -69,6 +69,7 @@ export default Home = ({ navigation }) => {
             image={itemData.item.logo}
             rate_value={itemData.item.rate_value}
             online={itemData.item.online}
+            phone={itemData.item.phone}
             index={itemData.item.id}
             onSelect={() => {
               navigation.navigate("ShopDetail", itemData.item);

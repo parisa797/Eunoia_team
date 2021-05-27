@@ -8,7 +8,7 @@ import * as SecureStore from "expo-secure-store";
 import Home from "./homepage";
 import ShopDetail from "./shopDetails";
 import PersonalInfo from "./PersonalInfo";
-import Chat from "./chat";
+import Comment from "./comment";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -59,6 +59,11 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen
         name="ShopDetail"
         component={ShopDetail}
+        options={{ title: "اطلاعات فروشگاه" }}
+      />
+      <Stack.Screen
+        name="Comment"
+        component={Comment}
         options={{ title: "اطلاعات فروشگاه" }}
       />
     </Stack.Navigator>
