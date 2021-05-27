@@ -21,7 +21,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
             "elevation": 5,
             "height": 300,
             "marginLeft": 18,
-            "marginTop": "3%",
+            "marginTop": 1,
             "shadowColor": "black",
             "shadowOffset": Object {
               "height": 2,
@@ -69,6 +69,41 @@ exports[`testing shop detail, items part renders correctly 1`] = `
               }
             }
           />
+        </View>
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#b31414",
+              "borderRadius": 100,
+              "height": 40,
+              "justifyContent": "center",
+              "marginBottom": 20,
+              "marginLeft": 10,
+              "marginTop": -60,
+              "opacity": 1,
+              "width": 70,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+              }
+            }
+          >
+             نظرات
+          </Text>
         </View>
         <View
           style={

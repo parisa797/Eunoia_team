@@ -27,100 +27,84 @@ describe("testing shop detail, items part", () => {
     expect(tree).toMatchSnapshot();
   });
 
-  // it("fetch test", async () => {
-  //   const fetchMock = require("fetch-mock-jest");
-  //   const shopitems = [
-  //     {
-  //       name: "پفک طلایی چی توز",
-  //       price: "7.000 : قیمت ",
-  //       image: "pofak.png",
-  //       id: 1,
-  //     },
-  //     {
-  //       name: "پاستیل شیبابا",
-  //       price: "9.000 : قیمت ",
-  //       image: "pastil.jpg",
-  //       id: 2,
-  //     },
-  //     {
-  //       name: "رب گوجه آتا",
-  //       price: "15.100 : قیمت ",
-  //       image: "rob.png",
-  //       id: 3,
-  //     },
-  //     {
-  //       name: "پف پفی شیبابا",
-  //       price: "7.000 : قیمت ",
-  //       image: "pufpuf.jpg",
-  //       id: 4,
-  //     },
-  //   ];
+  it("fetch test", async () => {
+    const fetchMock = require("fetch-mock-jest");
+    const shopitems = [
+      {
+        name: "پف پفی شیبابا",
+        price: 80000,
+        photo: "/pofpofi.png",
+        id: 0,
+        discount: 0,
+      },
+      {
+        name: "پفک طلایی چی توز",
+        price: 100000,
+        photo: "pofak.png",
+        id: 1,
+        discount: 10,
+      },
+      {
+        name: "پاستیل شیبابا",
+        price: 50000,
+        photo: "pastil.jpg",
+        id: 2,
+        discount: 20,
+      },
+      {
+        name: "رب گوجه آتا",
+        price: 300000,
+        photo: "rob.png",
+        id: 3,
+        discount: 0,
+      },
+    ];
 
-  //   fetchMock.get("http://eunoia-bshop.ir:8000/shops/3/items/", shopitems);
+    var params = {
+      id: 3,
+      logo: "hi.png",
+      title: "myshop",
+      address: "myStreet",
+      phone: "09123456789",
+      online: true,
+      rate_value: 3,
+    };
+    var url = "http://eunoia-bshop.ir:8000/shops/" + params.id + "/items/";
+    fetchMock.get(url, shopitems);
 
-  //   // jest.mock("@react-navigation/native", () => ({
-  //   //   ...jest.requireActual("@react-navigation/native"),
+    const { getByTestId, queryByTestId } = await render(
+      <ShopDetail route={{ params }} />
+    );
+    await new Promise((resolve) => setImmediate(resolve));
 
-  //   //   // useRoute: () => ({
-  //   //   //   params: {
-  //   //   //     id: 3,
-  //   //   //     logo: "hi.png",
-  //   //   //     title: "myshop",
-  //   //   //     address: "myStreet",
-  //   //   //     phone: "09123456789",
-  //   //   //     online: true,
-  //   //   //     rate_value: 3,
-  //   //   //   },
-  //   //   // }),
-  //   //   params: {
-  //   //     id: 3,
-  //   //     logo: "hi.png",
-  //   //     title: "myshop",
-  //   //     address: "myStreet",
-  //   //     phone: "09123456789",
-  //   //     online: true,
-  //   //     rate_value: 3,
-  //   //   },
-  //   // }));
-  //   // const push = jest.fn();
-  //   var params = {
-  //     id: 3,
-  //     logo: "hi.png",
-  //     title: "myshop",
-  //     address: "myStreet",
-  //     phone: "09123456789",
-  //     online: true,
-  //     rate_value: 3,
-  //   };
+    expect(fetchMock).toHaveFetched(
+      "http://eunoia-bshop.ir:8000/shops/3/items/",
+      "get"
+    );
+    // expect(getByTestId("items-list").props.data.length).toBe(shopitems.length);
 
-  //   const { getByTestId, queryByTestId } = await render((params) => (
-  //     <ShopDetail {...params} route={{ params }} />
-  //   ));
-  //   await new Promise((resolve) => setImmediate(resolve));
+    for (var i = 0; i < shopitems.length; i++) {
+      expect(getByTestId("item-name-" + i).props.children).toBe(
+        shopitems[i].name
+      );
 
-  //   expect(fetchMock).toHaveFetched(
-  //     "http://eunoia-bshop.ir:8000/shops/3/items/",
-  //     "get"
-  //   );
-  //   expect(getByTestId("items-list").props.data.length).toBe(shopitems.length);
+      var expected_image = "http://eunoia-bshop.ir:8000" + shopitems[i].photo;
+      expect(getByTestId("item-image-" + i).props.source.uri).toBe(
+        expected_image
+      );
 
-  //   for (var i = 1; i < 5; i++) {
-  //     // const shop_name = shops[i].title.includes("فروشگاه")
-  //     //   ? shops[i].title
-  //     //   : "فروشگاه " + shops[i].title;
-  //     // const shop_add = "آدرس: " + shops[i].address;
-  //     expect(getByTestId("item-name-" + i).props.children).toBe(
-  //       shopitems[i].name
-  //     );
-  //     expect(getByTestId("item-image-" + i).props.source.uri).toBe(
-  //       shopitems[i].image
-  //     );
-  //   }
+      // if (shopitems[i].discount != 0) {
+      //   expect(queryByTestId("item-price0-" + i)).toBe(shopitems[i].price);
+      //   // expect(queryByTestId("item-price1-" + i)).toBeNull();
+      // }
+      // else {
+      // }
+    }
 
-  //   // expect(queryByTestId("shop-name-4")).toBeNull();
-  //   // expect(queryByTestId("shop-name-4")).toBeNull();
-  //   // expect(queryByTestId("shop-image-4")).toBeNull();
+    // expect(queryByTestId("shop-name-4")).toBeNull();
+    // expect(queryByTestId("shop-name-4")).toBeNull();
+    // expect(queryByTestId("shop-image-4")).toBeNull();
 
-  //   fetchMock.mockClear();
-  // });
+    fetchMock.mockClear();
+  });
 });
