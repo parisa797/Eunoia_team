@@ -49,11 +49,15 @@
 .item-card h5{
     font-size: medium;
     font-family: 'Vazir';
-    margin:0
+    margin:0;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 .item-card .item-card-count{
     justify-self: right;
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 
 .item-card .item-card-price{
@@ -64,7 +68,9 @@
 .item-card .item-card-price-text{
     font-size:medium;
     font-weight:bold;
-    color: var(--heading-color)
+    color: var(--heading-color);
+    overflow: hidden;
+    white-space: pre-wrap;
 }
 .item-card .item-card-real-price{
     font-size: 0.9rem;
@@ -130,6 +136,7 @@
 
 .item-card .add-to-cart-card{
     /* width: 0%; */
+    text-align: center;
     position: absolute;
     top:0;
     bottom:0;
@@ -198,4 +205,22 @@ transition: visibility 0.2s, opacity 0.2s linear;
 
 .item-card .manager-btns .btn{
     height:30%;
+}
+
+.item-card .shop-name{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    white-space: break-spaces;
+    border-radius: 5px 0 0 5px;
+    background-color: var(--bg-color2);
+    opacity: 0.95;
+    width: -moz-fit-content;
+    width: fit-content;
+    padding: 0 5px;
+    color: var(--heading-color);
+    font-size: 0.9rem;
+    font-family: 'Vazir-Bold';
 }
