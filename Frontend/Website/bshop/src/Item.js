@@ -47,7 +47,7 @@ function Item(props) {
             console.log(res)
             let username = localStorage.getItem("username")
             for (let i in res) {
-                if (res[i].user.user_name === username) {
+                if (!!res[i].user && res[i].user.user_name === username) {
                     setRated(true)
                     setRateId(res[i].id)
                 }

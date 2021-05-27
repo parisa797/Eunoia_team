@@ -19,7 +19,7 @@ function ShopComments(props) {
     const itemID = window.location.pathname.match(/[^\/]+/g)[3];
     useEffect(() => {
         // setLoading(true)
-        fetch(`https://iust-bshop.herokuapp.com/api/v1/shops/${shopID}/commentsreplis`, {
+        fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${props.shopID}/commentsreplis`, {
             method: "GET",
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -46,7 +46,7 @@ function ShopComments(props) {
                     str[2] = str[2][0] === '0' ? str[2][1] : str[2]
                     let new_str = [str[2], str[1], str[0], str[3]]
                     res[i].date_jalali = new_str.join(" ");
-                    if(res[i].Replies.length>0){
+                    if(!!res[i].Replies && res[i].Replies.length>0){
                         for (let j in res[i].Replies) {
                             if (!res[i].Replies[j].date_jalali)
                                 continue;
@@ -84,7 +84,7 @@ function ShopComments(props) {
             let fd = new FormData()
             fd.append("text", writtenComment);
             //fd.append("shop", props.shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/"+edittingID, {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+edittingID, {
                 method: "PUT",
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -102,7 +102,7 @@ function ShopComments(props) {
             let fd = new FormData()
             fd.append("text", writtenComment);
             fd.append("shop", props.shopID)
-            fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/create/", {
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {
                 method: "POST",
                 headers: {
                     "Authorization": "Token " + localStorage.getItem('token')
@@ -123,8 +123,8 @@ function ShopComments(props) {
         const fd = new FormData()
         fd.append("text", reply)
         /// injaro avaz kon
-        // fetch(`https://iust-bshop.herokuapp.com/shops/${shopID}/items/${itemID}/comments/${isReplyng}/replies`,{
-            fetch(`https://iust-bshop.herokuapp.com/api/v1/shops/${shopID}/comments/${isReplyng}/replies`,{
+        // fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/comments/${isReplyng}/replies`,{
+            fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${isReplyng}/replies`,{
             method: 'POST',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -146,7 +146,7 @@ function ShopComments(props) {
 
 
     const deleteComment=()=>{
-        fetch("https://iust-bshop.herokuapp.com/api/v1/shops/comment/"+deletingComment.id,{
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+deletingComment.id,{
             method: 'DELETE',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
@@ -184,7 +184,7 @@ function ShopComments(props) {
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
                     
-                    <div className="reply-comment">{comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+r.id}>
+                    <div className="reply-comment">{!!comment.Replies && comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+r.id}>
                         {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-reply-username"+r.id} >{r.user.user_name}</p>

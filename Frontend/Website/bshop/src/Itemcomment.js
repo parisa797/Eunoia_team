@@ -46,7 +46,7 @@ function Itemcomment(props) {
                     str[2] = str[2][0] === '0' ? str[2][1] : str[2]
                     let new_str = [str[2], str[1], str[0], str[3]]
                     res[i].date_jalali = new_str.join(" ");
-                    if(res[i].Replies.length>0){
+                    if(!!res[i].Replies && res[i].Replies.length>0){
                         for (let j in res[i].Replies) {
                             if (!res[i].Replies[j].date_jalali)
                                 continue;
@@ -165,7 +165,7 @@ function Itemcomment(props) {
     <div className="shop-comments">
         {loading?<p>در حال به روز رسانی نظرات...</p>:
          <><div className="comments-container">
-            {comments.length === 0 ? <p data-testid="comment-nocomment">نظری ثبت نشده است.</p> : comments.map(comment => {
+            {!Array.isArray(comments) || comments.length === 0 ? <p data-testid="comment-nocomment">نظری ثبت نشده است.</p> : comments?.map(comment => {
                 if (comment) return (<>
                     <div className="shop-comment" key={comment.id} data-testid={"comment"+comment.id}>
                         {/* <h3 className="item-comment-title">{comment.title}</h3> */}
@@ -180,7 +180,7 @@ function Itemcomment(props) {
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
-                      <div className="reply-comment">{comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+r.id}>
+                      <div className="reply-comment">{!!comment.Replies && comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+r.id}>
                       {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                       <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                           <p className="shop-comment-author" data-testid={"comment-reply-username"+r.id} >{r.user.user_name}</p>
