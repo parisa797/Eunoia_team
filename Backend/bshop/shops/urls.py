@@ -20,4 +20,15 @@ urlpatterns = [
     path('top/', views.TopShopListAPIView.as_view(), name="TopShopList"),
     path('region/', views.MantagheShopListAPIView.as_view(), name="MantagheShopList"),
     path('search', views.ShopSearch.as_view()),##search roye hame shop ha
+    path('board/create/', views.BoardCreateAPIView.as_view(), name="BoardCreate"),
+    path('board/list/<int:pk>', views.BoardListAPIView.as_view(), name="BoardList"),
+    path('board/<int:pk>', views.BoardRetrieveAPIView.as_view(), name="BoardRetrieve"),
+    path('board/update/<int:pk>', views.BoardUpdateAPIView.as_view(), name="BoardUpdate"),
+    path('board/delete/<int:pk>', views.BoardDestroyAPIView.as_view(), name="BoardDestroy"),
+    path('<id>/likes', views.LikeShop.as_view()),
+    path('<id>/commentsreplis', views.CommentReply.as_view()),
+    path('<id>/comments/<cm_id>/likes', views.LikeComment.as_view()),
+    path('<id>/comments/<cm_id>/replies', views.Replies.as_view()),
+    path('<id>/comments/<cm_id>/replies/<re_id>', views.ReplyInfo.as_view()),
+    path('<id>/comments/<cm_id>/replies/<re_id>/likes', views.LikeReply.as_view()),
 ]
