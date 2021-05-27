@@ -1,0 +1,40 @@
+.page-footer{
+    background-color: var(--bg-color2-2);
+    color: var(--font-color2);
+    overflow: hidden;
+    font-family: Vazir;
+    font-size: small;
+    direction: rtl;
+    padding:5vh;
+    /* position: relative; */
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    /* vertical-align: bottom; */
+}
+
+.page-footer .col-12{
+    margin-bottom: 2vh;
+}
+
+.page-footer h4{
+    font-family: Rezvan;
+    color:var(--heading-color);
+    margin-bottom: 2vh;
+}
+
+.page-footer a{
+    display: block;
+    cursor: pointer;
+    margin:3px;
+}
+
+.page-footer a:hover, .page-footer .a:not([href]):not([class]):hover{
+    color:var(--primary-color);
+}
+
+.page-footer p{
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+}

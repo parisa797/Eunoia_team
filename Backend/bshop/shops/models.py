@@ -2,6 +2,7 @@ from django.db import models
 from django.apps import apps
 from django.db.models import Avg
 
+
 from users.models import MyUser
 
 class Shop(models.Model):
@@ -47,6 +48,7 @@ class Comment(models.Model):
     def str(self):
         return self.text
 
+
 class Rate(models.Model):
 
     user = models.ForeignKey(MyUser,related_name='rates_user',on_delete=models.CASCADE,blank=True)
@@ -55,3 +57,12 @@ class Rate(models.Model):
 
     def str(self):
         return self.shop
+
+class Board(models.Model):
+	image = models.ImageField(blank=True , upload_to='image/', null=True)
+	image_url = models.CharField(max_length = 500,blank=True, null=True)
+	user = models.ForeignKey(MyUser,related_name='shop_board_user',on_delete=models.CASCADE,blank=True)
+	shop = models.ForeignKey(Shop,related_name='shop_board_shop',on_delete=models.CASCADE,blank=True)
+
+	def str(self):
+		return self.image_url

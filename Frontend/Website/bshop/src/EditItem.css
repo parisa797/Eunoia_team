@@ -1,0 +1,124 @@
+
+.item-profile .checkbox-prof{
+    display: flex;
+    padding: 10px 10px;
+}
+
+.item-profile .checkbox-prof label{
+    align-self: flex-start;
+    color: var(--heading-color);
+    margin: auto 0;
+}
+
+.item-profile #prof-page-online{
+    margin: auto 0 auto 5px;
+}
+
+.item-profile .aroundToast {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.item-profile .img-container{
+    width: 10vh;
+    height:10vh;
+    padding-top: 100%; 
+    position: relative;
+    overflow: hidden;
+}
+
+.item-profile .img-container2{
+    position: absolute;
+    bottom: -5vh;
+    right:20px;
+
+}
+
+.item-profile .prof-img{
+    border-radius: 20px;
+} 
+
+.item-profile .item-pic-selector{
+    width: 50vh;
+    height: 50vh;
+    position: relative;
+    margin: 0 auto;
+}
+
+.item-profile .item-img-container{
+    width: 100%;
+    /* height: 100%; */
+    position: relative;
+    padding-top: 100%;
+    /* overflow: hidden; */
+    
+}
+
+.item-profile .item-img{
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.item-profile .edit-item-photo{
+    display: flex;
+    margin-bottom: 5vh;
+    flex-direction: column;
+}
+
+.item-profile .img-uploader{
+    visibility: hidden;
+    width:0;
+    height:0;
+}
+
+.item-profile .edit-item-photo .btn{
+    width:fit-content;
+    margin: 5px auto 0 auto;
+    border: none;
+}
+
+.item-profile .edit-header .btn{
+    margin-top: -0.4rem;
+    color: red;
+}
+
+.item-profile .edit-header .btn:hover{
+    background-color: transparent;
+    color: red;
+    transform: scale(1.05);
+}
+
+.item-profile .feedback-text{
+    margin-bottom:3px;
+}
+
+.item-profile{
+    padding:0 0 5vh 0;
+}
+
+.item-profile .btn{
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.item-profile .save, .item-profile .cancel{
+    border: 1px solid var(--secondary-color); 
+    margin: 0 3px;
+}
+
+.item-profile .edit-header a{
+    margin-right:auto;
+    color:var(--primary-color);
+}
+
+.item-profile .edit-header a:hover{
+    text-decoration: none;
+    color:var(--primary-color);
+}

@@ -37,7 +37,7 @@ test("home page for unsigned users", async () => {
     page = await render(<HomePage />);
   });
   expect(page.queryByTestId("not-logged-header")).not.toBeNull();
-  expect(page.queryByTestId("logged-header")).toBeNull();
+  expect(page.queryByTestId("logged-header")).not.toBeNull(); //it's always displayed
 });
 
 test("home page for signed users", async () => {
