@@ -64,10 +64,12 @@ test("shop and shop ratings for unsigned users", async () => {
     var page;
     fetchMock
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/user/", [])
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
+        .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])
     await act(async () => {
         // const flushPromises = () => new Promise(setImmediate);
         page = await render(<Shop  userState={"u"}/>);
@@ -95,9 +97,11 @@ test("shop and shop ratings for signed (buyer) users", async () => {
     var page;
     fetchMock
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/user/", usersShops)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
+        .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
     await act(async () => {
         page = await render(<Shop  userState={"l"}/>);
@@ -125,10 +129,12 @@ test("shop and shop ratings for shop owner", async () => {
     var page;
     fetchMock
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/user/", usersShops)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
+        .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])
     await act(async () => {
         page = await render(<Shop userState={"m"}/>);
     });

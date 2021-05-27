@@ -38,7 +38,7 @@ test("shop comments section for unsigned users", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:200})
         .post("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {status:201})
         .delete("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:204})
@@ -72,7 +72,7 @@ test("shop comments section for the owner", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:200})
         .post("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {status:201})
         .delete("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:204})
@@ -105,7 +105,7 @@ test("shop comments section for logged in users", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:200})
         .post("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {status:201})
         .delete("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:204})
@@ -135,7 +135,7 @@ test("shop with no comments", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:200})
         .post("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", {status:201})
         .delete("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", {status:204})
@@ -158,7 +158,7 @@ test("edit comment", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", (url,options)=>{
             let c = [...comments]
             c[1].text = options.body.get('text');
@@ -225,7 +225,7 @@ test("create new comment", async () => {
     var page;
     //2 is for comments
     fetchMock
-        .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", comments)
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis", comments)
         .put("http://eunoia-bshop.ir:8000/api/v1/shops/comment/2", (url,options)=>{
             let c = [...comments]
             c[1].text = options.body.get('text');

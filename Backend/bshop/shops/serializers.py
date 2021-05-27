@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Shop
 from .models import Rate
 from .models import Comment
+from .models import Board
 from users.models import MyUser
 from users.serializers import Profileserializer
 from jalali_date import date2jalali,datetime2jalali
@@ -66,4 +67,10 @@ class ListRateSerializer(serializers.ModelSerializer):
     
     class Meta: 
         model = Rate 
+        fields = '__all__'
+
+class BoardSerializer(serializers.ModelSerializer): 
+
+    class Meta: 
+        model = Board 
         fields = '__all__'

@@ -14,6 +14,9 @@ import {
     Route
 } from "react-router-dom";
 import Itemslist from "./ItemsList";
+import ItemsListPage from "./ItemsListPage";
+import ShoppingList from "./ShoppingList";
+import { ContactSupportOutlined } from "@material-ui/icons";
 
 function ShopDispatcher() {
     const [userState, setUserState] = useState(null) //u for unsigned user, l for logged in, m for manager
@@ -28,30 +31,40 @@ function ShopDispatcher() {
             setUserState("u")
             return;
         }
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
-            method: 'GET',
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.json()
-                }
-                setUserState("l")
-                return {};
-            }
-            )
-            .then((d) => {
-                var state = "l";
-                for (let shop in d) {
-                    if (d[shop].id === parseInt(shopID)) {
-                        state = "m" //is a manager
-                        break
-                    }
-                }
-                setUserState(state)
-            }).catch(e => { console.log(e); setUserState("l") });
+        if(!localStorage.getItem("role"))
+        {
+            setUserState("l");
+            return;
+        }
+        let usersShops = JSON.parse(localStorage.getItem("shops"));
+        if(!!usersShops && usersShops.includes(parseInt(shopID))){
+            setUserState("m");
+        }
+        else setUserState("l");
+        // fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
+        //     method: 'GET',
+        //     headers: {
+        //         "Authorization": "Token " + localStorage.getItem('token')
+        //     }
+        // })
+        //     .then((res) => {
+        //         if (res.status === 200) {
+        //             return res.json()
+        //         }
+        //         setUserState("l")
+        //         return {};
+        //     }
+        //     )
+        //     .then((d) => {
+        //         var state = "l";
+        //         for (let shop in d) {
+        //             if (d[shop].id === parseInt(shopID)) {
+        //                 state = "m" //is a manager
+        //                 break
+        //             }
+        //         }
+        //         setUserState(state)
+        //     }).catch(e => { console.log(e); setUserState("l") });
     }, [])
 
     useEffect(()=>{
@@ -69,8 +82,8 @@ function ShopDispatcher() {
             <DeleteItem showDeleteModal={deleteItemModal} setShowDeleteModal={setDeleteItemModal} shopID={shopID} setTriggerReload={setTriggerReload}  triggerReload={triggerReload}/>
             <Router>
                 <Switch>
-                    <Route exact path="/store/:id/itemslist" render={(props) => (
-                        <Itemslist
+                    <Route exact path="/store/:id/items" render={(props) => (
+                        <ItemsListPage
                             triggerReload={triggerReload}
                             setTriggerReload={setTriggerReload}
                             userState={userState}
@@ -84,6 +97,11 @@ function ShopDispatcher() {
                         {...props}
                     />)}
                     />
+                    <Route path="/store/:id/items/list" render={(props) => (
+                        <ItemsListPage
+                        userState={userState}
+                        {...props}
+                    />)} />
                     <Route path="/store/:id/items/:itemid/edit" render={(props) => (
                         <EditItem
                         triggerReload={triggerReload}
@@ -100,6 +118,15 @@ function ShopDispatcher() {
                         userState={userState}
                         {...props}
                     />)}
+                    />
+                    <Route exact path="/store/:id/shopping-list" render={(props) => (
+                        <ShoppingList
+                            // triggerReload={triggerReload}
+                            // setTriggerReload={setTriggerReload}
+                            userState={userState}
+                            // showDeleteItemModal={showDeleteItemModal}
+                            {...props}
+                        />)}
                     />
                     <Route path="/store/:id/edit-info" render={(props) => (
                         <EditShop
