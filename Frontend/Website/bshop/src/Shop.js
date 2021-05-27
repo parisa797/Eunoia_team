@@ -10,6 +10,8 @@ import AddIcon from '@material-ui/icons/Add';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
+import SearchBar from './SearchBar';
+import Itemslist from './ItemsList';
 
 
 function Shop(props) {
@@ -17,6 +19,7 @@ function Shop(props) {
     const [shopInfo, setShopInfo] = useState({})
     const [allItems, setAllItem] = useState([])
     const [discountedItems, setDiscountedItem] = useState([])
+    const [foodItems, setFoodItems] = useState([])
     const [rated, setRated] = useState(false)
     const [rateID, setRateId] = useState(null)
     // const [triggerReload, setTriggerReload] = useState(false)
@@ -66,6 +69,7 @@ function Shop(props) {
             )
             .then((d) => {
                 setShopInfo(d);
+                // document.title = "فروشگاه "+d.title + " | بی‌شاپ"
                 console.log(d)
             });
         fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
@@ -78,6 +82,17 @@ function Shop(props) {
             console.log(res)
             setAllItem(res)
             setDiscountedItem(res.filter(r => !!r.discount && r.discount > 0))
+        })
+
+        fetch("http://eunoia-bshop.ir:8000/items/category/"+shopID+"?q=Fruits and vegetables", {
+            method: 'GET'
+        }).then((res) => {
+            if (res.status === 200) {
+                return res.json()
+            }
+        }).then((res) => {
+            console.log(res)
+            setFoodItems(res)
         })
 
     }, [props.triggerReload])
@@ -145,7 +160,7 @@ function Shop(props) {
 
     return (
         <div className="shop-page">
-            <ShopSideBar />
+            <ShopSideBar shopID={shopID} />
             <div className="page-contents">
                 <div className="page-contents-item">
                     <div className="shop-profile">
@@ -204,22 +219,8 @@ function Shop(props) {
                     </div>
 
                 </div>
-                <div className="searchbar" >
-                    <form inline="true" className="input-group input-group-lg">
-                        <div className="dropdown">
-                            <button className="btn dropdown-toggle input-group-btn" data-testid="shop-filterby-button" onClick={(e) => { e.preventDefault(); SearchDropDownToggle() }}>
-                                فیلتر براساس
-  </button>
-                            <div className="dropdown-menu" id="shop-search-dropdown" data-testid="shop-dropdown-menu">
-                                <a className="dropdown-item" href="#">جدیدترین‌ها</a>
-                                <a className="dropdown-item" href="#">ارزان‌ترین‌ها</a>
-                                <a className="dropdown-item" href="#">محبوب‌ترین‌ها</a>
-                            </div>
-                        </div>
-                        <input type="text" className="form-control input-lg" placeholder="جستجو در این فروشگاه" />
-                        <div className="btn search-btn input-group-btn" type="submit"><SearchIcon /></div>
-
-                    </form>
+                <div className="search" >
+                <SearchBar thisShop={shopID}  id="shop"/>
                 </div>
                 <div className="page-contents-item">
                     <Carousel interval={null} className="carousel">
@@ -239,62 +240,16 @@ function Shop(props) {
                     {props.userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
                 </div>
                 {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
-                    <div className="page-contents-item">
-                        <div className="horizontal-list ">
-                            {allItems?.map((item, i) => {
-                                if (item)
-                                    return (
-                                        <div key={"all-items" + i} data-testid={"shop-all-items-" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} id={"all-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
-                                        </div>
-                                    )
-                            })}
-                            <div className="see-more" >
-                                <a href={"/store/" + shopID + "/itemslist"}>
-                                    موارد بیشتر
-                            <ChevronLeftIcon />
-                                </a>
-                            </div>
-                        </div>
-                    </div></>}
-                {(discountedItems.length > 0) && <> <h4 className="header"><span className="header-span">تخفیف‌دارها</span></h4>
-                    <div className="page-contents-item">
-                        <div className="horizontal-list ">
-                            {discountedItems.map((item, i) => {
-                                if (item)
-                                    return (
-                                        <div key={"discount-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} id={"discount-items-"+item.id} onlineShop={shopInfo.online}  showDeleteItemModal={props.showDeleteItemModal} userState={props.userState}/>
-                                        </div>
-                                    )
-                            })}
-                            <div className="see-more" >
-                                <a href="/">
-                                    موارد بیشتر
-                            <ChevronLeftIcon />
-                                </a>
-                            </div>
-                        </div>
-                    </div></>}
-                {(allItems.length > 0) && <><h4 className="header"><span className="header-span">محبوب‌ترین‌ کالاها</span></h4>
-                    <div className="page-contents-item">
-                        <div className="horizontal-list ">
-                            {allItems.map((item, i) => {
-                                if (item)
-                                    return (
-                                        <div key={"popular-items" + i} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                                            <ItemCard item={item} id={"loved-items-"+item.id} onlineShop={shopInfo.online} showDeleteItemModal={props.showDeleteItemModal} userState={props.userState} />
-                                        </div>
-                                    )
-                            })}
-                            <div className="see-more" >
-                                <a href={"/store/" + shopID + "/itemslist"}>
-                                    موارد بیشتر
-                            <ChevronLeftIcon />
-                                </a>
-                            </div>
-                        </div>
-                    </div></>}
+                    {/* <div className="page-contents-item"> */}
+                        <Itemslist url={"/store/"+shopID+"/items/list/newest"} items={allItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="all-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal}/>
+                    {/* </div> */}
+                    </>}
+                {(discountedItems?.length > 0) && <> <h4 className="header"><span className="header-span">تخفیف‌دارها</span></h4>
+                    <Itemslist url={"/store/"+shopID+"/items/list/discounted"} items={discountedItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="discounted-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
+                    </>}
+                {(foodItems?.length > 0) && <><h4 className="header"><span className="header-span">غذا، کنسرو و سبزیجات</span></h4>
+                    <Itemslist url={"/store/"+shopID+"/items/list/category?=Fruits and vegetables"} items={foodItems} listType="horizontal" online={shopInfo.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3" id="food-items" userState={props.userState} showDeleteItemModal={props.showDeleteItemModal} />
+                    </>}
                 <h4 className="header" ref={commentsRef}><span className="header-span">نظرات</span></h4>
                 <div className="page-contents-item">
                     <ShopComments shopID={shopID} userState={props.userState}/>
