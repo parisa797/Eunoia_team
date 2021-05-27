@@ -68,3 +68,8 @@
 .item-page .stars{
     overflow: initial !important;
 }
+
+.item-page .item-comment-container{
+    width: 100%;
+    padding: 0%;
+}

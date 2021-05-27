@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Item.css";
 import ReactStars from "react-rating-stars-component";
 import ShopSideBar from "./ShopSideBar";
+import Itemcomment from "./Itemcomment";
 function Item(props) {
   // console.log("Token "+localStorage.getItem("token"))
   const [items, setItems] = useState({});
@@ -187,6 +188,9 @@ function Item(props) {
                 )}
 
               {props.userState !== "m" && <a href="#" className="btn btn-lg btn-primary my-3" >افزودن به سبد خرید</a>}
+              </div>
+              <div className="col-12 item-comment-container" >
+                <Itemcomment userState={props.userState} />
               </div>
             </div>
           </div>
