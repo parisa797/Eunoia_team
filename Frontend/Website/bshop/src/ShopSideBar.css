@@ -95,7 +95,8 @@
 }
 
 .shop-sidebar .sub-section a:hover, .shop-sidebar .sub-sub-section a:hover{
-    color: var(--primary-color)
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .shop-sidebar .sub-section{

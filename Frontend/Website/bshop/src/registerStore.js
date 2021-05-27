@@ -84,6 +84,8 @@ const RegisterStore = () => {
                   createStore(fd)
                     .then((resp) => {
                       if (resp.status === 201) {
+                        localStorage.removeItem("shops")
+                        localStorage.removeItem("shoplists")
                         window.location.replace("/");
                       }
                     })
@@ -116,6 +118,8 @@ const RegisterStore = () => {
         createStore(fd)
           .then((resp) => {
             if (resp.status === 201) {
+              localStorage.removeItem("shops")
+              localStorage.removeItem("shoplists")
               window.location.replace("/");
             }
           })
