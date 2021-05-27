@@ -28,7 +28,7 @@ function Item(props) {
       .then((res) => {
         setItems(res);
       });
-  }, []);
+  }, [triggerReload]);
   useEffect(() => {
     console.log(props.userState)
     fetch("http://eunoia-bshop.ir:8000/shops/"+shopID+"/items/"+itemID+"/rates/" , {
