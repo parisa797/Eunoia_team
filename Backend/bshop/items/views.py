@@ -102,7 +102,10 @@ class CreateItem(generics.ListCreateAPIView):
        # elif delta == timedelta(days=0): ##darbareye
            # return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
         serializer_data = request.data.copy()
-        serializer_data.update({'price_with_discount':(int(request.data['price']) * (100 - int(request.data['discount'])) / 100)})
+        if "discount" in request.data.keys() :
+            serializer_data.update({'price_with_discount':(int(request.data['price']) * (100 - int(request.data['discount'])) / 100)})
+        else :
+            serializer_data.update({'price_with_discount': (int(request.data['price']))})
         # serializer = self.get_serializer(data=request.data)
         serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
