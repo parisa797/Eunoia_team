@@ -18,13 +18,13 @@ class ShoppingList(models.Model):
     phone = models.CharField(max_length = 100,blank=False, null=True)
     online = models.BooleanField(default=False,blank=False, null=True)
     max_cost = models.IntegerField(default=0,blank=True, null=True)
-    delivery_time = jmodels.jDateField(blank=True, null=True, auto_now=False, auto_now_add=False)
+    delivery = models.DateTimeField(auto_now_add=False,blank=True, null=True, auto_now=False)
 
     @property
     def sum_price(self):
         if(ShoppingItem.objects.filter(shopping_list=self.id).count() is 0):
             return 0
-        return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('price'))['price__sum']
+        return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('sum_price'))['sum_price__sum']
 
 
 class ShoppingItem(models.Model): 
@@ -32,4 +32,5 @@ class ShoppingItem(models.Model):
     item = models.ForeignKey(Item,related_name='shopping_item',on_delete=models.CASCADE,blank=True)
     number = models.IntegerField(blank=True, null=True)
     shopping_list = models.ForeignKey(ShoppingList,related_name='shopping_list_items',on_delete=models.CASCADE)
-    price = models.IntegerField(blank=True, null=True)
+    price = models.IntegerField(default=0,blank=True, null=True)
+    sum_price = models.IntegerField(default=0,blank=True, null=True)

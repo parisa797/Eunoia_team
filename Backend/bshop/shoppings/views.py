@@ -12,6 +12,8 @@ from rest_framework import status
 from django.utils import timezone
 from datetime import timedelta
 import requests
+from datetime import datetime
+
 
 from .models import *
 from .serializers import *
@@ -141,7 +143,10 @@ class DeliveryShoppingListUpdateAPIView(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.delivery_time = request.data.get('delivery_time', instance.delivery_time)
+        # datetime.strptime(date_time_str, '%d/%m/%y %H:%M:%S')
+        print(type(request.data.get('delivery', instance.delivery)))
+        instance.delivery = request.data.get('delivery', instance.delivery)
+        instance.delivery =  datetime.strptime(instance.delivery, '%Y-%m-%d %H:%M')
         instance.save()
         serializer = AllShoppingListSerializer(instance)
         return Response(serializer.data)
@@ -159,16 +164,19 @@ class ShoppingItemCreateAPIView(generics.CreateAPIView):
         serializer_data = request.data.copy()
         if(ShoppingList.objects.get(id = request.data['shopping_list']).max_cost == 0):
             serializer_data.update({'user':request.user.id})
+            num_price = (int(Item.objects.get(id = request.data['item']).price_with_discount)) * int(request.data['number'])
+            serializer_data.update({'sum_price':num_price})
             serializer_data.update({'price':Item.objects.get(id = request.data['item']).price})
             serializer = self.get_serializer(data=serializer_data)
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        if((ShoppingList.objects.get(id = request.data['shopping_list']).sum_price) + (Item.objects.get(id = request.data['item']).price) > ShoppingList.objects.get(id = request.data['shopping_list']).max_cost):
+        if((ShoppingList.objects.get(id = request.data['shopping_list']).sum_price) + (int(Item.objects.get(id = request.data['item']).price_with_discount)) * int(request.data['number']) > ShoppingList.objects.get(id = request.data['shopping_list']).max_cost):
             return Response(data="sum_price should be smaller than max_cost",status=status.HTTP_400_BAD_REQUEST)
         serializer_data.update({'user':request.user.id})
-        serializer_data.update({'price':Item.objects.get(id = request.data['item']).price})
+        num_price = (int(Item.objects.get(id = request.data['item']).price_with_discount)) * int(request.data['number'])
+        serializer_data.update({'sum_price':num_price})
         serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

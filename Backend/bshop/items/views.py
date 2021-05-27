@@ -101,8 +101,13 @@ class CreateItem(generics.ListCreateAPIView):
                 return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
        # elif delta == timedelta(days=0): ##darbareye
            # return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = self.get_serializer(data=request.data)
+        serializer_data = request.data.copy()
+        if "discount" in request.data.keys() :
+            serializer_data.update({'price_with_discount':(int(request.data['price']) * (100 - int(request.data['discount'])) / 100)})
+        else :
+            serializer_data.update({'price_with_discount': (int(request.data['price']))})
+        # serializer = self.get_serializer(data=request.data)
+        serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -157,7 +162,8 @@ class MostExpensiveAllItemListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Item.objects.all()
-        return queryset.order_by('-price')
+        return queryset.order_by('-price_with_discount')
+
 
 class CheapestAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -166,7 +172,8 @@ class CheapestAllItemListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Item.objects.all()
-        return queryset.order_by('price')
+        # return queryset.order_by('price')
+        return queryset.order_by('price_with_discount')
 
 class NewestAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -204,7 +211,7 @@ class ExpensiveFilterItemListAPIView(generics.ListAPIView):
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
-        return queryset.order_by('-price')
+        return queryset.order_by('-price_with_discount')
 
 class CheapFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -214,7 +221,7 @@ class CheapFilterItemListAPIView(generics.ListAPIView):
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
-        return queryset.order_by('price')
+        return queryset.order_by('price_with_discount')
 
 class NewFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -243,7 +250,7 @@ class MostExpensiveAllItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
-        return queryset.order_by('-price')
+        return queryset.order_by('-price_with_discount')
 
 class CheapestAllItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -252,7 +259,7 @@ class CheapestAllItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
-        return queryset.order_by('price')
+        return queryset.order_by('price_with_discount')
 
 class NewestAllItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -290,7 +297,7 @@ class ExpensiveFilterItemOneShopListAPIView(generics.ListAPIView):
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
-        return queryset.order_by('-price')
+        return queryset.order_by('-price_with_discount')
 
 class CheapFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -300,7 +307,7 @@ class CheapFilterItemOneShopListAPIView(generics.ListAPIView):
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
-        return queryset.order_by('price')
+        return queryset.order_by('price_with_discount')
 
 class NewFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -707,9 +714,9 @@ class RateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         self.check_object_permissions(self.request, rate)
         return rate
 
-    # def update(self, request, *args, **kwargs):
-    #     instance = self.get_object()
-    #     instance.rate = request.data.get('rate', instance.rate)
-    #     instance.save()
-    #     serializer = RateSerializer(instance)
-    #     return Response(serializer.data)
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.rate = request.data.get('rate', instance.rate)
+        instance.save()
+        serializer = RateSerializer(instance)
+        return Response(serializer.data)
