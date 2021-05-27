@@ -1,31 +1,4 @@
-/* .Items_list .card{
-    height: 40vh;
-    width: 100vw ;
-}
-.Items_list .card img{
-    height:100%;
-    width:100%;
-    object-fit: contain;
-
-} */
-
-/* .Items_list .card{ */
-    /* height: 40vh; */
-    /* overflow: auto; */
-/* } */
-
-/* .Items_list .card img{
-    width:100%;
-    object-fit: contain;
-    padding-bottom: 50%;
-} */
-
-/* .Items_list .card .btn{ */
-    /* width:100%; */
-    /* padding-bottom: 50%; */
-/* } */
-
-  
+ 
   @media(max-width:640px){
     .Items_list-header{
       top: 90px;
@@ -62,5 +35,48 @@
 }
 
 .Items_list{
-    padding-top: 50px;
+    padding-top: 20px;
+}
+
+.items-list-component .horizontal-list{
+    overflow: auto;
+    white-space: nowrap;
+    overflow-x:scroll;
+    width: 100%;
+    text-align: right;
+}
+
+.items-list-component .horizontal-list::-webkit-scrollbar{
+    width: 5px; 
+    background: transparent;
+}
+
+.items-list-component .horizontal-list::-webkit-scrollbar-thumb {
+    background: var(--bg-color3);
+    height: 5px;
+    width: 5px;
+}
+
+.horizontal-list .col-12{
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.items-list-component{
+    padding: 10px;
+    margin-bottom: 5vh;
+    width:100%;
+}
+
+.horizontal-list .see-more{
+    display: inline-block;
+    cursor: pointer;
+}
+
+.horizontal-list .see-more a{
+    color:var(--secondary-color)
+}
+
+.items-list-component a:hover{
+    text-decoration: none;
 }
