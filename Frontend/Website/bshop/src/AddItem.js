@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "./assets/logo.png";
 import snack from "./libs/snack";
+import { useSnackbar } from 'notistack';
 // import { AddItem } from "./api";
 
 
@@ -9,6 +10,7 @@ import snack from "./libs/snack";
 const AddItem = () => {
   // const location = useLocation()
   // console.log(location.pathname.split('/'));
+  const { enqueueSnackbar } = useSnackbar();
   const [values, setValues] = useState({
     name: "",
     src: "",
@@ -75,16 +77,30 @@ const AddItem = () => {
         }).catch((e) => { console.log(e.response.data) })  
     } else {
       console.log('else');
-      if (!values.name) snack.error('نام محصول را وارد کنید')
-      // if (!values.src) snack.error('عکس محصول را انتخاب کنید')
-      if (!values.price) snack.error('قیمت محصول را وارد کنید')
-      // if (!values.description) snack.error('توضیحات محصول را بنویسد')
-      if (!values.manufacture_Date) snack.error('تاریخ تولید را وارد کنید')
-      if (!values.Expiration_Date) snack.error('تاریخ انقضا را وارد کنید')
-      if (!values.count) snack.error('تعداد محصول را وارد کنید')
-      if (!values.category) snack.error('دسته بندی محصول را وارد کنید')
-      if (values.discount && values.discount > 99) snack.error('درصد تخفیف باید عددی کمتر از ۱۰۰ باشد')
-      if (diff < 0) snack.error('تاریخ انقضا باید بعد از تاریخ تولید باشد')
+      if (!values.name) enqueueSnackbar('نام محصول را وارد کنید', { 
+        variant: 'error',
+    })
+      if (!values.price) enqueueSnackbar('قیمت محصول را وارد کنید', { 
+        variant: 'error',
+    })
+      if (!values.manufacture_Date) enqueueSnackbar('تاریخ تولید را وارد کنید', { 
+        variant: 'error',
+    })
+      if (!values.Expiration_Date) enqueueSnackbar('تاریخ انقضا را وارد کنید', { 
+        variant: 'error',
+    })
+      if (!values.count) enqueueSnackbar('تعداد محصول را وارد کنید', { 
+        variant: 'error',
+    })
+      if (!values.category) enqueueSnackbar('دسته بندی محصول را وارد کنید', { 
+        variant: 'error',
+    })
+      if (values.discount && values.discount > 99) enqueueSnackbar('درصد تخفیف باید عددی کمتر از ۱۰۰ باشد', { 
+        variant: 'error',
+    })
+      if (diff < 0) enqueueSnackbar('تاریخ انقضا باید بعد از تاریخ تولید باشد', { 
+        variant: 'error',
+    })
     }
 
   }
@@ -206,9 +222,11 @@ const AddItem = () => {
           دسته بندی محصول
         </label>
         <input
+          data-testid="add-item-category"
           style={{ textAlign: "right", marginBottom: "10px" }}
           type="text"
           value={values.category}
+          
           onFocus={(e) => document.getElementById("category-dropdown").classList.toggle("show")}
           // onBlur ={(e)=>document.getElementById("category-dropdown").classList.toggle("show")}
           id="category"
@@ -231,10 +249,8 @@ const AddItem = () => {
           <button className="dropdown-item" onClick={() => handleChange("category", 'Drinks')}>نوشیدنیها</button>
           <button className="dropdown-item" onClick={() => handleChange("category", 'Washing and Cleaning Equipment')}>وسایل شستشو و نظافت</button>
           <button className="dropdown-item" onClick={() => handleChange("category", 'others')}>متفرقه</button>
-
         </div>
         </div>
-
         <div class="item-file">
           <input
             type="file"
@@ -249,11 +265,9 @@ const AddItem = () => {
         </div>
         <div className="checkbox mb-3">
         </div>
-        <button onClick={(e)=>handleSubmit(e)} className="btn btn-lg btn-primary btn-block">
+        <button onClick={(e)=>handleSubmit(e)} className="btn btn-lg btn-primary btn-block" data-testid = "additem-btn">
           ثبت
         </button>
-
-
       </form>
     </div>
   );

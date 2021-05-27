@@ -227,6 +227,9 @@ function EditShop(props) {
         }).then(
             res => {
                 if (res.status === 204) {
+                    localStorage.removeItem("role");
+                    localStorage.removeItem("shops")
+                    localStorage.removeItem("shoplists")
                     window.location.replace("/");
                 }
                 return null;
