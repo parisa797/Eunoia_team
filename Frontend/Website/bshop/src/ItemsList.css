@@ -1,31 +1,4 @@
-/* .Items_list .card{
-    height: 40vh;
-    width: 100vw ;
-}
-.Items_list .card img{
-    height:100%;
-    width:100%;
-    object-fit: contain;
-
-} */
-
-/* .Items_list .card{ */
-    /* height: 40vh; */
-    /* overflow: auto; */
-/* } */
-
-/* .Items_list .card img{
-    width:100%;
-    object-fit: contain;
-    padding-bottom: 50%;
-} */
-
-/* .Items_list .card .btn{ */
-    /* width:100%; */
-    /* padding-bottom: 50%; */
-/* } */
-
-  
+ 
   @media(max-width:640px){
     .Items_list-header{
       top: 90px;
