@@ -219,6 +219,7 @@
     margin:10px 5px;
     color: var(--secondary-color);
     font-size: large;
+    cursor: pointer;
 }
 
 .shop-page .edit-board:hover{
@@ -234,44 +235,6 @@
     margin: 5vh 20px 10vh 20px;
     direction: ltr;
 }
-
-/* .shop-page .searchbar .dropdown-toggle{
-    height: 40px;
-    background-color: var(--primary-color);
-    border-radius: 0 5px 5px 0;
-    color: var(--font-always-light-color);
-    
-}
-
-.shop-page .searchbar .dropdown-toggle:focus{
-    outline:none;
-    box-shadow: none;
-} */
-
-/* .shop-page .searchbar input{
-    height: 40px;
-    border: 1px solid var(--primary-color);
-    border-left: none;
-    font-size: medium;
-    background-color: var(--bg-color2-2);
-    color:var(--font-color)
-}
-
-.shop-page .searchbar input:focus{
-    outline: none;
-    box-shadow: none;
-}
-
-.shop-page .searchbar .search-btn{
-    height: 40px;
-    border: 1px solid var(--primary-color);
-    border-right: none;
-    border-radius: 5px 0 0 5px;
-    color: var(--primary-color);
-    background-color: var(--bg-color2-2);
-    transition: none;
-} */
-
 .shop-page a:hover{
     text-decoration: none;
 }
@@ -398,4 +361,71 @@
 }
 .shop-page .reply-comment{
     margin-right: 40px;
+}
+
+.board-outer-modal .modal-content{
+    width:100vh;
+    
+}
+.board-outer-modal .carousel{
+    direction: ltr;
+    margin-bottom: 5px;
+}
+
+.board-outer-modal .carousel .carousel-inner{
+    border-radius: 10px;
+}
+
+.board-outer-modal .board-item{
+    width:100%;
+}
+
+.board-outer-modal .board-item-holder{
+    /* display: grid; */
+    justify-content: center;
+    /* margin: 0 10%; */
+}
+
+.board-outer-modal .board-item img{
+    position: absolute;
+    top:0;
+    bottom: 0;
+    right:0;
+    left:0;
+    object-fit: cover;
+    height: 100%;
+    width:100%;
+    border-radius: 10px;
+}
+
+.board-outer-modal .board-item .img-container{
+    padding-top: 35.0%; /* aspect ratio: height 35% of width*/
+    position: relative;
+}
+
+.board-outer-modal .img-container .btn{
+    position: absolute;
+    bottom: 2px;
+    /* right: 100%; */
+    /* left: 100%; */
+    background-color: var(--primary-color);
+    width: fit-content;
+    color: var(--font-always-light-color);
+}
+
+.board-outer-modal .url-input{
+    padding: 30px 10%;
+    flex-direction: column;
+}
+
+.board-outer-modal .url-input input{
+    width: 100%;
+}
+
+.board-outer-modal .carousel-control-next, .board-outer-modal .carousel-control-prev {
+    width: 10%;
+}
+
+.board-outer-modal .carousel-indicators{
+    display: none;
 }
