@@ -363,10 +363,14 @@
     margin-right: 40px;
 }
 
-.board-outer-modal .modal-content{
+.board-outer-modal{
+    font-family: 'Vazir';
+}
+
+/* .board-outer-modal .modal-content{
     width:100vh;
     
-}
+} */
 .board-outer-modal .carousel{
     direction: ltr;
     margin-bottom: 5px;
@@ -414,12 +418,16 @@
 }
 
 .board-outer-modal .url-input{
-    padding: 30px 10%;
+    padding: 30px 10% 10px 10%;
     flex-direction: column;
 }
 
 .board-outer-modal .url-input input{
     width: 100%;
+    border: none;
+  border-bottom: 2px solid var(--secondary-color);
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .board-outer-modal .carousel-control-next, .board-outer-modal .carousel-control-prev {
@@ -428,4 +436,50 @@
 
 .board-outer-modal .carousel-indicators{
     display: none;
+}
+
+.board-outer-modal .btn{
+    /* margin: 0 auto; */
+    width: fit-content;
+    color: var(--primary-color);
+    font-weight: bold;
+    padding-right: 0;
+}
+
+.board-outer-modal .btn:hover{
+    opacity: 0.8;
+}
+
+.board-outer-modal .board-modal{
+    direction: rtl;
+}
+
+.board-outer-modal .close{
+    margin: -1rem auto -1rem -1rem;
+}
+
+.board-modal .modal-title{
+    display: inline-flex;
+}
+
+.board-outer-modal .url-input input:focus{
+  border-bottom: 2px solid var(--primary-color);
+  outline: none;
+}
+
+.board-outer-modal label{
+    margin-bottom: 0;
+}
+
+.board-outer-modal .board-delete{
+    color: red;
+}
+
+.board-outer-modal h4{
+    margin: 10vh auto;
+    /* width: 100%; */
+    text-align: center;
+    opacity: 0.7;
+    font-family: 'Vazir-Bold';
+    direction: rtl;
 }
