@@ -7,6 +7,7 @@ import * as SecureStore from "expo-secure-store";
 
 import Home from "./homepage";
 import ShopDetail from "./shopDetails";
+import ItemDetail from "./ItemDetail";
 import PersonalInfo from "./PersonalInfo";
 import Comment from "./comment";
 
@@ -60,6 +61,11 @@ const AppStack = ({ navigation }) => {
         name="ShopDetail"
         component={ShopDetail}
         options={{ title: "اطلاعات فروشگاه" }}
+      />
+      <Stack.Screen
+        name="ItemDetail"
+        component={ItemDetail}
+        options={{ title: "اطلاعات محصول" }}
       />
       <Stack.Screen
         name="Comment"

@@ -63,6 +63,7 @@ const ShopDetail = ({ route, navigation }) => {
           >
             <Text style={styles.SignUpText}> نظرات</Text>
           </TouchableOpacity>
+
           <View style={styles.details}>
             <Text style={styles.title}>فروشگاه {route.params.title}</Text>
             <View style={styles.icon}>
@@ -96,6 +97,12 @@ const ShopDetail = ({ route, navigation }) => {
                   route.params.rate_value == 0 ? 3 : route.params.rate_value
                 }
               ></StarRating>
+              <TouchableOpacity
+                style={styles.SignUpBtn}
+                onPress={() => navigation.navigate("ItemDetail")}
+              >
+                <Text style={styles.SignUpText}> items</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -106,6 +113,7 @@ const ShopDetail = ({ route, navigation }) => {
         {shopitems && (
           <FlatList
             // testID={"items-list" + props.index}
+            nestedScrollEnabled={true}
             style={{ marginTop: -30 }}
             horizontal
             data={shopitems}
@@ -119,6 +127,10 @@ const ShopDetail = ({ route, navigation }) => {
                   price={itemData.item.price}
                   discount={itemData.item.discount}
                   index={itemData.item.id}
+                  onPress={() => {
+                    console.log("click me");
+                    navigation.navigate("Home");
+                  }}
                 ></Item>
               );
             }}
