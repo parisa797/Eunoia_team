@@ -32,10 +32,9 @@ function ShopBoard(props) {
             return;
         for (let i = 0; i < e.target.files.length; i++) {
             let fd = new FormData();
-            fd.append("shop", parseInt(props.shopID));
-
             fd.append("image", files[i]);
             fd.append("image_url", "");
+            fd.append("shop", parseInt(props.shopID));
             fetch("http://eunoia-bshop.ir:8000/api/v1/shops/board/create/", {
                 method: 'POST',
                 headers: {

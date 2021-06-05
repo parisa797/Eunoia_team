@@ -483,3 +483,7 @@
     font-family: 'Vazir-Bold';
     direction: rtl;
 }
+
+.board-outer-modal .create-btn{
+    padding-right: 10px;
+}
