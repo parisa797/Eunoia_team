@@ -130,7 +130,7 @@ function HomePage(props) {
                                     </div>
                                 </div>
                             </form> */}
-                            <div style={{ paddingTop: "5vh" }}><a href="/" style={{ fontSize: "larger", color: "var(--font-color2)" }}>...یا از روی نقشه فروشگاه نزدیک خود را پیدا کنید<LocationOnIcon className="icon" /></a></div>
+                            <div style={{ paddingTop: "5vh" }}><a href="/maps" style={{ fontSize: "larger", color: "var(--font-color2)" }}>...یا از روی نقشه فروشگاه نزدیک خود را پیدا کنید<LocationOnIcon className="icon" /></a></div>
                         </div>
 
                     </div>
