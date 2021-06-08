@@ -7,11 +7,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import ItemCard from './ItemCard';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import SearchBar from './SearchBar';
 import Itemslist from './ItemsList';
+import { IconButton } from '@material-ui/core';
 
 
 function Shop(props) {
@@ -157,7 +160,44 @@ function Shop(props) {
             top: commentsRef.current.offsetTop
           });
     }
-
+    const [isLikedByUser, setisLikedByUser] = useState(false)
+    useEffect(() => {
+        fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        .then(res => {
+            console.log(shopID);
+            const resp = res.findIndex(i => i.id == shopID)
+            console.log(resp);
+            if (resp > 0) setisLikedByUser(true)
+            else setisLikedByUser(false)
+        })
+    }, [])
+    const handleLike = async () => {
+        await fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        })
+        fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        .then(res => {
+            console.log(shopID);
+            const resp = res.findIndex(i => i.id == shopID)
+            console.log(resp);
+            if (resp > 0) setisLikedByUser(true)
+            else setisLikedByUser(false)
+        })
+    }
+    console.log(isLikedByUser);
     return (
         <div className="shop-page">
             <ShopSideBar shopID={shopID} />
@@ -172,10 +212,21 @@ function Shop(props) {
                             </div>
                             <div className="title-buttons">
                                 <h3 data-testid={"shop-title"}>{shopInfo.title}</h3>
-                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
+                                {props.userState === "b" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
                                     <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
+                                <div className="col-1">
+                                    {isLikedByUser ? (
+                                        <IconButton onClick={handleLike} style={{ padding: 0 }}>
+                                        <FavoriteIcon style={{ color: 'red' }} />
+                                        </IconButton>
+                                    ): (
+                                        <IconButton onClick={handleLike} style={{ padding: 0 }}>
+                                        <FavoriteBorderIcon />
+                                            </IconButton>
+                                        )}
+                                        </div>
                             <> <p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {shopInfo.rate_value?Math.round(shopInfo.rate_value * 10) / 10 :0} </p>
                                     {!!shopInfo.rate_value && <ReactStars
                                         edit={props.userState!=="u"}
