@@ -97,12 +97,6 @@ const ShopDetail = ({ route, navigation }) => {
                   route.params.rate_value == 0 ? 3 : route.params.rate_value
                 }
               ></StarRating>
-              <TouchableOpacity
-                style={styles.SignUpBtn}
-                onPress={() => navigation.navigate("ItemDetail")}
-              >
-                <Text style={styles.SignUpText}> items</Text>
-              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -118,22 +112,18 @@ const ShopDetail = ({ route, navigation }) => {
             horizontal
             data={shopitems}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={(itemData) => {
-              // console.log("item is", itemData.item);
-              return (
-                <Item
-                  name={itemData.item.name}
-                  image={itemData.item.photo}
-                  price={itemData.item.price}
-                  discount={itemData.item.discount}
-                  index={itemData.item.id}
-                  onPress={() => {
-                    console.log("click me");
-                    navigation.navigate("Home");
-                  }}
-                ></Item>
-              );
-            }}
+            renderItem={(itemData) => (
+              <Item
+                name={itemData.item.name}
+                image={itemData.item.photo}
+                price={itemData.item.price}
+                discount={itemData.item.discount}
+                index={itemData.item.id}
+                onSelect={() => {
+                  navigation.navigate("ItemDetail", itemData.item);
+                }}
+              ></Item>
+            )}
           />
         )}
 

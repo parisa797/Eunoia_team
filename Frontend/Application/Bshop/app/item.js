@@ -21,55 +21,57 @@ const Item = (props) => {
   //   console.log("this is new price", newPrice);
   return (
     <View style={styles.container}>
-      <View style={styles.items}>
-        <Image
-          testID={"item-image-" + props.index}
-          style={styles.image}
-          source={{ uri: photo }}
-        />
-      </View>
-      <Text
-        testID={"item-name-" + props.index}
-        style={{ fontSize: 20, fontWeight: "bold" }}
-      >
-        {props.name}
-      </Text>
-
-      {/* <View style={styles.rows}> */}
-      {props.discount != 0 && (
+      <TouchableOpacity onPress={props.onSelect} useForeground>
+        <View style={styles.items}>
+          <Image
+            testID={"item-image-" + props.index}
+            style={styles.image}
+            source={{ uri: photo }}
+          />
+        </View>
         <Text
-          testID={"item-price0-" + props.index}
-          style={{
-            textDecorationLine: "line-through",
-            textAlign: "right",
-            fontSize: 15,
-            color: "grey",
-          }}
+          testID={"item-name-" + props.index}
+          style={{ fontSize: 20, fontWeight: "bold" }}
         >
-          قیمت:
-          {props.price}
+          {props.name}
         </Text>
-      )}
-      {props.discount == 0 && (
-        <Text
-          testID={"item-price1-" + props.index}
-          style={{
-            textAlign: "right",
-            fontSize: 15,
-            fontWeight: "bold",
-          }}
-        >
-          قیمت:
-          {props.price}
-        </Text>
-      )}
 
-      {props.discount != 0 && (
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-          قیمت با تخفیف: {newPrice}
-        </Text>
-      )}
-      {/* </View> */}
+        {/* <View style={styles.rows}> */}
+        {props.discount != 0 && (
+          <Text
+            testID={"item-price0-" + props.index}
+            style={{
+              textDecorationLine: "line-through",
+              textAlign: "right",
+              fontSize: 15,
+              color: "grey",
+            }}
+          >
+            قیمت:
+            {props.price}
+          </Text>
+        )}
+        {props.discount == 0 && (
+          <Text
+            testID={"item-price1-" + props.index}
+            style={{
+              textAlign: "right",
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            قیمت:
+            {props.price}
+          </Text>
+        )}
+
+        {props.discount != 0 && (
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            قیمت با تخفیف: {newPrice}
+          </Text>
+        )}
+        {/* </View> */}
+      </TouchableOpacity>
     </View>
   );
 };

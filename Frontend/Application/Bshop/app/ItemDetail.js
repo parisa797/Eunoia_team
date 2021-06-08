@@ -21,7 +21,32 @@ import Item from "./item";
 
 const ItemDetail = ({ route, navigation }) => {
   const [liked, setLiked] = useState(false);
-  const [shopitems, setItems] = useState();
+  console.log(route.params);
+
+  var image = !route.params.photo ? null : route.params.photo;
+  var price = `${route.params.price} تومان`;
+  var discounted = `با تخفیف: ${route.params.price_with_discount} تومان`;
+  var count =
+    route.params.count != 0 ? `موجودی: ${route.params.count} عدد` : "ناموجود";
+  var brand = !route.params.brand ? "برند نامشخص" : route.params.brand;
+  const categories = {
+    "Spices and condiments and food side dishes": "ادویه، چاشنی و مخلفات غذا",
+    Cosmetics: "بهداشت و مراقبت پوست",
+    "Makeup and trimming": "آرایش و پیرایش",
+    Protein: "پروتئینی",
+    "Junk Food": "تنقلات",
+    Nuts: "خشکبار",
+    "Sweets and desserts": "شیرینیجات و دسرها",
+    perfume: "عطر، ادکلن و اسپری",
+    "Fruits and vegetables": "غذا، کنسرو و سبزیجات",
+    Dairy: "لبنیات",
+    Drinks: "نوشیدنیها",
+    "Washing and Cleaning Equipment": "وسایل شستشو و نظافت",
+    others: "متفرقه",
+  };
+  var category = `دسته بندی: ${categories[route.params.category]}`;
+  var manufacture = `تاریخ تولید: ${route.params.manufacture_jalali}`;
+  var expire = `تاریخ انقضا: ${route.params.Expiration_jalali}`;
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
@@ -39,66 +64,60 @@ const ItemDetail = ({ route, navigation }) => {
             color={liked ? "red" : "black"}
           />
         </Pressable>
-        <Image style={styles.image} />
+        {/* <Image style={styles.image} /> */}
+        {image == null && (
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={require("../assets/no-image.png")}
+          />
+        )}
+        {image && (
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{ uri: "http://eunoia-bshop.ir:8000" + image }}
+          />
+        )}
       </View>
       <View style={styles.shop}>
         <View style={styles.details}>
-          <Text style={styles.title}>شیر پگاه </Text>
+          <Text style={styles.title}>{route.params.name} </Text>
           {/* <View style={styles.icon}>
               
               <Text style={styles.address}></Text>
             </View> */}
-          <Text style={styles.title}>برند محصول </Text>
-          <Text style={styles.title}>30.000 </Text>
-          <Text style={styles.title}>این محصول در دسته ----- قرار دارد </Text>
-          <Text style={styles.title}>موجودی : </Text>
+          <Text style={styles.title}>{route.params.description}</Text>
+          <Text style={styles.title}>{brand}</Text>
+          <Text style={styles.title}>{manufacture}</Text>
+          <Text style={styles.title}>{expire}</Text>
+          <Text style={styles.title}>{price} </Text>
+          {route.params.price != route.params.price_with_discount && (
+            <Text style={styles.title}>{discounted} </Text>
+          )}
+          <Text style={styles.title}>{category} </Text>
+          <Text style={styles.title}>{count}</Text>
           <View>
             <StarRating
               starSize={25}
               disabled={true}
               fullStarColor={"#b31414"}
-              // rating={
-              //   route.params.rate_value == 0 ? 3 : route.params.rate_value
-              // }
+              rating={
+                route.params.rate_value == 0 ? 0 : route.params.rate_value
+              }
             ></StarRating>
           </View>
         </View>
       </View>
       <TouchableOpacity
         style={styles.SignUpBtn}
-        onPress={() => navigation.navigate("Comment", route.params.id)}
+        // onPress={() => navigation.navigate("Comment", route.params.id)}
       >
         <Text style={styles.SignUpText}> مشاهده نظرات این محصول</Text>
       </TouchableOpacity>
       {/* </View> */}
 
       <Text style={{ fontWeight: "bold" }}></Text>
-      {shopitems && (
-        <FlatList
-          // testID={"items-list" + props.index}
-          nestedScrollEnabled={true}
-          style={{ marginTop: -30 }}
-          horizontal
-          data={shopitems}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={(itemData) => {
-            // console.log("item is", itemData.item);
-            return (
-              <Item
-                name={itemData.item.name}
-                image={itemData.item.photo}
-                price={itemData.item.price}
-                discount={itemData.item.discount}
-                index={itemData.item.id}
-                onPress={() => {
-                  console.log("click me");
-                  navigation.navigate("Home");
-                }}
-              ></Item>
-            );
-          }}
-        />
-      )}
 
       {/* </ImageBackground> */}
     </ScrollView>
@@ -140,7 +159,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     backgroundColor: "white",
-    height: 220,
+    height: 380,
     width: 370,
     marginLeft: 12,
     marginTop: 15,
@@ -219,7 +238,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: "center",
-    height: "38%",
+    height: "48%",
     padding: 10,
   },
   title: {
