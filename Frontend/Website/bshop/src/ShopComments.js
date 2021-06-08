@@ -212,6 +212,21 @@ function ShopComments(props) {
         console.log(temp);
         return temp > -1 ? true : false
     }
+    const handleReplyLikeComment = (reply, commentid) => {
+        fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${commentid}/replies/${reply.id}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(() => handleUpdateComments())
+    }
+    const checkIsReplyLikedByUser = (reply) => {
+        console.log(reply);
+        const username = localStorage.getItem("username")
+        const temp = reply.AllPeopleLiked[0]?.Liked_By?.findIndex(i => i?.username === username)
+        console.log(temp);
+        return temp > -1 ? true : false
+    }
     return (
     <div className="shop-comments">
         {/* { like ? <TEse style={{}}  /> :  } */}
@@ -244,6 +259,13 @@ function ShopComments(props) {
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-reply-username"+r.id} >{r.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-reply-datetime"+r.id}>{r.date_jalali}</p>
+                            <div className="shop-comment-author">
+                            <IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
+                                   {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                            </IconButton>
+                            {r.AllPeopleLiked[0]?.Liked_By?.length}
+                            لایک 
+                            </div>
                            
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-reply-text"+r.id}>{r.text}</p>
