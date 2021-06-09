@@ -150,7 +150,7 @@ return (
             </div>
             <>
               {shoppingList!=="manager" && <div className="shopping-list" >
-                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "profile/shoppinglists"}>
+                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "/profile/shoppinglists"}>
                   <ShoppingCartIcon className="shoppinglist-icon" />
                   {!!shopID && <p>{shoppingList?.length}</p>}
                 </div>

@@ -66,7 +66,7 @@ function LoadingPage(props) {
                     return;
                 localStorage.setItem("role", res.role);
                 localStorage.setItem("username", res.user_name);
-                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/", {
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/user/shoppinglists/", {
                     method: 'GET',
                     headers: {
                         "Authorization": "Token " + localStorage.getItem('token')
@@ -84,6 +84,7 @@ function LoadingPage(props) {
                         if (!!d)
                             d.forEach((e) => usersLists["" + e.shop] = e.id)
                         localStorage.setItem("shoplists", JSON.stringify(usersLists))
+                        console.log(d)
                         if (res.role === "seller") {
                             fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
                                 method: 'GET',

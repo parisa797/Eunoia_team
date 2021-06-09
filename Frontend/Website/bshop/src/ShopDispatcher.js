@@ -16,6 +16,7 @@ import {
 import Itemslist from "./ItemsList";
 import ItemsListPage from "./ItemsListPage";
 import ShoppingList from "./ShoppingList";
+import ShoppingListCompletion from "./ShoppingListCompletion"
 import { ContactSupportOutlined } from "@material-ui/icons";
 
 function ShopDispatcher() {
@@ -119,10 +120,27 @@ function ShopDispatcher() {
                         {...props}
                     />)}
                     />
+                    <Route exact path="/store/:id/shopping-list/complete-order" render={(props) => (
+                        <ShoppingListCompletion
+                            // triggerReload={triggerReload}
+                            // setTriggerReload={setTriggerReload}
+                            userState={userState}
+                            // showDeleteItemModal={showDeleteItemModal}
+                            {...props}
+                        />)}
+                    />
+                    <Route exact path="/store/:id/shopping-history/:shoppingid" render={(props) => (
+                        <ShoppingList
+                            completed={true}
+                            userState={userState}
+                            {...props}
+                        />)}
+                    />
                     <Route exact path="/store/:id/shopping-list" render={(props) => (
                         <ShoppingList
                             // triggerReload={triggerReload}
                             // setTriggerReload={setTriggerReload}
+                            completed={false}
                             userState={userState}
                             // showDeleteItemModal={showDeleteItemModal}
                             {...props}
