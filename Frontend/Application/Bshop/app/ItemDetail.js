@@ -17,15 +17,20 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
+import * as SecureStore from "expo-secure-store";
 import Item from "./item";
 
 const ItemDetail = ({ route, navigation }) => {
   const [liked, setLiked] = useState(false);
-  console.log(route.params);
+  const [user, setUser] = useState();
+  // const [rated, setRated] = useState(false);
+  var rated = false;
+  const [star_rates, setRates] = useState(route.params.rate_value);
+  // console.log(route.params);
 
   var image = !route.params.photo ? null : route.params.photo;
-  var price = `${route.params.price} تومان`;
-  var discounted = `با تخفیف: ${route.params.price_with_discount} تومان`;
+  var price = `${route.params.price} ریال`;
+  var discounted = `با تخفیف: ${route.params.price_with_discount} ریال`;
   var count =
     route.params.count != 0 ? `موجودی: ${route.params.count} عدد` : "ناموجود";
   var brand = !route.params.brand ? "برند نامشخص" : route.params.brand;
@@ -45,8 +50,148 @@ const ItemDetail = ({ route, navigation }) => {
     others: "متفرقه",
   };
   var category = `دسته بندی: ${categories[route.params.category]}`;
-  var manufacture = `تاریخ تولید: ${route.params.manufacture_jalali}`;
-  var expire = `تاریخ انقضا: ${route.params.Expiration_jalali}`;
+  const months = {
+    "01": "فروردین",
+    "02": "اردیبهشت",
+    "03": "خرداد",
+    "04": "تیر",
+    "05": "مرداد",
+    "06": "شهریور",
+    "07": "مهر",
+    "08": "آبان",
+    "09": "آذر",
+    10: "دی",
+    11: "بهمن",
+    12: "اسفند",
+  };
+  const month_string = (date) => {
+    var fields = date.split("-");
+    console.log("tarikh");
+    console.log(fields);
+    return fields[2] + " " + months[fields[1]] + " " + fields[0];
+  };
+  var manufacture = `تاریخ تولید: ${month_string(
+    route.params.manufacture_jalali
+  )}`;
+  var expire = `تاریخ انقضا: ${month_string(route.params.Expiration_jalali)}`;
+
+  var url =
+    "http://eunoia-bshop.ir:8000/shops/" +
+    route.params.shop_id +
+    "/items/" +
+    route.params.id +
+    "/rates/";
+
+  useEffect(() => {
+    const getUser = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setUser(result);
+          // console.log("printing result");
+          // console.log(result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+    getUser();
+  }, []);
+
+  const onStarRatingPress = async (rating) => {
+    // console.log("star rates before", route.params.rate_value);
+
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    // console.log("printing email here");
+    // console.log(user.email);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var method_todo = "POST";
+    var form_post = new FormData();
+    form_post.append("rate", rating);
+    form_post.append("item", route.params.id);
+
+    var form_put = new FormData();
+    form_put.append("rate", rating);
+
+    var rated_id;
+
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log("check here");
+        // console.log(user.email);
+        for (var i = 0; i < result.length; i++) {
+          if (result[i].user.email == user.email) {
+            // setRated(true);
+            // rated = true;
+            method_todo = "PUT";
+            rated_id = result[i].id;
+            console.log(result);
+            break;
+          }
+        }
+        // console.log("rated state", rated);
+        console.log("method:", method_todo);
+        var fetch_url = method_todo == "POST" ? url : url + rated_id;
+        console.log(fetch_url);
+        var requestOptions = {
+          method: method_todo,
+          headers: myHeaders,
+          body: method_todo == "POST" ? form_post : form_put,
+        };
+
+        fetch(fetch_url, requestOptions)
+          .then((response) => {
+            return response.json();
+          })
+          .then((result) => {
+            //after fetching user's rate, get the item rate in order to update stars
+            requestOptions = {
+              method: "GET",
+              headers: myHeaders,
+              redirect: "follow",
+            };
+            var u =
+              "http://eunoia-bshop.ir:8000/shops/" +
+              route.params.shop_id +
+              "/items/" +
+              route.params.id;
+
+            fetch(u, requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                // console.log(result);
+                setRates(result.rate_value);
+                console.log(result.rate_value);
+              })
+              .catch((error) => console.log("error", error));
+
+            console.log("result of fetch", result);
+          })
+          .catch((error) => console.log("error", error));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
@@ -100,11 +245,11 @@ const ItemDetail = ({ route, navigation }) => {
           <View>
             <StarRating
               starSize={25}
-              disabled={true}
+              disabled={false}
               fullStarColor={"#b31414"}
-              rating={
-                route.params.rate_value == 0 ? 0 : route.params.rate_value
-              }
+              // rating={route.params.rate_value}
+              rating={star_rates}
+              selectedStar={(rating) => onStarRatingPress(rating)}
             ></StarRating>
           </View>
         </View>

@@ -12,6 +12,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
@@ -19,6 +20,7 @@ import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
+  const isFocused = useIsFocused();
 
   const [shopitems, setItems] = useState();
   const loadProducts = useEffect(() => {
@@ -33,12 +35,12 @@ const ShopDetail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setItems(result);
-        // console.log(result);
+        console.log("fetching again in shop detail page");
       })
       .catch((error) => {
         console.log("error", error);
       });
-  }, []);
+  }, [isFocused]);
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
@@ -93,9 +95,7 @@ const ShopDetail = ({ route, navigation }) => {
                 starSize={25}
                 disabled={true}
                 fullStarColor={"#b31414"}
-                rating={
-                  route.params.rate_value == 0 ? 3 : route.params.rate_value
-                }
+                rating={route.params.rate_value}
               ></StarRating>
             </View>
           </View>
