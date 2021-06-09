@@ -3,6 +3,9 @@ import "./Item.css";
 import ReactStars from "react-rating-stars-component";
 import ShopSideBar from "./ShopSideBar";
 import Itemcomment from "./Itemcomment";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { IconButton } from "@material-ui/core";
 function Item(props) {
   // console.log("Token "+localStorage.getItem("token"))
   const [items, setItems] = useState({});
@@ -106,6 +109,47 @@ function Item(props) {
 }
 
   console.log(items);
+  const [isLikedByUser, setisLikedByUser] = useState(false)
+  useEffect(() => {
+      fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+          method: 'GET',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('token')
+          }
+      }).then(res => res.json())
+      .then(res => {
+        const username = localStorage.getItem("username")
+        const resp = res[0]?.Liked_By.findIndex(i => i.username === username)
+        if(resp > -1) setisLikedByUser(true)
+        else setisLikedByUser(false)
+      })
+  }, [])
+  const handleLikeItem = async () => {
+      await fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+          method: 'POST',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('token')
+          }
+      })
+      fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+        method: 'GET',
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    }).then(res => res.json())
+    .then(res => {
+      const username = localStorage.getItem("username")
+      const resp = res[0]?.Liked_By.findIndex(i => i.username === username)
+      if(resp > -1) setisLikedByUser(true)
+      else setisLikedByUser(false)
+    })
+  }
+  // const handleLikeItem = () => {
+
+  // }
+  const checkIsLikedByUserOrNot = () => {
+    return true
+  }
   return (
     <div style={{ padding: "5vh 2vw" }}>
       <ShopSideBar />
@@ -114,11 +158,16 @@ function Item(props) {
           <div className="sub-container">
             <div className="col-12 d-flex flex-wrap">
               <div className="col-sm-12 col-md-5 imageWrapper">
-              
                 <img className=" image " src={items.photo} alt="" />
               </div>
               <div className="lead text-right col-sm-12 col-md-6">
                 <h1 className="my-3" data-testid="item-name">{items.name}</h1>
+                <p className="shop-comment-date">
+                    <IconButton onClick={() => handleLikeItem()} style={{ color: 'red', padding: '0' }}> 
+                        {isLikedByUser ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </IconButton>
+
+                </p>
                 <hr></hr>
                 {!!items.description && (
                   <>
