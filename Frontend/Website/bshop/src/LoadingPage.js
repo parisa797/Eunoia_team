@@ -10,6 +10,7 @@ import ProfilePage from "./ProfilePage";
 import Login from "./login";
 import Register from "./register";
 import ShopsListPage from "./ShopsListPage";
+import MapPage from './MapPage';
 import {
     BrowserRouter as Router,
     Switch,
@@ -156,6 +157,7 @@ function LoadingPage(props) {
                 <Route path="/items/" component={ItemsListPage} />
                 <Route path="/store/:storeid/items/search" component={SearchResults} />
                 <Route path="/store/:id" component={ShopDispatcher} />
+                <Route path="/maps" component={MapPage} />
                 {/* <Route exact path='/Items' component={Items} /> */}
             </Switch>
         </Router>
