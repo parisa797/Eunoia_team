@@ -17,11 +17,244 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
+import * as SecureStore from "expo-secure-store";
 import Item from "./item";
 
 const ItemDetail = ({ route, navigation }) => {
   const [liked, setLiked] = useState(false);
-  const [shopitems, setItems] = useState();
+  const [user, setUser] = useState();
+  // const [rated, setRated] = useState(false);
+  var rated = false;
+  const [star_rates, setRates] = useState(route.params.rate_value);
+
+  var image = !route.params.photo ? null : route.params.photo;
+  var price = `${route.params.price} ریال`;
+  var discounted = `با تخفیف: ${route.params.price_with_discount} ریال`;
+  var count =
+    route.params.count != 0 ? `موجودی: ${route.params.count} عدد` : "ناموجود";
+  var brand = !route.params.brand ? "برند نامشخص" : route.params.brand;
+  const categories = {
+    "Spices and condiments and food side dishes": "ادویه، چاشنی و مخلفات غذا",
+    Cosmetics: "بهداشت و مراقبت پوست",
+    "Makeup and trimming": "آرایش و پیرایش",
+    Protein: "پروتئینی",
+    "Junk Food": "تنقلات",
+    Nuts: "خشکبار",
+    "Sweets and desserts": "شیرینیجات و دسرها",
+    perfume: "عطر، ادکلن و اسپری",
+    "Fruits and vegetables": "غذا، کنسرو و سبزیجات",
+    Dairy: "لبنیات",
+    Drinks: "نوشیدنیها",
+    "Washing and Cleaning Equipment": "وسایل شستشو و نظافت",
+    others: "متفرقه",
+  };
+  var category = `دسته بندی: ${categories[route.params.category]}`;
+  const months = {
+    "01": "فروردین",
+    "02": "اردیبهشت",
+    "03": "خرداد",
+    "04": "تیر",
+    "05": "مرداد",
+    "06": "شهریور",
+    "07": "مهر",
+    "08": "آبان",
+    "09": "آذر",
+    10: "دی",
+    11: "بهمن",
+    12: "اسفند",
+  };
+  const month_string = (date) => {
+    var fields = date.split("-");
+    return fields[2] + " " + months[fields[1]] + " " + fields[0];
+  };
+  var manufacture = `تاریخ تولید: ${month_string(
+    route.params.manufacture_jalali
+  )}`;
+  var expire = `تاریخ انقضا: ${month_string(route.params.Expiration_jalali)}`;
+
+  var url =
+    "http://eunoia-bshop.ir:8000/shops/" +
+    route.params.shop_id +
+    "/items/" +
+    route.params.id +
+    "/rates/";
+
+  useEffect(() => {
+    const getUser = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setUser(result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+    getUser();
+  }, []);
+
+  const getLikes = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var like_url =
+      "http://eunoia-bshop.ir:8000/shops/" +
+      route.params.shop_id +
+      "/items/" +
+      route.params.id +
+      "/likes";
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.length != 0) {
+          var likers = result[0].Liked_By;
+          for (var i = 0; i < likers.length; i++) {
+            if (likers[i].email == user.email) {
+              // console.log("i found it!");
+              setLiked(true);
+              break;
+            }
+          }
+        }
+      })
+      .catch((error) => console.log("like fetch error", error));
+  };
+
+  useEffect(() => {
+    getLikes();
+  }, [user, liked]);
+
+  const postLike = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var like_url =
+      "http://eunoia-bshop.ir:8000/shops/" +
+      route.params.shop_id +
+      "/items/" +
+      route.params.id +
+      "/likes";
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLiked(!liked);
+        console.log("like post fetch result", result);
+      })
+      .catch((error) => console.log("like post fetch error", error));
+  };
+
+  const onStarRatingPress = async (rating) => {
+    // console.log("star rates before", route.params.rate_value);
+
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    // console.log("printing email here");
+    // console.log(user.email);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var method_todo = "POST";
+    var form_post = new FormData();
+    form_post.append("rate", rating);
+    form_post.append("item", route.params.id);
+
+    var form_put = new FormData();
+    form_put.append("rate", rating);
+
+    var rated_id;
+
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        // console.log("check here");
+        // console.log(user.email);
+        for (var i = 0; i < result.length; i++) {
+          if (result[i].user.email == user.email) {
+            // setRated(true);
+            // rated = true;
+            method_todo = "PUT";
+            rated_id = result[i].id;
+            console.log(result);
+            break;
+          }
+        }
+        // console.log("rated state", rated);
+        console.log("method:", method_todo);
+        var fetch_url = method_todo == "POST" ? url : url + rated_id;
+        console.log(fetch_url);
+        var requestOptions = {
+          method: method_todo,
+          headers: myHeaders,
+          body: method_todo == "POST" ? form_post : form_put,
+        };
+
+        fetch(fetch_url, requestOptions)
+          .then((response) => {
+            return response.json();
+          })
+          .then((result) => {
+            //after fetching user's rate, get the item rate in order to update stars
+            requestOptions = {
+              method: "GET",
+              headers: myHeaders,
+              redirect: "follow",
+            };
+            var u =
+              "http://eunoia-bshop.ir:8000/shops/" +
+              route.params.shop_id +
+              "/items/" +
+              route.params.id;
+
+            fetch(u, requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                // console.log(result);
+                setRates(result.rate_value);
+                console.log(result.rate_value);
+              })
+              .catch((error) => console.log("error", error));
+
+            console.log("result of fetch", result);
+          })
+          .catch((error) => console.log("error", error));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
@@ -32,73 +265,78 @@ const ItemDetail = ({ route, navigation }) => {
       {/* <View style={styles.shop}> */}
 
       <View style={styles.imageContainer}>
-        <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
+        <Pressable
+          onPress={() => {
+            console.log("like state before change", liked);
+            // setLiked(!liked);
+            // console.log("liked state after change", liked);
+            postLike();
+          }}
+        >
           <MaterialCommunityIcons
             name={liked ? "heart" : "heart-outline"}
             size={32}
             color={liked ? "red" : "black"}
           />
         </Pressable>
-        <Image style={styles.image} />
+        {/* <Image style={styles.image} /> */}
+        {image == null && (
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={require("../assets/no-image.png")}
+          />
+        )}
+        {image && (
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{ uri: "http://eunoia-bshop.ir:8000" + image }}
+          />
+        )}
       </View>
       <View style={styles.shop}>
         <View style={styles.details}>
-          <Text style={styles.title}>شیر پگاه </Text>
+          <Text style={styles.title}>{route.params.name} </Text>
           {/* <View style={styles.icon}>
               
               <Text style={styles.address}></Text>
             </View> */}
-          <Text style={styles.title}>برند محصول </Text>
-          <Text style={styles.title}>30.000 </Text>
-          <Text style={styles.title}>این محصول در دسته ----- قرار دارد </Text>
-          <Text style={styles.title}>موجودی : </Text>
+          <Text style={styles.title}>{route.params.description}</Text>
+          <Text style={styles.title}>{brand}</Text>
+          <Text style={styles.title}>{manufacture}</Text>
+          <Text style={styles.title}>{expire}</Text>
+          <Text style={styles.title}>{price} </Text>
+          {route.params.price != route.params.price_with_discount && (
+            <Text style={styles.title}>{discounted} </Text>
+          )}
+          <Text style={styles.title}>{category} </Text>
+          <Text style={styles.title}>{count}</Text>
           <View>
             <StarRating
               starSize={25}
-              disabled={true}
+              disabled={false}
               fullStarColor={"#b31414"}
-              // rating={
-              //   route.params.rate_value == 0 ? 3 : route.params.rate_value
-              // }
+              // rating={route.params.rate_value}
+              rating={star_rates}
+              selectedStar={(rating) => onStarRatingPress(rating)}
             ></StarRating>
           </View>
         </View>
       </View>
       <TouchableOpacity
         style={styles.SignUpBtn}
-        onPress={() => navigation.navigate("Comment", route.params.id)}
+        onPress={() => {
+          var ids = { shop: route.params.shop_id, item: route.params.id };
+          // console.log("shop and item id", ids);
+          navigation.navigate("ItemComment", ids);
+        }}
       >
         <Text style={styles.SignUpText}> مشاهده نظرات این محصول</Text>
       </TouchableOpacity>
       {/* </View> */}
 
       <Text style={{ fontWeight: "bold" }}></Text>
-      {shopitems && (
-        <FlatList
-          // testID={"items-list" + props.index}
-          nestedScrollEnabled={true}
-          style={{ marginTop: -30 }}
-          horizontal
-          data={shopitems}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={(itemData) => {
-            // console.log("item is", itemData.item);
-            return (
-              <Item
-                name={itemData.item.name}
-                image={itemData.item.photo}
-                price={itemData.item.price}
-                discount={itemData.item.discount}
-                index={itemData.item.id}
-                onPress={() => {
-                  console.log("click me");
-                  navigation.navigate("Home");
-                }}
-              ></Item>
-            );
-          }}
-        />
-      )}
 
       {/* </ImageBackground> */}
     </ScrollView>
@@ -140,7 +378,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     backgroundColor: "white",
-    height: 220,
+    height: 380,
     width: 370,
     marginLeft: 12,
     marginTop: 15,
@@ -219,7 +457,7 @@ const styles = StyleSheet.create({
   },
   details: {
     alignItems: "center",
-    height: "38%",
+    height: "48%",
     padding: 10,
   },
   title: {

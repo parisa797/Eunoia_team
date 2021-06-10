@@ -11,6 +11,7 @@ import ItemDetail from "./ItemDetail";
 import PersonalInfo from "./PersonalInfo";
 import Favorite from "./Favorite";
 import Comment from "./comment";
+import ItemComment from "./itemComment";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -71,7 +72,12 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen
         name="Comment"
         component={Comment}
-        options={{ title: "اطلاعات فروشگاه" }}
+        options={{ title: "نظرات" }}
+      />
+      <Stack.Screen
+        name="ItemComment"
+        component={ItemComment}
+        options={{ title: "نظرات" }}
       />
     </Stack.Navigator>
   );
