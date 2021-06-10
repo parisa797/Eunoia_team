@@ -327,7 +327,11 @@ const ItemDetail = ({ route, navigation }) => {
       </View>
       <TouchableOpacity
         style={styles.SignUpBtn}
-        // onPress={() => navigation.navigate("Comment", route.params.id)}
+        onPress={() => {
+          var ids = { shop: route.params.shop_id, item: route.params.id };
+          // console.log("shop and item id", ids);
+          navigation.navigate("ItemComment", ids);
+        }}
       >
         <Text style={styles.SignUpText}> مشاهده نظرات این محصول</Text>
       </TouchableOpacity>

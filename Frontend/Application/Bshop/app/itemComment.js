@@ -55,12 +55,18 @@ const OneComment = (props) => {
   );
 };
 
-const Comment = ({ route, navigation }) => {
-  // console.log("this is route", route.params);
+const ItemComment = ({ route, navigation }) => {
+  console.log("this is route", route.params);
   const [comments, setComments] = useState();
   const [newComment, setNew] = useState();
-  var noComment = undefined;
   const isFocused = useIsFocused();
+  var noComment = undefined;
+  var url =
+    "http://eunoia-bshop.ir:8000/shops/" +
+    route.params.shop +
+    "/items/" +
+    route.params.item +
+    "/comments/";
 
   const getComments = async () => {
     var myHeaders = new Headers();
@@ -73,9 +79,7 @@ const Comment = ({ route, navigation }) => {
       headers: myHeaders,
       redirect: "follow",
     };
-    var url =
-      "http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/" + route.params;
-    // console.log(url);
+
     fetch(url, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -110,17 +114,13 @@ const Comment = ({ route, navigation }) => {
 
     var formdata = new FormData();
     formdata.append("text", newComment);
-    formdata.append("shop", route.params);
     var requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: formdata,
     };
 
-    fetch(
-      "http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/",
-      requestOptions
-    )
+    fetch(url, requestOptions)
       .then((response) => {
         console.log("info status is,", response.status);
         return response.json();
@@ -186,7 +186,7 @@ const Comment = ({ route, navigation }) => {
   );
 };
 
-export default Comment;
+export default ItemComment;
 const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container2: {

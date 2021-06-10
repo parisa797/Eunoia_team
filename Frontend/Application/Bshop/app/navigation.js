@@ -10,6 +10,7 @@ import ShopDetail from "./shopDetails";
 import ItemDetail from "./ItemDetail";
 import PersonalInfo from "./PersonalInfo";
 import Comment from "./comment";
+import ItemComment from "./itemComment";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -27,8 +28,7 @@ const NavigationDrawerStructure = (props) => {
         {/*Donute Button Image */}
         <Image
           source={{
-            uri:
-              "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
           }}
           style={{ width: 25, height: 25, marginLeft: 15 }}
         />
@@ -70,7 +70,12 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen
         name="Comment"
         component={Comment}
-        options={{ title: "اطلاعات فروشگاه" }}
+        options={{ title: "نظرات" }}
+      />
+      <Stack.Screen
+        name="ItemComment"
+        component={ItemComment}
+        options={{ title: "نظرات" }}
       />
     </Stack.Navigator>
   );
