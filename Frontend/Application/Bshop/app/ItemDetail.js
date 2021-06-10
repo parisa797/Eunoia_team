@@ -26,7 +26,6 @@ const ItemDetail = ({ route, navigation }) => {
   // const [rated, setRated] = useState(false);
   var rated = false;
   const [star_rates, setRates] = useState(route.params.rate_value);
-  // console.log(route.params);
 
   var image = !route.params.photo ? null : route.params.photo;
   var price = `${route.params.price} ریال`;
@@ -66,8 +65,6 @@ const ItemDetail = ({ route, navigation }) => {
   };
   const month_string = (date) => {
     var fields = date.split("-");
-    console.log("tarikh");
-    console.log(fields);
     return fields[2] + " " + months[fields[1]] + " " + fields[0];
   };
   var manufacture = `تاریخ تولید: ${month_string(
@@ -98,13 +95,80 @@ const ItemDetail = ({ route, navigation }) => {
         .then((response) => response.json())
         .then((result) => {
           setUser(result);
-          // console.log("printing result");
-          // console.log(result);
         })
         .catch((error) => console.log("error", error));
     };
     getUser();
   }, []);
+
+  const getLikes = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var like_url =
+      "http://eunoia-bshop.ir:8000/shops/" +
+      route.params.shop_id +
+      "/items/" +
+      route.params.id +
+      "/likes";
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.length != 0) {
+          var likers = result[0].Liked_By;
+          for (var i = 0; i < likers.length; i++) {
+            if (likers[i].email == user.email) {
+              // console.log("i found it!");
+              setLiked(true);
+              break;
+            }
+          }
+        }
+      })
+      .catch((error) => console.log("like fetch error", error));
+  };
+
+  useEffect(() => {
+    // console.log("running line 141");
+    getLikes();
+  }, [user, liked]);
+
+  const postLike = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var like_url =
+      "http://eunoia-bshop.ir:8000/shops/" +
+      route.params.shop_id +
+      "/items/" +
+      route.params.id +
+      "/likes";
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLiked(!liked);
+        console.log("like post fetch result", result);
+      })
+      .catch((error) => console.log("like post fetch error", error));
+  };
 
   const onStarRatingPress = async (rating) => {
     // console.log("star rates before", route.params.rate_value);
@@ -202,7 +266,14 @@ const ItemDetail = ({ route, navigation }) => {
       {/* <View style={styles.shop}> */}
 
       <View style={styles.imageContainer}>
-        <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
+        <Pressable
+          onPress={() => {
+            console.log("like state before change", liked);
+            // setLiked(!liked);
+            // console.log("liked state after change", liked);
+            postLike();
+          }}
+        >
           <MaterialCommunityIcons
             name={liked ? "heart" : "heart-outline"}
             size={32}
