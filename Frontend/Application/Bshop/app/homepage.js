@@ -16,12 +16,14 @@ import {
   ScrollView,
 } from "react-native";
 import Shop from "./shop";
+import { useIsFocused } from "@react-navigation/native";
 
 export default Home = ({ navigation }) => {
   const [shops, setShops] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const isFocused = useIsFocused();
 
   const loadProducts = useEffect(() => {
     // setError(null);
@@ -44,7 +46,8 @@ export default Home = ({ navigation }) => {
       });
     // setIsRefreshing(false);
     // }, [setIsLoading, setError]);
-  }, []);
+  }, [isFocused]);
+
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.inputView}>

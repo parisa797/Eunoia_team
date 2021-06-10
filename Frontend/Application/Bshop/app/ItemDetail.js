@@ -138,7 +138,6 @@ const ItemDetail = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    // console.log("running line 141");
     getLikes();
   }, [user, liked]);
 
