@@ -17,7 +17,7 @@ import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
 import Item from "./item";
 
-const ShopDetail = ({ route, navigation }) => {
+const FavoriteShops = ({ navigation }) => {
   // console.log(route.params);
 
   const [shopitems, setItems] = useState();
@@ -26,8 +26,7 @@ const ShopDetail = ({ route, navigation }) => {
       method: "GET",
       redirect: "follow",
     };
-    var url =
-      "http://eunoia-bshop.ir:8000/shops/" + route.params.id + "/items/";
+    var url = "http://eunoia-bshop.ir:8000/shops/5/items/";
     // console.log("used this url", url);
     fetch(url, requestOptions)
       .then((response) => response.json())
@@ -42,103 +41,37 @@ const ShopDetail = ({ route, navigation }) => {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View>
-        {/* <ImageBackground
-        source={require("../assets/lemon.jpg")}
-        style={styles.imagebackk}
-      > */}
-        <View style={styles.shop}>
-          <View style={styles.imageContainer}>
-            <Image style={styles.image} source={{ uri: route.params.logo }} />
-          </View>
-          {/* <TouchableOpacity
-            style={styles.naghsheBtn}
-            onPress={() => navigation.navigate("Comment", route.params.id)}
-          >
-            <Text style={styles.naghsheText}> نقشه</Text>
-          </TouchableOpacity> */}
-          <TouchableOpacity
-            style={styles.SignUpBtn}
-            onPress={() => navigation.navigate("Comment", route.params.id)}
-          >
-            <Text style={styles.SignUpText}> نظرات</Text>
-          </TouchableOpacity>
-
-          <View style={styles.details}>
-            <Text style={styles.title}>فروشگاه {route.params.title}</Text>
-            <View style={styles.icon}>
-              <Ionicon name="location-sharp" size={25} color="black"></Ionicon>
-              <Text style={styles.address}>{route.params.address}</Text>
-            </View>
-
-            <View style={styles.icon}>
-              <Icon name="phone" size={25} color="black"></Icon>
-              <Text style={styles.address}>{route.params.phone}</Text>
-            </View>
-
-            {route.params.online == true && (
-              <View style={styles.online_icon}>
-                <Icon name="check-circle" size={20} color="green"></Icon>
-                <Text style={styles.online}> آنلاین</Text>
-              </View>
-            )}
-            {route.params.online == false && (
-              <View style={styles.online_icon}>
-                <Icon name="check-circle" size={20} color="red"></Icon>
-                <Text style={styles.hozuri}> حضوری</Text>
-              </View>
-            )}
-            <View>
-              <StarRating
-                starSize={25}
-                disabled={true}
-                fullStarColor={"#b31414"}
-                rating={
-                  route.params.rate_value == 0 ? 3 : route.params.rate_value
-                }
-              ></StarRating>
-              <TouchableOpacity
-                style={styles.SignUpBtn}
-                onPress={() => navigation.navigate("ItemDetail")}
-              >
-                <Text style={styles.SignUpText}> items</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View style={styles.rows}>
-          <Text style={styles.rowstext}>محصولات فروشگاه</Text>
-        </View>
-        <Text style={{ fontWeight: "bold" }}></Text>
-        {shopitems && (
-          <FlatList
-            // testID={"items-list" + props.index}
-            nestedScrollEnabled={true}
-            style={{ marginTop: -30 }}
-            horizontal
-            data={shopitems}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={(itemData) => {
-              // console.log("item is", itemData.item);
-              return (
-                <Item
-                  name={itemData.item.name}
-                  image={itemData.item.photo}
-                  price={itemData.item.price}
-                  discount={itemData.item.discount}
-                  index={itemData.item.id}
-                  onPress={() => {
-                    console.log("click me");
-                    navigation.navigate("Home");
-                  }}
-                ></Item>
-              );
-            }}
-          />
-        )}
-
-        {/* </ImageBackground> */}
+      <View style={styles.rows}>
+        <Text style={styles.rowstext}>محصولات فروشگاه</Text>
       </View>
+      <Text style={{ fontWeight: "bold" }}></Text>
+      {shopitems && (
+        <FlatList
+          // testID={"items-list" + props.index}
+          nestedScrollEnabled={true}
+          style={{ marginTop: -30 }}
+          data={shopitems}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={(itemData) => {
+            // console.log("item is", itemData.item);
+            return (
+              <Item
+                name={itemData.item.name}
+                image={itemData.item.photo}
+                price={itemData.item.price}
+                discount={itemData.item.discount}
+                index={itemData.item.id}
+                onPress={() => {
+                  console.log("click me");
+                  navigation.navigate("Home");
+                }}
+              ></Item>
+            );
+          }}
+        />
+      )}
+
+      {/* </ImageBackground> */}
     </ScrollView>
   );
 };
@@ -304,4 +237,4 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
 });
-export default ShopDetail;
+export default FavoriteShops;
