@@ -1,215 +1,254 @@
 
 import React, { useRef, useEffect, useState } from 'react';
+import ReactStars from "react-rating-stars-component";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import CallIcon from '@material-ui/icons/Call';
+import mapPointer from './medias/pointer.jpg';
 import './Map.css';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import ShopComments from './ShopComments';
 function MapPage(props) {
-    var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+  var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZXVub2lhNnRlYW0iLCJhIjoiY2twaW1pc29oMGc5NjJ1b2ZmMGdiNWkweCJ9.6KH84Su77toujLB9IU4wTQ';
-    const [stores, setStores] = useState({
-        "type": "FeatureCollection",
-        "features": [
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                51.534356,
-                35.742913
-              ]
-            },
-            "properties": {
-              "phoneFormatted": "(202) 234-7336",
-              "phone": "2022347336",
-              "address": "1471 P St NW",
-              "city": "Washington DC",
-              "country": "United States",
-              "crossStreet": "at 15th St NW",
-              "postalCode": "20005",
-              "state": "D.C."
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -77.043929,
-                38.910525
-              ]
-            },
-            "properties": {
-              "phoneFormatted": "(202) 387-9338",
-              "phone": "2023879338",
-              "address": "1512 Connecticut Ave NW",
-              "city": "Washington DC",
-              "country": "United States",
-              "crossStreet": "at Dupont Circle",
-              "postalCode": "20036",
-              "state": "D.C."
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -76.933492720127,
-                38.99225245786
-              ]
-            },
-            "properties": {
-              "address": "8204 Baltimore Ave",
-              "city": "College Park",
-              "country": "United States",
-              "postalCode": "20740",
-              "state": "MD"
-            }
-          },
-          {
-            "type": "Feature",
-            "geometry": {
-              "type": "Point",
-              "coordinates": [
-                -77.097083330154,
-                38.980979
-              ]
-            },
-            "properties": {
-              "phoneFormatted": "(301) 654-7336",
-              "phone": "3016547336",
-              "address": "4831 Bethesda Ave",
-              "cc": "US",
-              "city": "Bethesda",
-              "country": "United States",
-              "postalCode": "20814",
-              "state": "MD"
-            }
-          }
-        ]
-      })
-    const mapContainer = useRef(null);
-    const map = useRef(null);
-    const [lng, setLng] = useState(35.7007);
-    const [lat, setLat] = useState(51.4268);
-    const [zoom, setZoom] = useState(9);
-    useEffect(() => {
-        if (map.current) return; // initialize map only once
-        stores.features.forEach(function (store, i) {
-            store.properties.id = i;
-          });
-        map.current = new mapboxgl.Map({
-            container: mapContainer.current,
-            style:'mapbox://styles/mapbox/streets-v11', //document.querySelectorAll('[data-theme="d0"]')?'mapbox://styles/mapbox/streets-v11':'mapbox://mapbox-light-v9',
-            center: [lat, lng],
-            zoom: zoom
-        });
-    }, []);
-
-    useEffect(() => {
-        if (!map.current) return; // wait for map to initialize
-        // map.current.on('move', () => {
-        //     setLng(map.current.getCenter().lng.toFixed(4));
-        //     setLat(map.current.getCenter().lat.toFixed(4));
-        //     setZoom(map.current.getZoom().toFixed(2));
-        // });
-        map.current.on('load', function (e) {
-            /* Add the data to your map as a layer */
-            // map.current.addLayer({
-            //   "id": "locations",
-            //   "type": "circle",
-            //   /* Add a GeoJSON source containing place coordinates and information. */
-            //   "source": {
-            //     "type": "geojson",
-            //     "data": stores
-            //   }
-            // });
-            map.current.addSource('places', {
-                'type': 'geojson',
-                'data': stores
-              });
-            addMarkers();
-          });
-    }, []);
-
-    function addMarkers() {
-        /* For each feature in the GeoJSON object above: */
-        stores.features.forEach(function (marker) {
-          /* Create a div element for the marker. */
-          var el = document.createElement('div');
-          /* Assign a unique `id` to the marker. */
-          el.id = 'marker-' + marker.properties.id;
-          /* Assign the `marker` class to each marker for styling. */
-          el.className = 'marker';
-          el.textContent = marker.properties.address
-          /**
-           * Create a marker using the div element
-           * defined above and add it to the map.
-           **/
-          new mapboxgl.Marker(el, { offset: [0, -23] })
-            .setLngLat(marker.geometry.coordinates)
-            .addTo(map.current);
-
-          /**
-           * Listen to the element and when it is clicked, do three things:
-           * 1. Fly to the point
-           * 2. Close all other popups and display popup for clicked store
-           * 3. Highlight listing in sidebar (and remove highlight for all other listings)
-           **/
-          el.addEventListener('click', function (e) {
-            /* Fly to the point */
-            flyToStore(marker);
-            /* Close all other popups and display popup for clicked store */
-            // createPopUp(marker);
-            /* Highlight listing in sidebar */
-            // var activeItem = document.getElementsByClassName('active');
-            // e.stopPropagation();
-            // if (activeItem[0]) {
-            //   activeItem[0].classList.remove('active');
-            // }
-            // var listing = document.getElementById(
-            //   'listing-' + marker.properties.id
-            // );
-            // listing.classList.add('active');
-          });
-        });
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZXVub2lhNnRlYW0iLCJhIjoiY2twaW1pc29oMGc5NjJ1b2ZmMGdiNWkweCJ9.6KH84Su77toujLB9IU4wTQ';
+  const [stores, setStores] = useState({
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            51.41815069578285,
+            35.73641896371283
+          ]
+        },
+        "properties": {
+          address: " سنمتبمن سیمبتمسنیتب سنمیبتمنسیتب مسلم جنوبی 4 - پلاک 228",
+          comment_count: 2,
+          id: 3,
+          logo: "http://eunoia-bshop.ir:8000/media/image/shahrvand_Copy-min_08t0LHf.png",
+          manager: "ستاره جون",
+          mantaghe: "12",
+          online: true,
+          phone: "09125588109",
+          rate_count: 3,
+          rate_value: 3.6666666666666665,
+          shomare_sabt: "12345",
+          shop_phone: "09732043234",
+          theme: 2,
+          title: "شهروند",
+          user: 6
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            51.534356,
+            35.742913
+          ]
+        },
+        "properties": {
+          address: "تهران، تهرانپارس",
+          comment_count: 11,
+          id: 5,
+          logo: "http://eunoia-bshop.ir:8000/media/image/ofogh-kourosh_AWqRRDi.png",
+          manager: "مدیر مدیری",
+          mantaghe: "4",
+          online: true,
+          phone: "09111111111",
+          rate_count: 4,
+          rate_value: 3,
+          shomare_sabt: "312718",
+          shop_phone: null,
+          theme: 2,
+          title: "کوروش: شعبه تهرانپارس",
+          user: 5
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            51.439114468799026, 35.76234661596831
+          ]
+        },
+        "properties": {
+          address: "تهران، میرداماد، رودبار غربی",
+          comment_count: 2,
+          id: 1,
+          logo: "http://eunoia-bshop.ir:8000/media/image/ofogh-kourosh_hVcfFRy.png",
+          manager: "مدیر مدیری",
+          mantaghe: "3",
+          online: true,
+          phone: "09903131133",
+          rate_count: 5,
+          rate_value: 4.2,
+          shomare_sabt: "289333",
+          shop_phone: "09909999999",
+          theme: 2,
+          title: "افق کوروش: شعبه میرداماد",
+          user: 5,
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            51.40383125530524,
+            35.71995617539074
+          ]
+        },
+        "properties": {
+          address: "خیابان فاطمی-بعد از میدان جهاد-جنب وزارت کشور",
+          comment_count: 0,
+          id: 8,
+          logo: "http://eunoia-bshop.ir:8000/media/image/AZa5R4W1mpPPMGXQRA8iI5Iy8rSFH9L2ToxP7Nhk.png",
+          manager: "مدیررر",
+          mantaghe: "6",
+          online: true,
+          phone: "09903131133",
+          rate_count: 1,
+          rate_value: 2,
+          shomare_sabt: "56456465",
+          shop_phone: null,
+          theme: 2,
+          title: "رفاه: شعبه فاطمی",
+          user: 5
+        }
       }
-
-    function flyToStore(currentFeature) {
-        map.current.flyTo({
-          center: currentFeature.geometry.coordinates,
-          zoom: 15
-        });
+    ]
+  })
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [lng, setLng] = useState(35.7007);
+  const [lat, setLat] = useState(51.4268);
+  const [zoom, setZoom] = useState(9);
+  const [clickedShop, setClickedShop] = useState(null);
+  useEffect(() => {
+    if (map.current) return;
+    var center = [lat, lng];
+    
+    if (mapboxgl.getRTLTextPluginStatus() !== "loaded")
+      mapboxgl.setRTLTextPlugin(
+        'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+        null,
+        true
+      );
+    if (!mapboxgl.supported()) {
+        alert('Your browser does not support Mapbox GL');
       }
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11', //document.querySelectorAll('[data-theme="d0"]')?'mapbox://styles/mapbox/streets-v11':'mapbox://mapbox-light-v9',
+      center: center,
+      zoom: zoom
+    });
+  }, []);
 
-    //   function createPopUp(currentFeature) {
-    //     var popUps = document.getElementsByClassName('mapboxgl-popup');
-    //     /** Check if there is already a popup on the map and if so, remove it */
-    //     if (popUps[0]) popUps[0].remove();
-      
-    //     var popup = new mapboxgl.Popup({ closeOnClick: false })
-    //       .setLngLat(currentFeature.geometry.coordinates)
-    //       .setHTML('<h3>Sweetgreen</h3>' +
-    //         '<h4>' + currentFeature.properties.address + '</h4>')
-    //       .addTo(map.current);
-    //   }
+  useEffect(()=>{
+    if(!map.current) return;
+    if(window.location.href.includes("shop")){
+      let q = decodeURI(window.location.href.match(/[^\=]+/g)[1]);
+      console.log(q)
+      let shop = stores.features.filter(x=>x.properties.id === parseInt(q))
+      flyToStore(shop[0])
+    }
+  },[])
 
-    return (
-        <div className="map-page">
-            <div class='sidebar'>
-                <div class='heading'>
-                    <h1>Our locations</h1>
+  useEffect(() => {
+    if (!map.current) return;
+    map.current.on('load', function (e) {
+      map.current.addSource('places', {
+        'type': 'geojson',
+        'data': stores
+      });
+      addMarkers();
+    });
+  }, []);
+
+  function addMarkers() {
+    stores.features.forEach(function (marker) {
+      var el = document.createElement('div');
+      el.id = 'marker-' + marker.properties.id;
+      el.className = 'marker';
+      el.innerHTML = `<img src=${mapPointer}><p>${marker.properties.title}</p>`
+      new mapboxgl.Marker(el, { offset: [0, -23] })
+        .setLngLat(marker.geometry.coordinates)
+        .addTo(map.current);
+        
+      el.addEventListener('click', function (e) {
+        flyToStore(marker);
+      });
+    });
+  }
+
+  function flyToStore(currentFeature) {
+    setClickedShop(currentFeature);
+    map.current.flyTo({
+      center: currentFeature.geometry.coordinates,
+      zoom: 15
+    });
+  }
+
+  return (
+    <div className="map-page">
+      <div className='sidebar'>
+        {
+          clickedShop ?
+            <div>
+              <div className='map-go-back'>
+                <h1 onClick={() => setClickedShop(null)}><ChevronLeftIcon />بازگشت</h1>
+              </div>
+              <div className="map-shop">
+                <div className="map-shop-header">
+                  <div className="img-container">
+                    <img src={clickedShop.properties.logo ? clickedShop.properties.logo : "/shop-default-logo.png"} alt="logo" />
+                  </div>
+                  <h2 onClick={()=>window.location.href=`/store/${clickedShop.properties.id}/`}>{clickedShop.properties.title}</h2>
                 </div>
-                <div id='listings' class='listings'>
-                    {stores.features.map(store=>{
-                        return(
-                            <div onClick={()=>flyToStore(store)}>{store.properties.phone}</div>
-                        )
-                    })}
+                {clickedShop.properties.online ? <p style={{ color: "green", fontSize:"0.9rem", alignSelf:"center" }}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red", fontSize:"0.9rem", alignSelf:"center" }}>امکان خرید آنلاین ندارد</p>}
+                {clickedShop.properties.address && <p className="address"><LocationOnIcon className="icon" />{clickedShop.properties.address}</p>}
+                {clickedShop.properties.shop_phone && <p className="phone"><CallIcon className="icon"/>{clickedShop.properties.shop_phone}</p>}
+                <h3>نظرات</h3>
+                <div className="shop-page">
+                <ShopComments shopID={clickedShop.properties.id} userState={"u"}/>
                 </div>
+              </div>
             </div>
-            <div ref={mapContainer} className="map" />
-        </div>
-    )
+            :
+            <><div className='heading'>
+              <h1>فروشگاه‌ها</h1>
+            </div>
+              <div id='listings' className='listings'>
+                {stores.features.map(store => {
+                  return (
+                    <div className="map-list-item" onClick={() => flyToStore(store)}>
+                      <h2>{store.properties.title}</h2>
+                      <p className="map-desc">{store.properties.mantaghe} منطقه</p>
+                      <div className="shop-stars">
+                        <ReactStars
+                          edit={false}
+                          value={store.properties.rate_value ? store.properties.rate_value : 0}
+                          isHalf={true}
+                          classNames="stars"
+                          size={22}
+                          activeColor={"var(--primary-color)"}
+                        />
+                        <p>({store.properties.rate_count})</p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div></>}
+      </div>
+      <div ref={mapContainer} className="map" />
+    </div>
+  )
 }
 
 export default MapPage;

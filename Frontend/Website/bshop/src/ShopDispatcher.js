@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Lottie from 'react-lottie';
 import animationData from './medias/53735-cart-icon-loader.json';
 import DeleteItem from './DeleteItem'
+import EditShopLocation from './EditShopLocation';
 import {
     BrowserRouter as Router,
     Switch,
@@ -146,6 +147,17 @@ function ShopDispatcher() {
                             {...props}
                         />)}
                     />
+                    <Route
+                    path="/store/:id/edit-map"
+                    render={(p) => (
+                        <EditShopLocation 
+                            type="s"
+                            userState={userState}
+                            shopID={shopID}
+                            {...p}
+                        />
+                    )}
+                />
                     <Route path="/store/:id/edit-info" render={(props) => (
                         <EditShop
                         userState={userState}

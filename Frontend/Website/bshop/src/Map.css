@@ -7,14 +7,18 @@
     padding: 20px 2px;
   }
 
-  .map-page a {
-    color: #404040;
-    text-decoration: none;
+  .map-page{
+    font-family: 'Vazir';
   }
 
+  .map-page a {
+    /* color: #404040; */
+    text-decoration: none;
+  }
+/* 
   .map-page a:hover {
     color: #101010;
-  }
+  } */
 
   /* The page is split between map and sidebar - the sidebar gets 1/3, map
   gets 2/3 of the page. You can adjust this to your personal liking. */
@@ -24,8 +28,74 @@
     height: 100%;
     top: 0;
     left: 0;
-    overflow: hidden;
+    overflow-y: scroll;
     border-right: 1px solid rgba(0, 0, 0, 0.25);
+  }
+
+  /* .map-page .edit{
+    position: relative;
+  } */
+
+  .map-page .edit .map{
+    left: 0;
+    width: 100%;
+  }
+
+  .map-page .edit-popup{
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    direction: rtl;
+    z-index: 10;
+    margin: 5px auto;
+    width: 50%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(--font-color);
+    background: var(--bg-color);
+    font-weight: bold;
+    justify-content: center;
+}
+
+  .map-page .edit-popup p{
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+    align-self: center;
+  }
+
+  .map-page .edit-popup a{
+    color: var(--primary-color);
+    margin-right: 6px;
+  }
+
+  .map-page .edit .popup-text{
+    font-family: 'Vazir';
+    font-size: 1.1rem;
+  }
+
+  .map-page .popup-btn{
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    width: fit-content;
+    padding: 5px;
+    font-size: 1rem;
+    font-family: 'Vazir';
+    color: white;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .map-page .popup-btn:hover{
+    opacity: 0.8;
+  }
+
+  .map-page .mapboxgl-popup-content{
+    padding: 20px;
   }
 
   .map-page .map {
@@ -37,17 +107,172 @@
   }
 
   .map-page .heading {
-    background: #fff;
-    border-bottom: 1px solid #eee;
+    border-bottom: 3px solid var(--bg-color2);
     height: 60px;
     line-height: 60px;
     padding: 0 10px;
+    color: var(--font-color)
   }
 
-   .marker {
+   .map-page .marker {
     border: none;
     cursor: pointer;
+    /* height: 56px;
+    width: 56px; */
+    margin: 0;
+    display: block;
+    /* background-image: url('/src//medias/pointer.jpg');  */
+    /* background-size: contain; */
+  }
+
+  .map-page .marker img{
     height: 56px;
     width: 56px;
-    background-color: var(--primary-color)
+    object-fit: contain;
   }
+
+  .map-page .marker p{
+    color: var(--primary-color);
+    font-family: 'Vazir';
+    font-weight: 700;
+  }
+
+  .map-page .map-list-item{
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    cursor: pointer;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid var(--bg-color2);
+    color: var(--font-color);
+    padding: 8px 10px;
+  }
+
+  .map-page .map-list-item:hover{
+    background-color: var(--bg-color2-2);
+  }
+
+  .map-page h2{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    font-size: 1.2rem;
+    font-weight: bold;
+    justify-self: right;
+    color: var(--heading-color);
+  }
+
+  .map-page .shop-stars{
+    grid-column-start: 1;
+    grid-row-start: 2;
+    display: inline-flex;
+}
+.map-page .shop-stars p{
+    margin: 0;
+    margin-top: 3px;
+    color: var(--font-color2);
+}
+
+.map-page .map-list-item .map-desc{
+  margin: 0 6px;
+  justify-self: right;
+  color: var(--font-color2);
+}
+
+.map-page .map-shop-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.map-page .map-shop-header .img-container{
+  position: relative;
+  padding-top: 50%;
+  width: 50%;
+}
+
+.map-page .map-shop-header img{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.map-shop-header h2{
+  font-size: x-large;
+  cursor: pointer;
+}
+
+.map-go-back{
+  /* height: 50px; */
+  line-height: 60px;
+  padding: 0 10px;
+  color: var(--font-color);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-color);
+  z-index: 10;
+}
+
+.map-go-back h1{
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding-bottom: 5px;
+}
+
+.map-shop{
+  display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.map-shop p{
+  margin: 5px 15px;
+  color: var(--font-color2);
+  direction: rtl;
+}
+
+.map-page .shop-page{
+  padding: 5px;
+  width: 100%;
+}
+
+.map-page .shop-page .shop-comment{
+  grid-template-rows: 3rem auto;
+}
+
+/* .map-shop .address{
+
+}
+
+.map-shop .phone{
+
+} */
+
+.map-shop .icon{
+  margin: 2px;
+  color: var(--secondary-color);
+}
+
+.map-shop h3{
+  font-size: 1.3rem;
+  margin: 20px 5px 0 0;
+  color: var(--font-color);
+}
+
+.map-page .sidebar::-webkit-scrollbar {
+  width: 10px; 
+  background: transparent;
+}
+
+.map-page .sidebar::-webkit-scrollbar-thumb {
+  background: var(--bg-color3);
+  border-radius: 5px;
+}

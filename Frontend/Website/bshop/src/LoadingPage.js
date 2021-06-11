@@ -17,6 +17,7 @@ import {
     Route,
 } from "react-router-dom";
 import ProfileDispatcher from './ProfileDispatcher';
+import EditShopLocation from './EditShopLocation';
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -146,6 +147,14 @@ function LoadingPage(props) {
                             triggerNavbarUpdate={props.triggerNavbarUpdate}
                             setTriggerNavUpdate={props.setTriggerNavUpdate}
                             {...p}
+                        />
+                    )}
+                />
+                <Route
+                    path="/profile/edit-map"
+                    render={(p) => (
+                        <EditShopLocation 
+                            type="p"
                         />
                     )}
                 />

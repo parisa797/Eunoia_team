@@ -175,3 +175,25 @@
     background-color: var(--primary-color);
     color: var(--font-color);
 }
+
+.profile-page .map-edit{
+    direction: rtl;
+    display: flex;
+    align-items: center;
+}
+
+.profile-page .map-edit p{
+    color: var(--font-color2);
+    margin: 0;
+}
+
+.profile-page .map-edit a{
+    color: var(--primary-color);
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+.profile-page .map-edit svg{
+    margin-bottom: 0.5rem;
+    color: rgb(36, 167, 127);
+}
