@@ -3,18 +3,21 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import Carousel from 'react-bootstrap/Carousel';
 import { Modal } from "react-bootstrap";
+import { useSnackbar } from 'notistack';
 
 function ShopBoard(props) {
-    const [board, setBoard] = useState([{ image: "/special-offer.jpg", image_url: "/something" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
+    const [board, setBoard] = useState([])
     const [showEdit, setShowEdit] = useState(false);
-    const [reloadBoard, setReloadBoard] = useState({ state: false });
-    const [loadCarousel, setLoadCarousel ] = useState(true);
+    const [reloadBoard, setReloadBoard] = useState(false);
+    // const [loadCarousel, setLoadCarousel ] = useState(true);
+    const { enqueueSnackbar } = useSnackbar();
 
     function timeout(delay) {
         return new Promise(res => setTimeout(res, delay));
     }
 
     useEffect(() => {
+        clearAddressInputs()
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/board/list/" + props.shopID, {
             method: 'GET',
             // headers: {
@@ -27,17 +30,36 @@ function ShopBoard(props) {
         }).then(res => {
             console.log(res)
             setBoard(res)
+            clearDeletedBoards()
         }).catch(err => console.log(err))
     }, [reloadBoard])
 
-    useEffect(() => {
-        if (!!reloadBoard.page)
-        {
-            setLoadCarousel(false);
-            timeout(100);
-            setLoadCarousel(true);
+    function clearAddressInputs(){
+        for(let i=0; i < board.length; i++){
+            document.getElementById("board-photo-" + i).value="";
         }
-    }, [board])
+    }
+
+    function clearDeletedBoards(){
+        let allBoards = document.getElementsByClassName("board-item-holder");
+        let allBoards2 = document.getElementsByClassName("img-container");
+        let carousel = document.getElementsByClassName("carousel-inner");
+        console.log(carousel)
+        for (let i = 0; i < allBoards.length; i++) {
+            var b = allBoards[i];
+            if (b.classList.contains('deleted')) {
+              b.classList.remove('deleted');
+            }
+          }
+        for (let i = 0; i < allBoards2.length; i++) {
+            var b = allBoards2[i];
+            if (b.classList.contains('deleted')) {
+              b.classList.remove('deleted');
+            }
+          }
+        carousel.className = "";
+        carousel.className = "carousel-inner";
+    }
 
     function addToBoard(e) {
         let files = e.target.files;
@@ -61,7 +83,8 @@ function ShopBoard(props) {
                     // const tempboard = [...board]; // Spread syntax creates a shallow copy
                     // tempboard.push(res); // Spread again to push each selected file individually
                     // setBoard(tempboard)
-                    setReloadBoard({ state: !reloadBoard.state, page: board.length })
+                    enqueueSnackbar("!اعلان اضافه شد")
+                    setReloadBoard(!reloadBoard)
                 }
             }).catch(err => console.log(err))
         }
@@ -80,7 +103,10 @@ function ShopBoard(props) {
             body: fd
         }).then(res => {
             if (res.ok)
-                setReloadBoard({ state: !reloadBoard.state })
+        {
+            enqueueSnackbar(".آدرس با موفقیت ثبت شد")
+                setReloadBoard(!reloadBoard)
+        }
         }).catch(err => console.log(err))
     }
 
@@ -97,7 +123,13 @@ function ShopBoard(props) {
             if (res.ok) {
                 // if(i === board.length - 1)
                     // slideToPage(board.length-2);
-                setReloadBoard({ state: !reloadBoard.state, page: board.length-2 })
+                document.getElementById("item-"+id).className += " deleted";
+                document.getElementById("item-edit-"+id).className += " deleted";
+                // document.querySelectorAll('.carousel').carousel({   
+                //     pause: true,
+                //     interval: false
+                // }).carousel(0);
+                enqueueSnackbar("!اعلان حذف شد")
             }
         }).catch(err => console.log(err))
     }
@@ -138,43 +170,42 @@ function ShopBoard(props) {
             body: fd
         }).then(res => {
             if (res.ok)
-                setReloadBoard({ state: !reloadBoard.state })
+                {
+                    enqueueSnackbar("!تصویر اعلان با موفقیت تغییر یافت")
+                    setReloadBoard(!reloadBoard)
+                }
         }).catch(err => console.log(err))
     }
 
     return (
         <div>
-            <Carousel interval={null} className="carousel">
+            {board && Array.isArray(board) && board.length > 0 && <Carousel interval={null} className="carousel">
                 {board.map((item, i) => {
                     if (item)
-                        return (<Carousel.Item id={"item-" + i} key={i} className="board-item" onClick={() => window.location.href = item.image_url}>
-                            <div className="img-container">
+                        return (<Carousel.Item key={i} className="board-item" onClick={() => {if(item?.image_url) window.location.href = item.image_url}} style={{cursor:item?.image_url?"pointer":"default"}}>
+                            <div className="img-container"  id={"item-" + item.id}>
                                 <img src={item.image} alt="board item" />
                             </div>
-                            {/* <Carousel.Caption>
-                        <h5>{item.title}</h5>
-                        <p>{item.description}</p>
-                    </Carousel.Caption> */}
                         </Carousel.Item>)
                 })}
-            </Carousel>
-            {props.userState === "m" && <div className="edit-board" onClick={() => setShowEdit(true)}>{!!board && board.length === 0 ? "فروشگاه اعلانی ندارد. ساخت بورد" : "ویرایش بورد"}</div>}
+            </Carousel>}
+            {props.userState === "m" && <div className="edit-board" onClick={() => {setReloadBoard(true); setShowEdit(true)}}>{!!board && board.length === 0 ? "تابلو اعلانات فروشگاه خالیست. ساخت اعلان" : "ویرایش تابلو اعلانات"}</div>}
             <Modal centered size="lg" show={showEdit} onHide={() => setShowEdit(false)} style={{ display: "flex" }} className="board-outer-modal">
                 <Modal.Header closeButton className="board-modal">
-                    <Modal.Title><div>تنظیم اعلانات فروشگاه</div><label className="create-btn btn" htmlFor="new-board-photo"><AddIcon />اعلان جدید</label></Modal.Title>
+                    <Modal.Title><div>تنظیم تابلو اعلانات فروشگاه</div><label className="create-btn btn" htmlFor="new-board-photo"><AddIcon />اعلان جدید</label></Modal.Title>
                     <input multiple type="file" id="new-board-photo" accept="image/*" onChange={addToBoard} style={{ display: "none" }} />
                 </Modal.Header>
                 <Modal.Body className="board-modal">
                     <div style={{ direction: "rtl" }}>
-                        {loadCarousel && <Carousel interval={null} className="carousel" id="carousel">
+                        <Carousel interval={null} className="carousel" id="carousel">
                             {/* <div data-target="#carousel" data-slide-to="next" style={{display:"none"}} id="carousel-page-changer" ></div> */}
                             {!board || board.length == 0 ?
-                                <h4>اعلانی وجود ندارد:(</h4>
+                                <h4>اعلانی وجود ندارد. با کلیک بر روی گزینه «اعلان جدید» اعلان بسازید.</h4>
                                 :
                                 board.map((item, i) => {
                                     if (item)
-                                        return (<Carousel.Item id={"item-" + i} key={i} className="board-item">
-                                            <div className="board-item-holder">
+                                        return (<Carousel.Item key={i} className="board-item">
+                                            <div className="board-item-holder" id={"item-edit-" + item.id}>
                                                 <div className="img-container">
                                                     <img src={item.image} alt="board item" />
                                                 </div>
@@ -190,7 +221,7 @@ function ShopBoard(props) {
                                             </div>
                                         </Carousel.Item>)
                                 })}
-                        </Carousel>}
+                        </Carousel>
 
                     </div>
                 </Modal.Body>
