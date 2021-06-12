@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -69,6 +69,7 @@ export default Home = ({ navigation }) => {
             image={itemData.item.logo}
             rate_value={itemData.item.rate_value}
             online={itemData.item.online}
+            phone={itemData.item.phone}
             index={itemData.item.id}
             onSelect={() => {
               navigation.navigate("ShopDetail", itemData.item);
@@ -83,7 +84,7 @@ export default Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
     marginTop: "5%",
@@ -101,7 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   inputView: {
-    backgroundColor: "#f1f1f2",
+    backgroundColor: "#fff",
     borderRadius: 10,
     width: "90%",
     height: 45,

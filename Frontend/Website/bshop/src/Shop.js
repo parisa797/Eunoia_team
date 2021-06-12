@@ -2,20 +2,22 @@ import { useEffect, useState, useRef } from 'react';
 import './Shop.css';
 import ShopSideBar from './ShopSideBar';
 import ReactStars from "react-rating-stars-component";
-import Carousel from 'react-bootstrap/Carousel';
 import EditIcon from '@material-ui/icons/Edit';
 import ItemCard from './ItemCard';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ShopComments from './ShopComments'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import SearchBar from './SearchBar';
 import Itemslist from './ItemsList';
+import ShopBoard from './ShopBoard';
+import { IconButton } from '@material-ui/core';
 
 
 function Shop(props) {
-    const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
     const [shopInfo, setShopInfo] = useState({})
     const [allItems, setAllItem] = useState([])
     const [discountedItems, setDiscountedItem] = useState([])
@@ -157,7 +159,44 @@ function Shop(props) {
             top: commentsRef.current.offsetTop
           });
     }
-
+    const [isLikedByUser, setisLikedByUser] = useState(false)
+    useEffect(() => {
+        fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        .then(res => {
+            console.log(shopID);
+            const resp = res.findIndex(i => i.id == shopID)
+            console.log(resp);
+            if (resp > 0) setisLikedByUser(true)
+            else setisLikedByUser(false)
+        })
+    }, [])
+    const handleLike = async () => {
+        await fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        })
+        fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
+            method: 'GET',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res => res.json())
+        .then(res => {
+            console.log(shopID);
+            const resp = res.findIndex(i => i.id == shopID)
+            console.log(resp);
+            if (resp > 0) setisLikedByUser(true)
+            else setisLikedByUser(false)
+        })
+    }
+    console.log(isLikedByUser);
     return (
         <div className="shop-page">
             <ShopSideBar shopID={shopID} />
@@ -172,13 +211,24 @@ function Shop(props) {
                             </div>
                             <div className="title-buttons">
                                 <h3 data-testid={"shop-title"}>{shopInfo.title}</h3>
-                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
+                                {props.userState === "b" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
                                     <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
+                                <div className="col-1">
+                                    {isLikedByUser ? (
+                                        <IconButton onClick={handleLike} style={{ padding: 0 }}>
+                                        <FavoriteIcon style={{ color: 'red' }} />
+                                        </IconButton>
+                                    ): (
+                                        <IconButton onClick={handleLike} style={{ padding: 0 }}>
+                                        <FavoriteBorderIcon />
+                                            </IconButton>
+                                        )}
+                                        </div>
                             <> <p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {shopInfo.rate_value?Math.round(shopInfo.rate_value * 10) / 10 :0} </p>
                                     {!!shopInfo.rate_value && <ReactStars
-                                        edit={props.userState!=="u"}
+                                        edit={props.userState==="l"}
                                         value={Math.round(shopInfo.rate_value)}
                                         isHalf={false}
                                         classNames="stars"
@@ -188,7 +238,7 @@ function Shop(props) {
                                         activeColor={"var(--primary-color)"}
                                     />}
                                     {!shopInfo.rate_value && <ReactStars
-                                        edit={!!localStorage.getItem("token")}
+                                        edit={props.userState==="l"}
                                         value={0}
                                         isHalf={false}
                                         classNames="stars"
@@ -213,7 +263,7 @@ function Shop(props) {
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
                                 <p> (منطقه {shopInfo.mantaghe}) </p>
-                                <a href="/">نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
+                                <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
                             </div>}
                         </div>
                     </div>
@@ -223,21 +273,7 @@ function Shop(props) {
                 <SearchBar thisShop={shopID}  id="shop"/>
                 </div>
                 <div className="page-contents-item">
-                    <Carousel interval={null} className="carousel">
-                        {board.map((item, i) => {
-                            if (item)
-                                return (<Carousel.Item key={i} className="board-item">
-                                    <div className="img-container">
-                                        <img src={item.image} alt="board item" />
-                                    </div>
-                                    <Carousel.Caption>
-                                        <h5>{item.title}</h5>
-                                        <p>{item.description}</p>
-                                    </Carousel.Caption>
-                                </Carousel.Item>)
-                        })}
-                    </Carousel>
-                    {props.userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
+                    <ShopBoard shopID={shopID} userState={props.userState}/>
                 </div>
                 {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
                     {/* <div className="page-contents-item"> */}

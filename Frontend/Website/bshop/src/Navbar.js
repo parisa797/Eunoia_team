@@ -59,6 +59,11 @@ function CustomNavbar(props) {
   useEffect(() => {
     if (!shopID)
       return;
+      if(JSON.parse(localStorage.getItem("shops")?.includes(shopID)))
+      {
+        setShoppingList("manager")
+        return;
+      }
     if (!JSON.parse(localStorage.getItem("shoplists")) || !JSON.parse(localStorage.getItem("shoplists"))[shopID]) {
       setShoppingList([]);
       return;
@@ -135,8 +140,14 @@ return (
                 <div className="drop-item drop-a a" href="#" >
                   کیف پول
           </div>
-                <div className="drop-item drop-a a" href="#" >
+                <div className="drop-item drop-a a" onClick={()=>window.location.href="/profile/order-history"} >
                   گزارش خرید
+          </div>
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/favorites/shops"} >
+                 فروشگاه‌های برگزیده شما
+          </div>
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/favorites/items"} >
+                  کالاهای برگزیده شما
           </div>
                 <div className="drop-item drop-a a" onClick={() => logout()} >
                   خروج
@@ -144,8 +155,8 @@ return (
               </div>
             </div>
             <>
-              <div className="shopping-list" >
-                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "profile/shoppinglists"}>
+              {shoppingList!=="manager" && <div className="shopping-list" >
+                <div className="shopping-icon-container" onClick={() => window.location.href = !!shopID ? "/store/" + shopID + "/shopping-list" : "/profile/shoppinglists"}>
                   <ShoppingCartIcon className="shoppinglist-icon" />
                   {!!shopID && <p>{shoppingList?.length}</p>}
                 </div>
@@ -157,12 +168,12 @@ return (
                         {shoppingList?.map((el, i) =>
                           <div key={i} className="shopping-dropdown-item" onClick={() => window.location.href = "/store/" + el.item.shop_id + "/items/" + el.item.id}>
                             <div className="shopping-dropdown-img-holder">
-                              <img alt={el.item.name} src={el.item.photo} />
+                              <img alt={el.item.name} src={el.item.photo?el.item.photo: "/no-image-icon-0.jpg"} />
                             </div>
                             <div className="shopping-dropdown-item-info">
                               <h4>{el.item.name}</h4>
                               <p className="shopping-dropdown-count">تعداد: {el.number}</p>
-                              <p className="shopping-dropdown-price">{el.item.price}</p>
+                              <p className="shopping-dropdown-price"> {el.item.price_with_discount} ریال</p>
                             </div>
                           </div>
                         )}
@@ -175,7 +186,7 @@ return (
                   <div></div>
                 }
 
-              </div>
+              </div>}
             </>
           </>
         }
