@@ -131,7 +131,7 @@ function ShoppingListCompletion(props) {
         data.push({
             day: today.toLocaleDateString('fa-IR', options).replace(/([۰-۹])/g, token => String.fromCharCode(token.charCodeAt(0) - 1728)),
             dayDate: today.toISOString().slice(0, 10),
-            timeranges: timeranges.filter(x=>parseInt(x.num)>hour)
+            timeranges: timeranges.filter(x => parseInt(x.num) > hour)
         })
         for (let i = 1; i < 7; i++) {
             today = new Date();
@@ -202,20 +202,32 @@ function ShoppingListCompletion(props) {
             return;
         }
         let fd = new FormData();
-        fd.append("sabt", "True");
-        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/sabt/" + shoppingList.id, {
+        fd.append("online", "True");
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/online/" + shoppingList.id, {
             method: 'PUT',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             },
             body: fd
         }).then(res => {
-            if (res.ok)
-            {
-                localStorage.removeItem("shoplists")
-                window.location.href = "/profile/shoppinglists";
+            if (res.ok) {
+                fd = new FormData();
+                fd.append("sabt", "True");
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/sabt/" + shoppingList.id, {
+                    method: 'PUT',
+                    headers: {
+                        "Authorization": "Token " + localStorage.getItem('token')
+                    },
+                    body: fd
+                }).then(res => {
+                    if (res.ok) {
+                        localStorage.removeItem("shoplists")
+                        window.location.href = "/profile/shoppinglists";
+                    }
+                }).catch(err => console.error(err))
             }
         }).catch(err => console.error(err))
+
     }
 
     function handleDateChange(e) {

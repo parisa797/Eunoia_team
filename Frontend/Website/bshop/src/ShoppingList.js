@@ -32,7 +32,7 @@ function ShoppingList(props) {
     useEffect(() => {
         if (props.userState !== "l")
             window.location.href = "/store/" + shopID;
-        if (!props.completed && !JSON.parse(localStorage.getItem("shoplists")) || !(JSON.parse(localStorage.getItem("shoplists"))[shopID])) {
+        if (!props.completed && (!JSON.parse(localStorage.getItem("shoplists")) || !(JSON.parse(localStorage.getItem("shoplists"))[shopID]))) {
             setShoppingList(null);
             return;
         }
@@ -236,7 +236,7 @@ function ShoppingList(props) {
                             {!!shoppingList && <h3>{shoppingList.totalPrice} ریال</h3>}
                         </div>
                         {!!shoppingList && !!shoppingList.shopping_list_items && shoppingList.shopping_list_items.length > 0 && !props.completed && <div className="btn submit-btn" onClick={()=>window.location.href = "/store/"+shopID+"/shopping-list/complete-order"}>ثبت خرید<ChevronLeftIcon /></div>}
-                        {props.completed && <div className="history-info">
+                        {!!shoppingList && props.completed && <div className="history-info">
                             <p>بازه تحویل: </p>
                             <p style={{fontWeight: "bold", color: "var(--font-color2)"}}>{shoppingList.date_delivery}</p>
                             <p style={{marginTop:"10px"}}>محل تحویل سفارش: </p>
