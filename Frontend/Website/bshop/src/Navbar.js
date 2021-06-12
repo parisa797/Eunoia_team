@@ -140,8 +140,14 @@ return (
                 <div className="drop-item drop-a a" href="#" >
                   کیف پول
           </div>
-                <div className="drop-item drop-a a" href="#" >
+                <div className="drop-item drop-a a" onClick={()=>window.location.href="/profile/order-history"} >
                   گزارش خرید
+          </div>
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/likes/shops"} >
+                 فروشگاه‌های برگزیده شما
+          </div>
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/likes/items"} >
+                  کالاهای برگزیده شما
           </div>
                 <div className="drop-item drop-a a" onClick={() => logout()} >
                   خروج
