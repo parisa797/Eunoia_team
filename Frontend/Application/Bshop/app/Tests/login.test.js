@@ -93,7 +93,7 @@ describe("Login component be tested", () => {
     expect(showMock).toHaveBeenLastCalledWith(message, undefined);
   });
 
-  //auth successfull
+  // auth successfull
   // it("failed auth", async () => {
   //   const fetchMock = require("fetch-mock-jest");
 
