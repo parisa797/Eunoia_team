@@ -9,7 +9,7 @@ function ProfileDispatcher(props) {
     return <Router>
         <Switch>
             <Route
-                path="/order-history"
+                path="/profile/order-history"
                 render={(p) => (
                     <ShoppingLists
                         type={"history"}

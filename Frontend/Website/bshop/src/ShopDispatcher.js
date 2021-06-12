@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Lottie from 'react-lottie';
 import animationData from './medias/53735-cart-icon-loader.json';
 import DeleteItem from './DeleteItem'
+import EditShopLocation from './EditShopLocation';
 import {
     BrowserRouter as Router,
     Switch,
@@ -16,6 +17,7 @@ import {
 import Itemslist from "./ItemsList";
 import ItemsListPage from "./ItemsListPage";
 import ShoppingList from "./ShoppingList";
+import ShoppingListCompletion from "./ShoppingListCompletion"
 import { ContactSupportOutlined } from "@material-ui/icons";
 
 function ShopDispatcher() {
@@ -119,8 +121,8 @@ function ShopDispatcher() {
                         {...props}
                     />)}
                     />
-                    <Route exact path="/store/:id/shopping-list" render={(props) => (
-                        <ShoppingList
+                    <Route exact path="/store/:id/shopping-list/complete-order" render={(props) => (
+                        <ShoppingListCompletion
                             // triggerReload={triggerReload}
                             // setTriggerReload={setTriggerReload}
                             userState={userState}
@@ -128,6 +130,34 @@ function ShopDispatcher() {
                             {...props}
                         />)}
                     />
+                    <Route exact path="/store/:id/shopping-history/:shoppingid" render={(props) => (
+                        <ShoppingList
+                            completed={true}
+                            userState={userState}
+                            {...props}
+                        />)}
+                    />
+                    <Route exact path="/store/:id/shopping-list" render={(props) => (
+                        <ShoppingList
+                            // triggerReload={triggerReload}
+                            // setTriggerReload={setTriggerReload}
+                            completed={false}
+                            userState={userState}
+                            // showDeleteItemModal={showDeleteItemModal}
+                            {...props}
+                        />)}
+                    />
+                    <Route
+                    path="/store/:id/edit-map"
+                    render={(p) => (
+                        <EditShopLocation 
+                            type="s"
+                            userState={userState}
+                            shopID={shopID}
+                            {...p}
+                        />
+                    )}
+                />
                     <Route path="/store/:id/edit-info" render={(props) => (
                         <EditShop
                         userState={userState}

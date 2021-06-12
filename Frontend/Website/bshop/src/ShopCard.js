@@ -1,9 +1,10 @@
 import ReactStars from "react-rating-stars-component";
+import ServerURL from "./Constants";
 import "./ShopCard.css"
 function ShopCard(props){
     return <div className="shop-container" onClick={() => window.location.href = "/store/" + props.shop.id} key={props.shop.id}  data-testid={"shop" + props.shop.id}>
     <div className="shop-upper">
-        <div className="img-outer-container"><div className="img-container"><img data-testid={props.id+"shop-img-" + props.shop.id} src={props.shop?.logo?props.shop.logo : "/shop-default-logo.png"} alt={props.shop.title} /></div></div>
+        <div className="img-outer-container"><div className="img-container"><img data-testid={props.id+"shop-img-" + props.shop.id} src={props.shop?.logo?(props.shop.logo.includes(ServerURL)?props.shop.logo:ServerURL+props.shop.logo) : "/shop-default-logo.png"} alt={props.shop.title} /></div></div>
         <h4 data-testid={props.id+"shop-title-" + props.shop.id} >{props.shop.title}</h4>
         <div className="shop-stars">
             <ReactStars

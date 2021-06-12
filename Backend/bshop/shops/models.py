@@ -22,6 +22,8 @@ class Shop(models.Model):
 	online = models.BooleanField(default=False,blank=True, null=True)
 	mantaghe = models.CharField(max_length = 200, blank=False)
 	shop_phone = models.CharField(max_length = 100,blank=True, null=True)
+	longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+	latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 	
 
 	@property

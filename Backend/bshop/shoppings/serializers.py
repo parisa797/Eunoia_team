@@ -4,6 +4,7 @@ from .models import *
 from users.models import MyUser
 from users.serializers import Profileserializer
 from items.serializers import ItemShoppnigSerializer
+from shops.serializers import ShopSerializer
 from jalali_date import date2jalali,datetime2jalali
 from persiantools.jdatetime import JalaliDate,JalaliDateTime
 
@@ -43,11 +44,13 @@ class ShoppingListSerializer(serializers.ModelSerializer):
 
 class AllShoppingListSerializer(serializers.ModelSerializer):
 
-    shopping_list_shop = serializers.RelatedField(read_only=True)
+    # shopping_list_shop = serializers.RelatedField(read_only=True)
     shopping_list_items = ShoppingItemSerializer(many=True)
     date_jalali=serializers.SerializerMethodField('get_jalali_date')
     date_delivery=serializers.SerializerMethodField('get_jalali_delivery')
     sum_price = serializers.ReadOnlyField()
+    shop = ShopSerializer(read_only=True)
+    user = Profileserializer(read_only=True)
 
     def get_jalali_date(self,id):
         serial=datetime2jalali(id.date)
