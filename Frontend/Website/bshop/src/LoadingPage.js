@@ -16,6 +16,7 @@ import {
     Route,
 } from "react-router-dom";
 import ProfileDispatcher from './ProfileDispatcher';
+import FavoriteItems from './favoriteitems';
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -156,6 +157,7 @@ function LoadingPage(props) {
                 <Route path="/items/" component={ItemsListPage} />
                 <Route path="/store/:storeid/items/search" component={SearchResults} />
                 <Route path="/store/:id" component={ShopDispatcher} />
+                <Route path="/favoriteitems" component={FavoriteItems} />
                 {/* <Route exact path='/Items' component={Items} /> */}
             </Switch>
         </Router>
