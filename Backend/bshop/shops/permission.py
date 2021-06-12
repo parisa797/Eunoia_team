@@ -16,3 +16,5 @@ class IsAuthor(permissions.BasePermission):
         if request.method == "GET":
             return True
         return obj.user==request.user
+
+
