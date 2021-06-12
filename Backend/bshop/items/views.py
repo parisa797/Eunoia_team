@@ -330,6 +330,26 @@ class DiscountsFilterItemOneShopListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
         return queryset.order_by('-discount')
 
+class FilterBrandItemListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(brand=q)
+        return queryset
+
+class FilterBrandItemOneShopListAPIView(generics.ListAPIView):
+    serializer_class = ItemSerializer
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def get_queryset(self):
+        q = self.request.query_params.get('q', None)
+        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(brand=q)
+        return queryset
+
 ########################################like
 class LikeItem(generics.ListCreateAPIView):
     queryset = ItemLike.objects.all()
