@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+// import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
@@ -16,12 +16,14 @@ import {
   ScrollView,
 } from "react-native";
 import Shop from "./shop";
+import { useIsFocused } from "@react-navigation/native";
 
 export default Home = ({ navigation }) => {
   const [shops, setShops] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const isFocused = useIsFocused();
 
   const loadProducts = useEffect(() => {
     // setError(null);
@@ -36,7 +38,7 @@ export default Home = ({ navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setShops(result);
-        console.log(result);
+        console.log("homepage resu:", result);
       })
       .catch((error) => {
         // setError(error.message);
@@ -44,7 +46,8 @@ export default Home = ({ navigation }) => {
       });
     // setIsRefreshing(false);
     // }, [setIsLoading, setError]);
-  }, []);
+  }, [isFocused]);
+
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.inputView}>
@@ -69,6 +72,7 @@ export default Home = ({ navigation }) => {
             image={itemData.item.logo}
             rate_value={itemData.item.rate_value}
             online={itemData.item.online}
+            phone={itemData.item.phone}
             index={itemData.item.id}
             onSelect={() => {
               navigation.navigate("ShopDetail", itemData.item);
@@ -83,7 +87,7 @@ export default Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
     marginTop: "5%",
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   inputView: {
-    backgroundColor: "#f1f1f2",
+    backgroundColor: "#fff",
     borderRadius: 10,
     width: "90%",
     height: 45,
