@@ -60,12 +60,13 @@ const FavoriteShops = ({ navigation }) => {
           data={shops}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
-            // console.log("item is", itemData.item);
+            console.log("item is", itemData.item.logo);
+            var u = "http://eunoia-bshop.ir:8000" + itemData.item.logo;
             return (
               <Shop
                 title={itemData.item.title}
                 address={itemData.item.address}
-                image={itemData.item.logo}
+                image={u}
                 rate_value={itemData.item.rate_value}
                 online={itemData.item.online}
                 phone={itemData.item.phone}

@@ -428,7 +428,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     // objectFit: ""
     width: "95%",
-    height: 300,
+    height: 350,
     // alignItems: "center",
     // justifyContent: "center",
     // alignContent: "center",
@@ -447,13 +447,14 @@ const styles = StyleSheet.create({
   image: {
     // backgroundColor: "#f1f1f2",
     width: "80%",
-    height: "80%",
-    marginTop: "12%",
+    height: "85%",
+    marginTop: "-1%",
     resizeMode: "cover",
     alignItems: "center",
     justifyContent: "center",
     // paddingBottom: "1",
-    marginLeft: 12,
+    marginLeft: 35,
+    backgroundColor: "transparent",
   },
   details: {
     alignItems: "center",

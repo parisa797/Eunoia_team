@@ -12,6 +12,7 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
+import StarRating from "react-native-star-rating";
 
 const LikedItem = (props) => {
   console.log("this is props", props);
@@ -20,9 +21,17 @@ const LikedItem = (props) => {
   // console.log("correctly here");
 
   return (
-    <View style={styles.container}>
+    <View style={styles.shop}>
       <TouchableOpacity onPress={props.onSelect} useForeground>
         <View style={styles.items}>
+          <View style={styles.setare}>
+            <StarRating
+              starSize={25}
+              disabled={true}
+              fullStarColor={"#b31414"}
+              rating={props.rate}
+            ></StarRating>
+          </View>
           {props.image && (
             <Image
               testID={"item-image-" + props.index}
@@ -36,18 +45,18 @@ const LikedItem = (props) => {
               source={require("../assets/no-image.png")}
             />
           )}
+          <View style={styles.nameitem}>
+            <Text
+              testID={"item-name-" + props.index}
+              style={{ fontSize: 25, fontWeight: "bold" }}
+            >
+              {props.name}
+            </Text>
+          </View>
         </View>
-        <Text
-          testID={"item-name-" + props.index}
-          style={{ fontSize: 20, fontWeight: "bold" }}
-        >
-          {props.name}
-        </Text>
-
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-          {props.shop.title}
-        </Text>
-
+        <View style={styles.nameshop}>
+          <Text style={{ fontSize: 20 }}>{props.shop.title}</Text>
+        </View>
         {/* <View style={styles.rows}> */}
         {props.discount != 0 && (
           <Text
@@ -83,18 +92,57 @@ const LikedItem = (props) => {
           </Text>
         )}
         {/* </View> */}
+        <View style={styles.setare}>
+          <StarRating
+            starSize={25}
+            disabled={true}
+            fullStarColor={"#b31414"}
+            rating={props.rate}
+          ></StarRating>
+        </View>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    marginTop: "12%",
-    backgroundColor: "white",
+  shop: {
+    height: 300,
+    width: 358,
+    marginTop: 70,
+    borderRadius: 20,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
+    backgroundColor: "#f1f1f2",
+    marginLeft: 17,
   },
-
+  // container: {
+  //   padding: 10,
+  //   marginTop: "10%",
+  //   backgroundColor: "white",
+  //   width: "95%",
+  //   height: "60%",
+  //   elevation: 5,
+  //   flex: 1,
+  //   marginLeft: "2.5%",
+  // },
+  setare: {
+    width: 30,
+    marginLeft: "130%",
+  },
+  nameitem: {
+    justifyContent: "space-evenly",
+    flexDirection: "row-reverse",
+    borderRadius: 20,
+    marginLeft: -380,
+    marginTop: -160,
+  },
+  nameshop: {
+    marginLeft: 30,
+    marginTop: -18,
+  },
   items: {
     height: 210,
     width: 165,
@@ -113,12 +161,13 @@ const styles = StyleSheet.create({
     // backgroundColor: "#f1f1f2",
     width: "80%",
     height: "80%",
-    marginTop: "12%",
+    marginTop: "1%",
     resizeMode: "cover",
     alignItems: "center",
     justifyContent: "center",
     // paddingBottom: "1",
     marginLeft: 12,
+    backgroundColor: "transparent",
   },
 });
 export default LikedItem;

@@ -69,6 +69,7 @@ const FavoriteItems = ({ navigation }) => {
                 discount={itemData.item.discount}
                 index={itemData.item.id}
                 shop={itemData.item.ItemShop}
+                rate={itemData.item.rate_value}
                 onSelect={() => {
                   navigation.navigate("ItemDetail", itemData.item);
                 }}
