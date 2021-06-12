@@ -20,7 +20,8 @@ class MyUser(AbstractUser): ### ?
     LastName = models.CharField(blank=True,max_length=150) #last name
     address = models.TextField(blank=True)
     phone=models.CharField(blank=True,max_length=13)
-
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
 class Coins(models.Model):
     rank_choices = [('gold', 'gold'),

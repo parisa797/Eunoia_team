@@ -26,7 +26,6 @@ class ShoppingList(models.Model):
         if(ShoppingItem.objects.filter(shopping_list=self.id).count() is 0):
             return 0
         shopping=ShoppingList.objects.get(id=self.id)
-        print('aaaaaaaaaaaaaaaaaaa')
         if Coins.objects.filter(user=shopping.user).exists():
             coin=Coins.objects.get(user=shopping.user)
             if coin.rank=='gold':
