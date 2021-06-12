@@ -85,7 +85,7 @@ function LoadingPage(props) {
                     .then((d) => {
                         let usersLists = {}
                         if (!!d)
-                            d.forEach((e) => usersLists["" + e.shop] = e.id)
+                            d.forEach((e) => usersLists["" + e.shop.id] = e.id)
                         localStorage.setItem("shoplists", JSON.stringify(usersLists))
                         console.log(d)
                         if (res.role === "seller") {

@@ -13,6 +13,7 @@ from django.utils import timezone
 from datetime import timedelta
 import requests
 from datetime import datetime
+from users.models import Coins
 
 
 from .models import *
@@ -88,6 +89,11 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
 
         instance.sabt = request.data.get('sabt', instance.sabt)
         instance.date = request.data.get('date', timezone.now())
+        if Coins.objects.filter(user=self.request.user).exists():
+            coin=Coins.objects.get(user=self.request.user)
+            money=coin.money
+            coin.money=int(instance.sum_price*(1/10000))+money
+            coin.save()
         instance.save()
         serializer = AllShoppingListSerializer(instance)
         return Response(serializer.data)
