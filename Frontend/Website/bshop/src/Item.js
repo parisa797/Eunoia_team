@@ -3,6 +3,10 @@ import "./Item.css";
 import ReactStars from "react-rating-stars-component";
 import ShopSideBar from "./ShopSideBar";
 import Itemcomment from "./Itemcomment";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { useSnackbar } from 'notistack';
+import { IconButton } from "@material-ui/core";
 function Item(props) {
   // console.log("Token "+localStorage.getItem("token"))
   const [items, setItems] = useState({});
@@ -11,8 +15,16 @@ function Item(props) {
   const[triggerReload,setTriggerReload] = useState(false)
   var shopID = window.location.pathname.match(/[^\/]+/g)[1];
   var itemID = window.location.pathname.match(/[^\/]+/g)[3];
-  // let itemId = window.location.pathname.match.items(/[^\/]+/g)[3]
-  // let shopID = window.location.pathname.match(/[^\/]+/g)[1]
+
+  //Item shopping
+    const { enqueueSnackbar } = useSnackbar();
+    function timeout(delay) {
+      return new Promise(res => setTimeout(res, delay));
+  }
+    const [cartCount,setCartCount] = useState(1)
+    const [bought,setBought] = useState(false);
+  //End of Item shopping
+
   useEffect(() => {
     fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/" + itemID, {
       method: "GET",
@@ -106,6 +118,181 @@ function Item(props) {
 }
 
   console.log(items);
+  const [isLikedByUser, setisLikedByUser] = useState(false)
+  useEffect(() => {
+      fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+          method: 'GET',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('token')
+          }
+      }).then(res => res.json())
+      .then(res => {
+        const username = localStorage.getItem("username")
+        const resp = res[0]?.Liked_By.findIndex(i => i.username === username)
+        if(resp > -1) setisLikedByUser(true)
+        else setisLikedByUser(false)
+      })
+  }, [])
+  const handleLikeItem = async () => {
+      await fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+          method: 'POST',
+          headers: {
+              "Authorization": "Token " + localStorage.getItem('token')
+          }
+      })
+      fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/likes`,{
+        method: 'GET',
+        headers: {
+            "Authorization": "Token " + localStorage.getItem('token')
+        }
+    }).then(res => res.json())
+    .then(res => {
+      const username = localStorage.getItem("username")
+      const resp = res[0]?.Liked_By.findIndex(i => i.username === username)
+      if(resp > -1) setisLikedByUser(true)
+      else setisLikedByUser(false)
+    })
+  }
+  // const handleLikeItem = () => {
+
+  // }
+  // const checkIsLikedByUserOrNot = () => {
+  //   return true
+  // }
+
+  //Adding to cart
+  function addToCart(){
+    if(!JSON.parse(localStorage.getItem("shoplists"))[shopID]){
+        //create shopppinglist
+        let fd = new FormData();
+        fd.append("shop",shopID)
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/create/",{
+            method:"POST",
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            },
+            body: fd
+        }).then(res=>{
+            if(res.ok)
+                return res.json();
+            return {};
+        }).then(r=>{
+            if(!r)
+                return;
+            let list = JSON.parse(localStorage.getItem("shoplists"));
+            list[r.shop] = r.id;
+            localStorage.setItem("shoplists",JSON.stringify(list));
+            fd =new FormData();
+            fd.append("item",items.id)
+            fd.append("number",cartCount)
+            fd.append("shopping_list",r.id)
+            fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/",{
+                method:"POST",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                },
+                body: fd 
+            }).then(async res => {
+                if (res.ok) {
+                    setBought(true);
+                    await timeout(3000);
+                    setBought(false);
+                }
+                else if (res.status===400)
+                    return res.json()
+            }).then(res => {
+                    if (res === "sum_price should be smaller than max_cost")
+                        enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                })
+                .catch(err => console.error(err))
+        })
+            .catch(err => console.error(err))
+    }else{
+        let shopping_id=JSON.parse(localStorage.getItem("shoplists"))[shopID];
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/list/"+shopping_id,{
+            method:"GET",
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(res=>{
+            if(res.ok)
+                return res.json();
+            return {};
+        }).then(r=>{
+            let list_id = null;
+            let number = null;
+            if(!r)
+                return;
+            r.forEach(element => {
+                if(element.item.id === items.id)
+                {
+                    list_id = element.id;
+                    number = element.number
+                }
+            });
+            if(list_id===null){
+                let fd = new FormData()
+                fd.append("item",items.id)
+                fd.append("number",cartCount)
+                fd.append("shopping_list",shopping_id)
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/",{
+                method:"POST",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                },
+                body: fd
+            }).then(async res=>{
+                if(res.ok)
+                    {
+                        setBought(true);
+                        await timeout(3000);
+                        setBought(false);
+                    }
+                else if (res.status===400)
+                    return res.json()
+            }).then(res => {
+                    if (res === "sum_price should be smaller than max_cost")
+                        enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                })
+                .catch(err => console.error(err))
+            }
+            else{
+                let fd = new FormData()
+                fd.append("number",cartCount+number)
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/"+list_id,{
+                method:"PUT",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                },
+                body: fd
+            }).then(async res=>{
+                if(res.ok)
+                    {
+                        setBought(true);
+                        await timeout(1000);
+                        setBought(false);
+                    }
+                else if (res.status===400)
+                    return res.json()
+            }).then(res => {
+                    if (res === "sum_price should be smaller than max_cost")
+                        enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                })
+                .catch(err => console.error(err))
+            }
+            
+        })
+        .catch(err=>console.error(err))
+    }
+}
+const changeCartCount = (count)=>{
+  if(count<1)
+      count=1
+  if(items.count<count)
+      count = items.count
+  setCartCount(count)
+}
+
   return (
     <div style={{ padding: "5vh 2vw" }}>
       <ShopSideBar />
@@ -114,11 +301,16 @@ function Item(props) {
           <div className="sub-container">
             <div className="col-12 d-flex flex-wrap">
               <div className="col-sm-12 col-md-5 imageWrapper">
-              
                 <img className=" image " src={items.photo} alt="" />
               </div>
               <div className="lead text-right col-sm-12 col-md-6">
                 <h1 className="my-3" data-testid="item-name">{items.name}</h1>
+                <p className="shop-comment-date">
+                    <IconButton onClick={() => handleLikeItem()} style={{ color: 'red', padding: '0' }}> 
+                        {isLikedByUser ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                    </IconButton>
+
+                </p>
                 <hr></hr>
                 {!!items.description && (
                   <>
@@ -129,7 +321,7 @@ function Item(props) {
                 <div className="rating-item">
                             <> <p style={{ direction: "ltr" }} data-testid={"item-rate-value"}>امتیاز: {items.rate_value?Math.round(items.rate_value * 10) / 10 :0} </p>
                                     {!!items.rate_value && <ReactStars
-                                        edit={props.userState!=="u"}
+                                        edit={props.userState==="l"}
                                         value={Math.round(items.rate_value)}
                                         isHalf={false}
                                         classNames="stars"
@@ -139,7 +331,7 @@ function Item(props) {
                                         activeColor={"var(--primary-color)"}
                                     />}
                                     {!items.rate_value && <ReactStars
-                                        edit={!!localStorage.getItem("token")}
+                                        edit={props.userState==="l"}
                                         value={0}
                                         isHalf={false}
                                         classNames="stars"
@@ -168,10 +360,10 @@ function Item(props) {
                     <div className="col-6 p-0 ">{items.count}</div>
                   </div>
                 )}
-                {!!items.price && (
+                {(!!items.price || !!items.price_with_discount) && (
                   <div className="col-12 d-flex flex-justify-between p-0 my-2">
                     <div className="col-6 p-0 text-right">قیمت:</div>
-                    <div className="col-6 p-0 ">{items.price} ریال</div>
+                    <div className="col-6 p-0 ">{items.price_with_discount?items.price_with_discount:items.price} ریال</div>
                   </div>
                 )}
                 {!!items.manufacture_jalali && (
@@ -187,7 +379,18 @@ function Item(props) {
                   </div>
                 )}
 
-              {props.userState !== "m" && <a href="#" className="btn btn-lg btn-primary my-3" >افزودن به سبد خرید</a>}
+              {props.userState !== "m" && 
+              // <a href="#" className="btn btn-lg btn-primary my-3" >افزودن به سبد خرید</a>
+              <>
+            <div className="count-div">
+                <div className="count-btn btn" onClick={()=>changeCartCount(cartCount+1)}>+</div>
+                <input type="text" value={cartCount} onChange={(e)=>changeCartCount(e.target.value)} />
+                <div className="count-btn btn" onClick={()=>changeCartCount(cartCount-1)}>-</div>
+            </div>
+              {!bought?<div className="btn btn-lg cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
+                <div className="btn btn-lg cart-btn" >اضافه شد!</div>
+                 }</>
+              }
               </div>
               <div className="col-12 item-comment-container" >
                 <Itemcomment userState={props.userState} />
