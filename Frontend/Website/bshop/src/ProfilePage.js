@@ -2,6 +2,7 @@ import "./ProfilePage.css";
 import { useEffect, useState } from 'react';
 import ProfilePictureSelector from './ProfilePictureSelector';
 import { Modal } from "react-bootstrap";
+import LocationOnIcon from '@material-ui/icons/LocationOn'
 
 function ProfilePage(props) {
     const [profile, setProfile] = useState({});
@@ -350,9 +351,13 @@ function ProfilePage(props) {
                                     </div>
                                 }
                             </div>
-
+                            <div className="map-edit">
+                                <p><LocationOnIcon />{profile.coordinates ? "آدرس روی نقشه نیز انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
+                                <a href="/profile/edit-map">{profile.coordinates ? "تغییر آدرس روی نقشه" : "مشخص کردن آدرس روی نقشه"}</a>
+                            </div>
                         </form>
                     </div>
+
                     <a href="/registerstore" className="be-admin-notif" data-testid="become-a-seller">{profile.role === "buyer" ? "میخواهید فروشگاه خود را ثبت کنید؟" : "می خواهید فروشگاه جدیدی ثبت کنید؟"}</a>
                 </div>
             </div>

@@ -61,12 +61,14 @@ function Itemslist(props) {
                                         </div>
                                     )
                             })}
-                            <div className="see-more" >
+                            {!props.dontshowmore && (
+                                <div className="see-more" >
                                 <a href={props.url}>
                                     موارد بیشتر
                             <ChevronLeftIcon />
                                 </a>
                             </div>
+                                )}
                         </>
                     }
                 </div>}
