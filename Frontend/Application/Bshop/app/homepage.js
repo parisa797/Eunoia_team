@@ -55,41 +55,33 @@ export default Home = ({ navigation }) => {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={styles.inputView}>
-        <TextInput
-          value={search}
-          onChangeText={(s) => setSearch(s)}
-          style={styles.TextInput}
-          placeholder="جستجو"
-          placeholderTextColor="#000"
+      <View style={styles.rows}>
+        <ToggleSwitch
+          text={{
+            on: "فروشگاه",
+            off: "آیتم",
+            activeTextColor: "#780909",
+            inactiveTextColor: "#780909",
+          }}
+          textStyle={{ fontWeight: "bold" }}
+          color={{
+            indicator: "#780909",
+            active: "white",
+            inactive: "white",
+            activeBorder: "#780909",
+            inactiveBorder: "#780909",
+          }}
+          active={true}
+          disabled={false}
+          width={80}
+          radius={25}
+          onValueChange={(val) => {
+            // console.log("actual", val);
+            setSearchType(val);
+            // console.log("state type", searchType);
+          }}
         />
-      </View>
-      <ToggleSwitch
-        text={{
-          on: "فروشگاه",
-          off: "آیتم",
-          activeTextColor: "white",
-          inactiveTextColor: "#B7B8BA",
-        }}
-        textStyle={{ fontWeight: "bold" }}
-        color={{
-          indicator: "white",
-          active: "rgba(32, 193, 173, 1)",
-          inactive: "rgba( 247, 247, 247, 1)",
-          activeBorder: "#41B4A4",
-          inactiveBorder: "#E9E9E9",
-        }}
-        active={true}
-        disabled={false}
-        width={80}
-        radius={25}
-        onValueChange={(val) => {
-          // console.log("actual", val);
-          setSearchType(val);
-          // console.log("state type", searchType);
-        }}
-      />
-      {/* <Picker
+        {/* <Picker
         selectedValue={selectedValue}
         style={{ height: 50, width: 150 }}
         onValueChange={(itemValue, itemIndex) => {
@@ -101,16 +93,27 @@ export default Home = ({ navigation }) => {
         <Picker.Item label="Java" value="java" />
         <Picker.Item label="JavaScript" value="js" />
       </Picker> */}
-      <TouchableOpacity
-        style={styles.Btn}
-        onPress={() => {
-          var x = { searchString: search, searchType };
-          setSearch(undefined);
-          navigation.navigate("SearchResult", x);
-        }}
-      >
-        <Text style={styles.loginText}>بگرد</Text>
-      </TouchableOpacity>
+
+        <View style={styles.inputView}>
+          <TextInput
+            value={search}
+            onChangeText={(s) => setSearch(s)}
+            style={styles.TextInput}
+            placeholder="جستجو"
+            placeholderTextColor="#000"
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.Btn}
+          onPress={() => {
+            var x = { searchString: search, searchType };
+            setSearch(undefined);
+            navigation.navigate("SearchResult", x);
+          }}
+        >
+          <Text style={styles.loginText}>بگرد</Text>
+        </TouchableOpacity>
+      </View>
 
       <FlatList
         testID={"shops-list"}
@@ -139,6 +142,9 @@ export default Home = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  // switchh: {
+  //   width: "100%",
+  // },
   container: {
     flex: 1,
     // backgroundColor: "#fff",
@@ -161,13 +167,35 @@ const styles = StyleSheet.create({
   inputView: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    width: "90%",
-    height: 45,
-    marginTop: "10%",
+    width: "76%",
+    height: 50,
+    marginTop: "1%",
     marginBottom: "5%",
     alignSelf: "center",
     alignItems: "center",
     alignContent: "center",
+    marginLeft: 80,
+  },
+  rows: {
+    borderRadius: 10,
+    marginTop: 15,
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    backgroundColor: "#b31414",
+    height: 130,
+    width: 370,
+    marginLeft: 10,
+    fontWeight: "bold",
+    fontSize: 25,
+  },
+  rowstext: {
+    color: "white",
+    fontSize: 20,
+    marginTop: 5,
+    textAlign: "center",
   },
   TextInput: {
     height: 50,
@@ -180,13 +208,14 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   Btn: {
-    width: "40%",
-    borderRadius: 20,
+    width: "20%",
+    borderRadius: 10,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: -68,
     marginBottom: 20,
-    backgroundColor: "#b31414",
+    backgroundColor: "white",
+    marginLeft: 6,
   },
 });

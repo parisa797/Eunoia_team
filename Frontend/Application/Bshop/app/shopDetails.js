@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   StyleSheet,
+  TextInput,
   ImageBackground,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -21,6 +22,8 @@ import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
+  const [search, setSearch] = useState();
+  const [searchType, setSearchType] = useState(true);
   const isFocused = useIsFocused();
   const [shopitems, setItems] = useState();
   const [star_rates, setRates] = useState(route.params.rate_value);
@@ -155,6 +158,15 @@ const ShopDetail = ({ route, navigation }) => {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
+      <View style={styles.inputView}>
+        <TextInput
+          value={search}
+          onChangeText={(s) => setSearch(s)}
+          style={styles.TextInput}
+          placeholder="جستجو"
+          placeholderTextColor="#000"
+        />
+      </View>
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -257,6 +269,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#b31414",
     marginLeft: 10,
+  },
+  inputView: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    width: "95%",
+    height: 45,
+    marginTop: "0%",
+    marginBottom: "5%",
+    alignSelf: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    // marginLeft: 20,
+    fontSize: 20,
   },
   SignUpText: {
     color: "white",

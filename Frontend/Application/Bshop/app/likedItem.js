@@ -23,15 +23,61 @@ const LikedItem = (props) => {
   return (
     <View style={styles.shop}>
       <TouchableOpacity onPress={props.onSelect} useForeground>
+        <View style={styles.nameitem}>
+          <Text
+            testID={"item-name-" + props.index}
+            style={{ fontSize: 25, fontWeight: "bold" }}
+          >
+            {props.name}
+          </Text>
+        </View>
+        <View style={styles.setare}>
+          <StarRating
+            starSize={25}
+            disabled={true}
+            fullStarColor={"#b31414"}
+            rating={props.rate}
+          ></StarRating>
+        </View>
+        <View style={styles.nameshop}>
+          <Text style={{ fontSize: 20 }}>{props.shop.title}</Text>
+
+          {/* <View style={styles.rows}> */}
+          {props.discount != 0 && (
+            <Text
+              testID={"item-price0-" + props.index}
+              style={{
+                textDecorationLine: "line-through",
+                textAlign: "right",
+                fontSize: 15,
+                color: "grey",
+              }}
+            >
+              قیمت:
+              {props.price}
+            </Text>
+          )}
+          {props.discount == 0 && (
+            <Text
+              testID={"item-price1-" + props.index}
+              style={{
+                textAlign: "right",
+                fontSize: 15,
+                fontWeight: "bold",
+              }}
+            >
+              قیمت:
+              {props.price}
+            </Text>
+          )}
+
+          {props.discount != 0 && (
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              قیمت با تخفیف: {newPrice}
+            </Text>
+          )}
+        </View>
         <View style={styles.items}>
-          <View style={styles.setare}>
-            <StarRating
-              starSize={25}
-              disabled={true}
-              fullStarColor={"#b31414"}
-              rating={props.rate}
-            ></StarRating>
-          </View>
           {props.image && (
             <Image
               testID={"item-image-" + props.index}
@@ -45,61 +91,17 @@ const LikedItem = (props) => {
               source={require("../assets/no-image.png")}
             />
           )}
-          <View style={styles.nameitem}>
+          {/* <View style={styles.nameitem}>
             <Text
               testID={"item-name-" + props.index}
               style={{ fontSize: 25, fontWeight: "bold" }}
             >
               {props.name}
             </Text>
-          </View>
+          </View> */}
         </View>
-        <View style={styles.nameshop}>
-          <Text style={{ fontSize: 20 }}>{props.shop.title}</Text>
-        </View>
-        {/* <View style={styles.rows}> */}
-        {props.discount != 0 && (
-          <Text
-            testID={"item-price0-" + props.index}
-            style={{
-              textDecorationLine: "line-through",
-              textAlign: "right",
-              fontSize: 15,
-              color: "grey",
-            }}
-          >
-            قیمت:
-            {props.price}
-          </Text>
-        )}
-        {props.discount == 0 && (
-          <Text
-            testID={"item-price1-" + props.index}
-            style={{
-              textAlign: "right",
-              fontSize: 15,
-              fontWeight: "bold",
-            }}
-          >
-            قیمت:
-            {props.price}
-          </Text>
-        )}
 
-        {props.discount != 0 && (
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-            قیمت با تخفیف: {newPrice}
-          </Text>
-        )}
         {/* </View> */}
-        <View style={styles.setare}>
-          <StarRating
-            starSize={25}
-            disabled={true}
-            fullStarColor={"#b31414"}
-            rating={props.rate}
-          ></StarRating>
-        </View>
       </TouchableOpacity>
     </View>
   );
@@ -108,7 +110,7 @@ const LikedItem = (props) => {
 const styles = StyleSheet.create({
   shop: {
     height: 300,
-    width: 358,
+    width: 378,
     marginTop: 70,
     borderRadius: 20,
     shadowColor: "black",
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 4,
     backgroundColor: "#f1f1f2",
-    marginLeft: 17,
+    marginLeft: 9,
   },
   // container: {
   //   padding: 10,
@@ -130,24 +132,24 @@ const styles = StyleSheet.create({
   // },
   setare: {
     width: 30,
-    marginLeft: "130%",
+    marginLeft: "58%",
   },
   nameitem: {
     justifyContent: "space-evenly",
     flexDirection: "row-reverse",
     borderRadius: 20,
-    marginLeft: -380,
-    marginTop: -160,
+    marginLeft: -175,
+    marginTop: 55,
   },
   nameshop: {
-    marginLeft: 30,
-    marginTop: -18,
+    marginLeft: 20,
+    marginTop: 80,
   },
   items: {
     height: 210,
     width: 165,
     borderRadius: 10,
-    marginTop: 15,
+    marginTop: -220,
     borderRadius: 10,
     shadowColor: "black",
     shadowOpacity: 0.26,
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
     // backgroundColor: "#f1f1f2",
     width: "80%",
     height: "80%",
-    marginTop: "1%",
+    marginTop: "15%",
     resizeMode: "cover",
     alignItems: "center",
     justifyContent: "center",

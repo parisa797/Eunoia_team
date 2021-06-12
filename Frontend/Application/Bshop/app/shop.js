@@ -135,12 +135,14 @@ const Shop = (props) => {
             <Text testID={"shop-name-" + props.index} style={styles.title}>
               {shop_name}
             </Text>
-            <StarRating
-              starSize={25}
-              disabled={true}
-              fullStarColor={"#b31414"}
-              rating={props.rate_value == 0 ? 3 : props.rate_value}
-            ></StarRating>
+            <View style={styles.setare}>
+              <StarRating
+                starSize={25}
+                disabled={true}
+                fullStarColor={"#b31414"}
+                rating={props.rate_value == 0 ? 3 : props.rate_value}
+              ></StarRating>
+            </View>
           </View>
         </View>
         <View style={styles.details}>
@@ -168,6 +170,10 @@ const Shop = (props) => {
 const styles = StyleSheet.create({
   hozuri: { fontSize: 20, color: "red" },
   online: { fontSize: 20, color: "green" },
+  setare: {
+    width: 30,
+    marginLeft: "20%",
+  },
   shop: {
     height: 260,
     width: "90%",
@@ -201,7 +207,7 @@ const styles = StyleSheet.create({
     height: "75%",
     alignSelf: "center",
     borderRadius: 20,
-    marginTop: -20,
+    marginTop: -30,
     marginLeft: 20,
   },
   image: {
