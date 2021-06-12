@@ -19,6 +19,7 @@ import {
 import ProfileDispatcher from './ProfileDispatcher';
 import EditShopLocation from './EditShopLocation';
 import FavouriteShop from './favoriteShop';
+import FavoriteItems from './favoriteitems';
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -161,7 +162,6 @@ function LoadingPage(props) {
                 />
                 <Route path="/profile" component={ProfileDispatcher} />
                 {/* <Route exact path='/loginstore' component={LoginStore} /> */}
-                <Route path="/likes/shops" component={FavouriteShop} />
                 <Route exact path="/registerstore" component={RegisterStore} />
                 <Route path="/store/search" component={SearchResults} />
                 <Route path="/items/search" component={SearchResults} />
@@ -170,6 +170,8 @@ function LoadingPage(props) {
                 <Route path="/store/:storeid/items/search" component={SearchResults} />
                 <Route path="/store/:id" component={ShopDispatcher} />
                 <Route path="/maps" component={MapPage} />
+                <Route path="/favorites/items" component={FavoriteItems} />
+                <Route path="/favorites/shops" component={FavouriteShop} />
                 {/* <Route exact path='/Items' component={Items} /> */}
             </Switch>
         </Router>

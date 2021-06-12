@@ -143,10 +143,10 @@ return (
                 <div className="drop-item drop-a a" onClick={()=>window.location.href="/profile/order-history"} >
                   گزارش خرید
           </div>
-          <div className="drop-item drop-a a" onClick={()=>window.location.href="/likes/shops"} >
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/favorites/shops"} >
                  فروشگاه‌های برگزیده شما
           </div>
-          <div className="drop-item drop-a a" onClick={()=>window.location.href="/likes/items"} >
+          <div className="drop-item drop-a a" onClick={()=>window.location.href="/favorites/items"} >
                   کالاهای برگزیده شما
           </div>
                 <div className="drop-item drop-a a" onClick={() => logout()} >
