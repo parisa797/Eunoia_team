@@ -9,4 +9,10 @@ urlpatterns = [
     path('users/profile/likeditems', UserItem.as_view()),
     path('users/profile/likedshops', UserShop.as_view()),
     path('users/profile/map/<int:pk>', MapUserAPIView.as_view()),
+    path('users/profile/coins/', CreateCoins.as_view()),
+    path('users/profile/coins/<pk>', CoinInfo.as_view()),
+    path('users/profile/coins/<pk>/update', CoinUpdate.as_view()),
+    path('users/shopping-with-coins/special-item/<int:pk>', ShoppingWithCoinListCreate.as_view()),
+    path('users/shopping-with-coins/shopping-list/list/', ShoppingWithCoinListList.as_view()),
+    path('users/shopping-with-coins/shopping-list/<int:pk>', ShoppingWithCoinListRetrieve.as_view()),
 ]

@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'rest_framework_gis',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -42,8 +41,6 @@ INSTALLED_APPS = [
     'django_jalali',
     'persiantools',
     'shoppings',
-    # 'djgeojson',
-    # 'rest_framework.gis',
 ]
 
 # defaults

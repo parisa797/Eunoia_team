@@ -1,5 +1,6 @@
 from django.db import models
 from rest_framework.authtoken.models import Token
+#from items.models import SpecialItem
 #from phone_field import PhoneField
 
 # Create your models here.
@@ -21,3 +22,17 @@ class MyUser(AbstractUser): ### ?
     phone=models.CharField(blank=True,max_length=13)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
     latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+
+class Coins(models.Model):
+    rank_choices = [('gold', 'gold'),
+                    ('silver', 'silver'),
+                    ('bronze', 'bronze'),
+                    ('none', 'none'), ]
+    rank = models.CharField(max_length=50, choices=rank_choices, default='none')
+    money=models.IntegerField(default=0,blank=True,null=True)
+    user=models.ForeignKey(MyUser,blank=True, null=True, on_delete=models.CASCADE, related_name='usercoins')
+    last_buy=models.DateTimeField(auto_now_add=False,blank=True, null=True)
+
+class ShoppingWithCoin(models.Model):
+    coin = models.ForeignKey(Coins, blank=True, null=True, on_delete=models.CASCADE, related_name='coinshop')
+    special_item = models.ForeignKey("items.SpecialItem", blank=True, null=True, on_delete=models.CASCADE, related_name='Specialitemforbuy')

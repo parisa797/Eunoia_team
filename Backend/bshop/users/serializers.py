@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+#from items.serializers import SepcialItemSerializer
 
 
 class ProfilePicserializer(serializers.ModelSerializer):
@@ -42,3 +43,17 @@ class RestProfileserializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
         fields = ['files', 'urls','FirstName','LastName','username','role','phone','address', 'password','email','id','longitude','latitude']
+
+class CoinSerializer(serializers.ModelSerializer):
+    UserInfo=Profileserializer(source='user', read_only=True)
+    class Meta:
+        model = Coins
+        fields = '__all__'
+
+class ShoppingWithCoinSerializer(serializers.ModelSerializer):
+    coinInfo=CoinSerializer(source='coin', read_only=True)
+    specialItemInfo=serializers.RelatedField(read_only=True)
+    #specialItemInfo=SepcialItemSerializer(source='special_item', read_only=True)
+    class Meta:
+        model = ShoppingWithCoin
+        fields = '__all__'

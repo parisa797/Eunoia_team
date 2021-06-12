@@ -25,8 +25,6 @@ urlpatterns = [
     path('items/category/cheap/<int:pk>', CheapFilterItemOneShopListAPIView.as_view()),
     path('items/category/new/<int:pk>', NewFilterItemOneShopListAPIView.as_view()),
     path('items/category/discount/<int:pk>', DiscountsFilterItemOneShopListAPIView.as_view()),
-    path('items/brand/', FilterBrandItemListAPIView.as_view()),
-    path('items/brand/<int:pk>', FilterBrandItemOneShopListAPIView.as_view()),
     path('shops/<pk>/items/<id>/likes', LikeItem.as_view()),
     path('shops/<pk>/items/<id>/comments/', Comments.as_view()),
     path('shops/<pk>/items/<id>/commentsreplis', CommentReply.as_view()),
@@ -38,4 +36,11 @@ urlpatterns = [
 
     path('shops/<pk>/items/<id>/rates/', RateCreateAPIView.as_view(), name="RateCreate"),
     path('shops/<pk>/items/<id>/rates/<int:rate_id>', RateRetrieveUpdateDestroyAPIView.as_view(), name="RateRetrieveUpdateDestroy"),
+
+    path('eunoia_shops/items/', SpecialItemCreate.as_view()),
+    path('eunoia_shops/items/<int:pk>', SpecialItemRetrieveUpdateDestroyAPIView.as_view()),
+    path('eunoia_shops/items/list/', SpecialItemList.as_view()),
+    path('eunoia_shops/items/list/<int:pk>', SpecialItemRetrieveAPIView.as_view()),
+
+    path('items/<int:pk>/qr/', QRCreateAPIView.as_view()),
 ]

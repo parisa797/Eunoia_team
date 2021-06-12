@@ -5,7 +5,10 @@ from shops.models import Shop
 from users.serializers import Profileserializer
 from jalali_date import date2jalali,datetime2jalali
 from persiantools.jdatetime import JalaliDate
-
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
 
 class UsersInfoserializer(serializers.ModelSerializer):
     class Meta:
@@ -31,7 +34,6 @@ class ItemSerializer(serializers.ModelSerializer):
         temp = JalaliDate.to_gregorian(id.Expiration_Date)
         str=correct_date(temp)
         return str
-
 
     class Meta:
         model= Item
@@ -178,6 +180,16 @@ class ItemShoppnigSerializer(serializers.ModelSerializer):
         fields = ['photo', 'name', 'shop_id', 'description', 'manufacture_Date', 'Expiration_Date',
                   'manufacture_jalali', 'Expiration_jalali', 'count', 'category', 'id',
                   'discount', 'price','brand','rate_count','rate_value','price_with_discount']
+
+class SepcialItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpecialItem
+        fields = '__all__'
+
+class QRSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QR
+        fields = '__all__'
 
 def correct_date(date):
     year=date.strftime('%Y')

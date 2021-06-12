@@ -4,8 +4,6 @@ from django.db import models
 from users.models import MyUser
 from django_jalali.db import models as jmodels
 from django.apps import apps
-# from django.contrib.gis.db import models
-# from django.contrib.postgres.fields import HStoreField
 
 
 
@@ -24,7 +22,6 @@ class Shop(models.Model):
 	online = models.BooleanField(default=False,blank=True, null=True)
 	mantaghe = models.CharField(max_length = 200, blank=False)
 	shop_phone = models.CharField(max_length = 100,blank=True, null=True)
-	# location = models.PointField(null=True,blank=True,srid=4326)
 	longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 	latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 	
