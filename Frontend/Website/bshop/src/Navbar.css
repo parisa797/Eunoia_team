@@ -320,7 +320,7 @@
     display: grid;
     grid-template-columns: 20% auto;
     width: 100%;
-    padding: 5px 0;
+    padding: 5px;
     border-bottom: 1px solid var(--bg-color2-2);
 }
 
@@ -346,6 +346,7 @@
     align-self: flex-end;
     color: var(--font-color2);
     font-size:0.9rem;
+    grid-row-start: 2;
 }
 
 .custom-nav .shopping-dropdown-item .shopping-dropdown-img-holder{

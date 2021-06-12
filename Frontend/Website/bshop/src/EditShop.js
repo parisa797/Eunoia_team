@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import EditShopLogo from './EditShopLogo';
 import { Modal, Toast } from "react-bootstrap";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
 
 
 function EditShop(props) {
@@ -316,12 +317,15 @@ function EditShop(props) {
                                     <input id="prof-page-online" type="checkbox" data-testid="edit-shop-checkbox" checked={online} onChange={() => setOnline(!online)} />
                                     <label>قابلیت خرید آنلاین</label>
                                 </div>
-
-                                <div style={{ margin: "auto" }}>
+                                <div className="map-edit">
+                                    <p><LocationOnIcon />{profile.coordinates ? "آدرس روی نقشه نیز انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
+                                    <a href={`/store/${shopID}/edit-map`}>{profile.coordinates ? "تغییر آدرس روی نقشه" : "مشخص کردن آدرس روی نقشه"}</a>
+                                </div>
+                                <div style={{margin: "10px auto",width: "100%"}}>
                                     <div className="save btn" onClick={() => submitChanges()} data-testid="edit-shop-save-button" >ذخیره</div>
                                     <div className="cancel btn" onClick={() => cancelChanges()} data-testid="edit-shop-cancel-button" >لغو تغییرات</div>
                                 </div>
-
+                                
                             </div>
 
                         </form>
