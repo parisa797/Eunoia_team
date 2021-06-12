@@ -14,15 +14,20 @@ import {
   SafeAreaProvider,
   FlatList,
   ScrollView,
+  // Picker,
 } from "react-native";
 import Shop from "./shop";
 import { useIsFocused } from "@react-navigation/native";
+import ToggleSwitch from "rn-toggle-switch";
 
 export default Home = ({ navigation }) => {
   const [shops, setShops] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [search, setSearch] = useState();
+  const [searchType, setSearchType] = useState(true);
+  // const [selectedValue, setSelectedValue] = useState("java");
   const isFocused = useIsFocused();
 
   const loadProducts = useEffect(() => {
@@ -38,7 +43,7 @@ export default Home = ({ navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setShops(result);
-        console.log("homepage resu:", result);
+        // console.log("homepage resu:", result);
       })
       .catch((error) => {
         // setError(error.message);
@@ -52,11 +57,60 @@ export default Home = ({ navigation }) => {
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.inputView}>
         <TextInput
+          value={search}
+          onChangeText={(s) => setSearch(s)}
           style={styles.TextInput}
           placeholder="جستجو"
           placeholderTextColor="#000"
         />
       </View>
+      <ToggleSwitch
+        text={{
+          on: "فروشگاه",
+          off: "آیتم",
+          activeTextColor: "white",
+          inactiveTextColor: "#B7B8BA",
+        }}
+        textStyle={{ fontWeight: "bold" }}
+        color={{
+          indicator: "white",
+          active: "rgba(32, 193, 173, 1)",
+          inactive: "rgba( 247, 247, 247, 1)",
+          activeBorder: "#41B4A4",
+          inactiveBorder: "#E9E9E9",
+        }}
+        active={true}
+        disabled={false}
+        width={80}
+        radius={25}
+        onValueChange={(val) => {
+          // console.log("actual", val);
+          setSearchType(val);
+          // console.log("state type", searchType);
+        }}
+      />
+      {/* <Picker
+        selectedValue={selectedValue}
+        style={{ height: 50, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => {
+          console.log("actual", itemValue);
+          setSelectedValue(itemValue);
+          console.log("state:", selectedValue);
+        }}
+      >
+        <Picker.Item label="Java" value="java" />
+        <Picker.Item label="JavaScript" value="js" />
+      </Picker> */}
+      <TouchableOpacity
+        style={styles.Btn}
+        onPress={() => {
+          var x = { searchString: search, searchType };
+          setSearch(undefined);
+          navigation.navigate("SearchResult", x);
+        }}
+      >
+        <Text style={styles.loginText}>بگرد</Text>
+      </TouchableOpacity>
 
       <FlatList
         testID={"shops-list"}
@@ -124,5 +178,15 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  Btn: {
+    width: "40%",
+    borderRadius: 20,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 20,
+    backgroundColor: "#b31414",
   },
 });

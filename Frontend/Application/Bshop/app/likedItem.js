@@ -15,7 +15,7 @@ import {
 
 const LikedItem = (props) => {
   console.log("this is props", props);
-  var photo = "http://eunoia-bshop.ir:8000" + props.image;
+  // var photo = "http://eunoia-bshop.ir:8000" + props.image;
   var newPrice = ((100 - props.discount) * props.price) / 100;
   // console.log("correctly here");
 
@@ -27,7 +27,7 @@ const LikedItem = (props) => {
             <Image
               testID={"item-image-" + props.index}
               style={styles.image}
-              source={{ uri: photo }}
+              source={{ uri: props.image }}
             />
           )}
           {!props.image && (
