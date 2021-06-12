@@ -10,12 +10,16 @@ import ProfilePage from "./ProfilePage";
 import Login from "./login";
 import Register from "./register";
 import ShopsListPage from "./ShopsListPage";
+import MapPage from './MapPage';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
 } from "react-router-dom";
 import ProfileDispatcher from './ProfileDispatcher';
+import EditShopLocation from './EditShopLocation';
+import FavouriteShop from './favoriteShop';
+import FavoriteItems from './favoriteitems';
 
 function LoadingPage(props) {
     const [loaded, setLoaded] = useState(false)
@@ -65,7 +69,7 @@ function LoadingPage(props) {
                     return;
                 localStorage.setItem("role", res.role);
                 localStorage.setItem("username", res.user_name);
-                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/", {
+                fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/user/shoppinglists/", {
                     method: 'GET',
                     headers: {
                         "Authorization": "Token " + localStorage.getItem('token')
@@ -83,6 +87,7 @@ function LoadingPage(props) {
                         if (!!d)
                             d.forEach((e) => usersLists["" + e.shop] = e.id)
                         localStorage.setItem("shoplists", JSON.stringify(usersLists))
+                        console.log(d)
                         if (res.role === "seller") {
                             fetch("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {
                                 method: 'GET',
@@ -147,6 +152,14 @@ function LoadingPage(props) {
                         />
                     )}
                 />
+                <Route
+                    path="/profile/edit-map"
+                    render={(p) => (
+                        <EditShopLocation 
+                            type="p"
+                        />
+                    )}
+                />
                 <Route path="/profile" component={ProfileDispatcher} />
                 {/* <Route exact path='/loginstore' component={LoginStore} /> */}
                 <Route exact path="/registerstore" component={RegisterStore} />
@@ -156,6 +169,9 @@ function LoadingPage(props) {
                 <Route path="/items/" component={ItemsListPage} />
                 <Route path="/store/:storeid/items/search" component={SearchResults} />
                 <Route path="/store/:id" component={ShopDispatcher} />
+                <Route path="/maps" component={MapPage} />
+                <Route path="/favorites/items" component={FavoriteItems} />
+                <Route path="/favorites/shops" component={FavouriteShop} />
                 {/* <Route exact path='/Items' component={Items} /> */}
             </Switch>
         </Router>
