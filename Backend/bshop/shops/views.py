@@ -485,7 +485,7 @@ class CommentReply(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_object(self):
-        comment = Comment.objects.all()
+        comment = Comment.objects.filter(shop=self.kwargs.get('id'))
         return comment
 
     def list(self, request, *args, **kwargs):

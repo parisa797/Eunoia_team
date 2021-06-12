@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import mixins
 from rest_framework import generics
 from .serializers import *
-from .models import Item
+from .models import *
 from users.models import MyUser
 from shops.models import Shop
 from django.db.models import Q
@@ -20,6 +20,7 @@ from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta
 from jalali_date import date2jalali
 from persiantools.jdatetime import JalaliDate
+from rest_framework.permissions import  IsAdminUser
 
 
 # from django.http import HttpResponse
@@ -668,7 +669,7 @@ class CommentReply(generics.ListAPIView):
     #pagination_class = PageNumberPagination
 
     def get_object(self):
-        comment = Comment.objects.all()
+        comment = Comment.objects.filter(ItemID=self.kwargs.get('id'))
         return comment
 
     def list(self, request, *args, **kwargs):
@@ -719,4 +720,56 @@ class RateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         instance.rate = request.data.get('rate', instance.rate)
         instance.save()
         serializer = RateSerializer(instance)
+        return Response(serializer.data)
+
+#######################SpecialItem####################
+class SpecialItemCreate(generics.CreateAPIView):
+    queryset = SpecialItem.objects.all()
+    serializer_class = SepcialItemSerializer
+    permission_classes = [IsAdminUser,IsAuthenticated] ### baraye get male hamash
+
+class SpecialItemList(generics.ListAPIView):
+    queryset = SpecialItem.objects.all()
+    serializer_class = SepcialItemSerializer
+    permission_classes = [AllowAny]
+
+class SpecialItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SpecialItem.objects.all()
+    serializer_class = SepcialItemSerializer
+    permission_classes = [IsAdminUser, IsAuthenticated]
+
+class SpecialItemRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = SpecialItem.objects.all()
+    serializer_class = SepcialItemSerializer
+    permission_classes = [AllowAny]
+
+#######################QR for Item####################
+class QRCreateAPIView(generics.ListCreateAPIView):
+    queryset = QR.objects.all()
+    serializer_class = QRSerializer
+    permission_classes = [QRIsOwner]
+
+    def get_object(self):
+        item = Item.objects.get(id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, item)
+        return item
+
+    def perform_create(self, serializer):
+        item=self.get_object()
+        serializer.save(item=item)
+
+    def create(self, request, *args, **kwargs):
+        item=self.get_object()
+        if QR.objects.filter(item=item).exists():
+            return Response(data="You made QR before", status=status.HTTP_400_BAD_REQUEST)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        item=self.get_object()
+        qr=QR.objects.filter(item=item)
+        serializer = QRSerializer(qr, many=True)
         return Response(serializer.data)
