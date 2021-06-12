@@ -13,12 +13,12 @@ import {
   ScrollView,
 } from "react-native";
 
-const Item = (props) => {
+const LikedItem = (props) => {
   console.log("this is props", props);
   var photo = "http://eunoia-bshop.ir:8000" + props.image;
-  // console.log("photo url is", props.image);
   var newPrice = ((100 - props.discount) * props.price) / 100;
-  //   console.log("this is new price", newPrice);
+  // console.log("correctly here");
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={props.onSelect} useForeground>
@@ -42,6 +42,10 @@ const Item = (props) => {
           style={{ fontSize: 20, fontWeight: "bold" }}
         >
           {props.name}
+        </Text>
+
+        <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          {props.shop.title}
         </Text>
 
         {/* <View style={styles.rows}> */}
@@ -87,25 +91,9 @@ const Item = (props) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    // borderRadius: 10,
     marginTop: "12%",
     backgroundColor: "white",
   },
-  //   rows: {
-  //     borderRadius: 10,
-  //     marginTop: 15,
-  //     borderRadius: 10,
-  //     shadowColor: "black",
-  //     shadowOpacity: 0.26,
-  //     shadowOffset: { width: 0, height: 2 },
-  //     elevation: 5,
-  //     backgroundColor: "red",
-  //     height: 40,
-  //     width: 150,
-  //     marginLeft: 18,
-  //     fontWeight: "bold",
-  //     fontSize: 25,
-  //   },
 
   items: {
     height: 210,
@@ -133,4 +121,4 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
 });
-export default Item;
+export default LikedItem;

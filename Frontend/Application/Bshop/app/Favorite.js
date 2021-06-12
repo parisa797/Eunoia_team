@@ -15,36 +15,43 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
-import Item from "./item";
+import * as SecureStore from "expo-secure-store";
+import { useIsFocused } from "@react-navigation/native";
+import LikedItem from "./likedItem";
 
-const Favorite = ({ navigation }) => {
+const FavoriteItems = ({ navigation }) => {
   // console.log(route.params);
-
   const [shopitems, setItems] = useState();
-  const loadProducts = useEffect(() => {
-    var requestOptions = {
-      method: "GET",
-      redirect: "follow",
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const getLikedItems = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch(
+        "http://eunoia-bshop.ir:8000/users/profile/likeditems",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setItems(result);
+          console.log(result);
+        })
+        .catch((error) => console.log("error", error));
     };
-    var url = "http://eunoia-bshop.ir:8000/shops/5/items/";
-    // console.log("used this url", url);
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setItems(result);
-        // console.log(result);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }, []);
+    getLikedItems();
+  }, [isFocused]);
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={styles.uppage}>
-        <Text style={styles.uppagetext}>محصولات فروشگاه</Text>
-      </View>
-      <Text style={{ fontWeight: "bold" }}></Text>
       {shopitems && (
         <FlatList
           // testID={"items-list" + props.index}
@@ -55,17 +62,17 @@ const Favorite = ({ navigation }) => {
           renderItem={(itemData) => {
             // console.log("item is", itemData.item);
             return (
-              <Item
+              <LikedItem
                 name={itemData.item.name}
                 image={itemData.item.photo}
                 price={itemData.item.price}
                 discount={itemData.item.discount}
                 index={itemData.item.id}
-                onPress={() => {
-                  console.log("click me");
-                  navigation.navigate("Home");
+                shop={itemData.item.ItemShop}
+                onSelect={() => {
+                  navigation.navigate("ItemDetail", itemData.item);
                 }}
-              ></Item>
+              ></LikedItem>
             );
           }}
         />
@@ -212,4 +219,4 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
 });
-export default Favorite;
+export default FavoriteItems;

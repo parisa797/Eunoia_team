@@ -38,7 +38,7 @@ export default Home = ({ navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setShops(result);
-        console.log(result);
+        console.log("homepage resu:", result);
       })
       .catch((error) => {
         // setError(error.message);

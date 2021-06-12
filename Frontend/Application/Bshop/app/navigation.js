@@ -9,7 +9,8 @@ import Home from "./homepage";
 import ShopDetail from "./shopDetails";
 import ItemDetail from "./ItemDetail";
 import PersonalInfo from "./PersonalInfo";
-import Favorite from "./Favorite";
+import FavoriteItems from "./Favorite";
+import FavoriteShops from "./FavoriteShops";
 import Comment from "./comment";
 import ItemComment from "./itemComment";
 
@@ -29,8 +30,7 @@ const NavigationDrawerStructure = (props) => {
         {/*Donute Button Image */}
         <Image
           source={{
-            uri:
-              "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
           }}
           style={{ width: 25, height: 25, marginLeft: 15 }}
         />
@@ -110,6 +110,7 @@ const Profile = ({ navigation }) => {
     </Stack.Navigator>
   );
 };
+
 const Favoritelist = ({ navigation }) => {
   return (
     <Stack.Navigator
@@ -129,7 +130,7 @@ const Favoritelist = ({ navigation }) => {
     >
       <Stack.Screen
         name="کالا های موردعلاقه"
-        component={Favorite}
+        component={FavoriteItems}
         options={{
           title: " ", //Set Header Title
         }}
@@ -137,7 +138,8 @@ const Favoritelist = ({ navigation }) => {
     </Stack.Navigator>
   );
 };
-const FavoriteShops = ({ navigation }) => {
+
+const FavoriteShopsPage = ({ navigation }) => {
   return (
     <Stack.Navigator
       initialRouteName="favoriteShops"
@@ -156,7 +158,7 @@ const FavoriteShops = ({ navigation }) => {
     >
       <Stack.Screen
         name="فروشگاه های موردعلاقه"
-        component={Favorite}
+        component={FavoriteShops}
         options={{
           title: " ", //Set Header Title
         }}
@@ -164,6 +166,7 @@ const FavoriteShops = ({ navigation }) => {
     </Stack.Navigator>
   );
 };
+
 export const Sidebar = () => {
   return (
     // <Drawer.Navigator drawerPosition="right">
@@ -193,12 +196,12 @@ export const Sidebar = () => {
         component={Favoritelist}
       />
       <Drawer.Screen
-        name="favoriteShops"
+        name="favoriteShopspage"
         options={{
           drawerLabel: "فروشگاه های موردعلاقه",
           activeTintColor: "#e91e63",
         }}
-        component={FavoriteShops}
+        component={FavoriteShopsPage}
       />
     </Drawer.Navigator>
   );

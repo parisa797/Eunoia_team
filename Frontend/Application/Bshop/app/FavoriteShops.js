@@ -15,57 +15,65 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
-import Item from "./item";
+import { useIsFocused } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import Shop from "./shop";
 
 const FavoriteShops = ({ navigation }) => {
-  // console.log(route.params);
+  const [shops, setShops] = useState();
+  const isFocused = useIsFocused();
 
-  const [shopitems, setItems] = useState();
-  const loadProducts = useEffect(() => {
-    var requestOptions = {
-      method: "GET",
-      redirect: "follow",
+  useEffect(() => {
+    const getLikedShops = async () => {
+      console.log("yes in shops!");
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch(
+        "http://eunoia-bshop.ir:8000/users/profile/likedshops",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setShops(result);
+          console.log(result);
+        })
+        .catch((error) => console.log("error", error));
     };
-    var url = "http://eunoia-bshop.ir:8000/shops/5/items/";
-    // console.log("used this url", url);
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        setItems(result);
-        // console.log(result);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  }, []);
+    getLikedShops();
+  }, [isFocused]);
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={styles.rows}>
-        <Text style={styles.rowstext}>محصولات فروشگاه</Text>
-      </View>
-      <Text style={{ fontWeight: "bold" }}></Text>
-      {shopitems && (
+      {shops && (
         <FlatList
           // testID={"items-list" + props.index}
           nestedScrollEnabled={true}
           style={{ marginTop: -30 }}
-          data={shopitems}
+          data={shops}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
             // console.log("item is", itemData.item);
             return (
-              <Item
-                name={itemData.item.name}
-                image={itemData.item.photo}
-                price={itemData.item.price}
-                discount={itemData.item.discount}
+              <Shop
+                title={itemData.item.title}
+                address={itemData.item.address}
+                image={itemData.item.logo}
+                rate_value={itemData.item.rate_value}
+                online={itemData.item.online}
+                phone={itemData.item.phone}
                 index={itemData.item.id}
-                onPress={() => {
-                  console.log("click me");
-                  navigation.navigate("Home");
+                onSelect={() => {
+                  navigation.navigate("ShopDetail", itemData.item);
                 }}
-              ></Item>
+              ></Shop>
             );
           }}
         />
