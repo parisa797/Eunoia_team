@@ -83,3 +83,17 @@ class UserShop(generics.ListAPIView):
         shop = self.get_object()
         serializer = ShopSerializer(shop, many=True)
         return Response(serializer.data)
+
+class MapUserAPIView(generics.UpdateAPIView):
+
+    queryset = MyUser.objects.all()
+    serializer_class = Profileserializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.longitude = request.data.get('longitude', instance.longitude)
+        instance.latitude = request.data.get('latitude', instance.latitude)
+        instance.save()
+        serializer = Profileserializer(instance)
+        return Response(serializer.data)
+    

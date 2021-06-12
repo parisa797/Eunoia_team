@@ -24,6 +24,24 @@ class ShopSerializer(serializers.ModelSerializer):
         model = Shop 
         fields = '__all__'
 
+# class MapSerializer(GeoFeatureModelSerializer):
+
+#     class Meta:
+#         model = Shop
+#         geo_field = 'location'
+#         auto_bbox = True
+#         fields = '__all__'
+# class MapSerializer(GeoJSONSerializer):
+#     # def get_dump_object(self, obj):
+#     #     data = super(MapSerializer, self).get_dump_object(obj)
+#     #     # Extend to your taste
+#     #     data.update(id=obj.pk)
+#     #     return data
+#     class Meta: 
+#         model = Shop 
+#         fields = '__all__'
+
+
 class CommentSerializer(serializers.ModelSerializer): 
 
     comments_user = serializers.RelatedField(read_only=True)

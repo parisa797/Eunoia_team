@@ -25,6 +25,8 @@ urlpatterns = [
     path('items/category/cheap/<int:pk>', CheapFilterItemOneShopListAPIView.as_view()),
     path('items/category/new/<int:pk>', NewFilterItemOneShopListAPIView.as_view()),
     path('items/category/discount/<int:pk>', DiscountsFilterItemOneShopListAPIView.as_view()),
+    path('items/brand/', FilterBrandItemListAPIView.as_view()),
+    path('items/brand/<int:pk>', FilterBrandItemOneShopListAPIView.as_view()),
     path('shops/<pk>/items/<id>/likes', LikeItem.as_view()),
     path('shops/<pk>/items/<id>/comments/', Comments.as_view()),
     path('shops/<pk>/items/<id>/commentsreplis', CommentReply.as_view()),

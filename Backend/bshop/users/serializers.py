@@ -20,7 +20,7 @@ class Profileserializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='username', read_only=True)
     class Meta:
         model = MyUser
-        fields = ['files', 'urls','FirstName','LastName','user_name','role','phone','address', 'pass_word','email','id']
+        fields = ['files', 'urls','FirstName','LastName','user_name','role','phone','address', 'pass_word','email','id','longitude','latitude']
 
     def update(self, instance, validated_data): #baraye oon se ta field be inja nemirese
         #print(validated_data)
@@ -41,4 +41,4 @@ class RestProfileserializer(serializers.ModelSerializer):
     #user_name = serializers.CharField(source='username', read_only=True)
     class Meta:
         model = MyUser
-        fields = ['files', 'urls','FirstName','LastName','username','role','phone','address', 'password','email','id']
+        fields = ['files', 'urls','FirstName','LastName','username','role','phone','address', 'password','email','id','longitude','latitude']
