@@ -5,7 +5,6 @@ exports[`Home page with shops be tested renders correctly 1`] = `
   nestedScrollEnabled={true}
   style={
     Object {
-      "backgroundColor": "#fff",
       "flex": 1,
       "marginBottom": "5%",
       "marginTop": "5%",
@@ -19,7 +18,7 @@ exports[`Home page with shops be tested renders correctly 1`] = `
           "alignContent": "center",
           "alignItems": "center",
           "alignSelf": "center",
-          "backgroundColor": "#f1f1f2",
+          "backgroundColor": "#fff",
           "borderRadius": 10,
           "height": 45,
           "marginBottom": "5%",
