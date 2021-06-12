@@ -4,6 +4,10 @@ from shops.models import Shop
 from django_jalali.db import models as jmodels
 from django.apps import apps
 from django.db.models import Avg
+import qrcode
+from io import BytesIO
+from django.core.files import File
+from PIL import Image, ImageDraw
 
 
 # Create your models here.
@@ -46,10 +50,6 @@ class Item(models.Model):
             return 0
         return Rate.objects.filter(item_id=self.id).aggregate(Avg('rate'))['rate__avg']
 
-    # def __str__(self):
-    #     return self.name
-
-
 class Comment(models.Model):
     user = models.ForeignKey(MyUser,related_name='user_comment_item',on_delete=models.CASCADE,blank=True)
     text = models.TextField()
@@ -89,3 +89,28 @@ class Rate(models.Model):
 
     def str(self):
         return self.item
+
+class SpecialItem(models.Model):
+    name = models.CharField(max_length=50)
+    photo = models.ImageField(upload_to='specialitems/' , max_length=100 , null=True, blank=True)
+    description = models.TextField(blank=True)
+    price = models.IntegerField(default=200, blank=True)
+
+
+class QR(models.Model):
+    item = models.ForeignKey(Item,related_name='qr_item',on_delete=models.CASCADE,blank=True,null=True)
+    qr_code = models.ImageField(upload_to='items/qr_codes/', blank=True,null=True)
+
+    def save(self, *args, **kwargs):
+        sh=str(self.item.shopID).split("(")[1].split(")")[0]
+        #it=str(self.item.id).split("(")[1].split(")")[0]
+        string='shops/'+sh+'/items/'+str(self.item.id)
+        qrcode_img = qrcode.make(string)
+        canvas = Image.new('RGB', (360, 360), 'white')
+        canvas.paste(qrcode_img)
+        fname = f'qr_code-{self.item.id}.png'
+        buffer = BytesIO()
+        canvas.save(buffer,'PNG')
+        self.qr_code.save(fname, File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kwargs)

@@ -31,4 +31,5 @@ urlpatterns = [
     path('<id>/comments/<cm_id>/replies', views.Replies.as_view()),
     path('<id>/comments/<cm_id>/replies/<re_id>', views.ReplyInfo.as_view()),
     path('<id>/comments/<cm_id>/replies/<re_id>/likes', views.LikeReply.as_view()),
+    path('map/<int:pk>', views.MapAPIView.as_view()),
 ]

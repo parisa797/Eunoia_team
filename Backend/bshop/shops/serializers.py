@@ -24,6 +24,8 @@ class ShopSerializer(serializers.ModelSerializer):
         model = Shop 
         fields = '__all__'
 
+
+
 class CommentSerializer(serializers.ModelSerializer): 
 
     comments_user = serializers.RelatedField(read_only=True)
