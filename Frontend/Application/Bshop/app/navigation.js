@@ -14,6 +14,7 @@ import FavoriteShops from "./FavoriteShops";
 import Comment from "./comment";
 import ItemComment from "./itemComment";
 import SearchResult from "./search";
+import SearchItemShop from "./serchItemShop";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -83,6 +84,11 @@ const AppStack = ({ navigation }) => {
       <Stack.Screen
         name="SearchResult"
         component={SearchResult}
+        options={{ title: "نتایج جستجو" }}
+      />
+      <Stack.Screen
+        name="SearchShopItems"
+        component={SearchItemShop}
         options={{ title: "نتایج جستجو" }}
       />
     </Stack.Navigator>

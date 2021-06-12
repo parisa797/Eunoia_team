@@ -23,7 +23,6 @@ import Item from "./item";
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
   const [search, setSearch] = useState();
-  const [searchType, setSearchType] = useState(true);
   const isFocused = useIsFocused();
   const [shopitems, setItems] = useState();
   const [star_rates, setRates] = useState(route.params.rate_value);
@@ -167,6 +166,16 @@ const ShopDetail = ({ route, navigation }) => {
           placeholderTextColor="#000"
         />
       </View>
+      <TouchableOpacity
+        style={styles.Btn}
+        onPress={() => {
+          var x = { searchString: search, shopID: route.params.id };
+          setSearch(undefined);
+          navigation.navigate("SearchResult", x);
+        }}
+      >
+        <Text style={styles.loginText}>بگرد</Text>
+      </TouchableOpacity>
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -251,8 +260,6 @@ const ShopDetail = ({ route, navigation }) => {
             )}
           />
         )}
-
-        {/* </ImageBackground> */}
       </View>
     </ScrollView>
   );
@@ -435,6 +442,16 @@ const styles = StyleSheet.create({
     // width: "50%",
     // height: "50%",
     marginBottom: "5%",
+  },
+  Btn: {
+    width: "40%",
+    borderRadius: 20,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 20,
+    backgroundColor: "#b31414",
   },
 });
 export default ShopDetail;
