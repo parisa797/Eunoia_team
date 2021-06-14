@@ -4,16 +4,21 @@ import { act } from "react-dom/test-utils";
 import Shop from './Shop';
 import '@testing-library/jest-dom';
 const fetchMock = require('fetch-mock-jest');
+import * as Snackbar from 'notistack';
 
-
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
 // jest.useFakeTimers()
-
 let container = null;
 beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement("div");
     document.body.appendChild(container);
     global.window = Object.create(window);
+
+    //mocking snackbar
+  jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({enqueueSnackbar:enqueueSnackbarMock, closeSnackbar:closeSnackbarMock}))
+
     const url = "/store/1";
     Object.defineProperty(window, 'location', {
         value: {
@@ -67,6 +72,8 @@ test("shop and shop ratings for unsigned users", async () => {
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/board/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/users/profile/likedshops",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
         .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])
@@ -100,6 +107,8 @@ test("shop and shop ratings for signed (buyer) users", async () => {
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/board/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/users/profile/likedshops",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
         .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
@@ -132,6 +141,8 @@ test("shop and shop ratings for shop owner", async () => {
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1/commentsreplis",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/comment/list/1", [])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/api/v1/shops/board/list/1", [])
+        .get("http://eunoia-bshop.ir:8000/users/profile/likedshops",[])
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", shop)
         .get("http://eunoia-bshop.ir:8000/shops/1/items/", [])
         .get("http://eunoia-bshop.ir:8000/items/category/1?q=Fruits and vegetables", [])

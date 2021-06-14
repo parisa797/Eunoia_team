@@ -224,12 +224,12 @@ function ShopComments(props) {
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
-                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>
+                            <p className="shop-comment-date">
                                 <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
                                     {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
                             </p>
-                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
+                            <p className="shop-comment-date">{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
                             {selfComments.includes(comment.id) && <div className="comment-edit-delete" data-testid={"comment-edit-delete-options"+comment.id}>
                                 <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
                                 <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>

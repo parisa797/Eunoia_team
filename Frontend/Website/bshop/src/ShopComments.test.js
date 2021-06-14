@@ -30,10 +30,10 @@ afterEach(() => {
 
 test("shop comments section for unsigned users", async () => {
     const comments = [
-    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2},
-    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shopو فارسی هم بلدم", id:3},
-    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4},
+    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shopو فارسی هم بلدم", id:3, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4, AllPeopleLiked:[{Liked_By:[]}] },
 ]
     var page;
     //2 is for comments
@@ -64,10 +64,10 @@ test("shop comments section for unsigned users", async () => {
 test("shop comments section for the owner", async () => {
     localStorage.setItem('username',"the owner")
     const comments = [
-    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2},
-    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3},
-    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4},
+    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4, AllPeopleLiked:[{Liked_By:[]}] },
 ]
     var page;
     //2 is for comments
@@ -96,11 +96,11 @@ test("shop comments section for the owner", async () => {
 test("shop comments section for logged in users", async () => {
     localStorage.setItem('username',"someone")
     const comments = [
-    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2}, //this comment is for the user
-    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3},
-    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"idk** what# else to type", id:5}, //this comment is for the user
+    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] }, //this comment is for the user
+    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"idk** what# else to type", id:5, AllPeopleLiked:[{Liked_By:[]}] }, //this comment is for the user
 ]
     var page;
     //2 is for comments
@@ -149,11 +149,11 @@ test("shop with no comments", async () => {
 test("edit comment", async () => {
     localStorage.setItem('username',"someone")
     let comments = [
-    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2}, //this comment is for the user
-    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3},
-    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"idk** what# else to type", id:5}, //this comment is for the user
+    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] }, //this comment is for the user
+    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"idk** what# else to type", id:5, AllPeopleLiked:[{Liked_By:[]}] }, //this comment is for the user
 ]
     var page;
     //2 is for comments
@@ -216,10 +216,10 @@ test("edit comment", async () => {
 test("create new comment", async () => {
     localStorage.setItem('username',"someone")
     let comments = [
-    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
-    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2}, //this comment is for the user
-    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3},
-    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4}
+    {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] }, //this comment is for the user
+    {user:{user_name:"another_one"}, date_jalali:"1402-12-29 13:03", text:"i love this shop و فارسی هم بلدم", id:3, AllPeopleLiked:[{Liked_By:[]}] },
+    {user:{user_name:"another_person"}, date_jalali:"1401-12-29 13:03", text:"i love this shop", id:4, AllPeopleLiked:[{Liked_By:[]}] }
 ]
     let last_id = 4;
     var page;
@@ -234,7 +234,7 @@ test("create new comment", async () => {
         })
         .post("http://eunoia-bshop.ir:8000/api/v1/shops/comment/create/", (url,options)=>{
             last_id += 1;
-            comments.push({user:{user_name:"someone"}, date_jalali:"1400-03-20 13:03", text: options.body.get('text'), id:last_id})
+            comments.push({user:{user_name:"someone"}, date_jalali:"1400-03-20 13:03", text: options.body.get('text'), id:last_id, AllPeopleLiked:[{Liked_By:[]}]})
             return 201;
         })
         .delete("http://eunoia-bshop.ir:8000/api/v1/shops/comment/*", {status:204})
