@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import './Shop.css';
 import ShopSideBar from './ShopSideBar';
 import ReactStars from "react-rating-stars-component";
-import Carousel from 'react-bootstrap/Carousel';
 import EditIcon from '@material-ui/icons/Edit';
 import ItemCard from './ItemCard';
 import SearchIcon from '@material-ui/icons/Search';
@@ -14,11 +13,11 @@ import ShopComments from './ShopComments'
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import SearchBar from './SearchBar';
 import Itemslist from './ItemsList';
+import ShopBoard from './ShopBoard';
 import { IconButton } from '@material-ui/core';
 
 
 function Shop(props) {
-    const [board, setBoard] = useState([{ image: "/special-offer.jpg" }, { image: "/پیشنهاد-ویزه-وجین-Copy.jpg" }])
     const [shopInfo, setShopInfo] = useState({})
     const [allItems, setAllItem] = useState([])
     const [discountedItems, setDiscountedItem] = useState([])
@@ -229,7 +228,7 @@ function Shop(props) {
                                         </div>
                             <> <p style={{ direction: "ltr" }} data-testid={"shop-rate-value"}>امتیاز: {shopInfo.rate_value?Math.round(shopInfo.rate_value * 10) / 10 :0} </p>
                                     {!!shopInfo.rate_value && <ReactStars
-                                        edit={props.userState!=="u"}
+                                        edit={props.userState==="l"}
                                         value={Math.round(shopInfo.rate_value)}
                                         isHalf={false}
                                         classNames="stars"
@@ -239,7 +238,7 @@ function Shop(props) {
                                         activeColor={"var(--primary-color)"}
                                     />}
                                     {!shopInfo.rate_value && <ReactStars
-                                        edit={!!localStorage.getItem("token")}
+                                        edit={props.userState==="l"}
                                         value={0}
                                         isHalf={false}
                                         classNames="stars"
@@ -264,7 +263,7 @@ function Shop(props) {
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
                                 <p> (منطقه {shopInfo.mantaghe}) </p>
-                                <a href="/">نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
+                                <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
                             </div>}
                         </div>
                     </div>
@@ -274,21 +273,7 @@ function Shop(props) {
                 <SearchBar thisShop={shopID}  id="shop"/>
                 </div>
                 <div className="page-contents-item">
-                    <Carousel interval={null} className="carousel">
-                        {board.map((item, i) => {
-                            if (item)
-                                return (<Carousel.Item key={i} className="board-item">
-                                    <div className="img-container">
-                                        <img src={item.image} alt="board item" />
-                                    </div>
-                                    <Carousel.Caption>
-                                        <h5>{item.title}</h5>
-                                        <p>{item.description}</p>
-                                    </Carousel.Caption>
-                                </Carousel.Item>)
-                        })}
-                    </Carousel>
-                    {props.userState === "m" && <a className="edit-board" href="">{!!board && board.length === 0 ? "بورد شما خالی است. ساخت بورد" : "ویرایش بورد"}</a>}
+                    <ShopBoard shopID={shopID} userState={props.userState}/>
                 </div>
                 {(allItems?.length > 0) && <><h4 className="header"><span className="header-span">همه کالاها</span></h4>
                     {/* <div className="page-contents-item"> */}
