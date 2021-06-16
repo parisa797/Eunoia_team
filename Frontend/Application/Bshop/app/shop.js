@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -13,16 +13,105 @@ import StarRating from "react-native-star-rating";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import * as SecureStore from "expo-secure-store";
 
 const Shop = (props) => {
+  // console.log("props for shop", props);
   const [liked, setLiked] = useState(false);
+  const [user, setUser] = useState();
+  var like_url =
+    "http://eunoia-bshop.ir:8000/api/v1/shops/" + props.index + "/likes";
+
   const shop_name = props.title.includes("فروشگاه")
     ? props.title
     : "فروشگاه " + props.title;
   const shop_add = "آدرس: " + props.address;
+
+  useEffect(() => {
+    const getUser = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setUser(result);
+          // console.log("user's info", result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+    getUser();
+  }, []);
+
+  const getLikes = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.length != 0) {
+          var likers = result[0].Liked_By;
+          for (var i = 0; i < likers.length; i++) {
+            if (likers[i].email == user.email) {
+              // console.log("i found it!");
+              setLiked(true);
+              break;
+            }
+          }
+        }
+      })
+      .catch((error) => console.log("like fetch error", error));
+  };
+
+  useEffect(() => {
+    getLikes();
+  }, [user, liked]);
+
+  const postLike = async () => {
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(like_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        setLiked(!liked);
+        console.log("like post fetch result", result);
+      })
+      .catch((error) => console.log("like post fetch error", error));
+  };
+
   return (
     <View style={styles.shop}>
-      <Pressable onPress={() => setLiked((isLiked) => !isLiked)}>
+      <Pressable
+        onPress={() => {
+          console.log("like state before change", liked);
+          postLike();
+        }}
+      >
         <MaterialCommunityIcons
           name={liked ? "heart" : "heart-outline"}
           size={32}
@@ -46,12 +135,14 @@ const Shop = (props) => {
             <Text testID={"shop-name-" + props.index} style={styles.title}>
               {shop_name}
             </Text>
-            <StarRating
-              starSize={25}
-              disabled={true}
-              fullStarColor={"#b31414"}
-              rating={props.rate_value == 0 ? 3 : props.rate_value}
-            ></StarRating>
+            <View style={styles.setare}>
+              <StarRating
+                starSize={25}
+                disabled={true}
+                fullStarColor={"#b31414"}
+                rating={props.rate_value == 0 ? 3 : props.rate_value}
+              ></StarRating>
+            </View>
           </View>
         </View>
         <View style={styles.details}>
@@ -79,6 +170,10 @@ const Shop = (props) => {
 const styles = StyleSheet.create({
   hozuri: { fontSize: 20, color: "red" },
   online: { fontSize: 20, color: "green" },
+  setare: {
+    width: 30,
+    marginLeft: "20%",
+  },
   shop: {
     height: 260,
     width: "90%",
@@ -112,7 +207,7 @@ const styles = StyleSheet.create({
     height: "75%",
     alignSelf: "center",
     borderRadius: 20,
-    marginTop: -20,
+    marginTop: -30,
     marginLeft: 20,
   },
   image: {
