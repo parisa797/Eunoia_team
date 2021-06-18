@@ -352,8 +352,8 @@ function ProfilePage(props) {
                                 }
                             </div>
                             <div className="map-edit">
-                                <p><LocationOnIcon />{profile.coordinates ? "آدرس روی نقشه نیز انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
-                                <a href="/profile/edit-map">{profile.coordinates ? "تغییر آدرس روی نقشه" : "مشخص کردن آدرس روی نقشه"}</a>
+                                <p><LocationOnIcon />{profile?.longitude && profile?.latitude ? "آدرس روی نقشه انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
+                                <a href="/profile/edit-map">{profile?.longitude && profile?.latitude ? "تغییر آدرس روی نقشه" : "مشخص کردن آدرس روی نقشه"}</a>
                             </div>
                         </form>
                     </div>

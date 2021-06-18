@@ -318,7 +318,7 @@ function EditShop(props) {
                                     <label>قابلیت خرید آنلاین</label>
                                 </div>
                                 <div className="map-edit">
-                                    <p><LocationOnIcon />{profile?.longitude && profile?.latitude ? "آدرس روی نقشه نیز انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
+                                    <p><LocationOnIcon />{profile?.longitude && profile?.latitude ? "آدرس روی نقشه انتخاب شده‌است." : "آدرسی روی نقشه انتخاب نشده‌است."}</p>
                                     <a href={`/store/${shopID}/edit-map`}>{profile?.longitude && profile?.latitude ? "تغییر آدرس روی نقشه" : "مشخص کردن آدرس روی نقشه"}</a>
                                 </div>
                                 <div style={{margin: "10px auto",width: "100%"}}>
