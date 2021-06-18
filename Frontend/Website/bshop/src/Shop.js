@@ -211,8 +211,8 @@ function Shop(props) {
                             </div>
                             <div className="title-buttons">
                                 <h3 data-testid={"shop-title"}>{shopInfo.title}</h3>
-                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
-                                    <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
+                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href = `/store/${shopID}/edit-info`}>ویرایش اطلاعات<EditIcon /></div>
+                                    <div className="btn" onClick={() => window.location.href = `/store/${shopID}/AddItem`}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
                                 <div className="col-1">
