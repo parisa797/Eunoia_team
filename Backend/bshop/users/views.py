@@ -94,6 +94,19 @@ class UserShop(generics.ListAPIView):
         serializer = ShopSerializer(shop, many=True)
         return Response(serializer.data)
 
+class MapUserAPIView(generics.UpdateAPIView):
+
+    queryset = MyUser.objects.all()
+    serializer_class = Profileserializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.longitude = request.data.get('longitude', instance.longitude)
+        instance.latitude = request.data.get('latitude', instance.latitude)
+        instance.save()
+        serializer = Profileserializer(instance)
+        return Response(serializer.data)
+
 class CreateCoins(generics.ListCreateAPIView):
     queryset = Coins.objects.all()
     serializer_class = CoinSerializer
@@ -143,7 +156,7 @@ class CoinInfo(generics.RetrieveUpdateDestroyAPIView):
     def retrieve(self, request, *args, **kwargs):
         coin = self.get_object()
         if coin == None:
-            return Response(data="item Not found", status=status.HTTP_404_NOT_FOUND)
+            return Response(data="coin Not found", status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(coin)
         return Response(serializer.data)
 
@@ -238,9 +251,45 @@ class ShoppingWithCoinListList(generics.ListAPIView):
         serializer = ShoppingWithCoinSerializer(sc, many=True)
         return Response(serializer.data)
 
-
-
 class ShoppingWithCoinListRetrieve(generics.RetrieveAPIView):
     queryset = ShoppingWithCoin.objects.all()
     serializer_class = ShoppingWithCoinSerializer
     permission_classes = [IsAuthenticated]
+
+###################Electric Wallet###############
+
+class CreateWallet(generics.CreateAPIView):
+    queryset = ElectricWallet.objects.all()
+    serializer_class = ElectricWalletSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        if ElectricWallet.objects.filter(user=self.request.user).exists():
+            return Response(data="You made Electric Wallet before", status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class WalletInfo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ElectricWallet.objects.all()
+    serializer_class = ElectricWalletSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        wallet_id = self.kwargs.get('pk')
+        wallet=ElectricWallet.objects.get(id=wallet_id)
+        return wallet
+
+    def retrieve(self, request, *args, **kwargs):
+        wallet = self.get_object()
+        if wallet == None:
+            return Response(data="wallet Not found", status=status.HTTP_404_NOT_FOUND)
+        serializer = self.get_serializer(wallet)
+        return Response(serializer.data)

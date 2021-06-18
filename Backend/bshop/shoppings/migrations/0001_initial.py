@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=100, null=True)),
                 ('online', models.BooleanField(default=False, null=True)),
                 ('max_cost', models.IntegerField(blank=True, null=True)),
-                ('delivery_time', django_jalali.db.models.jDateField(blank=True, null=True)),
+                ('delivery',models.DateTimeField(auto_now_add=False, auto_now=False, blank=True, null=True)),
                 ('shop', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='shopping_list_shop', to='shops.shop')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='shopping_list_user', to=settings.AUTH_USER_MODEL)),
             ],

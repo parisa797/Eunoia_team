@@ -20,7 +20,8 @@ class MyUser(AbstractUser): ### ?
     LastName = models.CharField(blank=True,max_length=150) #last name
     address = models.TextField(blank=True)
     phone=models.CharField(blank=True,max_length=13)
-
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
 class Coins(models.Model):
     rank_choices = [('gold', 'gold'),
@@ -35,3 +36,8 @@ class Coins(models.Model):
 class ShoppingWithCoin(models.Model):
     coin = models.ForeignKey(Coins, blank=True, null=True, on_delete=models.CASCADE, related_name='coinshop')
     special_item = models.ForeignKey("items.SpecialItem", blank=True, null=True, on_delete=models.CASCADE, related_name='Specialitemforbuy')
+
+
+class ElectricWallet(models.Model):
+    money=models.IntegerField(default=0,blank=True,null=True)
+    user=models.ForeignKey(MyUser,blank=True, null=True, on_delete=models.CASCADE, related_name='userwalllet')

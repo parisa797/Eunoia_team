@@ -91,10 +91,8 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
         instance.date = request.data.get('date', timezone.now())
         if Coins.objects.filter(user=self.request.user).exists():
             coin=Coins.objects.get(user=self.request.user)
-            print("coin",coin)
             money=coin.money
             coin.money=int(instance.sum_price*(1/10000))+money
-            print(money,"new money")
             coin.save()
         instance.save()
         serializer = AllShoppingListSerializer(instance)
