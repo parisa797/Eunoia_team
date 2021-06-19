@@ -227,7 +227,7 @@ function MapPage(props) {
                     </div>
                   )
                 })}
-                <p className="list-info">تنها فروشگاه‌هایی که مکانشان در نقشه مشخص است، در این لیست وجود دارند</p>
+                <p className="list-info">تنها فروشگاه‌هایی که مکانشان در نقشه مشخص است در این لیست وجود دارند</p>
               </div></>}
       </div>
       <div ref={mapContainer} className="map" />

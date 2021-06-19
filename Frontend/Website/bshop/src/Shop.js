@@ -263,7 +263,7 @@ function Shop(props) {
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
                                 <p> (منطقه {shopInfo.mantaghe}) </p>
-                                <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
+                                {shopInfo?.longitude && shopInfo?.latitude  && <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>}
                             </div>}
                         </div>
                     </div>
