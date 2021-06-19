@@ -63,13 +63,23 @@ jobs:
       #   working-directory: ./Backend/bshop
       #   run: python manage.py test
 
-  # package-job: # package job for building and publishing docker images
-  #   runs-on: ubuntu-latest
-  #   needs: [health-check-job] # will be fired if and only if health-check-job is passed.
-  #   if: ${{ github.event_name == 'push' }} # will be fired if the trigger event is a push event.
-  #   steps:
-  #     - name: Checkout Code # checking out code.
-  #       uses: actions/checkout@v2
+  package-job: # package job for building and publishing docker images
+    runs-on: ubuntu-latest
+    needs: [health-check-job] # will be fired if and only if health-check-job is passed.
+    steps:
+      - name: Checkout Code # checking out code.
+        uses: actions/checkout@v2
+      # - name: Zip # run migrations to create table in side car db container
+      #   working-directory: ./Backend
+      #   run: zip -r bshop23.zip bshop
+      - name: Copy folder content recursively to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: ./Backend/bshop
+          remote: /home/ubuntu/Eunoiateam2/bshop
+          host: 37.152.179.124
+          username: ubuntu
+          password: Eunoia6Team
   #     - name: Build & Publish Image # we are using a public GitHub Action to build and publish docker image to our GCR registry.
   #       uses: docker/build-push-action@v1
   #       env:
