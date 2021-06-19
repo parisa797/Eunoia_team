@@ -54,26 +54,6 @@ function ShoppingListCompletion(props) {
             if (res.ok)
                 return res.json();
         }).then(r => {
-            //you can remove these later
-            // if (!!r && !!r.shopping_list_items) {
-            //     let templist = [...r.shopping_list_items];
-            //     templist.forEach(e => {
-            //         let totalPrice;
-            //         if (e.item?.discount && parseInt(e.item.discount) > 0) {
-            //             totalPrice = parseInt(Math.round((100 - e.item.discount) * e.item.price / 100))
-            //         }
-            //         else {
-            //             totalPrice = e.item.price
-            //         }
-            //         e.totalPrice = totalPrice * e.number;
-            //         e.rawTotalPrice = e.item.price * e.number;
-            //         if (!e.item.photo)
-            //             e.item.photo = "/no-image-icon-0.jpg";
-            //     })
-            //     r.shopping_list_items = [...templist]
-            // }
-            // r.totalPrice = r.shopping_list_items.map(e => e.totalPrice).reduce((a, b) => a + b, 0)
-            // r.rawTotalPrice = r.shopping_list_items.map(e => e.rawTotalPrice).reduce((a, b) => a + b, 0)
             if (!!r) {
                 if (!r.address || !r.phone) {
                     fetch("http://eunoia-bshop.ir:8000/users/profile", {
@@ -128,11 +108,12 @@ function ShoppingListCompletion(props) {
             { str: "15 تا 18", num: "15" },
             { str: "18 تا 21", num: "18" },
         ];
-        data.push({
-            day: today.toLocaleDateString('fa-IR', options).replace(/([۰-۹])/g, token => String.fromCharCode(token.charCodeAt(0) - 1728)),
-            dayDate: today.toISOString().slice(0, 10),
-            timeranges: timeranges.filter(x => parseInt(x.num) > hour)
-        })
+        if (timeranges.filter(x => parseInt(x.num) > hour).length > 0)
+            data.push({
+                day: today.toLocaleDateString('fa-IR', options).replace(/([۰-۹])/g, token => String.fromCharCode(token.charCodeAt(0) - 1728)),
+                dayDate: today.toISOString().slice(0, 10),
+                timeranges: timeranges.filter(x => parseInt(x.num) > hour)
+            })
         for (let i = 1; i < 7; i++) {
             today = new Date();
             today.setDate(today.getDate() + i);
@@ -255,15 +236,15 @@ function ShoppingListCompletion(props) {
                         <h1 onClick={() => window.location.href = "/store/" + shopID}>فروشگاه {shopInfo.title}</h1>
                         {!!shoppingList?.max_cost ?
                             <div className="max-price">
-                                <p>محدودیت قیمت: {shoppingList.max_cost}ریال</p>
+                                <p data-testid="shopping-price-limit">محدودیت قیمت: {shoppingList.max_cost}ریال</p>
                             </div>
                             :
                             <div className="max-price">
-                                <p className="no-max-price">محدودیت قیمت ندارید</p>
+                                <p className="no-max-price" data-testid="shopping-price-limit">محدودیت قیمت ندارد</p>
                             </div>
                         }
                         <div className="price">
-                            {!!shoppingList && <h3>{shoppingList.sum_price} ریال</h3>}
+                            {!!shoppingList && <h3 data-testid="shopping-total">{shoppingList.sum_price} ریال</h3>}
                         </div>
                         <div className="btn submit-btn" onClick={() => window.location.href = "/store/" + shopID + "/shopping-list"}><ChevronRightIcon />بازگشت</div>
                     </div>
@@ -276,25 +257,25 @@ function ShoppingListCompletion(props) {
                             <p className="title">محل تحویل سفارش:</p>
                             {address.edit ?
                                 <div className="edit-form">
-                                    <textarea id="shopping-address" type="text" className="input" defaultValue={address.address} placeholder="محل تحویل سفارش را وارد کنید." />
-                                    <div className="btn submit-btn" onClick={() => submitAddressOrPhone("address")}>ذخیره</div>
+                                    <textarea id="shopping-address" data-testid="shopping-address-input" type="text" className="input" defaultValue={address.address} placeholder="محل تحویل سفارش را وارد کنید." />
+                                    <div className="btn submit-btn" data-testid="shopping-submit-address" onClick={() => submitAddressOrPhone("address")}>ذخیره</div>
                                 </div>
                                 :
                                 <div style={{ display: "inline-flex", marginBottom: "10px" }}>
-                                    <p className="content">{address.address}</p>
-                                    <p className="change-btn" onClick={() => setAddress({ edit: true, address: address.address })} > تغییر آدرس</p>
+                                    <p className="content" data-testid="shopping-address">{address.address}</p>
+                                    <p className="change-btn" data-testid="shopping-change-address" onClick={() => setAddress({ edit: true, address: address.address })} > تغییر آدرس</p>
                                 </div>
                             }
                             <p className="title">شماره تماس:</p>
                             {phone.edit ?
                                 <div className="edit-form">
-                                    <input id="shopping-phone" type="text" className="input" defaultValue={phone.phone} placeholder="شماره تلفنی را برای پیگیری سفارش وارد کنید." />
-                                    <div className="btn submit-btn" onClick={() => submitAddressOrPhone("phone")}>ذخیره</div>
+                                    <input id="shopping-phone" type="text" className="input" data-testid="shopping-phone-input" defaultValue={phone.phone} placeholder="شماره تلفنی را برای پیگیری سفارش وارد کنید." />
+                                    <div className="btn submit-btn" data-testid="shopping-submit-phone" onClick={() => submitAddressOrPhone("phone")}>ذخیره</div>
                                 </div>
                                 :
                                 <div style={{ display: "inline-flex", marginBottom: "10px" }}>
-                                    <p className="content">{phone.phone}</p>
-                                    <p className="change-btn" onClick={() => setPhone({ edit: true, phone: phone.phone })} > تغییر شماره</p>
+                                    <p className="content" data-testid="shopping-phone">{phone.phone}</p>
+                                    <p className="change-btn" data-testid="shopping-change-phone" onClick={() => setPhone({ edit: true, phone: phone.phone })} > تغییر شماره</p>
                                 </div>
                             }
 
@@ -302,9 +283,9 @@ function ShoppingListCompletion(props) {
 
                         <h2 >زمان تحویل سفارش</h2>
 
-                        <RadioGroup aria-label="delivery-date" name="date" onChange={handleDateChange}>
+                        <RadioGroup aria-label="delivery-date" name="date" data-testid="date-btn" onChange={handleDateChange}>
                             <div className="row">
-                                {dates.map(day => {
+                                {dates.map( (day, dayidx) => {
                                     return (
                                         <div className="col-12 col-sm-6 col-md-4 col-lg-3" id={day.dayDate} key={day.dayDate}>
                                             <div className="date-container">
@@ -312,9 +293,9 @@ function ShoppingListCompletion(props) {
                                                     {day.day}
                                                 </h4>
                                                 {
-                                                    day.timeranges.map(time => {
+                                                    day.timeranges.map( (time, timeidx) => {
                                                         return (
-                                                            <FormControlLabel key={time.num} className="radio-btn" value={day.dayDate + " " + time.num} control={<Radio />} label={time.str} />
+                                                            <FormControlLabel data-testid={`shopping-date-${dayidx}-${timeidx}`} key={time.num} className="radio-btn" value={day.dayDate + " " + time.num} control={<Radio />} label={time.str} />
                                                         )
                                                     })
                                                 }
@@ -325,7 +306,7 @@ function ShoppingListCompletion(props) {
 
                             </div>
                         </RadioGroup>
-                        <div className="btn sabt-btn" onClick={() => sabt()}>ثبت خرید</div>
+                        <div className="btn sabt-btn" data-testid="shopping-sabt" onClick={() => sabt()}>ثبت خرید</div>
                     </div>
                 </div>
 

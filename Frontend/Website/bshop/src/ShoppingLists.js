@@ -60,9 +60,9 @@ function ShoppingLists(props) {
                 :
                     lists.map(l =>
                         <div className="col-12 col-md-6 col-lg-4">
-                            <div className="list-holder" onClick={()=>window.location.href="/store/"+l.shop+"/shopping-list"}>
+                            <div className="list-holder" onClick={()=>window.location.href="/store/"+l.shop.id+"/shopping-list"}>
                                 <div className="list-upper">
-                                    <h3>فروشگاه شهروند</h3>
+                                    <h3>فروشگاه {l.shop.title}</h3>
                                     <p className="price">{l.sum_price} ریال</p>
                                     <p style={{textAlign:"left"}}>{l.max_cost? "محدودیت قیمت: "+l.max_cost: "محدودیت قیمت ندارد."}</p>
                                 </div>
@@ -89,9 +89,9 @@ function ShoppingLists(props) {
                 :
                     buys.map(l =>
                         <div className="col-12 col-md-6 col-lg-4">
-                            <div className="list-holder" onClick={()=>window.location.href="/store/"+l.shop+"/shopping-history/"+l.id}>
+                            <div className="list-holder" onClick={()=>window.location.href="/store/"+l.shop.id+"/shopping-history/"+l.id}>
                                 <div className="list-upper">
-                                    <h3>فروشگاه شهروند</h3>
+                                    <h3>فروشگاه {l.shop.title}</h3>
                                     <p className="price">{l.sum_price} ریال</p>
                                     <p style={{textAlign:"left"}}>{l.max_cost? "محدودیت قیمت: "+l.max_cost: "محدودیت قیمت ندارد."}</p>
                                 </div>

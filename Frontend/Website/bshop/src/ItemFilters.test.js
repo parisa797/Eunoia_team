@@ -5,7 +5,10 @@ import ItemsListPage from './ItemsListPage';
 import '@testing-library/jest-dom';
 import ServerURL from './Constants'
 const fetchMock = require('fetch-mock-jest');
+import * as Snackbar from 'notistack';
 
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
 
 let container = null;
 const items = [
@@ -39,6 +42,9 @@ beforeEach(() => {
     global.window = Object.create(window);
     localStorage.setItem("shops", JSON.stringify([1]))
     localStorage.setItem("token", "ldksjfkle")
+    //mocking snackbar
+  jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({enqueueSnackbar:enqueueSnackbarMock, closeSnackbar:closeSnackbarMock}))
+
     fetchMock
         .get("http://eunoia-bshop.ir:8000/api/v1/shops/1", { title: "shop1", id: 1 })
         .get("http://eunoia-bshop.ir:8000/items/new/", items.sort((a, b) => a.manufacture_Date > b.manufacture_Date))

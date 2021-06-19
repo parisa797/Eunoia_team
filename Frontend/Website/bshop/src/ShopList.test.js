@@ -3,7 +3,7 @@ import { render, fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import ShopList from './ShopList';
 import '@testing-library/jest-dom';
-
+import ServerURL from './Constants';
 
 
 let container = null;
@@ -129,5 +129,5 @@ test("shoplist shops contents", async () => {
     expect(page.queryByTestId("shop-address-" + i)).toHaveTextContent(shops[i].address);
     expect(page.queryByTestId("shop-rate-count" + i)).toHaveTextContent(shops[i].rate_count)
   }
-  expect(page.queryByTestId("shop-img-" + 0)).toHaveAttribute("src", shops[0].logo);
+  expect(page.queryByTestId("shop-img-" + 0)).toHaveAttribute("src", ServerURL + shops[0].logo);
 });
