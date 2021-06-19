@@ -23,11 +23,7 @@ function Itemcomment(props) {
     console.log(`"http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/comments/`);
     const handleUpdateComments = () => {
         fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/commentsreplis`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-
+            method: "GET"
         }).then(res => {
             if (res.status === 200)
                 {
@@ -172,7 +168,7 @@ function Itemcomment(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(() => handleUpdateComments())
+        }).then((res) =>{ if(res.ok) handleUpdateComments()})
     }
     const checkIsLikedByUserOrNot = (comment) => {
         const username = localStorage.getItem("username")
@@ -186,7 +182,7 @@ function Itemcomment(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(() => handleUpdateComments())
+        }).then((res) =>{ if(res.ok) handleUpdateComments()})
     }
     const checkIsReplyLikedByUser = (reply) => {
         console.log(reply);
@@ -208,7 +204,7 @@ function Itemcomment(props) {
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
-                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>
+                            <p className="shop-comment-date">
                                 <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
                                     {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
@@ -231,9 +227,11 @@ function Itemcomment(props) {
                             <IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
                                    {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                             </IconButton>
+                            </div>
+                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}-${r.id}`}>
                             {r.AllPeopleLiked[0]?.Liked_By?.length}
                             لایک 
-                            </div>
+                            </p>
                       </div>
                       <p className="shop-comment-desc" data-testid={"comment-reply-text"+r.id}>{r.text}</p>
                   </div>)}</div>

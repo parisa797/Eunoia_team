@@ -34,7 +34,8 @@
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.1.1",
     "react-native-star-rating": "^1.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "rn-toggle-switch": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

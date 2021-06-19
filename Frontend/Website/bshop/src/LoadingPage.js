@@ -69,6 +69,7 @@ function LoadingPage(props) {
                     return;
                 localStorage.setItem("role", res.role);
                 localStorage.setItem("username", res.user_name);
+                localStorage.setItem("id", res.id);
                 fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/user/shoppinglists/", {
                     method: 'GET',
                     headers: {
@@ -85,7 +86,7 @@ function LoadingPage(props) {
                     .then((d) => {
                         let usersLists = {}
                         if (!!d)
-                            d.forEach((e) => usersLists["" + e.shop] = e.id)
+                            d.forEach((e) => usersLists["" + e.shop.id] = e.id)
                         localStorage.setItem("shoplists", JSON.stringify(usersLists))
                         console.log(d)
                         if (res.role === "seller") {
