@@ -78,6 +78,19 @@ class ShopUpdateAPIView(generics.UpdateAPIView):
         serializer = ShopSerializer(instance)
         return Response(serializer.data)
 
+class MapAPIView(generics.UpdateAPIView):
+
+    queryset = Shop.objects.all()
+    serializer_class = ShopSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.longitude = request.data.get('longitude', instance.longitude)
+        instance.latitude = request.data.get('latitude', instance.latitude)
+        instance.save()
+        serializer = ShopSerializer(instance)
+        return Response(serializer.data)
+    
 
 class ShopDestroyAPIView(generics.DestroyAPIView):
 
@@ -485,7 +498,7 @@ class CommentReply(generics.ListAPIView):
     permission_classes = [AllowAny]
 
     def get_object(self):
-        comment = Comment.objects.all()
+        comment = Comment.objects.filter(shop=self.kwargs.get('id'))
         return comment
 
     def list(self, request, *args, **kwargs):

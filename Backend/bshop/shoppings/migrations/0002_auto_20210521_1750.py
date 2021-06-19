@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
             name='price',
             field=models.IntegerField(blank=True, default=0, null=True),
         ),
-        migrations.AlterField(
-            model_name='shoppinglist',
-            name='delivery_time',
-            field=django_jalali.db.models.jDateTimeField(blank=True, null=True),
-        ),
+        # migrations.AlterField(
+        #     model_name='shoppinglist',
+        #     name='delivery_time',
+        #     field=django_jalali.db.models.jDateTimeField(blank=True, null=True),
+        # ),
         migrations.AlterField(
             model_name='shoppinglist',
             name='max_cost',

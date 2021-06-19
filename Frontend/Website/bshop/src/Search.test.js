@@ -6,7 +6,10 @@ import SearchBar from './SearchBar';
 import ServerURL from './Constants';
 import '@testing-library/jest-dom';
 const fetchMock = require('fetch-mock-jest');
+import * as Snackbar from 'notistack';
 
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
 
 let container = null;
 const items = [
@@ -59,6 +62,11 @@ beforeEach(() => {
         .get("http://eunoia-bshop.ir:8000/shops/4/items/search/?q=item", searchedItemsInOneShop("item",4))
         .get("http://eunoia-bshop.ir:8000/shops/1/items/search/?q=810 من", searchedItemsInOneShop("810 من",1))
         .get("http://eunoia-bshop.ir:8000/shops/4/items/search/?q=810 من", searchedItemsInOneShop("810 من",4))
+
+            
+    //mocking snackbar
+  jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({enqueueSnackbar:enqueueSnackbarMock, closeSnackbar:closeSnackbarMock}))
+
 });
 
 afterEach(() => {
@@ -87,7 +95,7 @@ test("searched shops", async () => {
         searchedShops["sh"].forEach(async (shop, i) => {
             expect(await page.queryByTestId('shop' + shop.id)).not.toBeNull();
             expect(page.queryByTestId("shop-title-" + shop.id)).toHaveTextContent(shop.title);
-            expect(page.queryByTestId("shop-img-" + shop.id)).toHaveAttribute('src', shop.logo? shop.logo : "/shop-default-logo.png");
+            expect(page.queryByTestId("shop-img-" + shop.id)).toHaveAttribute('src', shop.logo? ServerURL + shop.logo : "/shop-default-logo.png");
             expect(page.queryByTestId("shop-address-" + shop.id)).toHaveTextContent(shop.address);
             expect(page.queryByTestId("shop-rate-count" + shop.id)).toHaveTextContent(shop.rate_count)
         })
@@ -115,7 +123,7 @@ test("searched shops2", async () => {
         searchedShops["ناکجا آبااا"].forEach(async (shop, i) => {
             expect(await page.queryByTestId('shop' + shop.id)).not.toBeNull();
             expect(page.queryByTestId("shop-title-" + shop.id)).toHaveTextContent(shop.title);
-            expect(page.queryByTestId("shop-img-" + shop.id)).toHaveAttribute('src', shop.logo? shop.logo : "/shop-default-logo.png");
+            expect(page.queryByTestId("shop-img-" + shop.id)).toHaveAttribute('src', shop.logo? ServerURL + shop.logo : "/shop-default-logo.png");
             expect(page.queryByTestId("shop-address-" + shop.id)).toHaveTextContent(shop.address);
             expect(page.queryByTestId("shop-rate-count" + shop.id)).toHaveTextContent(shop.rate_count)
         })
