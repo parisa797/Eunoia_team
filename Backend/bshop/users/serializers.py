@@ -57,3 +57,9 @@ class ShoppingWithCoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingWithCoin
         fields = '__all__'
+
+class ElectricWalletSerializer(serializers.ModelSerializer):
+    UserInfo=Profileserializer(source='user', read_only=True)
+    class Meta:
+        model = ElectricWallet
+        fields = '__all__'

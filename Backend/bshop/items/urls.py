@@ -37,10 +37,10 @@ urlpatterns = [
     path('shops/<pk>/items/<id>/rates/', RateCreateAPIView.as_view(), name="RateCreate"),
     path('shops/<pk>/items/<id>/rates/<int:rate_id>', RateRetrieveUpdateDestroyAPIView.as_view(), name="RateRetrieveUpdateDestroy"),
 
-    path('eunoia_shops/items/', SpecialItemCreate.as_view()),
-    path('eunoia_shops/items/<int:pk>', SpecialItemRetrieveUpdateDestroyAPIView.as_view()),
-    path('eunoia_shops/items/list/', SpecialItemList.as_view()),
-    path('eunoia_shops/items/list/<int:pk>', SpecialItemRetrieveAPIView.as_view()),
+    path('eunoia_shops/items/', SpecialItemCreate.as_view(),name="specialitem_create"),
+    path('eunoia_shops/items/<int:pk>', SpecialItemRetrieveUpdateDestroyAPIView.as_view(),name="specialitem_RUD"),
+    path('eunoia_shops/items/list/', SpecialItemList.as_view(),name="specialitem_list"),
+    path('eunoia_shops/items/list/<int:pk>', SpecialItemRetrieveAPIView.as_view(),name="specialitem_retrieve"),
 
-    path('items/<int:pk>/qr/', QRCreateAPIView.as_view()),
+    path('items/<int:pk>/qr/', QRCreateAPIView.as_view(),name="QR"),
 ]
