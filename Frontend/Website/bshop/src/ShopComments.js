@@ -25,11 +25,7 @@ function ShopComments(props) {
     const handleUpdateComments = () => {
         
         fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${props.shopID}/commentsreplis`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-
+            method: "GET"
         }).then(res => {
             if (res.status === 200)
                 {
@@ -212,6 +208,21 @@ function ShopComments(props) {
         console.log(temp);
         return temp > -1 ? true : false
     }
+    const handleReplyLikeComment = (reply, commentid) => {
+        fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${commentid}/replies/${reply.id}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(() => handleUpdateComments())
+    }
+    const checkIsReplyLikedByUser = (reply) => {
+        console.log(reply);
+        const username = localStorage.getItem("username")
+        const temp = reply.AllPeopleLiked[0]?.Liked_By?.findIndex(i => i?.username === username)
+        console.log(temp);
+        return temp > -1 ? true : false
+    }
     return (
     <div className="shop-comments">
         {/* { like ? <TEse style={{}}  /> :  } */}
@@ -226,27 +237,36 @@ function ShopComments(props) {
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
                             <p className="shop-comment-date">
                                 <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
-                                    {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon data-testid={`comment-liked${comment.id}`} /> : <FavoriteBorderIcon data-testid={`comment-not-liked${comment.id}`}/>}
                                 </IconButton>
                             </p>
-                            <p className="shop-comment-date">{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
+                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}`}>{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
                             {selfComments.includes(comment.id) && <div className="comment-edit-delete" data-testid={"comment-edit-delete-options"+comment.id}>
                                 <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
                                 <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
                             </div>}
-                                {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-edit-options"+comment.id} onClick={() => setIsreplying(comment.id)} > پاسخ به نظر</p>)}
+                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() => setIsreplying(comment.id)} > پاسخ به نظر</p>)}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
                     
-                    <div className="reply-comment">{!!comment.Replies && comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+r.id}>
+                    <div className="reply-comment">{!!comment.Replies && comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+comment.id+"-"+r.id}>
                         {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
-                            <p className="shop-comment-author" data-testid={"comment-reply-username"+r.id} >{r.user.user_name}</p>
-                            <p className="shop-comment-date" data-testid={"comment-reply-datetime"+r.id}>{r.date_jalali}</p>
+                            <p className="shop-comment-author" data-testid={"comment-reply-username"+comment.id+"-"+r.id} >{r.user.user_name}</p>
+                            <p className="shop-comment-date" data-testid={"comment-reply-datetime"+comment.id+"-"+r.id}>{r.date_jalali}</p>
+                            <div className="shop-comment-author">
+                            <IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
+                                   {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                            </IconButton>
+                            </div>
+                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}-${r.id}`}>
+                            {r.AllPeopleLiked[0]?.Liked_By?.length}
+                            لایک 
+                            </p>
                            
                         </div>
-                        <p className="shop-comment-desc" data-testid={"comment-reply-text"+r.id}>{r.text}</p>
+                        <p className="shop-comment-desc" data-testid={"comment-reply-text"+comment.id+"-"+r.id}>{r.text}</p>
                     </div>)}</div>
                     </> 
                 )

@@ -166,12 +166,15 @@ function Shop(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(res => res.json())
+        }).then(res => res.ok? res.json(): null)
         .then(res => {
             console.log(shopID);
-            const resp = res.findIndex(i => i.id == shopID)
+            if(!res){
+                return;
+            }
+            const resp = res.findIndex(i => i.id === shopID)
             console.log(resp);
-            if (resp > 0) setisLikedByUser(true)
+            if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
         })
     }, [])
@@ -181,20 +184,26 @@ function Shop(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        })
+        }).then(res => {
+        if(!res.ok)
+            return;
         fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(res => res.json())
+        }).then(res => res.ok? res.json(): null)
         .then(res => {
             console.log(shopID);
-            const resp = res.findIndex(i => i.id == shopID)
+            if(!res){
+                return;
+            }
+            const resp = res.findIndex(i => i.id === shopID)
             console.log(resp);
-            if (resp > 0) setisLikedByUser(true)
+            if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
         })
+    })
     }
     console.log(isLikedByUser);
     return (
