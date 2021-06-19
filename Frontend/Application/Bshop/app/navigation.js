@@ -15,6 +15,7 @@ import Comment from "./comment";
 import ItemComment from "./itemComment";
 import SearchResult from "./search";
 import SearchItemShop from "./serchItemShop";
+import FilterResult from "./filter";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -90,6 +91,11 @@ const AppStack = ({ navigation }) => {
         name="SearchShopItems"
         component={SearchItemShop}
         options={{ title: "نتایج جستجو" }}
+      />
+      <Stack.Screen
+        name="Filter"
+        component={FilterResult}
+        options={{ title: "نتایج فیلتر" }}
       />
     </Stack.Navigator>
   );
