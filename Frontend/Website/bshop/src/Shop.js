@@ -166,12 +166,15 @@ function Shop(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(res => res.json())
+        }).then(res => res.ok? res.json(): null)
         .then(res => {
-            console.log(shopID);
-            const resp = res.findIndex(i => i.id == shopID)
+            console.log(res);
+            if(!res){
+                return;
+            }
+            const resp = res.findIndex(i => parseInt(i.id) === parseInt(shopID))
             console.log(resp);
-            if (resp > 0) setisLikedByUser(true)
+            if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
         })
     }, [])
@@ -181,20 +184,26 @@ function Shop(props) {
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        })
+        }).then(res => {
+        if(!res.ok)
+            return;
         fetch(`http://eunoia-bshop.ir:8000/users/profile/likedshops`,{
             method: 'GET',
             headers: {
                 "Authorization": "Token " + localStorage.getItem('token')
             }
-        }).then(res => res.json())
+        }).then(res => res.ok? res.json(): null)
         .then(res => {
             console.log(shopID);
-            const resp = res.findIndex(i => i.id == shopID)
+            if(!res){
+                return;
+            }
+            const resp = res.findIndex(i => parseInt(i.id) === parseInt(shopID))
             console.log(resp);
-            if (resp > 0) setisLikedByUser(true)
+            if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
         })
+    })
     }
     console.log(isLikedByUser);
     return (
@@ -211,8 +220,8 @@ function Shop(props) {
                             </div>
                             <div className="title-buttons">
                                 <h3 data-testid={"shop-title"}>{shopInfo.title}</h3>
-                                {props.userState === "b" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href += "/edit-info"}>ویرایش اطلاعات<EditIcon /></div>
-                                    <div className="btn" onClick={() => window.location.href += "/AddItem"}>کالای جدید<AddIcon /></div></div>}
+                                {props.userState === "m" && <div className="edit-info" data-testid={"shop-edit-buttons"}><div className="btn" onClick={() => window.location.href = `/store/${shopID}/edit-info`}>ویرایش اطلاعات<EditIcon /></div>
+                                    <div className="btn" onClick={() => window.location.href = `/store/${shopID}/AddItem`}>کالای جدید<AddIcon /></div></div>}
                             </div>
                             <div className="rating-comment">
                                 <div className="col-1">
@@ -263,7 +272,7 @@ function Shop(props) {
                             {shopInfo.address && <div className="address">
                                 <p data-testid="shop-address">{shopInfo.address}</p>
                                 <p> (منطقه {shopInfo.mantaghe}) </p>
-                                <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>
+                                {shopInfo?.longitude && shopInfo?.latitude  && <a href={`/maps/shop?id=${shopID}`}>نمایش در نقشه<LocationOnIcon className="location-icon" /></a>}
                             </div>}
                         </div>
                     </div>

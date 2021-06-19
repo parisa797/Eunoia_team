@@ -56,6 +56,7 @@ test("loading page for signed users", async () => {
     .get("http://eunoia-bshop.ir:8000/users/profile", newUserInfo)
     .get("http://eunoia-bshop.ir:8000/api/v1/shops/user/", {})
     .get("http://eunoia-bshop.ir:8000/api/v1/shops/", [])
+    .get("http://eunoia-bshop.ir:8000/api/v1/shoppings/user/shoppinglists/", [])
     .get("http://eunoia-bshop.ir:8000/api/v1/shops/top/", [])
     .get("http://eunoia-bshop.ir:8000/api/v1/shops/region/?q=12", [])
     .get("http://eunoia-bshop.ir:8000/items/new/", [])
