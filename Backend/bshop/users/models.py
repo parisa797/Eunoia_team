@@ -36,3 +36,8 @@ class Coins(models.Model):
 class ShoppingWithCoin(models.Model):
     coin = models.ForeignKey(Coins, blank=True, null=True, on_delete=models.CASCADE, related_name='coinshop')
     special_item = models.ForeignKey("items.SpecialItem", blank=True, null=True, on_delete=models.CASCADE, related_name='Specialitemforbuy')
+
+
+class ElectricWallet(models.Model):
+    money=models.IntegerField(default=0,blank=True,null=True)
+    user=models.ForeignKey(MyUser,blank=True, null=True, on_delete=models.CASCADE, related_name='userwalllet')

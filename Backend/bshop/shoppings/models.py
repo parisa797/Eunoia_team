@@ -20,6 +20,7 @@ class ShoppingList(models.Model):
     online = models.BooleanField(default=False,blank=False, null=True)
     max_cost = models.IntegerField(default=0,blank=True, null=True)
     delivery = models.DateTimeField(auto_now_add=False,blank=True, null=True, auto_now=False)
+    wallet_boolean = models.BooleanField(default=False, blank=True,null=True)
 
     @property
     def sum_price(self):
