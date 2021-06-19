@@ -168,11 +168,11 @@ function Shop(props) {
             }
         }).then(res => res.ok? res.json(): null)
         .then(res => {
-            console.log(shopID);
+            console.log(res);
             if(!res){
                 return;
             }
-            const resp = res.findIndex(i => i.id === shopID)
+            const resp = res.findIndex(i => parseInt(i.id) === parseInt(shopID))
             console.log(resp);
             if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
@@ -198,7 +198,7 @@ function Shop(props) {
             if(!res){
                 return;
             }
-            const resp = res.findIndex(i => i.id === shopID)
+            const resp = res.findIndex(i => parseInt(i.id) === parseInt(shopID))
             console.log(resp);
             if (resp > -1) setisLikedByUser(true)
             else setisLikedByUser(false)
