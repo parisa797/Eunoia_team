@@ -208,7 +208,7 @@ function Itemcomment(props) {
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
-                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>
+                            <p className="shop-comment-date">
                                 <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
                                     {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
