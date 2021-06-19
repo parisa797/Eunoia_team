@@ -16,6 +16,7 @@ import ItemComment from "./itemComment";
 import SearchResult from "./search";
 import SearchItemShop from "./serchItemShop";
 import FilterResult from "./filter";
+import FilterPage from "./filterpage";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -33,7 +34,8 @@ const NavigationDrawerStructure = (props) => {
         {/*Donute Button Image */}
         <Image
           source={{
-            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+            uri:
+              "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
           }}
           style={{ width: 25, height: 25, marginLeft: 15 }}
         />
@@ -58,7 +60,7 @@ const AppStack = ({ navigation }) => {
           },
           headerTintColor: "#fff", //Set Header text color
           // headerTitleStyle: {
-          //   fontWeight: "bold", //Set Header text style
+          // fontWeight: "bold", //Set Header text style
           // },
         }}
       />
@@ -96,6 +98,11 @@ const AppStack = ({ navigation }) => {
         name="Filter"
         component={FilterResult}
         options={{ title: "نتایج فیلتر" }}
+      />
+      <Stack.Screen
+        name="FilterPage"
+        component={FilterPage}
+        options={{ title: " فیلتر" }}
       />
     </Stack.Navigator>
   );
@@ -226,10 +233,10 @@ export const Sidebar = () => {
 };
 
 // export const Router = () => {
-//   //More explanations about "authData" below
-//   return (
-//     <NavigationContainer>
-//       {authData ? <AppStack /> : <AuthStack />}
-//     </NavigationContainer>
-//   );
+// //More explanations about "authData" below
+// return (
+// <NavigationContainer>
+// {authData ? <AppStack /> : <AuthStack />}
+// </NavigationContainer>
+// );
 // };

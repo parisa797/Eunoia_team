@@ -103,175 +103,25 @@ export default Home = ({ navigation }) => {
           />
         </View>
 
+        {/* <TouchableOpacity
+style={styles.Btn}
+onPress={() => {
+var x = { searchString: search, searchType };
+setSearch(undefined);
+navigation.navigate("SearchResult", x);
+}}
+>
+<Text style={styles.loginText}>بگرد</Text>
+</TouchableOpacity> */}
         <TouchableOpacity
           style={styles.Btn}
           onPress={() => {
-            var x = { searchString: search, searchType };
-            setSearch(undefined);
-            navigation.navigate("SearchResult", x);
+            navigation.navigate("FilterPage");
           }}
         >
-          <Text style={styles.loginText}>بگرد</Text>
+          <Text style={styles.loginText}>vvvفیلتر</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.rows2}> */}
-      <View style={styles.selector}>
-        <Text style={styles.filterText}>فیلتر فروشگاه بر اساس </Text>
-        <View style={styles.container2}>
-          <Picker
-            selectedValue={shopFilter}
-            style={{ height: 50, width: 150, color: "white" }}
-            onValueChange={(itemValue, itemIndex) =>
-              // setSelectedValue(itemValue)
-              setShopFilter(itemValue)
-            }
-          >
-            <Picker.Item label="امتیاز" value="score" />
-            <Picker.Item label="منطقه" value="region" />
-          </Picker>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={styles.Btn}
-        onPress={() => {
-          var e = region ? p2e(region) : 0;
-          console.log("english number:", e);
-          if (
-            shopFilter == "region" &&
-            !(parseInt(e) < 23 && parseInt(e) > 0)
-          ) {
-            ToastAndroid.show(
-              "منطقه وارد شده نامعتبر است. لطفا عددی بین 1 تا 22 وارد نمایید.",
-              ToastAndroid.SHORT
-            );
-          } else {
-            var x = {
-              filterType: shopFilter,
-              shop_item: "shop",
-              region: !region ? region : p2e(region),
-            };
-            setRegion(undefined);
-            navigation.navigate("Filter", x);
-          }
-        }}
-      >
-        <Text style={styles.loginText}>فیلتر</Text>
-      </TouchableOpacity>
-      {/* </View> */}
-
-      {shopFilter == "region" && (
-        <TextInput
-          value={region}
-          onChangeText={(r) => setRegion(r)}
-          style={styles.TextInput}
-          placeholder="منطقه را وارد کنید"
-          placeholderTextColor="#000"
-        />
-      )}
-
-      {/* <View style={styles.rows2}> */}
-      <View style={styles.selector}>
-        <Text style={styles.filterText}>فیلتر آیتم بر اساس </Text>
-        <View style={styles.container2}>
-          {itemFilter != "category" && (
-            <Picker
-              selectedValue={category}
-              style={{ height: 50, width: 150, color: "white" }}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
-            >
-              {/* {itemFilter != "category" && ( */}
-              <Picker.Item label="همه" value="all" />
-              {/* )} */}
-              <Picker.Item
-                label="ادویه، چاشنی و مخلفات غذا"
-                value="Spices and condiments and food side dishes"
-              />
-              <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
-              <Picker.Item label="آرایش و پیرایش" value="Makeup and trimming" />
-              <Picker.Item label="پروتئینی" value="Protein" />
-              <Picker.Item label="تنقلات" value="Junk Food" />
-              <Picker.Item label="خشکبار" value="Nuts" />
-              <Picker.Item
-                label="شیرینیجات و دسرها"
-                value="Sweets and desserts"
-              />
-              <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
-              <Picker.Item
-                label="غذا، کنسرو و سبزیجات"
-                value="Fruits and vegetables"
-              />
-              <Picker.Item label="لبنیات" value="Dairy" />
-              <Picker.Item label="نوشیدنیها" value="Drinks" />
-              <Picker.Item
-                label="وسایل شستشو و نظافت"
-                value="Washing and Cleaning Equipment"
-              />
-              <Picker.Item label="متفرقه" value="others" />
-            </Picker>
-          )}
-
-          {itemFilter == "category" && (
-            <Picker
-              selectedValue={category}
-              style={{ height: 50, width: 150, color: "white" }}
-              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
-            >
-              <Picker.Item
-                label="ادویه، چاشنی و مخلفات غذا"
-                value="Spices and condiments and food side dishes"
-              />
-              <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
-              <Picker.Item label="آرایش و پیرایش" value="Makeup and trimming" />
-              <Picker.Item label="پروتئینی" value="Protein" />
-              <Picker.Item label="تنقلات" value="Junk Food" />
-              <Picker.Item label="خشکبار" value="Nuts" />
-              <Picker.Item
-                label="شیرینیجات و دسرها"
-                value="Sweets and desserts"
-              />
-              <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
-              <Picker.Item
-                label="غذا، کنسرو و سبزیجات"
-                value="Fruits and vegetables"
-              />
-              <Picker.Item label="لبنیات" value="Dairy" />
-              <Picker.Item label="نوشیدنیها" value="Drinks" />
-              <Picker.Item
-                label="وسایل شستشو و نظافت"
-                value="Washing and Cleaning Equipment"
-              />
-              <Picker.Item label="متفرقه" value="others" />
-            </Picker>
-          )}
-        </View>
-        <View style={styles.container2}>
-          <Picker
-            selectedValue={itemFilter}
-            style={{ height: 50, width: 150, color: "white" }}
-            onValueChange={(itemValue, itemIndex) => setItemFilter(itemValue)}
-          >
-            <Picker.Item label="گران ترین" value="expensive" />
-            <Picker.Item label="ارزان ترین" value="cheap" />
-            <Picker.Item label="جدیدترین" value="new" />
-            <Picker.Item label="دسته بندی" value="category" />
-            <Picker.Item label="تخفیف دار" value="discount" />
-          </Picker>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={styles.Btn}
-        onPress={() => {
-          var x = {
-            filterType: itemFilter,
-            shop_item: "item",
-            category,
-          };
-          navigation.navigate("Filter", x);
-        }}
-      >
-        <Text style={styles.loginText}>فیلتر</Text>
-      </TouchableOpacity>
-      {/* </View> */}
 
       <FlatList
         testID={"shops-list"}
@@ -301,7 +151,7 @@ export default Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   // switchh: {
-  //   width: "100%",
+  // width: "100%",
   // },
   container: {
     flex: 1,
