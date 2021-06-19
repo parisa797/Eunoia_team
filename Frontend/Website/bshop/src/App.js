@@ -85,16 +85,14 @@ import {
 import CustomNavbar from "./Navbar";
 import "./themes.css";
 import HomePage from "./HomePage";
-import ProfilePage from "./ProfilePage";
 import Login from "./login";
 import Register from "./register";
 //import LoginStore from './loginstore';
-import RegisterStore from "./registerStore";
 import PageFooter from "./PageFooter";
 import LoadingPage from "./LoadingPage";
-import ShopDispatcher from './ShopDispatcher';
 import { SnackbarProvider } from "notistack";
 import { Snackbar } from "./libs/snack";
+
 
 function App() {
   //for the themes, the first character is either l (light) or d (dark), the second one is the number of the theme selected (for those shops that have their own custom theme)
@@ -146,22 +144,16 @@ function App() {
           {showCompletePage ?<>
             <Router>
               <Switch>
-                <Route exact path="/" component={LoadingPage} />
                 <Route
-                  path="/profile"
+                  path="/"
                   render={(props) => (
-                    <ProfilePage
+                    <LoadingPage
                       triggerNavbarUpdate={triggerNavbarUpdate}
                       setTriggerNavUpdate={setTriggerNavUpdate}
                       {...props}
                     />
                   )}
                 />
-
-                {/* <Route exact path='/loginstore' component={LoginStore} /> */}
-                <Route exact path="/registerstore" component={RegisterStore} />
-                <Route path="/store/:id" component={ShopDispatcher} />
-                {/* <Route exact path='/Items' component={Items} /> */}
               </Switch>
             </Router>
             <PageFooter /> </>

@@ -3,15 +3,24 @@ import { render, fireEvent } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import AddItem from './AddItem';
 import '@testing-library/jest-dom';
+import * as Snackbar from 'notistack';
+import * as api from "./api";
 const fetchMock = require('fetch-mock-jest');
 
 // jest.useFakeTimers()
 let container = null;
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
+const flushPromises = () => new Promise(setImmediate)
 beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement("div");
     document.body.appendChild(container);
     global.window = Object.create(window);
+    
+    //mocking snackbar
+    jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({ enqueueSnackbar: enqueueSnackbarMock, closeSnackbar: closeSnackbarMock }))
+
     const url = "/Item/3";
     Object.defineProperty(window, 'location', {
         value: {
@@ -19,6 +28,16 @@ beforeEach(() => {
             pathname: url
         }
     });
+    //mocking loginUser in './api' which has an api call with axios inside
+  const AddItemmock = jest.fn().mockImplementation((_body) => {
+    console.log(_body.name)
+    console.log(_body.manufacture_Date)
+    console.log(_body.Expiration_Date)
+    console.log(_body.count)
+    console.log(_body.price)
+    console.log(_body.category)
+
+  })
 });
 
 afterEach(() => {
@@ -255,10 +274,162 @@ await act(async () => {
     })
   });
 
-//   test("category input in all ways", async () => {
-//     localStorage.setItem('username', 'abc')
-//     jest.spyOn(global, "fetch").mockImplementation(() =>
-//       Promise.resolve({
-//         status: 201
-//       })
-// );
+  test("errors handeling for additem name", async () => {
+    var page;
+    var btn;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      name = await page.getByTestId("add-item-name")
+
+
+      await fireEvent.change(price, { target: { value: "2300" } });
+      await fireEvent.change(manufacture_Date, { target: { value: "1400-03-30" } });
+      await fireEvent.change(Expiration_Date, { target: { value: "1401-03-30" } });
+      await fireEvent.change(count, { target: { value: "100" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith("نام محصول را وارد کنید", { variant: 'error', })
+
+  });
+  });
+  
+  test("errors handeling for additem price", async () => {
+    var page;
+    var btn;
+    var price;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      price = await page.getByTestId("add-item-price")
+      name = await page.getByTestId("add-item-name")
+
+    
+      await fireEvent.change(discount, { target: { value: "10" } });
+      await fireEvent.change(manufacture_Date, { target: { value: "1400-03-30" } });
+      await fireEvent.change(Expiration_Date, { target: { value: "1401-03-30" } });
+      await fireEvent.change(count, { target: { value: "100" } });
+      await fireEvent.change(name, { target: { value: " ماست ترش" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('قیمت محصول را وارد کنید', { variant: 'error', })
+
+  });
+  });
+  
+  test("errors handeling for additem count", async () => {
+    var page;
+    var btn;
+    var count;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      count = await page.getByTestId("add-item-count")
+      name = await page.getByTestId("add-item-name")
+
+      await fireEvent.change(name, { target: { value: "ماست" } });
+      await fireEvent.change(price, { target: { value: "10000" } });
+      await fireEvent.change(discount, { target: { value: "10" } });
+      await fireEvent.change(manufacture_Date, { target: { value: "1400-03-30" } });
+      await fireEvent.change(Expiration_Date, { target: { value: "1401-03-30" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('تعداد محصول را وارد کنید', { variant: 'error', })
+
+  });
+  });
+  
+  test("errors handeling for additem manufacture_Date", async () => {
+    var page;
+    var btn;
+    var manufacture_Date;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      manufacture_Date = await page.getByTestId("add-item-manufacture_Date")
+      name = await page.getByTestId("add-item-name")
+
+    
+      await fireEvent.change(price, { target: { value: "10000" } });
+      await fireEvent.change(discount, { target: { value: "10" } });
+      await fireEvent.change(Expiration_Date, { target: { value: "1401-03-30" } });
+      await fireEvent.change(count, { target: { value: "100" } });
+      await fireEvent.change(name, { target: { value: "  و خوشمزسسسسسس" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('تاریخ تولید را وارد کنید', { variant: 'error', })
+
+  });
+  });
+
+  test("errors handeling for additem Expiration_Date ", async () => {
+    var page;
+    var btn;
+    var Expiration_Date;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      Expiration_Date = await page.getByTestId("add-item-Expiration_Date")
+      name = await page.getByTestId("add-item-name")
+
+    
+      await fireEvent.change(price, { target: { value: "10000" } });
+      await fireEvent.change(discount, { target: { value: "10" } });
+      await fireEvent.change(manufacture_Date, { target: { value: "1401-03-30" } });
+      await fireEvent.change(count, { target: { value: "100" } });
+      await fireEvent.change(name, { target: { value: "  و خوشمزسسسسسس" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('تاریخ انقضا را وارد کنید', { variant: 'error', })
+
+  });
+  });
+
+  test("errors handeling for additem discount", async () => {
+    var page;
+    var btn;
+    var discount;
+    var name;
+
+    await act(async () => {
+      page = await render(<AddItem />);
+      btn = await page.getByTestId("additem-btn")
+      discount = await page.getByTestId("add-item-discount")
+      name = await page.getByTestId("add-item-name")
+
+      await fireEvent.change(price, { target: { value: "10000" } });
+      await fireEvent.change(discount, { target: { value: "101" } });
+      await fireEvent.change(manufacture_Date, { target: { value: "1400-03-30" } });
+      await fireEvent.change(Expiration_Date, { target: { value: "1401-03-30" } });
+      await fireEvent.change(count, { target: { value: "100" } });
+      await fireEvent.change(name, { target: { value: "  و خوشمزسسسسسس" } });
+
+      await btn.click();
+      await flushPromises()
+      expect(enqueueSnackbarMock).toBeCalledTimes(1);
+      expect(enqueueSnackbarMock).toHaveBeenLastCalledWith('درصد تخفیف باید عددی کمتر از ۱۰۰ باشد', { variant: 'error', })
+
+  });
+  });
+
+  

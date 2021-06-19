@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+#from items.serializers import SepcialItemSerializer
 
 
 class ProfilePicserializer(serializers.ModelSerializer):
@@ -20,7 +21,7 @@ class Profileserializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='username', read_only=True)
     class Meta:
         model = MyUser
-        fields = ['files', 'urls','FirstName','LastName','user_name','role','phone','address', 'pass_word','email','id']
+        fields = ['files', 'urls','FirstName','LastName','user_name','role','phone','address', 'pass_word','email','id','longitude','latitude']
 
     def update(self, instance, validated_data): #baraye oon se ta field be inja nemirese
         #print(validated_data)
@@ -41,4 +42,24 @@ class RestProfileserializer(serializers.ModelSerializer):
     #user_name = serializers.CharField(source='username', read_only=True)
     class Meta:
         model = MyUser
-        fields = ['files', 'urls','FirstName','LastName','username','role','phone','address', 'password','email','id']
+        fields = ['files', 'urls','FirstName','LastName','username','role','phone','address', 'password','email','id','longitude','latitude']
+
+class CoinSerializer(serializers.ModelSerializer):
+    UserInfo=Profileserializer(source='user', read_only=True)
+    class Meta:
+        model = Coins
+        fields = '__all__'
+
+class ShoppingWithCoinSerializer(serializers.ModelSerializer):
+    coinInfo=CoinSerializer(source='coin', read_only=True)
+    specialItemInfo=serializers.RelatedField(read_only=True)
+    #specialItemInfo=SepcialItemSerializer(source='special_item', read_only=True)
+    class Meta:
+        model = ShoppingWithCoin
+        fields = '__all__'
+
+class ElectricWalletSerializer(serializers.ModelSerializer):
+    UserInfo=Profileserializer(source='user', read_only=True)
+    class Meta:
+        model = ElectricWallet
+        fields = '__all__'

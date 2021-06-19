@@ -6,8 +6,11 @@
     font-size: small;
     direction: rtl;
     padding:5vh;
-    position: relative;
+    /* position: relative; */
     width: 100%;
+    position: absolute;
+    top: 100%;
+    /* vertical-align: bottom; */
 }
 
 .page-footer .col-12{

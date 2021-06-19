@@ -40,6 +40,8 @@
 .page-holder{
   margin-top: 56px;
   background-color: var(--bg-color);
+  min-height: calc( 100vh - 56px - 4rem);
+  position: relative;
 }
 
 @media(max-width:640px){
