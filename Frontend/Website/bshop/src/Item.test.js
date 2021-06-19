@@ -4,7 +4,10 @@ import { act } from "react-dom/test-utils";
 import Item from './Item';
 import '@testing-library/jest-dom';
 const fetchMock = require('fetch-mock-jest');
+import * as Snackbar from 'notistack';
 
+const enqueueSnackbarMock = jest.fn()
+const closeSnackbarMock = jest.fn()
 // jest.useFakeTimers()
 let container = null;
 beforeEach(() => {
@@ -19,6 +22,10 @@ beforeEach(() => {
             pathname: url
         }
     });
+    
+    //mocking snackbar
+  jest.spyOn(Snackbar, 'useSnackbar').mockImplementation(() => ({enqueueSnackbar:enqueueSnackbarMock, closeSnackbar:closeSnackbarMock}))
+
 });
 
 afterEach(() => {

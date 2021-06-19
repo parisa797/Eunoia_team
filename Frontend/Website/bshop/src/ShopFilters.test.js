@@ -4,6 +4,7 @@ import { act } from "react-dom/test-utils";
 import ShopsListPage from './ShopsListPage';
 import '@testing-library/jest-dom';
 const fetchMock = require('fetch-mock-jest');
+import ServerURL from "./Constants";
 
 
 let container = null;
@@ -49,8 +50,8 @@ test("newest shops filter", async () => {
         expect(page.queryByTestId("shop-address-" + i)).toHaveTextContent(shops[j].address);
         expect(page.queryByTestId("shop-rate-count" + i)).toHaveTextContent(shops[j].rate_count)
     }
-    expect(page.queryByTestId("shop-img-" + 2)).toHaveAttribute("src", shops[1].logo);
-    expect(page.queryByTestId("shop-img-" + 3)).toHaveAttribute("src", shops[2].logo);
+    expect(page.queryByTestId("shop-img-" + 2)).toHaveAttribute("src", ServerURL + shops[1].logo);
+    expect(page.queryByTestId("shop-img-" + 3)).toHaveAttribute("src", ServerURL + shops[2].logo);
 });
 
 test("shops filter with no shop", async () => {
