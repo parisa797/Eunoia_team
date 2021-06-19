@@ -157,25 +157,40 @@ const ShopDetail = ({ route, navigation }) => {
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
-      <View style={styles.inputView}>
-        <TextInput
-          value={search}
-          onChangeText={(s) => setSearch(s)}
-          style={styles.TextInput}
-          placeholder="جستجو"
-          placeholderTextColor="#000"
-        />
-      </View>
-      <TouchableOpacity
-        style={styles.Btn}
-        onPress={() => {
-          var x = { searchString: search, shopID: route.params.id };
-          setSearch(undefined);
-          navigation.navigate("SearchResult", x);
+      <View style={styles.rows2}>
+        {/* <Picker
+        selectedValue={selectedValue}
+        style={{ height: 50, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => {
+          console.log("actual", itemValue);
+          setSelectedValue(itemValue);
+          console.log("state:", selectedValue);
         }}
       >
-        <Text style={styles.loginText}>بگرد</Text>
-      </TouchableOpacity>
+        <Picker.Item label="Java" value="java" />
+        <Picker.Item label="JavaScript" value="js" />
+      </Picker> */}
+
+        <View style={styles.inputView}>
+          <TextInput
+            value={search}
+            onChangeText={(s) => setSearch(s)}
+            style={styles.TextInput}
+            placeholder="جستجو"
+            placeholderTextColor="#000"
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.Btn2}
+          onPress={() => {
+            var x = { searchString: search, shopID: route.params.id };
+            setSearch(undefined);
+            navigation.navigate("SearchShopItems", x);
+          }}
+        >
+          <Text style={styles.loginText}>بگرد</Text>
+        </TouchableOpacity>
+      </View>
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -321,7 +336,7 @@ const styles = StyleSheet.create({
   online: { fontSize: 20, color: "green" },
   shop: {
     borderRadius: 10,
-    marginTop: 1,
+    marginTop: 10,
     borderRadius: 10,
     shadowColor: "black",
     shadowOpacity: 0.26,
@@ -331,6 +346,33 @@ const styles = StyleSheet.create({
     height: 300,
     width: 370,
     marginLeft: 18,
+  },
+  inputView: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    width: "76%",
+    height: 50,
+    marginTop: "1%",
+    marginBottom: "5%",
+    alignSelf: "center",
+    alignItems: "center",
+    alignContent: "center",
+    marginLeft: 80,
+  },
+  rows2: {
+    borderRadius: 10,
+    marginTop: 5,
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    backgroundColor: "#b31414",
+    height: 60,
+    width: 370,
+    marginLeft: 15,
+    fontWeight: "bold",
+    fontSize: 25,
   },
   rows: {
     borderRadius: 10,
@@ -343,7 +385,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#b31414",
     height: 40,
     width: 370,
-    marginLeft: 18,
+    marginLeft: 15,
     fontWeight: "bold",
     fontSize: 25,
   },
@@ -352,6 +394,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 5,
     textAlign: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    // marginLeft: 20,
+    fontSize: 20,
   },
   imagebackk: {
     width: 400,
@@ -443,15 +492,27 @@ const styles = StyleSheet.create({
     // height: "50%",
     marginBottom: "5%",
   },
-  Btn: {
-    width: "40%",
-    borderRadius: 20,
+  Btn2: {
+    width: "20%",
+    borderRadius: 10,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: -68,
     marginBottom: 20,
-    backgroundColor: "#b31414",
+    backgroundColor: "white",
+    marginLeft: 6,
+  },
+  Btn: {
+    width: "20%",
+    borderRadius: 10,
+    height: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: -68,
+    marginBottom: 20,
+    backgroundColor: "white",
+    marginLeft: 6,
   },
 });
 export default ShopDetail;

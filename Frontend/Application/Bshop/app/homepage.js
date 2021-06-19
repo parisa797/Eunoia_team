@@ -10,10 +10,12 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  Picker,
   SafeAreaView,
   SafeAreaProvider,
   FlatList,
   ScrollView,
+  ToastAndroid,
   // Picker,
 } from "react-native";
 import Shop from "./shop";
@@ -27,8 +29,15 @@ export default Home = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState();
   const [searchType, setSearchType] = useState(true);
-  // const [selectedValue, setSelectedValue] = useState("java");
+  const [shopFilter, setShopFilter] = useState("score"); //shop filter type
+  const [region, setRegion] = useState();
+  const [category, setCategory] = useState("all");
+  const [itemFilter, setItemFilter] = useState("expensive");
+
   const isFocused = useIsFocused();
+
+  //convert persian numbers to english
+  const p2e = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
 
   const loadProducts = useEffect(() => {
     // setError(null);
@@ -56,43 +65,33 @@ export default Home = ({ navigation }) => {
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.rows}>
-        <ToggleSwitch
-          text={{
-            on: "فروشگاه",
-            off: "آیتم",
-            activeTextColor: "#780909",
-            inactiveTextColor: "#780909",
-          }}
-          textStyle={{ fontWeight: "bold" }}
-          color={{
-            indicator: "#780909",
-            active: "white",
-            inactive: "white",
-            activeBorder: "#780909",
-            inactiveBorder: "#780909",
-          }}
-          active={true}
-          disabled={false}
-          width={80}
-          radius={25}
-          onValueChange={(val) => {
-            // console.log("actual", val);
-            setSearchType(val);
-            // console.log("state type", searchType);
-          }}
-        />
-        {/* <Picker
-        selectedValue={selectedValue}
-        style={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => {
-          console.log("actual", itemValue);
-          setSelectedValue(itemValue);
-          console.log("state:", selectedValue);
-        }}
-      >
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker> */}
+        <View style={styles.choose}>
+          <ToggleSwitch
+            text={{
+              on: "فروشگاه",
+              off: "آیتم",
+              activeTextColor: "#780909",
+              inactiveTextColor: "#780909",
+            }}
+            textStyle={{ fontWeight: "bold" }}
+            color={{
+              indicator: "#780909",
+              active: "white",
+              inactive: "white",
+              activeBorder: "#780909",
+              inactiveBorder: "#780909",
+            }}
+            active={true}
+            disabled={false}
+            width={80}
+            radius={25}
+            onValueChange={(val) => {
+              // console.log("actual", val);
+              setSearchType(val);
+              // console.log("state type", searchType);
+            }}
+          />
+        </View>
 
         <View style={styles.inputView}>
           <TextInput
@@ -103,15 +102,24 @@ export default Home = ({ navigation }) => {
             placeholderTextColor="#000"
           />
         </View>
+
+        {/* <TouchableOpacity
+style={styles.Btn}
+onPress={() => {
+var x = { searchString: search, searchType };
+setSearch(undefined);
+navigation.navigate("SearchResult", x);
+}}
+>
+<Text style={styles.loginText}>بگرد</Text>
+</TouchableOpacity> */}
         <TouchableOpacity
           style={styles.Btn}
           onPress={() => {
-            var x = { searchString: search, searchType };
-            setSearch(undefined);
-            navigation.navigate("SearchResult", x);
+            navigation.navigate("FilterPage");
           }}
         >
-          <Text style={styles.loginText}>بگرد</Text>
+          <Text style={styles.loginText}>vvvفیلتر</Text>
         </TouchableOpacity>
       </View>
 
@@ -143,8 +151,27 @@ export default Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   // switchh: {
-  //   width: "100%",
+  // width: "100%",
   // },
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    alignItems: "center",
+    marginLeft: -50,
+  },
+  filterText: {
+    paddingTop: 40,
+    alignItems: "center",
+    marginLeft: 30,
+    color: "white",
+  },
+  container2: {
+    flex: 1,
+    marginTop: -30,
+    alignItems: "center",
+    marginLeft: -200,
+    color: "white",
+  },
   container: {
     flex: 1,
     // backgroundColor: "#fff",
@@ -154,6 +181,14 @@ const styles = StyleSheet.create({
     // width: "50%",
     // height: "50%",
     marginBottom: "5%",
+  },
+  choose: {
+    marginLeft: 220,
+  },
+  selector: {
+    marginLeft: 10,
+    marginTop: -30,
+    color: "white",
   },
   card: {
     shadowColor: "black",
@@ -186,6 +221,21 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: "#b31414",
     height: 130,
+    width: 370,
+    marginLeft: 10,
+    fontWeight: "bold",
+    fontSize: 25,
+  },
+  rows2: {
+    borderRadius: 10,
+    marginTop: 5,
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOpacity: 0.26,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 5,
+    backgroundColor: "#b31414",
+    height: 50,
     width: 370,
     marginLeft: 10,
     fontWeight: "bold",

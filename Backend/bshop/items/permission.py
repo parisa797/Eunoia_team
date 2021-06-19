@@ -16,3 +16,17 @@ class IsAuthor(permissions.BasePermission):
         if request.method == "GET":
             return True
         return obj.user==request.user
+
+class AllView(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == "GET":
+            return True
+
+class QRIsOwner(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == "POST"  :
+            return obj.shopID.user == request.user
+        if request.method == "GET": ##allow any
+            return True
