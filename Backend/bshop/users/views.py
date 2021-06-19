@@ -185,7 +185,7 @@ class CoinUpdate(generics.UpdateAPIView):
             coin.last_buy=max
         if coin.money>=500:
             coin.rank='bronze'
-            print(coin.rank)
+            # print(coin.rank)
         if coin.money>=1000:
             coin.rank='silver'
         if coin.money>=1500:

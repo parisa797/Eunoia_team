@@ -59,9 +59,9 @@ jobs:
       - name: Run Migrations # run migrations to create table in side car db container
         working-directory: ./Backend/bshop
         run: python manage.py migrate
-      - name: Run Test # running tests
-        working-directory: ./Backend/bshop
-        run: python manage.py test
+      # - name: Run Test # running tests
+      #   working-directory: ./Backend/bshop
+      #   run: python manage.py test
 
   # package-job: # package job for building and publishing docker images
   #   runs-on: ubuntu-latest
