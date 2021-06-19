@@ -43,7 +43,7 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-pip-
       - name: Setup python environment # setting python environment to 3.x
-        working-directory: ./Backend/bshop
+        # working-directory: ./Backend/bshop
         uses: actions/setup-python@v2
         with:
           python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
@@ -52,10 +52,7 @@ jobs:
         run: python --version
       - name: Install requirements # install application requirements
         working-directory: ./Backend/bshop
-        run: |
-          pwd
-          ls
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
       - name: Check Syntax # check code formatting
         working-directory: ./Backend/bshop
         run: pycodestyle --statistics .
