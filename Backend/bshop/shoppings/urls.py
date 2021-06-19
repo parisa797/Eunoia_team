@@ -19,4 +19,5 @@ urlpatterns = [
     path('item/list/<int:pk>', views.ShoppingItemListAPIView.as_view(),name="list_shopping_item"),
     path('item/<int:pk>', views.ShoppingListRetrieveUpdateDestroyAPIView.as_view(),name='retrieve_update_delete_shopping_item'), 
     path('delivery/<int:pk>', views.DeliveryShoppingListUpdateAPIView.as_view(),name='delivery_shopping_list'),
+    path('wallet/<int:pk>', views.WalletShoppingListUpdateAPIView.as_view(),name='wallet_shopping_list'),
 ]
