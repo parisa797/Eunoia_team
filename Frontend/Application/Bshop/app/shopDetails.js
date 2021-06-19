@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   StyleSheet,
+  TextInput,
   ImageBackground,
   TouchableOpacity,
   TouchableNativeFeedback,
@@ -12,15 +13,24 @@ import {
   Pressable,
   ScrollView,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Ionicon from "react-native-vector-icons/Ionicons";
 import StarRating from "react-native-star-rating";
+import * as SecureStore from "expo-secure-store";
 import Item from "./item";
 
 const ShopDetail = ({ route, navigation }) => {
   // console.log(route.params);
-
+  const [search, setSearch] = useState();
+  const isFocused = useIsFocused();
   const [shopitems, setItems] = useState();
+  const [star_rates, setRates] = useState(route.params.rate_value);
+  const [user, setUser] = useState();
+  var rated = false;
+  var url =
+    "http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/" + route.params.id;
+
   const loadProducts = useEffect(() => {
     var requestOptions = {
       method: "GET",
@@ -33,15 +43,139 @@ const ShopDetail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setItems(result);
-        // console.log(result);
+        console.log("fetching again in shop detail page");
       })
       .catch((error) => {
         console.log("error", error);
       });
+  }, [isFocused]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+      fetch("http://eunoia-bshop.ir:8000/users/profile", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setUser(result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+    getUser();
   }, []);
+
+  const onStarRatingPress = async (rating) => {
+    // console.log("star rates before", route.params.rate_value);
+
+    var myHeaders = new Headers();
+    let t = await SecureStore.getItemAsync("token");
+    var authorization = "Token " + t;
+    myHeaders.append("Authorization", authorization);
+
+    // console.log("printing email here");
+    // console.log(user.email);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    var method_todo = "POST";
+    var form_post = new FormData();
+    form_post.append("rate", rating);
+    form_post.append("shop", route.params.id);
+
+    var form_put = new FormData();
+    form_put.append("rate", rating);
+
+    var rated_id;
+
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        for (var i = 0; i < result.length; i++) {
+          // console.log("this is email", user.email);
+          if (result[i].user.email == user.email) {
+            method_todo = "PUT";
+            rated_id = result[i].id;
+            // console.log(result);
+            break;
+          }
+        }
+
+        console.log("method:", method_todo);
+        var post_url = "http://eunoia-bshop.ir:8000/api/v1/shops/rate/create/";
+        var put_url =
+          "http://eunoia-bshop.ir:8000/api/v1/shops/rate/" + rated_id;
+        var fetch_url = method_todo == "PUT" ? put_url : post_url;
+        console.log(fetch_url);
+        var requestOptions = {
+          method: method_todo,
+          headers: myHeaders,
+          body: method_todo == "POST" ? form_post : form_put,
+        };
+
+        fetch(fetch_url, requestOptions)
+          .then((response) => {
+            return response.json();
+          })
+          .then((result) => {
+            console.log("result after user rate", result);
+            //after fetching user's rate, get the item rate in order to update stars
+            requestOptions = {
+              method: "GET",
+              headers: myHeaders,
+              redirect: "follow",
+            };
+            var u =
+              "http://eunoia-bshop.ir:8000/api/v1/shops/" + route.params.id;
+
+            fetch(u, requestOptions)
+              .then((response) => response.json())
+              .then((result) => {
+                // console.log(result);
+                setRates(result.rate_value);
+                console.log(result.rate_value);
+              })
+              .catch((error) => console.log("error", error));
+          })
+          .catch((error) => console.log("error", error));
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
+      <View style={styles.inputView}>
+        <TextInput
+          value={search}
+          onChangeText={(s) => setSearch(s)}
+          style={styles.TextInput}
+          placeholder="جستجو"
+          placeholderTextColor="#000"
+        />
+      </View>
+      <TouchableOpacity
+        style={styles.Btn}
+        onPress={() => {
+          var x = { searchString: search, shopID: route.params.id };
+          setSearch(undefined);
+          navigation.navigate("SearchResult", x);
+        }}
+      >
+        <Text style={styles.loginText}>بگرد</Text>
+      </TouchableOpacity>
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -63,6 +197,7 @@ const ShopDetail = ({ route, navigation }) => {
           >
             <Text style={styles.SignUpText}> نظرات</Text>
           </TouchableOpacity>
+
           <View style={styles.details}>
             <Text style={styles.title}>فروشگاه {route.params.title}</Text>
             <View style={styles.icon}>
@@ -90,11 +225,11 @@ const ShopDetail = ({ route, navigation }) => {
             <View>
               <StarRating
                 starSize={25}
-                disabled={true}
+                // disabled={true}
                 fullStarColor={"#b31414"}
-                rating={
-                  route.params.rate_value == 0 ? 3 : route.params.rate_value
-                }
+                // rating={route.params.rate_value}
+                rating={star_rates}
+                selectedStar={(rating) => onStarRatingPress(rating)}
               ></StarRating>
             </View>
           </View>
@@ -106,26 +241,25 @@ const ShopDetail = ({ route, navigation }) => {
         {shopitems && (
           <FlatList
             // testID={"items-list" + props.index}
+            nestedScrollEnabled={true}
             style={{ marginTop: -30 }}
             horizontal
             data={shopitems}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={(itemData) => {
-              // console.log("item is", itemData.item);
-              return (
-                <Item
-                  name={itemData.item.name}
-                  image={itemData.item.photo}
-                  price={itemData.item.price}
-                  discount={itemData.item.discount}
-                  index={itemData.item.id}
-                ></Item>
-              );
-            }}
+            renderItem={(itemData) => (
+              <Item
+                name={itemData.item.name}
+                image={itemData.item.photo}
+                price={itemData.item.price}
+                discount={itemData.item.discount}
+                index={itemData.item.id}
+                onSelect={() => {
+                  navigation.navigate("ItemDetail", itemData.item);
+                }}
+              ></Item>
+            )}
           />
         )}
-
-        {/* </ImageBackground> */}
       </View>
     </ScrollView>
   );
@@ -142,6 +276,24 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#b31414",
     marginLeft: 10,
+  },
+  inputView: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    width: "95%",
+    height: 45,
+    marginTop: "0%",
+    marginBottom: "5%",
+    alignSelf: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
+  TextInput: {
+    height: 50,
+    flex: 1,
+    padding: 10,
+    // marginLeft: 20,
+    fontSize: 20,
   },
   SignUpText: {
     color: "white",
@@ -290,6 +442,16 @@ const styles = StyleSheet.create({
     // width: "50%",
     // height: "50%",
     marginBottom: "5%",
+  },
+  Btn: {
+    width: "40%",
+    borderRadius: 20,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
+    marginBottom: 20,
+    backgroundColor: "#b31414",
   },
 });
 export default ShopDetail;

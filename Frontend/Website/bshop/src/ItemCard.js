@@ -197,8 +197,8 @@ function ItemCard(props) {
                 <input type="text" value={cartCount} onChange={(e)=>changeCartCount(e.target.value)} />
                 <div className="count-btn btn" onClick={()=>changeCartCount(cartCount-1)}>-</div>
             </div>
-            {!bought?<div className="btn add-to-cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
-                <div className="btn add-to-cart-btn" >اضافه شد!</div>
+            {!bought?<div className="btn add-to-cart-btn" data-testid="add-to-cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
+                <div className="btn add-to-cart-btn" data-testid="added-btn" >اضافه شد!</div>
             }</>
             :
             <div className="manager-btns">
@@ -239,7 +239,7 @@ function ItemCard(props) {
                             <div className="cart-btn-1" style={{backgroundColor: "cadetblue",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); window.location.href = "/store/" + props.item.shop_id + "/items/" + props.item.id }}><VisibilityIcon /></div>
                             </div>
                             :
-                            props.onlineShop && !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
+                            props.onlineShop && !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" data-testid="add-to-cart-switch-btn" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
                             {hideOptions?<ShoppingCartIcon/>:<CloseIcon />}
                             </div>
 }                   

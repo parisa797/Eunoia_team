@@ -37,11 +37,11 @@ function EditMapLocation(props) {
     if (!map.current) return;
     map.current.on('load', function (e) {
       map.current.on('click', function(e) {
-        var coordinates = e.lngLat;
+        var coordinates = [...e.lngLat.toArray()];
         console.log(coordinates);
         props.setPoint(coordinates);
         new mapboxgl.Popup()
-          .setLngLat(coordinates)
+          .setLngLat(e.lngLat)
           .setHTML(`<p class="popup-text">این نقطه انتخاب شد</p><div class="popup-btn" id="popupbtn">ذخیره و بازگشت</div>`)
           .addTo(map.current);
 
