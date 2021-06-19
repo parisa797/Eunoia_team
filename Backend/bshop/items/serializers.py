@@ -41,6 +41,7 @@ class ItemSerializer(serializers.ModelSerializer):
                 'manufacture_jalali','Expiration_jalali','count','category','id','discount',
                 'price','rate_count','rate_value','price_with_discount','brand']
 
+
 class CreateListItemSerializer(serializers.ModelSerializer):
     shop_id = serializers.IntegerField(source='shopID.id', read_only=True)
     manufacture_jalali = serializers.SerializerMethodField('get_miladi_date')
@@ -60,6 +61,7 @@ class CreateListItemSerializer(serializers.ModelSerializer):
         fields=['photo','name','shop_id','description',
                 'manufacture_Date','Expiration_Date','manufacture_jalali','Expiration_jalali','count',
                 'category','discount','price','rate_count','rate_value','price_with_discount','brand','id']
+
 
 class CommentSerializer(serializers.ModelSerializer):
     AllPeopleLiked = serializers.SerializerMethodField('get_likes')

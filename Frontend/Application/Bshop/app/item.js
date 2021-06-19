@@ -14,62 +14,72 @@ import {
 } from "react-native";
 
 const Item = (props) => {
-  // console.log("this is props", props);
+  console.log("this is props", props);
   var photo = "http://eunoia-bshop.ir:8000" + props.image;
   // console.log("photo url is", props.image);
   var newPrice = ((100 - props.discount) * props.price) / 100;
   //   console.log("this is new price", newPrice);
   return (
     <View style={styles.container}>
-      <View style={styles.items}>
-        <Image
-          testID={"item-image-" + props.index}
-          style={styles.image}
-          source={{ uri: photo }}
-        />
-      </View>
-      <Text
-        testID={"item-name-" + props.index}
-        style={{ fontSize: 20, fontWeight: "bold" }}
-      >
-        {props.name}
-      </Text>
-
-      {/* <View style={styles.rows}> */}
-      {props.discount != 0 && (
+      <TouchableOpacity onPress={props.onSelect} useForeground>
+        <View style={styles.items}>
+          {props.image && (
+            <Image
+              testID={"item-image-" + props.index}
+              style={styles.image}
+              source={{ uri: photo }}
+            />
+          )}
+          {!props.image && (
+            <Image
+              style={styles.image}
+              source={require("../assets/no-image.png")}
+            />
+          )}
+        </View>
         <Text
-          testID={"item-price0-" + props.index}
-          style={{
-            textDecorationLine: "line-through",
-            textAlign: "right",
-            fontSize: 15,
-            color: "grey",
-          }}
+          testID={"item-name-" + props.index}
+          style={{ fontSize: 20, fontWeight: "bold" }}
         >
-          قیمت:
-          {props.price}
+          {props.name}
         </Text>
-      )}
-      {props.discount == 0 && (
-        <Text
-          testID={"item-price1-" + props.index}
-          style={{
-            textAlign: "right",
-            fontSize: 15,
-            fontWeight: "bold",
-          }}
-        >
-          قیمت:
-          {props.price}
-        </Text>
-      )}
 
-      {props.discount != 0 && (
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-          قیمت با تخفیف: {newPrice}
-        </Text>
-      )}
-      {/* </View> */}
+        {/* <View style={styles.rows}> */}
+        {props.discount != 0 && (
+          <Text
+            testID={"item-price0-" + props.index}
+            style={{
+              textDecorationLine: "line-through",
+              textAlign: "right",
+              fontSize: 15,
+              color: "grey",
+            }}
+          >
+            قیمت:
+            {props.price}
+          </Text>
+        )}
+        {props.discount == 0 && (
+          <Text
+            testID={"item-price1-" + props.index}
+            style={{
+              textAlign: "right",
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            قیمت:
+            {props.price}
+          </Text>
+        )}
+
+        {props.discount != 0 && (
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            قیمت با تخفیف: {newPrice}
+          </Text>
+        )}
+        {/* </View> */}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -79,7 +89,7 @@ const styles = StyleSheet.create({
     padding: 10,
     // borderRadius: 10,
     marginTop: "12%",
-    backgroundColor: "#F0E3E3",
+    backgroundColor: "white",
   },
   //   rows: {
   //     borderRadius: 10,

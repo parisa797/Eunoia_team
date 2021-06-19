@@ -11,118 +11,7 @@ function MapPage(props) {
   var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXVub2lhNnRlYW0iLCJhIjoiY2twaW1pc29oMGc5NjJ1b2ZmMGdiNWkweCJ9.6KH84Su77toujLB9IU4wTQ';
-  const [stores, setStores] = useState({
-    "type": "FeatureCollection",
-    "features": [
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            51.41815069578285,
-            35.73641896371283
-          ]
-        },
-        "properties": {
-          address: " سنمتبمن سیمبتمسنیتب سنمیبتمنسیتب مسلم جنوبی 4 - پلاک 228",
-          comment_count: 2,
-          id: 3,
-          logo: "http://eunoia-bshop.ir:8000/media/image/shahrvand_Copy-min_08t0LHf.png",
-          manager: "ستاره جون",
-          mantaghe: "12",
-          online: true,
-          phone: "09125588109",
-          rate_count: 3,
-          rate_value: 3.6666666666666665,
-          shomare_sabt: "12345",
-          shop_phone: "09732043234",
-          theme: 2,
-          title: "شهروند",
-          user: 6
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            51.534356,
-            35.742913
-          ]
-        },
-        "properties": {
-          address: "تهران، تهرانپارس",
-          comment_count: 11,
-          id: 5,
-          logo: "http://eunoia-bshop.ir:8000/media/image/ofogh-kourosh_AWqRRDi.png",
-          manager: "مدیر مدیری",
-          mantaghe: "4",
-          online: true,
-          phone: "09111111111",
-          rate_count: 4,
-          rate_value: 3,
-          shomare_sabt: "312718",
-          shop_phone: null,
-          theme: 2,
-          title: "کوروش: شعبه تهرانپارس",
-          user: 5
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            51.439114468799026, 35.76234661596831
-          ]
-        },
-        "properties": {
-          address: "تهران، میرداماد، رودبار غربی",
-          comment_count: 2,
-          id: 1,
-          logo: "http://eunoia-bshop.ir:8000/media/image/ofogh-kourosh_hVcfFRy.png",
-          manager: "مدیر مدیری",
-          mantaghe: "3",
-          online: true,
-          phone: "09903131133",
-          rate_count: 5,
-          rate_value: 4.2,
-          shomare_sabt: "289333",
-          shop_phone: "09909999999",
-          theme: 2,
-          title: "افق کوروش: شعبه میرداماد",
-          user: 5,
-        }
-      },
-      {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            51.40383125530524,
-            35.71995617539074
-          ]
-        },
-        "properties": {
-          address: "خیابان فاطمی-بعد از میدان جهاد-جنب وزارت کشور",
-          comment_count: 0,
-          id: 8,
-          logo: "http://eunoia-bshop.ir:8000/media/image/AZa5R4W1mpPPMGXQRA8iI5Iy8rSFH9L2ToxP7Nhk.png",
-          manager: "مدیررر",
-          mantaghe: "6",
-          online: true,
-          phone: "09903131133",
-          rate_count: 1,
-          rate_value: 2,
-          shomare_sabt: "56456465",
-          shop_phone: null,
-          theme: 2,
-          title: "رفاه: شعبه فاطمی",
-          user: 5
-        }
-      }
-    ]
-  })
+  const [stores, setStores] = useState({ features: [] })
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [lng, setLng] = useState(35.7007);
@@ -132,7 +21,7 @@ function MapPage(props) {
   useEffect(() => {
     if (map.current) return;
     var center = [lat, lng];
-    
+
     if (mapboxgl.getRTLTextPluginStatus() !== "loaded")
       mapboxgl.setRTLTextPlugin(
         'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
@@ -140,8 +29,8 @@ function MapPage(props) {
         true
       );
     if (!mapboxgl.supported()) {
-        alert('Your browser does not support Mapbox GL');
-      }
+      alert('Your browser does not support Mapbox GL');
+    }
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/streets-v11', //document.querySelectorAll('[data-theme="d0"]')?'mapbox://styles/mapbox/streets-v11':'mapbox://mapbox-light-v9',
@@ -150,29 +39,123 @@ function MapPage(props) {
     });
   }, []);
 
-  useEffect(()=>{
-    if(!map.current) return;
-    if(window.location.href.includes("shop")){
-      let q = decodeURI(window.location.href.match(/[^\=]+/g)[1]);
-      console.log(q)
-      let shop = stores.features.filter(x=>x.properties.id === parseInt(q))
-      flyToStore(shop[0])
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(!map.current) return;
+  //   if(!stores?.features?.length===0) return;
+  //   if(window.location.href.includes("shop")){
+  //     console.log(stores)
+  //     let q = decodeURI(window.location.href.match(/[^\=]+/g)[1]);
+  //     console.log(q)
+  //     let shop = stores.features.filter(x=>x.properties.id === parseInt(q))
+  //     flyToStore(shop[0])
+  //   }
+  // },[stores])
 
   useEffect(() => {
     if (!map.current) return;
-    map.current.on('load', function (e) {
-      map.current.addSource('places', {
-        'type': 'geojson',
-        'data': stores
+
+    fetch("http://eunoia-bshop.ir:8000/api/v1/shops/top/", {
+      method: 'GET'
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json()
+        }
+        return [];
+      }
+      )
+      .then((d) => {
+        let storesCopy = {
+          "type": "FeatureCollection",
+          "features": [
+          ]
+        };
+        if (Array.isArray(d)) {
+          console.log(d)
+          d.forEach(shop => {
+            storesCopy.features.push(
+              {
+                "type": "Feature",
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    shop.latitude,
+                    shop.longitude
+                  ]
+                },
+                "properties": shop
+              }
+            )
+          })
+          console.log(storesCopy.features)
+          let stores_with_location = storesCopy;
+          stores_with_location.features = storesCopy.features.filter(x => !!x.geometry.coordinates[0] && x.geometry.coordinates[1]);
+          setStores(stores_with_location)
+          map.current.on('load', function (e) {
+            map.current.addSource('places', {
+              'type': 'geojson',
+              'data': stores_with_location
+            });
+            addMarkers(stores_with_location);
+            if (!!localStorage.getItem("token"))
+              locateUser();
+            if (window.location.href.includes("shop")) {
+              let q = decodeURI(window.location.href.match(/[^\=]+/g)[1]);
+              let shop = stores_with_location.features.filter(x => x.properties.id === parseInt(q))[0]
+              if (!!shop.geometry.coordinates[0] && !!shop.geometry.coordinates[1])
+                flyToStore(shop)
+            }
+          });
+        }
       });
-      addMarkers();
-    });
   }, []);
 
-  function addMarkers() {
-    stores.features.forEach(function (marker) {
+  function locateUser() {
+    fetch("http://eunoia-bshop.ir:8000/users/profile", {
+      method: 'GET',
+      headers: {
+        "Authorization": "Token " + localStorage.getItem('token')
+      }
+    }).then(
+      res => {
+        if (res.status === 200) {
+          return res.json()
+        }
+        return null;
+      }
+    ).then(
+      res => {
+        if (res === null)
+          return;
+
+        if (res.latitude && res.longitude) {
+          let marker = {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                res.latitude,
+                res.longitude
+              ]
+            },
+            "properties": res
+          }
+          var el = document.createElement('div');
+          el.id = 'user-marker';
+          el.className = 'marker user-marker';
+          el.innerHTML = `<img src=${res.urls && res.urls.length > 0 ? res.urls[0].uploaded_file : "/profile.png"}>`
+
+          new mapboxgl.Marker(el, { offset: [0, -23] })
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map.current);
+        }
+      }
+    )
+      .catch(e => console.log(e));
+  }
+
+  function addMarkers(stores_with_location) {
+    stores_with_location.features.forEach(function (marker) {
       var el = document.createElement('div');
       el.id = 'marker-' + marker.properties.id;
       el.className = 'marker';
@@ -180,7 +163,6 @@ function MapPage(props) {
       new mapboxgl.Marker(el, { offset: [0, -23] })
         .setLngLat(marker.geometry.coordinates)
         .addTo(map.current);
-        
       el.addEventListener('click', function (e) {
         flyToStore(marker);
       });
@@ -189,10 +171,11 @@ function MapPage(props) {
 
   function flyToStore(currentFeature) {
     setClickedShop(currentFeature);
-    map.current.flyTo({
-      center: currentFeature.geometry.coordinates,
-      zoom: 15
-    });
+    if (!!currentFeature.geometry.coordinates[0] && !!currentFeature.geometry.coordinates[1])
+      map.current.flyTo({
+        center: currentFeature.geometry.coordinates,
+        zoom: 15
+      });
   }
 
   return (
@@ -209,14 +192,14 @@ function MapPage(props) {
                   <div className="img-container">
                     <img src={clickedShop.properties.logo ? clickedShop.properties.logo : "/shop-default-logo.png"} alt="logo" />
                   </div>
-                  <h2 onClick={()=>window.location.href=`/store/${clickedShop.properties.id}/`}>{clickedShop.properties.title}</h2>
+                  <h2 onClick={() => window.location.href = `/store/${clickedShop.properties.id}/`}>{clickedShop.properties.title}</h2>
                 </div>
-                {clickedShop.properties.online ? <p style={{ color: "green", fontSize:"0.9rem", alignSelf:"center" }}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red", fontSize:"0.9rem", alignSelf:"center" }}>امکان خرید آنلاین ندارد</p>}
+                {clickedShop.properties.online ? <p style={{ color: "green", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین ندارد</p>}
                 {clickedShop.properties.address && <p className="address"><LocationOnIcon className="icon" />{clickedShop.properties.address}</p>}
-                {clickedShop.properties.shop_phone && <p className="phone"><CallIcon className="icon"/>{clickedShop.properties.shop_phone}</p>}
+                {clickedShop.properties.shop_phone && <p className="phone"><CallIcon className="icon" />{clickedShop.properties.shop_phone}</p>}
                 <h3>نظرات</h3>
                 <div className="shop-page">
-                <ShopComments shopID={clickedShop.properties.id} userState={"u"}/>
+                  <ShopComments shopID={clickedShop.properties.id} userState={"u"} />
                 </div>
               </div>
             </div>
@@ -244,6 +227,7 @@ function MapPage(props) {
                     </div>
                   )
                 })}
+                <p className="list-info">تنها فروشگاه‌هایی که مکانشان در نقشه مشخص است در این لیست وجود دارند</p>
               </div></>}
       </div>
       <div ref={mapContainer} className="map" />

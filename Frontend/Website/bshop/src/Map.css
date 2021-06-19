@@ -131,6 +131,16 @@
     object-fit: contain;
   }
 
+  .map-page .user-marker img{
+    border-radius: 50%;
+    border: 3px solid lightseagreen;
+    background-color: white;
+  }
+
+  .map-page .user-marker{
+    cursor:inherit;
+  }
+
   .map-page .marker p{
     color: var(--primary-color);
     font-family: 'Vazir';
@@ -275,4 +285,11 @@
 .map-page .sidebar::-webkit-scrollbar-thumb {
   background: var(--bg-color3);
   border-radius: 5px;
+}
+
+.map-page .list-info{
+  margin: 20px;
+  font-size: smaller;
+  direction: rtl;
+  color: darkgrey;
 }
