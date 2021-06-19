@@ -14,15 +14,12 @@ import {
   FlatList,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import Shop from "./shop";
-import LikedItem from "./likedItem";
+import Item from "./item";
 
 const SearchItemShop = ({ navigation, route }) => {
   console.log("searched this:", route.params);
   const [items, setItems] = useState();
 
-  //route.params.searchType == false --> item
-  //route.params.searchType == true --> shop
   useEffect(() => {
     const SearchItem = async () => {
       var myHeaders = new Headers();
@@ -39,12 +36,13 @@ const SearchItemShop = ({ navigation, route }) => {
       var url =
         "http://eunoia-bshop.ir:8000/shops/" +
         route.params.shopID +
-        "/items/search?q=" +
+        "/items/search/?q=" +
         route.params.searchString;
+      console.log("url was", url);
       fetch(url, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          setShops(result);
+          setItems(result);
           console.log("shop res:", result);
         })
         .catch((error) => console.log("error", error));
@@ -62,18 +60,19 @@ const SearchItemShop = ({ navigation, route }) => {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
+            var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
+            console.log("check this url", itemData.item.photo);
             return (
-              <LikedItem
+              <Item
                 name={itemData.item.name}
                 image={itemData.item.photo}
                 price={itemData.item.price}
                 discount={itemData.item.discount}
                 index={itemData.item.id}
-                shop={itemData.item.ItemShop}
                 onSelect={() => {
                   navigation.navigate("ItemDetail", itemData.item);
                 }}
-              ></LikedItem>
+              ></Item>
             );
           }}
         />
