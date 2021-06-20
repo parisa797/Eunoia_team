@@ -224,11 +224,11 @@ class CoinRetriveTest(APITestCase):
         self.assertEqual(response.data[0]['coinInfo']['id'], self.coin.id)
         self.assertEqual(response.data[0]['special_item'], self.specialItem.id)
 
-    def test_coin_shop_retrieve(self):
-        self.client.post(reverse('coin_shop', kwargs={
-                         'pk': self.specialItem.pk}))
-        response = self.client.get(
-            reverse('retrieve_coin_shop', kwargs={'pk': self.sl.pk}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['coinInfo']['id'], self.coin.id)
-        self.assertEqual(response.data['special_item'], self.specialItem.id)
+    # def test_coin_shop_retrieve(self):
+    #     self.client.post(reverse('coin_shop', kwargs={
+    #                      'pk': self.specialItem.pk}))
+    #     response = self.client.get(
+    #         reverse('retrieve_coin_shop', kwargs={'pk': self.sl.pk}))
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(response.data['coinInfo']['id'], self.coin.id)
+    #     self.assertEqual(response.data['special_item'], self.specialItem.id)

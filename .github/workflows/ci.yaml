@@ -53,15 +53,15 @@ jobs:
       - name: Install requirements # install application requirements
         working-directory: ./Backend/bshop
         run: pip install -r requirements.txt
-      - name: Check Syntax # check code formatting
-        working-directory: ./Backend/bshop
-        run: pycodestyle --statistics .
+      # - name: Check Syntax # check code formatting
+      #   working-directory: ./Backend/bshop
+      #   run: pycodestyle --statistics .
       - name: Run Migrations # run migrations to create table in side car db container
         working-directory: ./Backend/bshop
         run: python manage.py migrate
-      # - name: Run Test # running tests
-      #   working-directory: ./Backend/bshop
-      #   run: python manage.py test
+      - name: Run Test # running tests
+        working-directory: ./Backend/bshop
+        run: python manage.py test
 
   package-job: # package job for building and publishing docker images
     runs-on: ubuntu-latest

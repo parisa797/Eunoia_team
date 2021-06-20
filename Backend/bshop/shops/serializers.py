@@ -5,8 +5,8 @@ from users.models import MyUser
 from users.serializers import Profileserializer
 from jalali_date import date2jalali, datetime2jalali
 from persiantools.jdatetime import JalaliDate
-#import json
-#import datetime
+# import json
+# import datetime
 
 
 class UsersInfoserializer(serializers.ModelSerializer):

@@ -584,30 +584,30 @@ class TestShopCommentLike(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
-        comment = Comment.objects.create(
+        c = Comment.objects.create(
             user=self.user, text="test comment", shop=h)
 
         ###########POST####################
-        response = self.client.post("/api/v1/shops/33/comments/13/likes")
+        response = self.client.post("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['likes_count'], 1)
         self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/33/comments/13/likes")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
                          [0]['username'], 'testcase')
 
         ###########POST####################
-        response = self.client.post("/api/v1/shops/33/comments/13/likes")
+        response = self.client.post("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/33/comments/13/likes")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -629,7 +629,7 @@ class TestShopReply(APITestCase):
         self.token = Token.objects.create(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
-        response = Comment.objects.create(
+        c = Comment.objects.create(
             user=self.user, text="test comment", shop=h)
 
         # data = {"text": "reply test"}
@@ -638,19 +638,19 @@ class TestShopReply(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + tokencopy)
         data = {"text": "reply"}
-        response = self.client.post(
-            "/api/v1/shops/34/comments/14/replies", data)  # 1
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response1 = self.client.post(
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies", data)  # 1
+        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/api/v1/shops/34/comments/14/replies", data)  # 2
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response2 = self.client.post(
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies", data)  # 2
+        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/34/comments/14/replies")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        reply = ReplySerializer(Reply.objects.get(id=1))
-        reply2 = ReplySerializer(Reply.objects.get(id=2))
+        reply = ReplySerializer(Reply.objects.get(id=response1.data['id']))
+        reply2 = ReplySerializer(Reply.objects.get(id=response2.data['id']))
         self.assertEqual(response.data[0], reply.data)
         self.assertEqual(response.data[1], reply2.data)
         self.assertEqual(len(response.data), 2)
@@ -665,27 +665,27 @@ class TestShopReplyInfo(APITestCase):
                                 address="Test address", theme=1, shomare_sabt="1111", phone="111111")
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
-        response = Comment.objects.create(
+        c = Comment.objects.create(
             user=self.user, text="test comment", shop=h)
 
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/api/v1/shops/35/comments/15/replies", data)  # 3
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response3 = self.client.post(
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies", data)  # 3
+        self.assertEqual(response3.status_code, status.HTTP_201_CREATED)
 
         ###########PUT####################
         data = {"text": "Update of Test"}
         response = self.client.put(
-            "/api/v1/shops/35/comments/15/replies/3", data)
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response3.data['id']), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["text"], "Update of Test")
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/35/comments/15/replies/3")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response3.data['id']))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        reply = ReplySerializer(Reply.objects.get(id=3))
+        reply = ReplySerializer(Reply.objects.get(id=response3.data['id']))
         self.assertEqual(response.data, reply.data)
         #########################DELETE#################################
-        response = self.client.delete("/api/v1/shops/35/comments/15/replies/3")
+        response = self.client.delete("/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response3.data['id']))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -699,24 +699,23 @@ class TestShopReplyLike(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
-        response = Comment.objects.create(
+        c = Comment.objects.create(
             user=self.user, text="test comment", shop=h)
 
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/api/v1/shops/36/comments/16/replies", data)  # 4
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
+        response4 = self.client.post(
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies", data)  # 4
+        self.assertEqual(response4.status_code, status.HTTP_201_CREATED)
         ###########POST####################
         response = self.client.post(
-            "/api/v1/shops/36/comments/16/replies/4/likes", data)
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response4.data['id'])+"/likes", data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['likes_count'], 1)
         self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
         response = self.client.get(
-            "/api/v1/shops/36/comments/16/replies/4/likes")
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response4.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
@@ -724,14 +723,14 @@ class TestShopReplyLike(APITestCase):
 
         ###########POST####################
         response = self.client.post(
-            "/api/v1/shops/36/comments/16/replies/4/likes")
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response4.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
 
         #########################GET#################################
         response = self.client.get(
-            "/api/v1/shops/36/comments/16/replies/4/likes")
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies/"+str(response4.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -748,13 +747,13 @@ class TestTheLikeShop(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         ###########POST####################
-        response = self.client.post("/api/v1/shops/37/likes")
+        response = self.client.post("/api/v1/shops/"+str(h.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['likes_count'], 1)
         self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/37/likes")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
@@ -762,11 +761,11 @@ class TestTheLikeShop(APITestCase):
 
         response = self.client.get("/users/profile/likedshops")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['id'], 37)
+        self.assertEqual(response.data[0]['id'], h.id)
         self.assertEqual(len(response.data), 1)
 
         ###########POST####################
-        response = self.client.post("/api/v1/shops/37/likes")
+        response = self.client.post("/api/v1/shops/"+str(h.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
@@ -776,7 +775,7 @@ class TestTheLikeShop(APITestCase):
         self.assertEqual(len(response.data), 0)
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/37/likes")
+        response = self.client.get("/api/v1/shops/"+str(h.id)+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -792,17 +791,18 @@ class TestTheReplyCommentItem(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
-        response = Comment.objects.create(
+        c = Comment.objects.create(
             user=self.user, text="test comment", shop=h)
 
-        data = {"text": "reply test"}
+        self.data = {"text": "reply test"}
         response = self.client.post(
-            "/api/v1/shops/38/comments/17/replies", data)  # 4
+            "/api/v1/shops/"+str(h.id)+"/comments/"+str(c.id)+"/replies", self.data)  # 4
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         #########################GET#################################
-        response = self.client.get("/api/v1/shops/38/commentsreplis")
+        response = self.client.get(
+            "/api/v1/shops/"+str(h.id)+"/commentsreplis")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0], CommentReplySerializer(
-            Comment.objects.get(id=17)).data)
+            Comment.objects.get(id=c.id)).data)
         self.assertEqual(len(response.data), 1)
