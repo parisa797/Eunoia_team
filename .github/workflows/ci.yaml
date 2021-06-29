@@ -114,9 +114,9 @@ jobs:
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: | 
-            source venv/bin/activate
-            pip3 install -r Eunoiateam2/bshop/requirements.txt
-            python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8080
+            tmux kill-session -t 0
+            tmux
+            tmux new -d 'source venv/bin/activate; python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8000'
           # command: python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8080
           host: 37.152.179.124
           username: ubuntu
