@@ -113,7 +113,11 @@ jobs:
       - name: runserver ssh
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8080
+          command: | 
+            source venv/bin/activate
+            pip3 install -r Eunoiateam2/bshop/requirements.txt
+            python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8080
+          # command: python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8080
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
