@@ -15,7 +15,6 @@ import {
   SafeAreaProvider,
   FlatList,
   ScrollView,
-  ToastAndroid,
   // Picker,
 } from "react-native";
 import Shop from "./shop";
@@ -23,21 +22,15 @@ import { useIsFocused } from "@react-navigation/native";
 import ToggleSwitch from "rn-toggle-switch";
 
 export default Home = ({ navigation }) => {
+  const [selectedValue, setSelectedValue] = useState("java");
   const [shops, setShops] = React.useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState();
   const [searchType, setSearchType] = useState(true);
-  const [shopFilter, setShopFilter] = useState("score"); //shop filter type
-  const [region, setRegion] = useState();
-  const [category, setCategory] = useState("all");
-  const [itemFilter, setItemFilter] = useState("expensive");
-
+  // const [selectedValue, setSelectedValue] = useState("java");
   const isFocused = useIsFocused();
-
-  //convert persian numbers to english
-  const p2e = (s) => s.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
 
   const loadProducts = useEffect(() => {
     // setError(null);
@@ -92,6 +85,32 @@ export default Home = ({ navigation }) => {
             }}
           />
         </View>
+        <View style={styles.selector}>
+          <View style={styles.container2}>
+            <Picker
+              selectedValue={selectedValue}
+              style={{ height: 50, width: 150 }}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedValue(itemValue)
+              }
+            >
+              <Picker.Item label="پرفروش ترین" value="پرفروش ترین" />
+              <Picker.Item label="نزدیک ترین" value="نزدیک ترین" />
+            </Picker>
+          </View>
+        </View>
+        {/* <Picker
+        selectedValue={selectedValue}
+        style={{ height: 50, width: 150 }}
+        onValueChange={(itemValue, itemIndex) => {
+          console.log("actual", itemValue);
+          setSelectedValue(itemValue);
+          console.log("state:", selectedValue);
+        }}
+      >
+        <Picker.Item label="Java" value="java" />
+        <Picker.Item label="JavaScript" value="js" />
+      </Picker> */}
 
         <View style={styles.inputView}>
           <TextInput
@@ -102,24 +121,15 @@ export default Home = ({ navigation }) => {
             placeholderTextColor="#000"
           />
         </View>
-
-        {/* <TouchableOpacity
-style={styles.Btn}
-onPress={() => {
-var x = { searchString: search, searchType };
-setSearch(undefined);
-navigation.navigate("SearchResult", x);
-}}
->
-<Text style={styles.loginText}>بگرد</Text>
-</TouchableOpacity> */}
         <TouchableOpacity
           style={styles.Btn}
           onPress={() => {
-            navigation.navigate("FilterPage");
+            var x = { searchString: search, searchType };
+            setSearch(undefined);
+            navigation.navigate("SearchResult", x);
           }}
         >
-          <Text style={styles.loginText}>vvvفیلتر</Text>
+          <Text style={styles.loginText}>بگرد</Text>
         </TouchableOpacity>
       </View>
 
@@ -151,26 +161,13 @@ navigation.navigate("SearchResult", x);
 
 const styles = StyleSheet.create({
   // switchh: {
-  // width: "100%",
+  //   width: "100%",
   // },
   container: {
     flex: 1,
     paddingTop: 40,
     alignItems: "center",
     marginLeft: -50,
-  },
-  filterText: {
-    paddingTop: 40,
-    alignItems: "center",
-    marginLeft: 30,
-    color: "white",
-  },
-  container2: {
-    flex: 1,
-    marginTop: -30,
-    alignItems: "center",
-    marginLeft: -200,
-    color: "white",
   },
   container: {
     flex: 1,
@@ -188,7 +185,6 @@ const styles = StyleSheet.create({
   selector: {
     marginLeft: 10,
     marginTop: -30,
-    color: "white",
   },
   card: {
     shadowColor: "black",
@@ -221,21 +217,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: "#b31414",
     height: 130,
-    width: 370,
-    marginLeft: 10,
-    fontWeight: "bold",
-    fontSize: 25,
-  },
-  rows2: {
-    borderRadius: 10,
-    marginTop: 5,
-    borderRadius: 10,
-    shadowColor: "black",
-    shadowOpacity: 0.26,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 5,
-    backgroundColor: "#b31414",
-    height: 50,
     width: 370,
     marginLeft: 10,
     fontWeight: "bold",

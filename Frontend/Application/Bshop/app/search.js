@@ -21,69 +21,66 @@ const SearchResult = ({ navigation, route }) => {
   console.log("searched this:", route.params);
   const [shops, setShops] = useState();
   const [items, setItems] = useState();
-  const [noResult, setNoResult] = useState(false);
 
   //route.params.searchType == false --> item
   //route.params.searchType == true --> shop
-
-  const SearchShop = async () => {
-    var myHeaders = new Headers();
-    let t = await SecureStore.getItemAsync("token");
-    var authorization = "Token " + t;
-    myHeaders.append("Authorization", authorization);
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    var url =
-      "http://eunoia-bshop.ir:8000/api/v1/shops/search?q=" +
-      route.params.searchString;
-
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.detail == "Not found.") setNoResult(true);
-        setShops(result);
-        console.log("shop res:", result);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
-  const SearchItem = async () => {
-    var myHeaders = new Headers();
-    let t = await SecureStore.getItemAsync("token");
-    var authorization = "Token " + t;
-    myHeaders.append("Authorization", authorization);
-
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    var url =
-      "http://eunoia-bshop.ir:8000/items/search?q=" + route.params.searchString;
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.detail == "Not found.") setNoResult(true);
-        setItems(result);
-        console.log("item res:", result);
-      })
-      .catch((error) => console.log("error", error));
-  };
-
   useEffect(() => {
+    const SearchShop = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      var url =
+        "http://eunoia-bshop.ir:8000/api/v1/shops/search?q=" +
+        route.params.searchString;
+      var items =
+        "http://eunoia-bshop.ir:8000/items/search?q=" +
+        route.params.searchString;
+      fetch(url, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setShops(result);
+          console.log("shop res:", result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+
+    const SearchItem = async () => {
+      var myHeaders = new Headers();
+      let t = await SecureStore.getItemAsync("token");
+      var authorization = "Token " + t;
+      myHeaders.append("Authorization", authorization);
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      var url =
+        "http://eunoia-bshop.ir:8000/items/search?q=" +
+        route.params.searchString;
+      fetch(url, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          setItems(result);
+          console.log("item res:", result);
+        })
+        .catch((error) => console.log("error", error));
+    };
+
     route.params.searchType ? SearchShop() : SearchItem();
   }, []);
 
   return (
     <View>
-      {noResult && <Text> هیچ نتیجه ای یافت نشد</Text>}
-
       {shops && (
         <FlatList
           testID={"shops-list"}
