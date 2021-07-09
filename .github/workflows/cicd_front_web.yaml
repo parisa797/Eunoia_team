@@ -106,8 +106,9 @@ jobs:
           local: ./Frontend/Website/bshop
           command: | 
             tmux kill-session -t web
-            tmux new -s web 'npm run build'
-          command: npm run build
+            tmux new -s web
+            tmux -d 'npm run build'
+          # command: npm run build
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
