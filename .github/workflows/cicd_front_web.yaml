@@ -35,8 +35,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Run the tests
-      #   run: npm test
+      - name: Run the tests
+        working-directory: ./Frontend/Website/bshop
+        run: npm test
 
       # - name: Upload coverage to Codecov
       #   uses: codecov/codecov-action@v1
@@ -102,6 +103,10 @@ jobs:
       - name: build ssh
         uses: garygrossgarten/github-action-ssh@release
         with:
+          local: ./Frontend/Website/bshop
+          command: | 
+            tmux kill-session -t web
+            tmux new -s web 'npm run build'
           command: npm run build
           host: 37.152.179.124
           username: ubuntu

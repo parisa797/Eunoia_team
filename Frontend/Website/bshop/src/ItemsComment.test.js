@@ -1,34 +1,34 @@
-// import { unmountComponentAtNode } from "react-dom";
-// import { render, fireEvent } from "@testing-library/react";
-// import { act } from "react-dom/test-utils";
-// import ShopComments from './ShopComments';
-// import '@testing-library/jest-dom';
-// const fetchMock = require('fetch-mock-jest');
+import { unmountComponentAtNode } from "react-dom";
+import { render, fireEvent } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
+import ShopComments from './ShopComments';
+import '@testing-library/jest-dom';
+const fetchMock = require('fetch-mock-jest');
 
-// const flushPromises = () => new Promise(setImmediate);
-// let container = null;
-// beforeEach(() => {
-//     // setup a DOM element as a render target
-//     container = document.createElement("div");
-//     document.body.appendChild(container);
-//     const url = "/store/1/items/1";
-//     Object.defineProperty(window, 'location', {
-//         value: {
-//             href: url,
-//             pathname: url
-//         }
-//     });
-// });
+const flushPromises = () => new Promise(setImmediate);
+let container = null;
+beforeEach(() => {
+    // setup a DOM element as a render target
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    const url = "/store/1/items/1";
+    Object.defineProperty(window, 'location', {
+        value: {
+            href: url,
+            pathname: url
+        }
+    });
+});
 
-// afterEach(() => {
-//     // cleanup on exiting
-//     fetchMock.mockReset();
-//     unmountComponentAtNode(container);
-//     container.remove();
-//     container = null;
-// });
+afterEach(() => {
+    // cleanup on exiting
+    fetchMock.mockReset();
+    unmountComponentAtNode(container);
+    container.remove();
+    container = null;
+});
 
-// test("shop comments section for unsigned users", async () => {
+test("shop comments section for unsigned users", async () => {
 //     const comments = [
 //     {user:{user_name:"someone_else"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1},
 //     {user:{user_name:"someone"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه عالیه!", id:2},
@@ -57,7 +57,7 @@
 //     expect(page.queryByTestId("comment-nocomment")).toBeNull();
 //     //can't write comments without logging in
 //     expect(page.queryByTestId("write-comment")).toBeNull();
-// });
+});
 
 // test("shop comments section for the owner", async () => {
 //     localStorage.setItem('username',"the owner")

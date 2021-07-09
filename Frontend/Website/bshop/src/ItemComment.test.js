@@ -1,35 +1,35 @@
-// import { unmountComponentAtNode } from "react-dom";
-// import { render, fireEvent, getElementError, getByTestId } from "@testing-library/react";
-// import { act } from "react-dom/test-utils";
-// import Itemcomment from './Itemcomment';
-// import '@testing-library/jest-dom';
-// import { Replay } from "@material-ui/icons";
-// const fetchMock = require('fetch-mock-jest');
+import { unmountComponentAtNode } from "react-dom";
+import { render, fireEvent, getElementError, getByTestId } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
+import Itemcomment from './Itemcomment';
+import '@testing-library/jest-dom';
+import { Replay } from "@material-ui/icons";
+const fetchMock = require('fetch-mock-jest');
 
-// const flushPromises = () => new Promise(setImmediate);
-// let container = null;
-// beforeEach(() => {
-//     // setup a DOM element as a render target
-//     container = document.createElement("div");
-//     document.body.appendChild(container);
-//     const url = "/store/1/items/1";
-//     Object.defineProperty(window, 'location', {
-//         value: {
-//             href: url,
-//             pathname: url
-//         }
-//     });
-// });
+const flushPromises = () => new Promise(setImmediate);
+let container = null;
+beforeEach(() => {
+    // setup a DOM element as a render target
+    container = document.createElement("div");
+    document.body.appendChild(container);
+    const url = "/store/1/items/1";
+    Object.defineProperty(window, 'location', {
+        value: {
+            href: url,
+            pathname: url
+        }
+    });
+});
 
-// afterEach(() => {
-//     // cleanup on exiting
-//     fetchMock.mockReset();
-//     unmountComponentAtNode(container);
-//     container.remove();
-//     container = null;
-// });
+afterEach(() => {
+    // cleanup on exiting
+    fetchMock.mockReset();
+    unmountComponentAtNode(container);
+    container.remove();
+    container = null;
+});
 
-// test("Item comments section for unsigned users", async () => {
+test("Item comments section for unsigned users", async () => {
 //     const comments = [
 //     {user:{user_name:"Seti123"}, date_jalali:"1404-04-03 13:03", text:"?8$#230@$&%)@!" , id:1, AllPeopleLiked:[{Liked_By:[]}] },
 //     {user:{user_name:"setin"}, date_jalali:"1400-11-03 13:03", text:"این فروشگاه خیلییییی عالیه!", id:2, AllPeopleLiked:[{Liked_By:[]}] },
@@ -61,7 +61,7 @@
 //     expect(page.queryByTestId("comment-nocomment")).toBeNull();
 //     //can't write comments without logging in
 //     expect(page.queryByTestId("write-comment")).toBeNull();
-// });
+});
 
 // test("Item comments section for the owner", async () => {
 //     localStorage.setItem('username',"the owner")
