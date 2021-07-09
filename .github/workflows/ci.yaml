@@ -69,7 +69,7 @@ jobs:
 
   migration-job: 
     runs-on: ubuntu-latest
-    needs: [package-job]
+    needs: [upload-job]
     steps:
       - name: migrate ssh
         uses: garygrossgarten/github-action-ssh@release
