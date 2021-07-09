@@ -8,7 +8,7 @@ class IsOwner(permissions.BasePermission):
             return obj.user == request.user
         if request.method == "PUT" or request.method == "DELETE":
             return obj.shopID.user == request.user
-        if request.method == "GET":  ##allow any
+        if request.method == "GET":  # allow any
             return True
 
 

@@ -13,4 +13,4 @@ urlpatterns = [
     path('api/v1/shops/', include('shops.urls')),
     path('', include('items.urls')),
     path('api/v1/shoppings/', include('shoppings.urls')),
-]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
