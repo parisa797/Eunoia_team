@@ -1,7 +1,7 @@
 .custom-nav{
     z-index: 999;
     width: 100vw;
-    background-color: var(--bg-color);
+    background-color: var(--primary-color);
     /* box-shadow: var(--bg-color3) 0px 7px 29px 0px; */
     height: 56px;
     /* background-color: var(--secondary-color); */
