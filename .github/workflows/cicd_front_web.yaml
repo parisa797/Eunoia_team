@@ -82,7 +82,8 @@ jobs:
         working-directory: /home/ubuntu/Eunoiateam2/front/web/bshop
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: npm install
+          command: |
+            npm install
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
