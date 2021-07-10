@@ -607,7 +607,7 @@ class TestLikeItem(APITestCase):
 
         response = self.client.get("/users/profile/likeditems")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['id'],1 )###inja
+        self.assertEqual(response.data[0]['id'],item.data['id'] )###inja
         self.assertEqual(len(response.data), 1)
 
         ###########POST####################

@@ -226,10 +226,12 @@ class CoinRetriveTest(APITestCase):
         self.assertEqual(response.data[0]['special_item'], self.specialItem.id)
 
     def test_coin_shop_retrieve(self):
-        self.client.post(reverse('coin_shop', kwargs={
-                         'pk': self.specialItem.pk}))
+        cs = self.client.post(reverse('coin_shop', kwargs={
+                         'pk': self.specialItem.id}))
+
+        swc = ShoppingWithCoin.objects.filter(coin = self.coin).get(special_item = self.specialItem)
         response = self.client.get(
-            reverse('retrieve_coin_shop', kwargs={'pk': self.sl.pk}))
+            reverse('retrieve_coin_shop', kwargs={'pk': swc.id}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['coinInfo']['id'], self.coin.id)
         self.assertEqual(response.data['special_item'], self.specialItem.id)
@@ -308,7 +310,7 @@ class EllectricWalletRetriveTest(APITestCase):
 
     def test_shopping_list_update_wallet(self):
         response = self.client.put(
-            reverse('wallet_shopping_list', kwargs={'pk': self.wallet.pk}),{"wallet_boolean":True})
+            reverse('wallet_shopping_list', kwargs={'pk': self.sl.id}),{"wallet_boolean":True})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["wallet_boolean"], True)
 
