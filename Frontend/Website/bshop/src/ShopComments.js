@@ -17,6 +17,7 @@ function ShopComments(props) {
     const [updateComments, setUpdateComments] = useState(false);
     const [edittingID, setEdittingID] = useState("");
     const [deletingComment, setDeletingComment] = useState(null);
+    const [deletingCommentReply, setDeletingCommentReply] = useState(null);
     const [selfComments, setSelfComments] = useState([]);
     const months = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"]
     const [loading, setLoading] = useState(true);
@@ -191,6 +192,41 @@ function ShopComments(props) {
         )
             .catch(e => console.log(e));
     }
+    const deleteCommentReply=()=>{
+        fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+deletingCommentReply.id,{
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(
+            res => {
+                if (res.status === 204) {
+                    setUpdateComments(!updateComments);
+                    setDeletingCommentReply(null)
+                }
+                return null;
+            }
+        )
+            .catch(e => console.log(e));
+    }
+    
+    const deleteCommentReply=(reply, commentid)=>{
+        fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${commentid}/replies/${reply.id}`+deletingCommentReply.id,{
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(
+            res => {
+                if (res.status === 204) {
+                    setUpdateComments(!updateComments);
+                    setDeletingCommentReply(null)
+                }
+                return null;
+            }
+        )
+            .catch(e => console.log(e));
+    }
     const role = localStorage.getItem("role")
     console.log(props);
     const handleLikeComment = (comment) => {
@@ -251,6 +287,8 @@ function ShopComments(props) {
                     </div>
                     
                     <div className="reply-comment">{!!comment.Replies && comment.Replies.map(r=>  <div className="shop-comment" key={r.id} data-testid={"comment-reply"+comment.id+"-"+r.id}>
+                    {/* <p className="comment-reply-edit" data-testid={"comment-reply-edit-options"+comment.id} onClick={() => startEditting(reply.id, reply.text)} > ویرایش</p> */}
+                                {/* <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p> */}
                         {/* <h3 className="shop-comment-title">{comment.title}</h3> */}
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-reply-username"+comment.id+"-"+r.id} >{r.user.user_name}</p>
@@ -264,10 +302,13 @@ function ShopComments(props) {
                             {r.AllPeopleLiked[0]?.Liked_By?.length}
                             لایک 
                             </p>
-                           
+                            {/* {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply2-to"+comment.id} onClick={() => setIsreplying(reply.id)} > ویرایش نظر</p>)} */}
+                            <p className="comment-delete" data-testid={"comment-delete-options"+reply.id} onClick={()=>setDeletingCommentReply(reply)}>حذف نظر</p>
+                      {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-edit-options"+comment.id} onClick={() => startEditting(reply.id, reply.text)} > ویرایش نظر</p>)}  
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-reply-text"+comment.id+"-"+r.id}>{r.text}</p>
-                    </div>)}</div>
+                    </div>)}
+                    </div>
                     </> 
                 )
             })}
@@ -287,6 +328,22 @@ function ShopComments(props) {
                 <textarea type="text" placeholder="پاسخ نظر خود را بنویسید..." value={reply} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setReply(e.target.value)} data-testid="write-comment-reply-input" ></textarea>
             </div>
         </div>}
+        {deletingComment && <Modal show={deletingComment} onHide={() => setDeletingComment(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
+        {deletingComment && <Modal show={deletingcommentre} onHide={() => setDeletingComment(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
+    <Modal.Header closeButton className="profile-modal">
+        <Modal.Title>حذف نظر</Modal.Title>
+    </Modal.Header>
+    <Modal.Body className="profile-modal">
+        <div style={{ direction: "rtl" }}>
+            <p>آیا از حذف این نظر اطمینان دارید؟</p>
+            <p className="delete-comment-text">"{deletingComment.text}"</p>
+            <div className="justify-content-center" style={{ width: "100%", display: "flex" }}>
+                <div className="btn delete-button" onClick={() => deleteComment()}>تایید و حذف نظر</div>
+            </div>
+        </div>
+    </Modal.Body>
+
+</Modal>}
         {deletingComment && <Modal show={deletingComment} onHide={() => setDeletingComment(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
     <Modal.Header closeButton className="profile-modal">
         <Modal.Title>حذف نظر</Modal.Title>
