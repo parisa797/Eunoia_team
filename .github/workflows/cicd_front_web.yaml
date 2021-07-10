@@ -106,9 +106,10 @@ jobs:
         # working-directory: /var/www/front
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: | 
-            tmux kill-session -t web
-            tmux new -d -s web 'npm run build'
+          # command: | 
+          #   tmux kill-session -t web
+          #   tmux new -d -s web 'npm run build'
+          command: npm run build
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Teams
