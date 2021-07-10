@@ -27,7 +27,13 @@ const ItemDetail = ({ route, navigation }) => {
   var rated = false;
   const [star_rates, setRates] = useState(route.params.rate_value);
 
-  var image = !route.params.photo ? null : route.params.photo;
+  // var image = !route.params.photo ? null : route.params.photo;
+  var image = route.params.photo
+    ? route.params.photo.includes("http://eunoia-bshop.ir:8000")
+      ? route.params.photo
+      : "http://eunoia-bshop.ir:8000" + route.params.photo
+    : null;
+
   var price = `${route.params.price} ریال`;
   var discounted = `با تخفیف: ${route.params.price_with_discount} ریال`;
   var count =
@@ -280,7 +286,7 @@ const ItemDetail = ({ route, navigation }) => {
           />
         </Pressable>
         {/* <Image style={styles.image} /> */}
-        {image == null && (
+        {!image && (
           <Image
             resizeMode="contain"
             style={styles.image}
@@ -291,7 +297,7 @@ const ItemDetail = ({ route, navigation }) => {
           <Image
             resizeMode="contain"
             style={styles.image}
-            source={{ uri: "http://eunoia-bshop.ir:8000" + image }}
+            source={{ uri: image }}
           />
         )}
       </View>

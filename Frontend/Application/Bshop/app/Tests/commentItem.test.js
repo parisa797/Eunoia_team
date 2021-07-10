@@ -104,9 +104,14 @@ describe("testing item's comment ", () => {
 
       //if user has profile image, show his own image
       if (comments[i].user.urls.length != 0) {
-        expect(queryByTestId("comment-avatar-" + i).props.source.uri).toBe(
-          comments[i].user.urls[0].uploaded_file
-        );
+        var ph = comments[i].user.urls[0].uploaded_file.includes(
+          "http://eunoia-bshop.ir:8000"
+        )
+          ? comments[i].user.urls[0].uploaded_file
+          : "http://eunoia-bshop.ir:8000" +
+            comments[i].user.urls[0].uploaded_file;
+
+        expect(queryByTestId("comment-avatar-" + i).props.source.uri).toBe(ph);
         expect(queryByTestId("comment-noavatar-" + i)).toBeNull();
       }
       // else (user doesn't have any photo), show default profile image

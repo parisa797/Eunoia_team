@@ -22,7 +22,11 @@ const OneComment = (props) => {
   // console.log(date);
 
   var user_photo =
-    props.avatar.length == 0 ? null : props.avatar[0].uploaded_file;
+    props.avatar.length == 0
+      ? null
+      : props.avatar[0].uploaded_file.includes("http://eunoia-bshop.ir:8000")
+      ? props.avatar[0].uploaded_file
+      : "http://eunoia-bshop.ir:8000" + props.avatar[0].uploaded_file;
   // console.log("photo:", user_photo);
 
   return (

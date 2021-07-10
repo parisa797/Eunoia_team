@@ -17,8 +17,9 @@ import * as SecureStore from "expo-secure-store";
 import Item from "./item";
 
 const SearchItemShop = ({ navigation, route }) => {
-  console.log("searched this:", route.params);
+  // console.log("searched this:", route.params);
   const [items, setItems] = useState();
+  const [noResult, setNoResult] = useState(false);
 
   useEffect(() => {
     const SearchItem = async () => {
@@ -42,8 +43,9 @@ const SearchItemShop = ({ navigation, route }) => {
       fetch(url, requestOptions)
         .then((response) => response.json())
         .then((result) => {
+          if (result.detail == "Not found.") setNoResult(true);
           setItems(result);
-          // console.log("shop res:", result);
+          // console.log("shop search result:", result);
         })
         .catch((error) => console.log("error", error));
     };
@@ -53,6 +55,8 @@ const SearchItemShop = ({ navigation, route }) => {
 
   return (
     <View>
+      {noResult && <Text> هیچ نتیجه ای یافت نشد</Text>}
+
       {items && (
         <FlatList
           nestedScrollEnabled={true}
@@ -60,8 +64,8 @@ const SearchItemShop = ({ navigation, route }) => {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
-            var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
-            console.log("check this url", itemData.item.photo);
+            // var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
+            // console.log("check this url", itemData.item.photo);
             return (
               <Item
                 name={itemData.item.name}

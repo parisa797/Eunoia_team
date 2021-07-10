@@ -54,18 +54,18 @@ const FavoriteItems = ({ navigation }) => {
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       {shopitems && (
         <FlatList
-          // testID={"items-list" + props.index}
+          testID={"fav-items-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -40 }}
           data={shopitems}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
             // console.log("item is", itemData.item);
-            var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
+            // var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
             return (
               <LikedItem
                 name={itemData.item.name}
-                image={u}
+                image={itemData.item.photo}
                 price={itemData.item.price}
                 discount={itemData.item.discount}
                 index={itemData.item.id}
