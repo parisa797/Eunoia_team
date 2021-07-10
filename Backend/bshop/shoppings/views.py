@@ -96,7 +96,7 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
             money = wallet.money
             wallet.money = money - instance.sum_price
             wallet.save()
-
+        # print(request.data.shopping_list_items)
         instance.sabt = request.data.get('sabt', instance.sabt)
         instance.date = request.data.get('date', timezone.now())
 
