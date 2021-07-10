@@ -79,6 +79,7 @@ jobs:
     needs: [upload-job]
     steps:
       - name: Install dependencies
+        working-directory: /home/ubuntu/Eunoiateam2/front/web/bshop
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: npm install
@@ -102,25 +103,12 @@ jobs:
     needs: [dependencies-job]
     steps:
       - name: build ssh
+      working-directory: /home/ubuntu/Eunoiateam2/front/web/bshop
         uses: garygrossgarten/github-action-ssh@release
         with:
-          local: ./Frontend/Website/bshop
           command: | 
             tmux kill-session -t web
-            tmux new -s web
-            tmux -d 'npm run build'
-          # command: npm run build
+            tmux new -d -s web 'npm run build'
           host: 37.152.179.124
           username: ubuntu
-          password: Eunoia6Team
-      #   run: npm run build
-      # - name: runserver ssh
-      #   uses: garygrossgarten/github-action-ssh@release
-      #   with:
-      #     command: | 
-      #       tmux kill-session -t 0
-      #       tmux
-      #       tmux new -d 'source venv/bin/activate; python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8000'
-      #     host: 37.152.179.124
-      #     username: ubuntu
-      #     password: Eunoia6Team
+          password: Eunoia6Teams
