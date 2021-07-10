@@ -103,7 +103,7 @@ jobs:
     needs: [dependencies-job]
     steps:
       - name: build ssh
-      working-directory: /home/ubuntu/Eunoiateam2/front/web/bshop
+        working-directory: /home/ubuntu/Eunoiateam2/front/web/bshop
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: | 
