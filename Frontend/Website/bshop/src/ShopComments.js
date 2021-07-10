@@ -326,12 +326,12 @@ function ShopComments(props) {
                                    {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                             </IconButton>
                             </div>
-                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}-${r.id}`}>
+                            <p className="shop-comment-date mr-2" data-testid={`comment-like-count${comment.id}-${r.id}`}>
                             {r.AllPeopleLiked[0]?.Liked_By?.length}
                             لایک 
                             </p>
                             {props.userState === "m" && <p className="comment-delete" data-testid={"comment-reply-delete-options"+comment.id+"-"+r.id} onClick={()=>setDeletingReply({replyid:r.id, commentid:comment.id, text:r.text})}>حذف نظر</p>}
-                            {props.userState === "m" &&  <p className="comment-edit" data-testid={"comment-edit-options"+r.id} onClick={() => startEdittingReply({replyid:r.id, commentid:comment.id},r.text)} > ویرایش</p>}
+                            {props.userState === "m" &&  <p className="comment-edit mr-2" data-testid={"comment-edit-options"+r.id} onClick={() => startEdittingReply({replyid:r.id, commentid:comment.id},r.text)} > ویرایش نظر</p>}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-reply-text"+comment.id+"-"+r.id}>{r.text}</p>
                     </div>)}</div>
