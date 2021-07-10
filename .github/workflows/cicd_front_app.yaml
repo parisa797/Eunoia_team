@@ -1,0 +1,86 @@
+name: Front App CI/CD Workflow
+
+on:
+  push:
+    branches:
+      # - develop
+      - feature/v1.0.0/cicd-front-app
+
+
+jobs:
+  health-check-job: 
+    runs-on: ubuntu-latest 
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+    
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v2
+      # - name: Cache dependency # caching dependency will make our build faster.
+      #   working-directory: ./Backend/bshop
+      #   uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        working-directory: ./Frontend/Application/Bshop
+        run: npm install
+
+      - name: Run the tests
+        working-directory: ./Frontend/Application/Bshop
+        run: npm test -- -u
+
+
+  # upload-job: 
+  #   runs-on: ubuntu-latest
+  #   needs: [health-check-job] 
+  #   steps:
+  #     - name: Checkout Code 
+  #       uses: actions/checkout@v2
+  #     - name: Copy folder content recursively to remote
+  #       uses: garygrossgarten/github-action-scp@release
+  #       with:
+  #         local: ./Frontend/Application/Bshop
+  #         remote: /home/ubuntu/Eunoiateam2/front/app
+  #         host: 37.152.179.124
+  #         username: ubuntu
+  #         password: Eunoia6Team
+
+  # dependencies-job: 
+  #   runs-on: ubuntu-latest
+  #   needs: [upload-job]
+  #   steps:
+  #     - name: Install dependencies
+  #       uses: garygrossgarten/github-action-ssh@release
+  #       with:
+  #         command: npm install
+  #         host: 37.152.179.124
+  #         username: ubuntu
+  #         password: Eunoia6Team
+          
+  # runserver-job: 
+  #   runs-on: ubuntu-latest
+  #   needs: [dependencies-job]
+  #   steps:
+  #     - name: build ssh
+  #       uses: garygrossgarten/github-action-ssh@release
+  #       with:
+  #         local: ./Frontend/Application/Bshop
+  #         command: | 
+  #           tmux kill-session -t app
+  #           tmux new -s app
+  #           tmux -d 'npm run build'
+  #         host: 37.152.179.124
+  #         username: ubuntu
+  #         password: Eunoia6Team
+  #         cd android && chmod +x ./gradlew
+  #         # cd android && ./gradlew bundleRelease --no-daemon
