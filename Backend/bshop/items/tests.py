@@ -67,41 +67,41 @@ class CreateItemTest(APITestCase):
 
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/1/items/", data)
+        response = self.client.post("/shops/"+str(h.id)+"/items/", data)
         # modela haye motefevet
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         data7 = {"name": "testItem1", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                  "discount": "20", "category": "Dairy"}
-        response7 = self.client.post("/shops/1/items/", data7)
+        response7 = self.client.post("/shops/"+str(h.id)+"/items/", data7)
         self.assertEqual(response7.status_code, status.HTTP_201_CREATED)
 
         data1 = {"name": "testItem2", "description": "Test description", "manufacture_Date": "2020-12-01",
                  "Expiration_Date": "2020-12-04", "price": "12000", "category": "Dairy"}
-        response2 = self.client.post("/shops/1/items/", data1)
+        response2 = self.client.post("/shops/"+str(h.id)+"/items/", data1)
         self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
 
         data2 = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                  "discount": "20"}
-        response6 = self.client.post("/shops/1/items/", data2)
+        response6 = self.client.post("/shops/"+str(h.id)+"/items/", data2)
         self.assertEqual(response6.status_code, status.HTTP_201_CREATED)
 
         data3 = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
                  "Expiration_Date": "2020-12-01", "count": "4", "price": "12000",
                  "discount": "20"}
-        response3 = self.client.post("/shops/1/items/", data3)
+        response3 = self.client.post("/shops/"+str(h.id)+"/items/", data3)
         self.assertEqual(response3.status_code, status.HTTP_201_CREATED)
 
         data4 = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
                  "Expiration_Date": "2020-11-02", "count": "4", "price": "12000",
                  "discount": "20"}
-        response4 = self.client.post("/shops/1/items/", data4)
+        response4 = self.client.post("/shops/"+str(h.id)+"/items/", data4)
         self.assertEqual(response4.status_code, status.HTTP_400_BAD_REQUEST)
 
         data5 = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01",
                  "Expiration_Date": "2019-12-01", "count": "4", "price": "12000",
                  "discount": "20"}
-        response5 = self.client.post("/shops/1/items/", data5)
+        response5 = self.client.post("/shops/"+str(h.id)+"/items/", data5)
         self.assertEqual(response5.status_code, status.HTTP_400_BAD_REQUEST)
 
 
@@ -118,25 +118,25 @@ class CreateListItemTest(APITestCase):
 
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/2/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
         # modela haye motefevet
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"name": "testItem1", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response1 = self.client.post("/shops/2/items/", data)
-        self.assertEqual(response1.status_code, status.HTTP_201_CREATED)
+        item1 = self.client.post("/shops/"+str(h.id)+"/items/", data)
+        self.assertEqual(item1.status_code, status.HTTP_201_CREATED)
 
         data = {"name": "testItem2", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "price": "12000", "category": "Dairy"}
-        response2 = self.client.post("/shops/2/items/", data)
-        self.assertEqual(response2.status_code, status.HTTP_201_CREATED)
+        item2 = self.client.post("/shops/"+str(h.id)+"/items/", data)
+        self.assertEqual(item2.status_code, status.HTTP_201_CREATED)
 
         data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "2020-12-01", "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20"}
-        response3 = self.client.post("/shops/2/items/", data)
-        self.assertEqual(response3.status_code, status.HTTP_201_CREATED)
+        item3 = self.client.post("/shops/"+str(h.id)+"/items/", data)
+        self.assertEqual(item3.status_code, status.HTTP_201_CREATED)
 
-        response4 = self.client.get("/shops/2/items/")
+        response4 = self.client.get("/shops/"+str(h.id)+"/items/")
         total = Item.objects.all()
         totalserializers = CreateListItemSerializer(total, many=True)
         self.assertEqual(totalserializers.data, response4.data)
@@ -157,11 +157,11 @@ class DeleteItemTest(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/3/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
 
-        response1 = self.client.delete("/shops/3/items/10")
+        response1 = self.client.delete("/shops/"+str(h.id)+"/items/"+str(item.data["id"]))
         self.assertEqual(response1.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -179,15 +179,15 @@ class EditItemTest(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "1400-12-01",
                 "Expiration_Date": "1400-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/4/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
 
         data1 = {"name": "testItemforedit", "description": "Test description Edit", "count": "4", "price": "10000",
                  "discount": "0", "category": "others"}
 
-        response1 = self.client.put("/shops/4/items/11", data1)
-        editedOne = Item.objects.get(id=11)
+        response1 = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"]), data1)
+        editedOne = Item.objects.get(id=item.data["id"])
         choosenSerializer = ItemSerializer(editedOne)
         self.assertEqual(response1.data, choosenSerializer.data)
         self.assertEqual(response1.status_code, status.HTTP_200_OK)
@@ -196,25 +196,25 @@ class EditItemTest(APITestCase):
                  "Expiration_Date": "1400-12-04", "count": "4", "price": "10000",
                  "discount": "0", "category": "others"}
 
-        response1 = self.client.put("/shops/4/items/11", data2)
+        response1 = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"]), data2)
         self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "1400-12-01",
                 "Expiration_Date": "1400-12-01", "count": "4", "price": "12000",
                 "discount": "20"}
-        response1 = self.client.put("/shops/4/items/11", data)
+        response1 = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"]), data)
         self.assertEqual(response1.status_code, status.HTTP_200_OK)
 
         data = {"name": "testItem3", "description": "Test description", "manufacture_Date": "1400-12-01",
                 "Expiration_Date": "1400-11-02", "count": "4", "price": "12000",
                 "discount": "20"}
-        response1 = self.client.put("/shops/4/items/11", data)
+        response1 = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"]), data)
         self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
 
         data = {"description": "Test description", "manufacture_Date": "1400-12-01",
                 "Expiration_Date": "1399-12-01", "count": "4", "price": "12000",
                 "discount": "20"}
-        response1 = self.client.put("/shops/4/items/11", data)
+        response1 = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"]), data)
         self.assertEqual(response1.status_code, status.HTTP_400_BAD_REQUEST)
 
 
@@ -231,12 +231,12 @@ class GetOneItemTest(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/6/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        response = self.client.get("/shops/6/items/16")
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        editedOne = Item.objects.get(id=16)
+        editedOne = Item.objects.get(id=item.data["id"])
         choosenSerializer = ItemSerializer(editedOne)
         self.assertEqual(response.data, choosenSerializer.data)
 
@@ -254,22 +254,22 @@ class SearchItem(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/7/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
         data = {"name": "lifetest", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/7/items/", data)
+        item1 = self.client.post("/shops/"+str(h.id)+"/items/", data)
         data = {"name": "life", "description": "description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/7/items/", data)
+        item2 = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item2.status_code, status.HTTP_201_CREATED)
         response = self.client.get("/items/search?q=test")
-        searcheOne = Item.objects.get(id=17)
+        searcheOne = Item.objects.get(id=item.data["id"])
         chooseSerializer = ItemSerializer(searcheOne)
-        searcheOne1 = Item.objects.get(id=18)
+        searcheOne1 = Item.objects.get(id=item1.data["id"])
         chooseSerializer1 = ItemSerializer(searcheOne1)
         self.assertEqual(response.data[0], chooseSerializer.data)
         self.assertEqual(response.data[1], chooseSerializer1.data)
@@ -284,35 +284,35 @@ class SearchItemOneShop(APITestCase):
         self.token = Token.objects.create(user=self.user)
         h = Shop.objects.create(title="testShop", user=self.user, manager="Test",
                                 address="Test address", theme=1, shomare_sabt="1111", phone="111111")
-        Shop.objects.create(title="testShop", user=self.user, manager="Test",
+        sh=Shop.objects.create(title="testShop", user=self.user, manager="Test",
                             address="Test address", theme=1, shomare_sabt="1111", phone="111111")
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/8/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
         data = {"name": "lifetest", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/8/items/", data)
+        item1 = self.client.post("/shops/"+str(h.id)+"/items/", data)
         data = {"name": "life", "description": "description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/9/items/", data)
+        item2 = self.client.post("/shops/"+str(sh.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        response = self.client.get("/shops/8/items/search/?q=test")
-        searcheOne = Item.objects.get(id=20)
+        self.assertEqual(item2.status_code, status.HTTP_201_CREATED)
+        response = self.client.get("/shops/"+str(h.id)+"/items/search/?q=test")
+        searcheOne = Item.objects.get(id=item.data['id'])
         chooseSerializer = ItemSerializer(searcheOne)
-        searcheOne1 = Item.objects.get(id=21)
+        searcheOne1 = Item.objects.get(id=item1.data['id'])
         chooseSerializer1 = ItemSerializer(searcheOne1)
         self.assertEqual(response.data[0]["id"], chooseSerializer.data['id'])
         self.assertEqual(response.data[1]['id'], chooseSerializer1.data['id'])
         self.assertEqual(len(response.data), 2)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        response = self.client.get("/shops/9/items/search/?q=life")
-        searcheOne = Item.objects.get(id=22)
+        response = self.client.get("/shops/"+str(sh.id)+"/items/search/?q=life")
+        searcheOne = Item.objects.get(id=item2.data['id'])
         chooseSerializer = ItemSerializer(searcheOne)
         self.assertEqual(response.data[0]['id'], chooseSerializer.data['id'])
         self.assertEqual(len(response.data), 1)
@@ -332,21 +332,21 @@ class TestItemComment(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/10/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}
-        response = self.client.post("/shops/10/items/23/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
         data = {"text": "second try of test"}
-        response = self.client.post("/shops/10/items/23/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment1 = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment1.status_code, status.HTTP_201_CREATED)
         #########################GET#################################
-        response = self.client.get("/shops/10/items/23/comments/")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        comment = CommentSerializer(Comment.objects.get(id=1))
-        comment2 = CommentSerializer(Comment.objects.get(id=2))
-        self.assertEqual(response.data[0], comment.data)
+        comment3 = CommentSerializer(Comment.objects.get(id=comment.data["id"]))
+        comment2 = CommentSerializer(Comment.objects.get(id=comment1.data["id"]))
+        self.assertEqual(response.data[0], comment3.data)
         self.assertEqual(response.data[1], comment2.data)
         self.assertEqual(len(response.data), 2)
 
@@ -364,25 +364,25 @@ class TestItemCommentInfo(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/11/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}  # 3
-        response = self.client.post("/shops/11/items/24/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
 
         ###########PUT####################
         data = {"text": "Update of Test"}
-        response = self.client.put("/shops/11/items/24/comments/3", data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["text"], "Update of Test")
+        comments = self.client.put("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"]), data)
+        self.assertEqual(comments.status_code, status.HTTP_200_OK)
+        self.assertEqual(comments.data["text"], "Update of Test")
         #########################GET#################################
-        response = self.client.get("/shops/11/items/24/comments/3")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        comment = CommentSerializer(Comment.objects.get(id=3))
-        self.assertEqual(response.data, comment.data)
+        comments = CommentSerializer(Comment.objects.get(id=comment.data["id"]))
+        self.assertEqual(response.data, comments.data)
         #########################DELETE#################################
-        response = self.client.delete("/shops/11/items/24/comments/3")
+        response = self.client.delete("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -399,34 +399,34 @@ class TestItemCommentLike(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/12/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}  # 4
-        response = self.client.post("/shops/12/items/25/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
 
         ###########POST####################
-        response = self.client.post("/shops/12/items/25/comments/4/likes")
+        response = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['likes_count'], 1)
         self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
-        response = self.client.get("/shops/12/items/25/comments/4/likes")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
                          [0]['username'], 'testcase')
 
         ###########POST####################
-        response = self.client.post("/shops/12/items/25/comments/4/likes")
+        response = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
 
         #########################GET#################################
-        response = self.client.get("/shops/12/items/25/comments/4/likes")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -445,37 +445,37 @@ class TestItemReply(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/13/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         self.user = MyUser.objects.create_user(
             username='testcase2', email='email@tes2r.com', password="strong_Pass")
         self.token = Token.objects.create(user=self.user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
 
         data = {"text": "test comment"}
-        response = self.client.post("/shops/13/items/26/comments/", data)  # 5
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/", data)  # 5
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/shops/13/items/26/comments/5/replies", data)  # failed
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        reply = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/"+str(comment.data['id'])+"/replies", data)  # failed
+        self.assertEqual(reply.status_code, status.HTTP_403_FORBIDDEN)
 
         self.client.credentials(HTTP_AUTHORIZATION="Token " + tokencopy)
         data = {"text": "reply"}
-        response = self.client.post(
-            "/shops/13/items/26/comments/5/replies", data)  # 1
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        reply2 = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/"+str(comment.data['id'])+"/replies", data)  # 1
+        self.assertEqual(reply2.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/shops/13/items/26/comments/5/replies", data)  # 2
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        reply3 = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/"+str(comment.data['id'])+"/replies", data)  # 2
+        self.assertEqual(reply3.status_code, status.HTTP_201_CREATED)
 
         #########################GET#################################
-        response = self.client.get("/shops/13/items/26/comments/5/replies")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/"+str(comment.data['id'])+"/replies")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        reply = ReplySerializer(Reply.objects.get(id=1))
-        reply2 = ReplySerializer(Reply.objects.get(id=2))
+        reply = ReplySerializer(Reply.objects.get(id=reply2.data['id']))
+        reply2 = ReplySerializer(Reply.objects.get(id=reply3.data["id"]))
         self.assertEqual(response.data[0], reply.data)
         self.assertEqual(response.data[1], reply2.data)
         self.assertEqual(len(response.data), 2)
@@ -494,31 +494,30 @@ class TestItemReplyInfo(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/14/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}  # 3
-        response = self.client.post("/shops/14/items/27/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/shops/14/items/27/comments/6/replies", data)  # 3
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        reply = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies", data)  # 3
+        self.assertEqual(reply.status_code, status.HTTP_201_CREATED)
 
         ###########PUT####################
         data = {"text": "Update of Test"}
         response = self.client.put(
-            "/shops/14/items/27/comments/6/replies/3", data)
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"]), data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["text"], "Update of Test")
         #########################GET#################################
-        response = self.client.get("/shops/14/items/27/comments/6/replies/3")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"]))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        reply = ReplySerializer(Reply.objects.get(id=3))
+        reply = ReplySerializer(Reply.objects.get(id=reply.data["id"]))
         self.assertEqual(response.data, reply.data)
         #########################DELETE#################################
-        response = self.client.delete(
-            "/shops/14/items/27/comments/6/replies/3")
+        response = self.client.delete("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"]))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
@@ -535,27 +534,27 @@ class TestItemReplyLike(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/15/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}  # 7
-        response = self.client.post("/shops/15/items/28/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/shops/15/items/28/comments/7/replies", data)  # 4
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        reply = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies", data)  # 4
+        self.assertEqual(reply.status_code, status.HTTP_201_CREATED)
 
         ###########POST####################
         response = self.client.post(
-            "/shops/15/items/28/comments/7/replies/4/likes")
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['likes_count'], 1)
         self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
         response = self.client.get(
-            "/shops/15/items/28/comments/7/replies/4/likes")
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
@@ -563,14 +562,14 @@ class TestItemReplyLike(APITestCase):
 
         ###########POST####################
         response = self.client.post(
-            "/shops/15/items/28/comments/7/replies/4/likes")
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
 
         #########################GET#################################
         response = self.client.get(
-            "/shops/15/items/28/comments/7/replies/4/likes")
+            "/shops/"+str(h.id)+"/items/"+str(item.data["id"])+"/comments/"+str(comment.data["id"])+"/replies/"+str(reply.data["id"])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -589,18 +588,18 @@ class TestLikeItem(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/16/items/", data)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
 
         ###########POST####################
-        response = self.client.post("/shops/16/items/29/likes", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['likes_count'], 1)
-        self.assertEqual(response.data['Liked_By'][0]['username'], 'testcase')
+        likeItem = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/likes", data)
+        self.assertEqual(likeItem.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(likeItem.data['likes_count'], 1)
+        self.assertEqual(likeItem.data['Liked_By'][0]['username'], 'testcase')
 
         #########################GET#################################
-        response = self.client.get("/shops/16/items/29/likes")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 1)
         self.assertEqual(response.data[0]['Liked_By']
@@ -608,11 +607,11 @@ class TestLikeItem(APITestCase):
 
         response = self.client.get("/users/profile/likeditems")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['id'], 29)
+        self.assertEqual(response.data[0]['id'],1 )###inja
         self.assertEqual(len(response.data), 1)
 
         ###########POST####################
-        response = self.client.post("/shops/16/items/29/likes")
+        response = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['likes_count'], 0)
         self.assertEqual(len(response.data['Liked_By']), 0)
@@ -622,7 +621,7 @@ class TestLikeItem(APITestCase):
         self.assertEqual(len(response.data), 0)
 
         #########################GET#################################
-        response = self.client.get("/shops/16/items/29/likes")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/likes")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0]['likes_count'], 0)
         self.assertEqual(len(response.data[0]['Liked_By']), 0)
@@ -766,21 +765,21 @@ class TestReplyCommentItem(APITestCase):
         data = {"name": "testItem", "description": "Test description", "manufacture_Date": "2020-12-01",
                 "Expiration_Date": "2020-12-04", "count": "4", "price": "12000",
                 "discount": "20", "category": "Dairy"}
-        response = self.client.post("/shops/22/items/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        item = self.client.post("/shops/"+str(h.id)+"/items/", data)
+        self.assertEqual(item.status_code, status.HTTP_201_CREATED)
         data = {"text": "test comment"}  # 7
-        response = self.client.post("/shops/22/items/35/comments/", data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        comment = self.client.post("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/", data)
+        self.assertEqual(comment.status_code, status.HTTP_201_CREATED)
         data = {"text": "reply test"}
-        response = self.client.post(
-            "/shops/22/items/35/comments/8/replies", data)  # 4
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        reply = self.client.post(
+            "/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/comments/"+str(comment.data['id'])+"/replies", data)  # 4
+        self.assertEqual(reply.status_code, status.HTTP_201_CREATED)
 
         #########################GET#################################
-        response = self.client.get("/shops/22/items/35/commentsreplis")
+        response = self.client.get("/shops/"+str(h.id)+"/items/"+str(item.data['id'])+"/commentsreplis")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0], CommentReplySerializer(
-            Comment.objects.get(id=8)).data)
+            Comment.objects.get(id=comment.data['id'])).data)
         self.assertEqual(len(response.data), 1)
 
 ############Special_item test#######################
