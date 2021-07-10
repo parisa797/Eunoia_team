@@ -112,4 +112,4 @@ jobs:
           command: npm run build
           host: 37.152.179.124
           username: ubuntu
-          password: Eunoia6Teams
+          password: Eunoia6Team
