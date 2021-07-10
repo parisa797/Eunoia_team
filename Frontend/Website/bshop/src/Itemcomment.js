@@ -232,6 +232,8 @@ function Itemcomment(props) {
                             {r.AllPeopleLiked[0]?.Liked_By?.length}
                             لایک 
                             </p>
+                            <p className="comment-delete" data-testid={"comment-delete-options"+reply.id} onClick={()=>setDeletingComment(reply)}>حذف نظر</p>
+                      {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-edit-options"+comment.id} onClick={() => startEditting(reply.id, reply.text)} > ویرایش نظر</p>)} 
                       </div>
                       <p className="shop-comment-desc" data-testid={"comment-reply-text"+r.id}>{r.text}</p>
                   </div>)}</div>
@@ -249,6 +251,7 @@ function Itemcomment(props) {
             </div>
         </div>} {(props.userState === "m") && isReplyng > -1 && <div className="write-comment-container" data-testid="write-reply-comment">
             <div className="write-comment">
+           
                 <div onClick={replyComment} data-testid="send-comment-reply-button"><SendIcon /></div>
                 <textarea type="text" placeholder="پاسخ نظر خود را بنویسید..." value={reply} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setReply(e.target.value)} data-testid="write-comment-reply-input" ></textarea>
             </div>
