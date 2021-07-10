@@ -82,7 +82,9 @@ jobs:
         # working-directory: /var/www/front
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: npm install
+          command: |
+            cd /var/www/front
+            npm install
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
@@ -109,7 +111,9 @@ jobs:
           # command: | 
           #   tmux kill-session -t web
           #   tmux new -d -s web 'npm run build'
-          command: npm run build
+          command: |
+            cd /var/www/front
+            npm run build
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
