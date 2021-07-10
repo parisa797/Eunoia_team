@@ -12,6 +12,7 @@ import {
   FlatList,
   Pressable,
   ScrollView,
+  Picker,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -27,6 +28,8 @@ const ShopDetail = ({ route, navigation }) => {
   const [shopitems, setItems] = useState();
   const [star_rates, setRates] = useState(route.params.rate_value);
   const [user, setUser] = useState();
+  const [category, setCategory] = useState("all");
+  const [itemFilter, setItemFilter] = useState("expensive");
   var rated = false;
   var url =
     "http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/" + route.params.id;
@@ -43,7 +46,7 @@ const ShopDetail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setItems(result);
-        console.log("fetching again in shop detail page");
+        // console.log("fetching again in shop detail page");
       })
       .catch((error) => {
         console.log("error", error);
@@ -129,7 +132,7 @@ const ShopDetail = ({ route, navigation }) => {
             return response.json();
           })
           .then((result) => {
-            console.log("result after user rate", result);
+            // console.log("result after user rate", result);
             //after fetching user's rate, get the item rate in order to update stars
             requestOptions = {
               method: "GET",
@@ -191,6 +194,107 @@ const ShopDetail = ({ route, navigation }) => {
           <Text style={styles.loginText}>بگرد</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.selector}>
+        <Text style={styles.filterText}>فیلتر آیتم بر اساس </Text>
+        <View style={styles.container2}>
+          {itemFilter != "category" && (
+            <Picker
+              selectedValue={category}
+              style={{ height: 50, width: 150, color: "white" }}
+              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+            >
+              {/* {itemFilter != "category" && ( */}
+              <Picker.Item label="همه" value="all" />
+              {/* )} */}
+              <Picker.Item
+                label="ادویه، چاشنی و مخلفات غذا"
+                value="Spices and condiments and food side dishes"
+              />
+              <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
+              <Picker.Item label="آرایش و پیرایش" value="Makeup and trimming" />
+              <Picker.Item label="پروتئینی" value="Protein" />
+              <Picker.Item label="تنقلات" value="Junk Food" />
+              <Picker.Item label="خشکبار" value="Nuts" />
+              <Picker.Item
+                label="شیرینیجات و دسرها"
+                value="Sweets and desserts"
+              />
+              <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
+              <Picker.Item
+                label="غذا، کنسرو و سبزیجات"
+                value="Fruits and vegetables"
+              />
+              <Picker.Item label="لبنیات" value="Dairy" />
+              <Picker.Item label="نوشیدنیها" value="Drinks" />
+              <Picker.Item
+                label="وسایل شستشو و نظافت"
+                value="Washing and Cleaning Equipment"
+              />
+              <Picker.Item label="متفرقه" value="others" />
+            </Picker>
+          )}
+
+          {itemFilter == "category" && (
+            <Picker
+              selectedValue={category}
+              style={{ height: 50, width: 150, color: "white" }}
+              onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+            >
+              <Picker.Item
+                label="ادویه، چاشنی و مخلفات غذا"
+                value="Spices and condiments and food side dishes"
+              />
+              <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
+              <Picker.Item label="آرایش و پیرایش" value="Makeup and trimming" />
+              <Picker.Item label="پروتئینی" value="Protein" />
+              <Picker.Item label="تنقلات" value="Junk Food" />
+              <Picker.Item label="خشکبار" value="Nuts" />
+              <Picker.Item
+                label="شیرینیجات و دسرها"
+                value="Sweets and desserts"
+              />
+              <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
+              <Picker.Item
+                label="غذا، کنسرو و سبزیجات"
+                value="Fruits and vegetables"
+              />
+              <Picker.Item label="لبنیات" value="Dairy" />
+              <Picker.Item label="نوشیدنیها" value="Drinks" />
+              <Picker.Item
+                label="وسایل شستشو و نظافت"
+                value="Washing and Cleaning Equipment"
+              />
+              <Picker.Item label="متفرقه" value="others" />
+            </Picker>
+          )}
+        </View>
+        <View style={styles.container2}>
+          <Picker
+            selectedValue={itemFilter}
+            style={{ height: 50, width: 150, color: "white" }}
+            onValueChange={(itemValue, itemIndex) => setItemFilter(itemValue)}
+          >
+            <Picker.Item label="گران ترین" value="expensive" />
+            <Picker.Item label="ارزان ترین" value="cheap" />
+            <Picker.Item label="جدیدترین" value="new" />
+            <Picker.Item label="دسته بندی" value="category" />
+            <Picker.Item label="تخفیف دار" value="discount" />
+          </Picker>
+        </View>
+      </View>
+      <TouchableOpacity
+        style={styles.Btn}
+        onPress={() => {
+          var x = {
+            filterType: itemFilter,
+            category,
+            shopID: route.params.id,
+          };
+          navigation.navigate("FilterShopItem", x);
+        }}
+      >
+        <Text style={styles.loginText}>فیلتر</Text>
+      </TouchableOpacity>
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -255,7 +359,7 @@ const ShopDetail = ({ route, navigation }) => {
         <Text style={{ fontWeight: "bold" }}></Text>
         {shopitems && (
           <FlatList
-            // testID={"items-list" + props.index}
+            testID={"items-list"}
             nestedScrollEnabled={true}
             style={{ marginTop: -30 }}
             horizontal

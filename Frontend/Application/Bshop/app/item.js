@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 const Item = (props) => {
-  console.log("this is props", props);
+  // console.log("this is props", props);
   var photo = "http://eunoia-bshop.ir:8000" + props.image;
   // console.log("photo url is", props.image);
   var newPrice = ((100 - props.discount) * props.price) / 100;
@@ -74,7 +74,10 @@ const Item = (props) => {
         )}
 
         {props.discount != 0 && (
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          <Text
+            testID={"item-discounted-" + props.index}
+            style={{ fontSize: 15, fontWeight: "bold" }}
+          >
             قیمت با تخفیف: {newPrice}
           </Text>
         )}

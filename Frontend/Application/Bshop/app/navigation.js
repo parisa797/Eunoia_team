@@ -15,6 +15,8 @@ import Comment from "./comment";
 import ItemComment from "./itemComment";
 import SearchResult from "./search";
 import SearchItemShop from "./serchItemShop";
+import FilterResult from "./filter";
+import FilterShopItem from "./filterShopItem";
 import Scan from "./qrScan";
 
 const Stack = createStackNavigator();
@@ -91,6 +93,16 @@ const AppStack = ({ navigation }) => {
         name="SearchShopItems"
         component={SearchItemShop}
         options={{ title: "نتایج جستجو" }}
+      />
+      <Stack.Screen
+        name="Filter"
+        component={FilterResult}
+        options={{ title: "نتایج فیلتر" }}
+      />
+      <Stack.Screen
+        name="FilterShopItem"
+        component={FilterShopItem}
+        options={{ title: "نتایج فیلتر" }}
       />
     </Stack.Navigator>
   );

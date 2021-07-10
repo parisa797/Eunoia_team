@@ -30,6 +30,7 @@ const OneComment = (props) => {
       <View style={styles.avatarContainer}>
         {user_photo == null && (
           <Image
+            testID={"comment-noavatar-" + props.index}
             resizeMode="contain"
             style={styles.avatar}
             // source={{ uri: props.avatar }}
@@ -38,6 +39,7 @@ const OneComment = (props) => {
         )}
         {user_photo && (
           <Image
+            testID={"comment-avatar-" + props.index}
             resizeMode="contain"
             style={styles.avatar}
             source={{ uri: user_photo }}
@@ -46,10 +48,22 @@ const OneComment = (props) => {
       </View>
       <View style={styles.contentContainer}>
         <Text>
-          <Text style={[styles.text, styles.name]}>{props.name}</Text>{" "}
-          <Text style={styles.text}>{props.content}</Text>
+          <Text
+            testID={"comment-userid-" + props.index}
+            style={[styles.text, styles.name]}
+          >
+            {props.name}
+          </Text>{" "}
+          <Text testID={"comment-text-" + props.index} style={styles.text}>
+            {props.content}
+          </Text>
         </Text>
-        <Text style={[styles.text, styles.created]}>{date}</Text>
+        <Text
+          testID={"comment-date-" + props.index}
+          style={[styles.text, styles.created]}
+        >
+          {date}
+        </Text>
       </View>
     </View>
   );
@@ -139,6 +153,7 @@ const Comment = ({ route, navigation }) => {
         {/* {noComment && <Text>{noComment}</Text>} */}
         {/* {comments.length != 0 && ( */}
         <FlatList
+          testID={"comments-list"}
           style={styles.list}
           //   extraData={this.state}
           data={comments}
@@ -154,6 +169,7 @@ const Comment = ({ route, navigation }) => {
                 name={itemData.item.user.user_name}
                 content={itemData.item.text}
                 date={itemData.item.date_jalali}
+                index={itemData.item.id}
               ></OneComment>
             );
           }}

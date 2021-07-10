@@ -41,11 +41,13 @@ describe("Login component be tested", () => {
     expect(getByTestId("pass_check").props.value).toBe(pass);
   });
 
-  //mocking ToastAndroid
+  // mocking ToastAndroid
   const showMock = jest.fn();
   jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
   //empty email
   it("check empty email", async () => {
+    showMock.mockClear();
+
     const push = jest.fn();
     const { getByTestId, getByPlaceholderText } = await render(
       <Login navigation={{ push }} />
@@ -63,6 +65,8 @@ describe("Login component be tested", () => {
 
   // //empty password
   it("check empty password", async () => {
+    showMock.mockClear();
+
     const push = jest.fn();
     const { getByTestId, getByPlaceholderText } = await render(
       <Login navigation={{ push }} />
@@ -79,6 +83,8 @@ describe("Login component be tested", () => {
 
   //empty email and password
   it("check empty email & password", async () => {
+    showMock.mockClear();
+
     const push = jest.fn();
     const { getByTestId, getByPlaceholderText } = await render(
       <Login navigation={{ push }} />
@@ -92,79 +98,146 @@ describe("Login component be tested", () => {
     await fireEvent.press(getByTestId("login-button"));
     expect(showMock).toHaveBeenLastCalledWith(message, undefined);
   });
+});
+
+describe("test Login fetch", () => {
+  var _ = require("lodash");
+  //make fake data for DB
+  const database_users = [
+    { email: "gh@ac.ir", password: "thisIsme567" },
+    { email: "shrbi@iust.ac.ir", password: "shrb5678SJ" },
+    { email: "kasra@gmail.com", password: "Iamkasra83" },
+  ];
+
+  const notConfirmed = ["habib@yahoo.com", "marya@gmail.com"];
+
+  const contains = (value, other) => {
+    for (var i = 0; i < other.length; i++) {
+      if (_.isEqual(value, other[i])) return true;
+    }
+    return false;
+  };
+
+  //mock fetch
+  const fetchMock = require("fetch-mock-jest");
+  fetchMock.post(
+    "http://eunoia-bshop.ir:8000/rest-auth/login/",
+    // { status: 200, body: JSON.stringify("successfull login") }
+    (url, options) => {
+      var dict = JSON.parse(options.body);
+
+      //if user has not confirmed email, should see a toastandroid
+      if (notConfirmed.includes(dict.email)) {
+        return {
+          status: 400,
+          body: JSON.stringify({
+            non_field_errors: ["E-mail is not verified."],
+          }),
+        };
+      }
+
+      if (contains(dict, database_users)) {
+        console.log("reached here");
+        let random = Math.random().toString(36).substring(7);
+        return {
+          status: 200,
+          body: JSON.stringify({
+            key: random,
+          }),
+        };
+      }
+      // console.log("reached bad!");
+      // ToastAndroid.show(
+      //   "ایمیل یا رمزعبور خود را به درستی وارد نکرده اید. لطفا مجددا تلاش کنید.",
+      //   ToastAndroid.SHORT
+      // );
+      return {
+        status: 400,
+        body: JSON.stringify({
+          non_field_errors: ["Unable to log in with provided credentials."],
+        }),
+      };
+    }
+  );
 
   // auth successfull
-  // it("failed auth", async () => {
-  //   const fetchMock = require("fetch-mock-jest");
+  it("successful auth", async () => {
+    // const SecureStore = require("expo-secure-store");
+    // let mockSetItemAsync = jest.fn();
+    // mockSetItemAsync = jest
+    //   .spyOn(SecureStore, "setItemAsync")
+    //   .mockImplementation(() => Promise.resolve({ success: true }));
+    // SecureStore.setItemAsync = mockSetItemAsync;
 
-  //   const database_users = [
-  //     { email: "gh@iust.ac.ir", password: "thisIsme567" },
-  //     { email: "gh@ac.ir", password: "thisIme567" },
-  //   ];
-  //   await fetchMock.post(
-  //     "http://iust-bshop.herokuapp.com/rest-auth/login/",
-  //     (url, options) => {
-  //       // if (typeof options.body.name === 'string') {
-  //       // 	users.push(options.body);
-  //       // 	return 201;
-  //       // }
-  //       // return 400;
-  //       // console.log(JSON.stringify(options.body));
-  //       var e = "email";
-  //       console.log("body is: ", options.body);
-  //       // console.log(options.body.e);
-  //       console.log(options.body["email"]);
-  //       // console.log(options.body.get("email"));
+    // jest.mock("expo-secure-store", () => ({
+    //   setItemAsync: jest.fn(),
+    // }));
+    // const fetchMock = require("fetch-mock-jest");
 
-  //       // var dict = [{ hi: "pleas" }];
-  //       // console.log(dict["hi"]);
-  //       // console.log(dict[0]["hi"]);
-  //       console.log("here here", options.body.email);
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <Login navigation={{ push }} />
+    );
+    await new Promise((resolve) => setImmediate(resolve));
 
-  //       if (
-  //         database_users.includes({
-  //           email: options.body.get("email"),
-  //           password: options.body.get("password"),
-  //         })
-  //       ) {
-  //         console.log("reached here");
-  //         return 200;
-  //       }
-  //       console.log("raeched bad!");
-  //       return 400;
-  //     }
-  //   );
-  //   const push = jest.fn();
-  //   const { getByTestId, getByPlaceholderText } = await render(
-  //     <Login navigation={{ push }} />
-  //   );
-  //   await new Promise((resolve) => setImmediate(resolve));
+    const pass = "thisIsme567";
+    await fireEvent.changeText(getByTestId("pass_check"), pass);
+    const email = "gh@ac.ir";
+    await fireEvent.changeText(getByTestId("email_check"), email);
+    await fireEvent.press(getByTestId("login-button"));
 
-  //   const pass = "thisIme567";
-  //   await fireEvent.changeText(getByTestId("pass_check"), pass);
-  //   const email = "gh@ac.ir";
-  //   await fireEvent.changeText(getByTestId("email_check"), email);
-  //   await fireEvent.press(getByTestId("login-button"));
-  //   // var bdy = JSON.stringify({ email: mail, password: pass });
-  //   // console.log(bdy);
-  //   var dict = {
-  //     email: email,
-  //     password: pass,
-  //   };
-  //   expect(fetchMock).toHaveLastFetched(
-  //     "http://iust-bshop.herokuapp.com/rest-auth/login/",
-  //     {
-  //       // url: "http://iust-bshop.herokuapp.com/rest-auth/login/",
-  //       options: { body: dict },
-  //     },
+    expect(fetchMock).toHaveLastFetched(
+      "http://eunoia-bshop.ir:8000/rest-auth/login/",
+      {
+        // url: "http://iust-bshop.herokuapp.com/rest-auth/login/",
+        // options: { body: dict },
+        options: {
+          body: JSON.stringify({
+            email: email,
+            password: pass,
+          }),
+        },
+      },
+      "post"
+    );
+    // expect(mockSetItemAsync).toHaveBeenCalled();
+    // expect(setItemAsync).toHaveBeenLastCalledWith("token", "asalkak");
+  });
 
-  //     // {
-  //     //   url: "http://iust-bshop.herokuapp.com/rest-auth/login/",
-  //     //   options: { body: JSON.stringify({ email: email, password: pass }) },
-  //     // },
-  //     "post"
-  //   );
-  // });
+  //mocking ToastAndroid
+  // const showMock = jest.fn();
+  // jest.spyOn(ToastAndroid, "show").mockImplementation(showMock);
+  // showMock.mockClear();
 
   //authentication failed
+  it("failed auth", async () => {
+    const push = jest.fn();
+    const { getByTestId, getByPlaceholderText } = await render(
+      <Login navigation={{ push }} />
+    );
+    await new Promise((resolve) => setImmediate(resolve));
+
+    const pass = "sharifizahra87T";
+    await fireEvent.changeText(getByTestId("pass_check"), pass);
+    const email = "zahra@gmail.ir";
+    await fireEvent.changeText(getByTestId("email_check"), email);
+    await fireEvent.press(getByTestId("login-button"));
+
+    expect(fetchMock).toHaveLastFetched(
+      "http://eunoia-bshop.ir:8000/rest-auth/login/",
+      {
+        options: {
+          body: JSON.stringify({
+            email: email,
+            password: pass,
+          }),
+        },
+      },
+      "post"
+    );
+
+    var message =
+      "ایمیل یا رمزعبور خود را به درستی وارد نکرده اید. لطفا مجددا تلاش کنید.";
+    // expect(showMock).toHaveBeenLastCalledWith(message, undefined);
+  });
 });

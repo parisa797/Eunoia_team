@@ -10,8 +10,17 @@ import renderer from "react-test-renderer";
 
 import Home from "../homepage";
 import Shop from "../shop";
+// import * as Focus from "@react-navigation/native";
+
+const mockedFocused = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useIsFocused: () => mockedFocused,
+}));
 
 describe("Home page with shops be tested", () => {
+  // jest.mock("@react-navigation/native");
+
   it("renders correctly", () => {
     const tree = renderer.create(<Home />).toJSON();
     expect(tree).toMatchSnapshot();

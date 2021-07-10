@@ -12,6 +12,275 @@ exports[`testing shop detail, items part renders correctly 1`] = `
   }
 >
   <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#b31414",
+          "borderRadius": 10,
+          "elevation": 5,
+          "fontSize": 25,
+          "fontWeight": "bold",
+          "height": 60,
+          "marginLeft": 15,
+          "marginTop": 5,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": 370,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignContent": "center",
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "#fff",
+            "borderRadius": 10,
+            "height": 50,
+            "marginBottom": "5%",
+            "marginLeft": 80,
+            "marginTop": "1%",
+            "width": "76%",
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          onChangeText={[Function]}
+          placeholder="جستجو"
+          placeholderTextColor="#000"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "flex": 1,
+              "fontSize": 20,
+              "height": 50,
+              "padding": 10,
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 10,
+            "height": 50,
+            "justifyContent": "center",
+            "marginBottom": 20,
+            "marginLeft": 6,
+            "marginTop": -68,
+            "opacity": 1,
+            "width": "20%",
+          }
+        }
+      >
+        <Text>
+          بگرد
+        </Text>
+      </View>
+    </View>
+    <View>
+      <Text>
+        فیلتر آیتم بر اساس 
+      </Text>
+      <View>
+        <View
+          style={
+            Object {
+              "color": "white",
+              "height": 50,
+              "width": 150,
+            }
+          }
+        >
+          <RCTPicker
+            items={
+              Array [
+                Object {
+                  "label": "همه",
+                  "textColor": undefined,
+                  "value": "all",
+                },
+                Object {
+                  "label": "ادویه، چاشنی و مخلفات غذا",
+                  "textColor": undefined,
+                  "value": "Spices and condiments and food side dishes",
+                },
+                Object {
+                  "label": "بهداشت و مراقبت پوست",
+                  "textColor": undefined,
+                  "value": "Cosmetics",
+                },
+                Object {
+                  "label": "آرایش و پیرایش",
+                  "textColor": undefined,
+                  "value": "Makeup and trimming",
+                },
+                Object {
+                  "label": "پروتئینی",
+                  "textColor": undefined,
+                  "value": "Protein",
+                },
+                Object {
+                  "label": "تنقلات",
+                  "textColor": undefined,
+                  "value": "Junk Food",
+                },
+                Object {
+                  "label": "خشکبار",
+                  "textColor": undefined,
+                  "value": "Nuts",
+                },
+                Object {
+                  "label": "شیرینیجات و دسرها",
+                  "textColor": undefined,
+                  "value": "Sweets and desserts",
+                },
+                Object {
+                  "label": "عطر، ادکلن و اسپری",
+                  "textColor": undefined,
+                  "value": "perfume",
+                },
+                Object {
+                  "label": "غذا، کنسرو و سبزیجات",
+                  "textColor": undefined,
+                  "value": "Fruits and vegetables",
+                },
+                Object {
+                  "label": "لبنیات",
+                  "textColor": undefined,
+                  "value": "Dairy",
+                },
+                Object {
+                  "label": "نوشیدنیها",
+                  "textColor": undefined,
+                  "value": "Drinks",
+                },
+                Object {
+                  "label": "وسایل شستشو و نظافت",
+                  "textColor": undefined,
+                  "value": "Washing and Cleaning Equipment",
+                },
+                Object {
+                  "label": "متفرقه",
+                  "textColor": undefined,
+                  "value": "others",
+                },
+              ]
+            }
+            onChange={[Function]}
+            selectedIndex={0}
+            style={
+              Array [
+                Object {
+                  "height": 216,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+      <View>
+        <View
+          style={
+            Object {
+              "color": "white",
+              "height": 50,
+              "width": 150,
+            }
+          }
+        >
+          <RCTPicker
+            items={
+              Array [
+                Object {
+                  "label": "گران ترین",
+                  "textColor": undefined,
+                  "value": "expensive",
+                },
+                Object {
+                  "label": "ارزان ترین",
+                  "textColor": undefined,
+                  "value": "cheap",
+                },
+                Object {
+                  "label": "جدیدترین",
+                  "textColor": undefined,
+                  "value": "new",
+                },
+                Object {
+                  "label": "دسته بندی",
+                  "textColor": undefined,
+                  "value": "category",
+                },
+                Object {
+                  "label": "تخفیف دار",
+                  "textColor": undefined,
+                  "value": "discount",
+                },
+              ]
+            }
+            onChange={[Function]}
+            selectedIndex={0}
+            style={
+              Array [
+                Object {
+                  "height": 216,
+                },
+                undefined,
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "height": 10,
+          "justifyContent": "center",
+          "marginBottom": 20,
+          "marginLeft": 6,
+          "marginTop": -68,
+          "opacity": 1,
+          "width": "20%",
+        }
+      }
+    >
+      <Text>
+        فیلتر
+      </Text>
+    </View>
     <View>
       <View
         style={
@@ -21,7 +290,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
             "elevation": 5,
             "height": 300,
             "marginLeft": 18,
-            "marginTop": 1,
+            "marginTop": 10,
             "shadowColor": "black",
             "shadowOffset": Object {
               "height": 2,
@@ -193,7 +462,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
           </View>
           <View>
             <View
-              pointerEvents="none"
+              pointerEvents="auto"
               style={
                 Object {
                   "flexDirection": "row",
@@ -208,7 +477,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
                 <View
                   accessibilityRole="button"
                   accessible={true}
-                  focusable={false}
+                  focusable={true}
                   onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
@@ -232,7 +501,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
                 <View
                   accessibilityRole="button"
                   accessible={true}
-                  focusable={false}
+                  focusable={true}
                   onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
@@ -256,7 +525,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
                 <View
                   accessibilityRole="button"
                   accessible={true}
-                  focusable={false}
+                  focusable={true}
                   onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
@@ -280,7 +549,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
                 <View
                   accessibilityRole="button"
                   accessible={true}
-                  focusable={false}
+                  focusable={true}
                   onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
@@ -304,7 +573,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
                 <View
                   accessibilityRole="button"
                   accessible={true}
-                  focusable={false}
+                  focusable={true}
                   onClick={[Function]}
                   onResponderGrant={[Function]}
                   onResponderMove={[Function]}
@@ -334,7 +603,7 @@ exports[`testing shop detail, items part renders correctly 1`] = `
             "fontSize": 25,
             "fontWeight": "bold",
             "height": 40,
-            "marginLeft": 18,
+            "marginLeft": 15,
             "marginTop": 15,
             "shadowColor": "black",
             "shadowOffset": Object {

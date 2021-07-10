@@ -11,6 +11,12 @@ import renderer from "react-test-renderer";
 import ShopDetail from "../shopDetails";
 import Item from "../item";
 
+const mockedFocused = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useIsFocused: () => mockedFocused,
+}));
+
 describe("testing shop detail, items part", () => {
   it("renders correctly", () => {
     // const params = jest.fn();
@@ -81,7 +87,7 @@ describe("testing shop detail, items part", () => {
       "http://eunoia-bshop.ir:8000/shops/3/items/",
       "get"
     );
-    // expect(getByTestId("items-list").props.data.length).toBe(shopitems.length);
+    expect(getByTestId("items-list").props.data.length).toBe(shopitems.length);
 
     for (var i = 0; i < shopitems.length; i++) {
       expect(getByTestId("item-name-" + i).props.children).toBe(
@@ -93,17 +99,33 @@ describe("testing shop detail, items part", () => {
         expected_image
       );
 
-      // if (shopitems[i].discount != 0) {
-      //   expect(queryByTestId("item-price0-" + i)).toBe(shopitems[i].price);
-      //   // expect(queryByTestId("item-price1-" + i)).toBeNull();
-      // }
-      // else {
-      // }
-    }
+      // if item has some discount
+      if (shopitems[i].discount != 0) {
+        console.log("disc wasn't zero");
+        var price = ["قیمت:", shopitems[i].price];
+        var newPrice = [
+          "قیمت با تخفیف: ",
+          // (
+          ((100 - shopitems[i].discount) * shopitems[i].price) / 100,
+          // ).toString(),
+        ];
+        expect(queryByTestId("item-price1-" + i)).toBeNull();
+        expect(queryByTestId("item-price0-" + i).props.children).toStrictEqual(
+          price
+        );
+        expect(
+          queryByTestId("item-discounted-" + i).props.children
+        ).toStrictEqual(newPrice);
+      } else {
+        var price = ["قیمت:", shopitems[i].price];
 
-    // expect(queryByTestId("shop-name-4")).toBeNull();
-    // expect(queryByTestId("shop-name-4")).toBeNull();
-    // expect(queryByTestId("shop-image-4")).toBeNull();
+        expect(queryByTestId("item-price0-" + i)).toBeNull();
+        expect(queryByTestId("item-price1-" + i).props.children).toStrictEqual(
+          price
+        );
+        expect(queryByTestId("item-discounted-" + i)).toBeNull();
+      }
+    }
 
     fetchMock.mockClear();
   });

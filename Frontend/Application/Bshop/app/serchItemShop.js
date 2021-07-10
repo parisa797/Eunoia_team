@@ -43,7 +43,7 @@ const SearchItemShop = ({ navigation, route }) => {
         .then((response) => response.json())
         .then((result) => {
           setItems(result);
-          console.log("shop res:", result);
+          // console.log("shop res:", result);
         })
         .catch((error) => console.log("error", error));
     };

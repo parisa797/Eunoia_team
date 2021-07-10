@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useIsFocused } from "@react-navigation/native";
 import LikedItem from "./likedItem";
+// BarCodeScanner = require("expo-barcode-scanner");
 
 const Scan = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
