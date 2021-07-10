@@ -79,7 +79,7 @@ jobs:
     needs: [upload-job]
     steps:
       - name: Install dependencies
-        working-directory: /var/www/front
+        # working-directory: /var/www/front
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: npm install
@@ -103,7 +103,7 @@ jobs:
     needs: [dependencies-job]
     steps:
       - name: build ssh
-        working-directory: /var/www/front
+        # working-directory: /var/www/front
         uses: garygrossgarten/github-action-ssh@release
         with:
           command: | 
