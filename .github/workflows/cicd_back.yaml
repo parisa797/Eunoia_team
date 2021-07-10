@@ -92,7 +92,7 @@ jobs:
           command: | 
             tmux kill-session -t web
             tmux new -s web
-            tmux -d 'source venv/bin/activate; python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8000'
+            tmux new -d 'source venv/bin/activate; python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8000'
           host: 37.152.179.124
           username: ubuntu
           password: Eunoia6Team
