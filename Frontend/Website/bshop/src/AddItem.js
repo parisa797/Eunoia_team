@@ -51,7 +51,7 @@ const AddItem = () => {
     const d1 = new Date(values.manufacture_Date)
     const d2 = new Date(values.Expiration_Date)
     const diff = d2.getTime() - d1.getTime()
-    if (values.name && values.manufacture_Date && values.Expiration_Date && !isNaN(d1.getTime()) && !isNaN(d2.getTime()) && values.count && values.category && values.price && diff > 0 &&  (!values.discount || values.discount < 99 )) {
+    if (values.name && values.manufacture_Date && values.Expiration_Date && !isNaN(d1.getTime()) && !isNaN(d2.getTime()) && values.count && values.category && values.price && diff > 0 && (!values.discount || values.discount < 99 )) {
       const fd = new FormData()
       console.log('if');
       fd.append('name', values.name)
@@ -59,9 +59,9 @@ const AddItem = () => {
       fd.append('description', values.description)
       fd.append('manufacture_Date', values.manufacture_Date)
       fd.append('Expiration_Date', values.Expiration_Date)
-      fd.append('count', values.count)
-      fd.append('price', values.price)
-      fd.append('discount', values.discount)
+      fd.append('count', values.count? values.count:0)
+      fd.append('price', values.price? values.price: 0)
+      fd.append('discount', values.discount? values.discount: 0)
       fd.append('category', values.category)
 
       fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
