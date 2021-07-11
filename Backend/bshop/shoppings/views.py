@@ -191,7 +191,7 @@ class DeliveryShoppingListUpdateAPIView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         # datetime.strptime(date_time_str, '%d/%m/%y %H:%M:%S')
-        print(type(request.data.get('delivery', instance.delivery)))
+        # print(type(request.data.get('delivery', instance.delivery)))
         instance.delivery = request.data.get('delivery', instance.delivery)
         instance.delivery = datetime.strptime(
             instance.delivery, '%Y-%m-%d %H:%M')

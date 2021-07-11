@@ -332,6 +332,9 @@ class ShoppingItemUpdateTest(APITestCase):
         self.si13 = ShoppingItem.objects.create(
             item=self.i13, shopping_list=self.sl13, number=1)
         self.valid_shopping_item = {
+            'number': 3,
+        }
+        self.invalid_shopping_item = {
             'number': 13,
         }
 
@@ -351,8 +354,17 @@ class ShoppingItemUpdateTest(APITestCase):
             data=json.dumps(self.valid_shopping_item),
             content_type='application/json'
         )
-        self.assertEqual(response.data['number'], 13)
+        self.assertEqual(response.data['number'], 3)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_update_shopping_item_invalid(self):
+        response = self.client.put(
+            reverse('retrieve_update_delete_shopping_item',
+                    kwargs={'pk': self.si13.pk}),
+            data=json.dumps(self.invalid_shopping_item),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_update_shopping_item_not_found(self):
         response = self.client.put(

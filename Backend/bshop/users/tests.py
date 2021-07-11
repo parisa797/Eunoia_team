@@ -149,7 +149,7 @@ class CoinRetriveTest(APITestCase):
         self.sh = Shop.objects.create(
             title="shop 10", user=self.user, manager="manager 10", logo=None, address="address 10", theme=10, shomare_sabt="10101010", phone="10101010")
         self.I = Item.objects.create(name="item 4", description="Test description", manufacture_Date="1400-12-04",
-                                     Expiration_Date="1400-12-04", count="4", price="4",
+                                     Expiration_Date="1400-12-04", count="14", price="4",
                                      discount="40", category="Dairy")
 
         self.sl = ShoppingList.objects.create(
@@ -174,11 +174,11 @@ class CoinRetriveTest(APITestCase):
 
     def test_update_coin(self):
         response = self.client.put(
-            reverse('coinInfo', kwargs={'pk': self.coin.pk}), {'money': 500})
+            reverse('coinInfo', kwargs={'pk': self.coin.pk}), {'money': 505})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         coin = Coins.objects.get(user=self.user)
         self.assertEqual(response.data, CoinSerializer(coin).data)
-        self.assertEqual(response.data['money'], 500)
+        self.assertEqual(response.data['money'], 505)
 
         response = self.client.put(
             reverse('coin_update', kwargs={'pk': self.coin.pk}))
@@ -195,7 +195,7 @@ class CoinRetriveTest(APITestCase):
 
     def test_sabt_update_coin(self):
         response = self.client.put(
-            reverse('sabt_shopping_list', kwargs={'pk': self.sl.pk}))
+            reverse('sabt_shopping_list', kwargs={'pk': self.sl.pk}), {'sabt': True})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         coin = Coins.objects.get(user=self.user)
         self.assertEqual(coin.money, 180)
@@ -270,7 +270,7 @@ class EllectricWalletRetriveTest(APITestCase):
         self.sh2 = Shop.objects.create(
             title="shop 10", user=self.user, manager="manager 10", logo=None, address="address 10", theme=10, shomare_sabt="10101010", phone="10101010")
         self.I = Item.objects.create(name="item 4", description="Test description", manufacture_Date="1400-12-04",
-                                     Expiration_Date="1400-12-04", count="4", price="4",
+                                     Expiration_Date="1400-12-04", count="14", price="4",
                                      discount="40", category="Dairy")
 
         self.sl = ShoppingList.objects.create(
