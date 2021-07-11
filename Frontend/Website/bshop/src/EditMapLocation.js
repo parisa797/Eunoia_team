@@ -4,7 +4,9 @@ import mapPointer from './medias/pointer.jpg';
 import './Map.css';
 function EditMapLocation(props) {
   var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
-
+  // @ts-ignore
+  // eslint-disable-next-line import/no-webpack-loader-syntax
+  mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXVub2lhNnRlYW0iLCJhIjoiY2twaW1pc29oMGc5NjJ1b2ZmMGdiNWkweCJ9.6KH84Su77toujLB9IU4wTQ';
 
   const mapContainer = useRef(null);

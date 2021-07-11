@@ -13,6 +13,14 @@ function EditShopLocation(props){
         }
     },[])
 
+    useEffect(()=>{
+        if(props.mockSubmit)
+        {
+            setPoint(props.mockSubmit);
+            submitLocation();
+        }
+    },[props.mockSubmit])
+
     function submitLocation(){
         if(props.type==="s")
             submitShopLocation()
