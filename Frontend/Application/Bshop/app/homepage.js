@@ -280,6 +280,7 @@ export default Home = ({ navigation }) => {
         // refreshing={isRefreshing}
         data={shops}
         keyExtractor={(item) => item.id.toString()}
+        // extraData={isFocused}
         renderItem={(itemData) => (
           <Shop
             title={itemData.item.title}

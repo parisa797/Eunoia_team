@@ -44,6 +44,7 @@ const FilterResult = ({ navigation, route }) => {
   };
 
   const FilterItem = async () => {
+    // console.log("it is being called");
     var requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -85,6 +86,7 @@ const FilterResult = ({ navigation, route }) => {
 
       case "item":
         if (route.params.filterType == "category") {
+          // console.log("i'm entering here");
           var c =
             route.params.category == "all"
               ? "Spices and condiments and food side dishes"
@@ -144,6 +146,7 @@ const FilterResult = ({ navigation, route }) => {
 
       {!noResult && items && (
         <FlatList
+          testID={"items-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -40 }}
           data={items}

@@ -30,7 +30,7 @@ const FilterShopItem = ({ navigation, route }) => {
       method: "GET",
       redirect: "follow",
     };
-    console.log("url zahremar", fetch_url);
+
     fetch(fetch_url, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -80,6 +80,7 @@ const FilterShopItem = ({ navigation, route }) => {
 
       {!noResult && items && (
         <FlatList
+          testID={"items-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -40 }}
           data={items}
