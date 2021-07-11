@@ -15,6 +15,7 @@ import requests
 from datetime import datetime
 from users.models import Coins
 from users.models import ElectricWallet
+from items.models import *
 
 
 from .models import *
@@ -96,7 +97,17 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
             money = wallet.money
             wallet.money = money - instance.sum_price
             wallet.save()
-        # print(request.data.shopping_list_items)
+        # print(instance.id)
+        if request.data['sabt']:
+            i = 0
+            for item in instance.shopping_list_items.all():
+                for item in instance.shopping_list_items.all():
+                    if ((instance.shopping_list_items.all()[i].number) > (Item.objects.get(id=instance.shopping_list_items.all()[i].item.id).count)):
+                        # print("The number of itmes should be less than the total number")
+                        return Response(data=str(instance.shopping_list_items.all()[i].id)+" : The number of itmes should be less than the total number", status=status.HTTP_400_BAD_REQUEST)
+                Item.objects.filter(id=instance.shopping_list_items.all()[i].item.id).update(count = (Item.objects.get(id=instance.shopping_list_items.all()[i].item.id).count) - (instance.shopping_list_items.all()[i].number))
+                i = i + 1
+
         instance.sabt = request.data.get('sabt', instance.sabt)
         instance.date = request.data.get('date', timezone.now())
 
@@ -201,6 +212,8 @@ class ShoppingItemCreateAPIView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.copy()
+        if(int(request.data['number']) > Item.objects.get(id=request.data['item']).count):
+            return Response (data="The number of itmes should be less than the total number", status=status.HTTP_400_BAD_REQUEST)
         if(ShoppingList.objects.get(id=request.data['shopping_list']).max_cost == 0):
             serializer_data.update({'user': request.user.id})
             num_price = (int(Item.objects.get(
@@ -246,6 +259,11 @@ class ShoppingListRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPI
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         instance.number = request.data.get('number', instance.number)
+        if (int(instance.number) > (Item.objects.get(id=instance.item.id).count)):
+            return Response(data="The number of itmes should be less than the total number", status=status.HTTP_400_BAD_REQUEST)
+        num_price = (int(Item.objects.get(id=instance.item.id).price_with_discount)) * int(instance.number)
+        instance.sum_price = request.data.get('sum_price', num_price)
+        # serializer_data.update({'sum_price': num_price})
         instance.save()
         serializer = ShoppingItemSerializer(instance)
         return Response(serializer.data)
