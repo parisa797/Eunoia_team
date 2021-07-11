@@ -47,9 +47,9 @@ jobs:
       - name: Run Migrations 
         working-directory: ./Backend/bshop
         run: python manage.py migrate
-      - name: Run Test 
-        working-directory: ./Backend/bshop
-        run: python manage.py test
+      # - name: Run Test 
+      #   working-directory: ./Backend/bshop
+      #   run: python manage.py test
 
   upload-job: 
     runs-on: ubuntu-latest
