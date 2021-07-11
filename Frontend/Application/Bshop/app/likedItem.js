@@ -32,7 +32,7 @@ const LikedItem = (props) => {
         <View style={styles.nameitem}>
           <Text
             testID={"item-name-" + props.index}
-            style={{ fontSize: 25, fontWeight: "bold" }}
+            style={{ fontSize: 20, fontWeight: "bold" }}
           >
             {props.name}
           </Text>
@@ -48,7 +48,7 @@ const LikedItem = (props) => {
         <View style={styles.nameshop}>
           <Text
             testID={"item-shopname-" + props.index}
-            style={{ fontSize: 20 }}
+            style={{ fontSize: 18 }}
           >
             {props.shop.title}
           </Text>

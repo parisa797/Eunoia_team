@@ -37,11 +37,13 @@ export default function App({ navigation }) {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
-          <Stack.Screen
-            name="B shop"
+          {/* <Stack.Screen
+            name="BShop"
             component={Sidebar}
-            // options={{ title: " " }}
-          />
+          /> */}
+          <Stack.Screen name="BShop">
+            {(props) => <Sidebar {...props} extraData={setlogin} />}
+          </Stack.Screen>
         </Stack.Navigator>
       )}
     </NavigationContainer>

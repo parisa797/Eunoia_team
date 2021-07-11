@@ -108,13 +108,14 @@ const AppStack = ({ navigation }) => {
   );
 };
 
-const Profile = ({ navigation }) => {
+const Profile = (props) => {
+  console.log("props of profile", props);
   return (
     <Stack.Navigator
       initialRouteName="profile"
       screenOptions={{
         headerLeft: () => (
-          <NavigationDrawerStructure navigationProps={navigation} />
+          <NavigationDrawerStructure navigationProps={props.navigation} />
         ),
         headerStyle: {
           backgroundColor: "#780909", //Set Header color
@@ -130,6 +131,7 @@ const Profile = ({ navigation }) => {
         component={PersonalInfo}
         options={{
           title: " ", //Set Header Title
+          // data: props.extraData,
         }}
       />
     </Stack.Navigator>
@@ -220,7 +222,8 @@ const QR = ({ navigation }) => {
   );
 };
 
-export const Sidebar = () => {
+export const Sidebar = (props) => {
+  console.log("this is props of sidebar", props);
   return (
     // <Drawer.Navigator drawerPosition="right">
     <Drawer.Navigator>
@@ -238,6 +241,8 @@ export const Sidebar = () => {
           drawerLabel: "پروفایل",
           activeTintColor: "#e91e63",
         }}
+        // params={props.extraData}
+        initialParams={{ params: props.extraData }}
         component={Profile}
       />
       <Drawer.Screen

@@ -22,7 +22,7 @@ const Scan = ({ navigation }) => {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     //fetch to get item detail
     var url = "http://eunoia-bshop.ir:8000/" + data;
     console.log("used this url", url);
@@ -42,10 +42,10 @@ const Scan = ({ navigation }) => {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <Text>لطفا کمی صبر کنید</Text>;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>اجازه دسترسی به دوربین داده نشد</Text>;
   }
 
   //   console.log("scanned", scanned);

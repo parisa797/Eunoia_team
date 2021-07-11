@@ -17,7 +17,8 @@ import * as SecureStore from "expo-secure-store";
 import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-paper";
 
-const PersonalInfo = ({ navigation }) => {
+const PersonalInfo = (props) => {
+  console.log("in edit info", props);
   const [image, setImage] = useState(null);
   const [newImage, setNewImage] = useState(false);
 
@@ -39,9 +40,8 @@ const PersonalInfo = ({ navigation }) => {
   useEffect(() => {
     (async () => {
       // if (Platform.OS !== 'web') {
-      const {
-        status,
-      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== "granted") {
         alert("Sorry, we need camera roll permissions to make this work!");
       }
