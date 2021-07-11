@@ -68,21 +68,27 @@ function ItemsListPage(props) {
         if(c){
             url = url + "category/"
         }
+        let ffa = "";
         if(f){
             switch(f){
                 case "discounted": url = url + "discount/"
+                ffa = "تخفیف‌دارهای "
                 break;
                 case "newest" : url = url + "new/"
+                ffa = "جدیدترین‌های "
                 break;
                 case "mostexpensive" : url = url + "expensive/"
+                ffa = "‌گران‌ترین‌‌های "
                 break;
                 case "cheapest": url = url + "cheap/"
+                ffa = "ارزان‌ترین‌های "
                 break;
                 default:
             }
             console.log(f)
             document.getElementById(f+"-btn").className += " active";
         }
+        setFilter(ffa);
         if(shop){
             url = url + shop;
         }
@@ -127,6 +133,15 @@ function ItemsListPage(props) {
             });
     },[shopID])
 
+    useEffect(()=>{
+        if(shopInfo){
+            document.title =filter + (!category? ("کالاهای فروشگاه ") : ("دسته " + categories[category] +" فروشگاه "))+shopInfo.title + " | بی‌شاپ"
+        }
+        else{
+            document.title =filter + (!category?("کالاها "):(categories[category])) + " | بی‌شاپ"
+        }
+    },[shopInfo, category, filter])
+
     function changeFilter(f){
         let newLocation = "";
         if(shopID){
@@ -160,7 +175,7 @@ function ItemsListPage(props) {
                         {!results || results.length === 0 ?
                             <p style={{ margin: "auto" }} data-testid="no-items">نتیجه‌ای یافت نشد!</p>
                             : 
-                            <Itemslist url={"/store/"+shopID+"/itemslist"} items={results} listType="horizontal"
+                            <Itemslist url={"/store/"+shopID+"/itemslist"} items={results}
                              online={shopInfo?.online} itemHolderClass="col-12 col-sm-6 col-md-4 col-lg-3"
                              listType="page"  id="filtered" userState={props.userState?props.userState:null}
                               showDeleteItemModal={props.showDeleteItemModal} showShopName={!shopID}/>

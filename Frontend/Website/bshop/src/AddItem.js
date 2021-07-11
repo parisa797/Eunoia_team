@@ -51,7 +51,7 @@ const AddItem = () => {
     const d1 = new Date(values.manufacture_Date)
     const d2 = new Date(values.Expiration_Date)
     const diff = d2.getTime() - d1.getTime()
-    if (values.name && values.manufacture_Date && values.Expiration_Date && values.count && values.category && values.price && diff > 0 &&  (!values.discount || values.discount < 99 )) {
+    if (values.name && values.manufacture_Date && values.Expiration_Date && !isNaN(d1.getTime()) && !isNaN(d2.getTime()) && values.count && values.category && values.price && diff > 0 &&  (!values.discount || values.discount < 99 )) {
       const fd = new FormData()
       console.log('if');
       fd.append('name', values.name)
@@ -63,17 +63,31 @@ const AddItem = () => {
       fd.append('price', values.price)
       fd.append('discount', values.discount)
       fd.append('category', values.category)
-  
-        fetch("http://eunoia-bshop.ir:8000/shops/"+shopID+"/items/", {
-          method: 'POST',
-          headers: {
-            "Authorization": "Token " + localStorage.getItem("token")
+
+      fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
+        method: 'POST',
+        headers: {
+          "Authorization": "Token " + localStorage.getItem("token")
+        }
+        , body: fd
+      }).then((resp) => {
+        if (resp.status === 201) {
+          return resp.json()
           }
-          ,body:fd
-        }).then((resp) => {
-          if (resp.status === 201) {
-             window.location.replace("/store/"+shopID);
-          }
+        }).then(res=>{
+          if(!res)
+            return;
+          console.log(res)
+          fetch("http://eunoia-bshop.ir:8000/items/"+res.id+"/qr/", {
+            method: 'POST',
+            headers: {
+              "Authorization": "Token " + localStorage.getItem("token")
+            }
+          }).then((resp) => {
+            if (resp.status === 201) {
+              window.location.replace("/store/" + shopID);
+            }
+          }).catch((e) => { console.log(e.response.data) })
         }).catch((e) => { console.log(e.response.data) })  
     } else {
       console.log('else');
@@ -85,10 +99,16 @@ const AddItem = () => {
     })
       if (!values.manufacture_Date) enqueueSnackbar('تاریخ تولید را وارد کنید', { 
         variant: 'error',
-    })
+    }) 
+    else if(isNaN(d1.getTime())) enqueueSnackbar('تاریخ تولید را به فرمت خواسته‌شده وارد کنید', { 
+      variant: 'error',
+  })
       if (!values.Expiration_Date) enqueueSnackbar('تاریخ انقضا را وارد کنید', { 
         variant: 'error',
-    })
+    }) 
+    else if(isNaN(d2.getTime())) enqueueSnackbar('تاریخ انقضا را به فرمت خواسته‌شده وارد کنید', { 
+      variant: 'error',
+  })
       if (!values.count) enqueueSnackbar('تعداد محصول را وارد کنید', { 
         variant: 'error',
     })
@@ -101,6 +121,7 @@ const AddItem = () => {
       if (diff < 0) enqueueSnackbar('تاریخ انقضا باید بعد از تاریخ تولید باشد', { 
         variant: 'error',
     })
+      
     }
 
   }
@@ -251,16 +272,16 @@ const AddItem = () => {
           <button className="dropdown-item" onClick={() => handleChange("category", 'others')}>متفرقه</button>
         </div>
         </div>
-        <div class="item-file">
+        <div class="custom-file" style={{direction: "rtl"}}>
           <input
             type="file"
             onChange={imageInsert}
-            class="item-file-input"
+            class="custom-file-input"
             id="itemInput"
-            required
-          />
-          <label class="item-file-label" htmlFor="itemInput">
-            {values.src ? "عکس شما انتخاب شده است" : "Choose file..."}
+            //required
+            />
+          <label class="custom-file-label" htmlFor="itemInput">
+            {values.src ? "عکس شما انتخاب شده است" : "عکس انتخاب کنید..."}
           </label>
         </div>
         <div className="checkbox mb-3">

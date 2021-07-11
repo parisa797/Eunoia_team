@@ -39,6 +39,7 @@ function Item(props) {
       })
       .then((res) => {
         setItems(res);
+        document.title = res.name + " فروشگاه " + (!!res.ItemShop && res.ItemShop.title) + " | بی‌شاپ"
       });
   }, [triggerReload]);
   useEffect(() => {
@@ -316,6 +317,11 @@ const changeCartCount = (count)=>{
                   <>
                     <h3 className="text-right mb-3">ویژگی های کالا:</h3>
                     <p className="lead text-right" data-testid="item-description">{items.description}</p>
+                  </>
+                )}
+                {!!items.brand && (
+                  <>
+                    <p className="lead text-right" data-testid="item-description">برند {items.brand}</p>
                   </>
                 )}
                 <div className="rating-item">
