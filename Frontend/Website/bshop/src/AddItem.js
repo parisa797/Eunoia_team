@@ -145,8 +145,8 @@ const AddItem = () => {
           id="name"
           className="form-control"
           placeholder="نام محصول خود را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="description" className="sr-only">
           توضیحات محصول
@@ -160,8 +160,8 @@ const AddItem = () => {
           id="description"
           className="form-control"
           placeholder="توضیحات محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="manufacture_Date" className="sr-only">
           تاریخ تولید محصول
@@ -175,8 +175,8 @@ const AddItem = () => {
           id="manufacture_Date"
           className="form-control"
           placeholder="(YYYY-MM-DD)تاریخ تولید محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="Expiration_Date" className="sr-only">
           تاریخ انقضا
@@ -190,8 +190,8 @@ const AddItem = () => {
           id="Expiration_Date"
           className="form-control"
           placeholder="(YYYY-MM-DD)تاریخ انقضاء محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="count" className="sr-only">
           تعداد محصول
@@ -205,8 +205,8 @@ const AddItem = () => {
           id="count"
           className="form-control"
           placeholder="تعداد محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="price" className="sr-only">
           قیمت محصول
@@ -220,8 +220,8 @@ const AddItem = () => {
           id="price"
           className="form-control"
           placeholder="قیمت محصول را وارد کنید(به ریال)"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="discount" className="sr-only">
           درصد تخفیف محصول
@@ -235,8 +235,8 @@ const AddItem = () => {
           id="discount"
           className="form-control"
           placeholder="درصد تخفیف محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <div className="dropdown">
         <label for="category" className="sr-only">
@@ -253,23 +253,23 @@ const AddItem = () => {
           id="category"
           className="form-control dropdown-toggle"
           placeholder={values.category}
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <div className="dropdown-menu" id="category-dropdown" style={{right:0}}>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Spices and condiments and food side dishes')}>ادویه، چاشنی و مخلفات غذا</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Cosmetics')}>بهداشت و مراقبت پوست</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Makeup and trimming')}>آرایش و پیرایش</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Protein')}>پروتئینی</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Junk Food')}>تنقلات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Nuts')}>خشکبار</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Sweets and desserts')}>شیرینیجات و دسرها</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'perfume')}>عطر، ادکلن و اسپری</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Fruits and vegetables')}>غذا، کنسرو و سبزیجات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Dairy')}>لبنیات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Drinks')}>نوشیدنیها</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Washing and Cleaning Equipment')}>وسایل شستشو و نظافت</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'others')}>متفرقه</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault(); handleChange("category", 'Spices and condiments and food side dishes')}}>ادویه، چاشنی و مخلفات غذا</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Cosmetics')}}>بهداشت و مراقبت پوست</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Makeup and trimming')}}>آرایش و پیرایش</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Protein')}}>پروتئینی</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Junk Food')}}>تنقلات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Nuts')}}>خشکبار</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Sweets and desserts')}}>شیرینیجات و دسرها</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'perfume')}}>عطر، ادکلن و اسپری</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Fruits and vegetables')}}>غذا، کنسرو و سبزیجات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Dairy')}}>لبنیات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Drinks')}}>نوشیدنیها</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Washing and Cleaning Equipment')}}>وسایل شستشو و نظافت</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'others')}}>متفرقه</button>
         </div>
         </div>
         <div class="custom-file" style={{direction: "rtl"}}>
