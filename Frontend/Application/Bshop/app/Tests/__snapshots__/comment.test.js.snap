@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing comment renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "flex": 1,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Array [
+        Object {
+          "flex": 1,
+          "justifyContent": "center",
+        },
+        Object {
+          "paddingBottom": 0,
+        },
+      ]
+    }
+  >
+    <RCTScrollView
+      disableVirtualization={false}
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={false}
+      initialNumToRender={10}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      onContentSizeChange={[Function]}
+      onEndReachedThreshold={2}
+      onLayout={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      stickyHeaderIndices={Array []}
+      testID="comments-list"
+      updateCellsBatchingPeriod={50}
+      viewabilityConfigCallbackPairs={Array []}
+      windowSize={21}
+    >
+      <View />
+    </RCTScrollView>
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFF",
+          "borderColor": "#EEE",
+          "borderTopWidth": 1,
+          "flexDirection": "row",
+          "paddingLeft": 15,
+        }
+      }
+    >
+      <TextInput
+        allowFontScaling={true}
+        autoFocus={true}
+        keyboardType="twitter"
+        onChangeText={[Function]}
+        placeholder="Add a comment..."
+        rejectResponderTermination={true}
+        style={
+          Object {
+            "flex": 1,
+            "fontSize": 15,
+            "height": 40,
+          }
+        }
+        underlineColorAndroid="transparent"
+      />
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "height": 40,
+            "justifyContent": "center",
+            "opacity": 1,
+            "paddingHorizontal": 20,
+          }
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#3F51B5",
+                "fontSize": 15,
+                "fontWeight": "bold",
+                "textAlign": "center",
+              },
+              Object {
+                "color": "#CCC",
+              },
+            ]
+          }
+        >
+          ارسال
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

@@ -14,50 +14,70 @@ import {
   FlatList,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import Item from "./item";
+import LikedItem from "./likedItem";
+// import { useIsFocused } from "@react-navigation/native";
 
-const SearchItemShop = ({ navigation, route }) => {
-  // console.log("searched this:", route.params);
+const FilterShopItem = ({ navigation, route }) => {
+  console.log("filtered this:", route.params);
   const [items, setItems] = useState();
   const [noResult, setNoResult] = useState(false);
+  // const isFocused = useIsFocused();
+
+  var fetch_url;
+
+  const FilterItem = async () => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    fetch(fetch_url, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.length == 0) setNoResult(true);
+        setItems(result);
+        // console.log("filter item result:", result);
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   useEffect(() => {
-    const SearchItem = async () => {
-      var myHeaders = new Headers();
-      let t = await SecureStore.getItemAsync("token");
-      var authorization = "Token " + t;
-      myHeaders.append("Authorization", authorization);
+    if (route.params.filterType == "category") {
+      var c =
+        route.params.category == "all"
+          ? "Spices and condiments and food side dishes"
+          : route.params.category;
 
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      var url =
-        "http://eunoia-bshop.ir:8000/shops/" +
+      fetch_url =
+        "http://eunoia-bshop.ir:8000/items/category/" +
         route.params.shopID +
-        "/items/search/?q=" +
-        route.params.searchString;
-      console.log("url was", url);
-      fetch(url, requestOptions)
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.detail == "Not found.") setNoResult(true);
-          setItems(result);
-          // console.log("shop search result:", result);
-        })
-        .catch((error) => console.log("error", error));
-    };
-
-    SearchItem();
+        "?q=" +
+        c;
+    } else {
+      if (route.params.category != "all") {
+        fetch_url =
+          "http://eunoia-bshop.ir:8000/items/category/" +
+          route.params.filterType +
+          "/" +
+          route.params.shopID +
+          "?q=" +
+          route.params.category;
+      } else {
+        fetch_url =
+          "http://eunoia-bshop.ir:8000/items/" +
+          route.params.filterType +
+          "/" +
+          route.params.shopID;
+      }
+    }
+    FilterItem();
+    console.log("this is get url", fetch_url);
   }, []);
 
   return (
     <View>
       {noResult && <Text> هیچ نتیجه ای یافت نشد</Text>}
 
-      {items && (
+      {!noResult && items && (
         <FlatList
           testID={"items-list"}
           nestedScrollEnabled={true}
@@ -65,19 +85,18 @@ const SearchItemShop = ({ navigation, route }) => {
           data={items}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
-            // var u = "http://eunoia-bshop.ir:8000" + itemData.item.photo;
-            // console.log("check this url", itemData.item.photo);
             return (
-              <Item
+              <LikedItem
                 name={itemData.item.name}
                 image={itemData.item.photo}
                 price={itemData.item.price}
                 discount={itemData.item.discount}
                 index={itemData.item.id}
+                shop={itemData.item.ItemShop}
                 onSelect={() => {
                   navigation.navigate("ItemDetail", itemData.item);
                 }}
-              ></Item>
+              ></LikedItem>
             );
           }}
         />
@@ -113,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchItemShop;
+export default FilterShopItem;

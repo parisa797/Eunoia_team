@@ -14,9 +14,12 @@ import {
 } from "react-native";
 
 const Item = (props) => {
-  console.log("this is props", props);
-  var photo = "http://eunoia-bshop.ir:8000" + props.image;
-  // console.log("photo url is", props.image);
+  var photo = props.image
+    ? props.image.includes("http://eunoia-bshop.ir:8000")
+      ? props.image
+      : "http://eunoia-bshop.ir:8000" + props.image
+    : null;
+
   var newPrice = ((100 - props.discount) * props.price) / 100;
   //   console.log("this is new price", newPrice);
   return (
@@ -32,6 +35,7 @@ const Item = (props) => {
           )}
           {!props.image && (
             <Image
+              testID={"item-noimage-" + props.index}
               style={styles.image}
               source={require("../assets/no-image.png")}
             />
@@ -74,7 +78,10 @@ const Item = (props) => {
         )}
 
         {props.discount != 0 && (
-          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          <Text
+            testID={"item-discounted-" + props.index}
+            style={{ fontSize: 15, fontWeight: "bold" }}
+          >
             قیمت با تخفیف: {newPrice}
           </Text>
         )}
