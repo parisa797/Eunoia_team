@@ -726,3 +726,106 @@ class TestReplyCommentItem(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data[0], CommentReplySerializer(Comment.objects.get(id=8)).data)
         self.assertEqual(len(response.data), 1)
+
+############Special_item test#######################
+class TestSpecialItem(APITestCase):
+
+    def setUp(self):
+        self.user = MyUser.objects.create_superuser(username="test", email="test17@gmail.com", password="strong_Pass")
+        self.user2 = MyUser.objects.create(username="test2", email="test1@gmail.com", password="strong_Pass")
+        self.token = Token.objects.create(user=self.user)
+        self.token2 = Token.objects.create(user=self.user2)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+
+    def test_create_special_item(self):
+        response = self.client.post(reverse('specialitem_create'),{'name':'xbox','price':2000})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['name'], "xbox")
+        self.assertEqual(response.data['price'], 2000)
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token2.key)
+        response = self.client.post(reverse('specialitem_create'),{'name':'xbox','price':2000})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+class TestSpecialItemRetreive(APITestCase):
+
+    def setUp(self):
+        self.user = MyUser.objects.create_superuser(username="test", email="test17@gmail.com",
+                                                        password="strong_Pass")
+        self.user2 = MyUser.objects.create(username="test2", email="test1@gmail.com", password="strong_Pass")
+        self.token = Token.objects.create(user=self.user)
+        self.token2 = Token.objects.create(user=self.user2)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+        self.specialItem=SpecialItem.objects.create(name="xbox",price=2000)
+
+
+
+    def test_get_Special_item(self):
+        response = self.client.get(reverse('specialitem_RUD',kwargs={'pk': self.specialItem.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, SepcialItemSerializer(self.specialItem).data)
+
+
+    def test_update_special_item(self):
+        response = self.client.put(reverse('specialitem_RUD',kwargs={'pk': self.specialItem.pk}),{'price':5001,'name':"test xbox",
+                                                                                           'description':"try teeeeest"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        sp=SpecialItem.objects.get(id=self.specialItem.id)
+        self.assertEqual(response.data, SepcialItemSerializer(sp).data)
+
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token2.key)
+        response = self.client.put(reverse('specialitem_RUD',kwargs={'pk': self.specialItem.pk}),{'price':5031,'name':"test xbox",
+                                                                                           'description':"try teeeeest"})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+
+    def test_delete_special_item(self):
+        response = self.client.delete(reverse('specialitem_RUD', kwargs={'pk': self.specialItem.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_special_item_list(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token2.key)
+        response = self.client.get(reverse('specialitem_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['id'],self.specialItem.id )
+        self.assertEqual(len(response.data),1 )
+
+    def test_coin_shop_retrieve(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token2.key)
+        response = self.client.get(reverse('specialitem_retrieve', kwargs={'pk': self.specialItem.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'],self.specialItem.id )
+
+##################QR#####################
+class TestTheQR(APITestCase):
+
+    def setUp(self):
+        self.user = MyUser.objects.create(username="test", email="test17@gmail.com", password="strong_Pass")
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token.key)
+        self.sh = Shop.objects.create(
+            title="shop 10", user=self.user, manager="manager 10", logo=None, address="address 10", theme=10, shomare_sabt="10101010", phone="10101010")
+        self.I = Item.objects.create(name="item 4", description="Test description", manufacture_Date="1400-12-04",
+                                      Expiration_Date="1400-12-04", count="4", price="4",
+                                      discount="40", category="Dairy",shopID=self.sh)
+        self.I2 = Item.objects.create(name="item 5", description="Test description", manufacture_Date="1400-12-04",
+                                     Expiration_Date="1400-12-04", count="4", price="4",
+                                     discount="40", category="Dairy", shopID=self.sh)
+
+
+    def test_create_qr(self):
+        response = self.client.post(reverse("QR", kwargs={'pk': self.I.pk}))
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertNotEqual(response.data['qr_code'], None)
+
+        response = self.client.post(reverse("QR", kwargs={'pk': self.I.pk}))
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data, 'You made QR before')
+
+    def test_Qr_list(self):
+        qr=self.client.post(reverse("QR", kwargs={'pk': self.I2.pk}))
+        response = self.client.get(reverse('QR', kwargs={'pk': self.I2.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data[0]['id'],qr.data["id"] )
+        self.assertEqual(len(response.data),1 )

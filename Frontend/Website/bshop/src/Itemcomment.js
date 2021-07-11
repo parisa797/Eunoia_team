@@ -5,6 +5,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import CloseIcon from '@material-ui/icons/Close';
 import { Modal } from "react-bootstrap";
 
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import { IconButton } from "@material-ui/core";
+
 function Itemcomment(props) {
     const [comments, setComments] = useState([])
     const [writtenComment, setWrittenComment] = useState("")
@@ -17,14 +21,9 @@ function Itemcomment(props) {
     const months = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"]
     const [loading, setLoading] = useState(true);
     console.log(`"http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/comments/`);
-    useEffect(() => {
-        // setLoading(true)
+    const handleUpdateComments = () => {
         fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/commentsreplis`, {
-            method: "GET",
-            headers: {
-                "Authorization": "Token " + localStorage.getItem('token')
-            }
-
+            method: "GET"
         }).then(res => {
             if (res.status === 200)
                 {
@@ -65,6 +64,10 @@ function Itemcomment(props) {
                 setLoading(false)
             }
         }).catch(e =>{ console.log(e); setLoading(false)})
+    }
+    useEffect(() => {
+        // setLoading(true)
+        handleUpdateComments()
     }, [updateComments])
 
     const [isReplyng, setIsreplying] = useState(-2)
@@ -159,6 +162,35 @@ function Itemcomment(props) {
         )
             .catch(e => console.log(e));
     }
+    const handleLikeComment = (comment) => {
+        fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/comments/${comment.id}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then((res) =>{ if(res.ok) handleUpdateComments()})
+    }
+    const checkIsLikedByUserOrNot = (comment) => {
+        const username = localStorage.getItem("username")
+        const temp = comment.AllPeopleLiked[0]?.Liked_By?.findIndex(i => i?.username === username)
+        console.log(temp);
+        return temp > -1 ? true : false
+    }
+    const handleReplyLikeComment = (reply, commentid) => {
+        fetch(`http://eunoia-bshop.ir:8000/shops/${shopID}/items/${itemID}/comments/${commentid}/replies/${reply.id}/likes`,{
+            method: 'POST',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then((res) =>{ if(res.ok) handleUpdateComments()})
+    }
+    const checkIsReplyLikedByUser = (reply) => {
+        console.log(reply);
+        const username = localStorage.getItem("username")
+        const temp = reply.AllPeopleLiked[0]?.Liked_By?.findIndex(i => i?.username === username)
+        console.log(temp);
+        return temp > -1 ? true : false
+    }
     console.log(props);
     return (
         <div className="shop-page">
@@ -172,6 +204,12 @@ function Itemcomment(props) {
                         <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                             <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
+                            <p className="shop-comment-date">
+                                <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
+                                    {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                </IconButton>
+                            </p>
+                            <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
                             {selfComments.includes(comment.id) && <div className="comment-edit-delete" data-testid={"comment-edit-delete-options"+comment.id}>
                                 <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
                                 <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
@@ -185,7 +223,15 @@ function Itemcomment(props) {
                       <div style={{ display: "inline-flex", borderBottom: "1px solid var(--bg-color3)" }}>
                           <p className="shop-comment-author" data-testid={"comment-reply-username"+r.id} >{r.user.user_name}</p>
                           <p className="shop-comment-date" data-testid={"comment-reply-datetime"+r.id}>{r.date_jalali}</p>
-                         
+                          <div className="shop-comment-author">
+                            <IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
+                                   {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                            </IconButton>
+                            </div>
+                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}-${r.id}`}>
+                            {r.AllPeopleLiked[0]?.Liked_By?.length}
+                            لایک 
+                            </p>
                       </div>
                       <p className="shop-comment-desc" data-testid={"comment-reply-text"+r.id}>{r.text}</p>
                   </div>)}</div>

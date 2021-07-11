@@ -5,7 +5,6 @@ exports[`Home page with shops be tested renders correctly 1`] = `
   nestedScrollEnabled={true}
   style={
     Object {
-      "backgroundColor": "#fff",
       "flex": 1,
       "marginBottom": "5%",
       "marginTop": "5%",
@@ -16,44 +15,689 @@ exports[`Home page with shops be tested renders correctly 1`] = `
     <View
       style={
         Object {
-          "alignContent": "center",
-          "alignItems": "center",
-          "alignSelf": "center",
-          "backgroundColor": "#f1f1f2",
+          "backgroundColor": "#b31414",
           "borderRadius": 10,
-          "height": 45,
-          "marginBottom": "5%",
-          "marginTop": "10%",
-          "width": "90%",
+          "elevation": 5,
+          "fontSize": 25,
+          "fontWeight": "bold",
+          "height": "5%",
+          "marginLeft": 10,
+          "marginTop": 15,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": 370,
         }
       }
     >
-      <TextInput
-        allowFontScaling={true}
-        placeholder="جستجو"
-        placeholderTextColor="#000"
-        rejectResponderTermination={true}
+      <View
         style={
           Object {
-            "flex": 1,
-            "fontSize": 20,
-            "height": 50,
-            "padding": 10,
+            "marginLeft": 220,
           }
         }
-        underlineColorAndroid="transparent"
-      />
+      >
+        <View
+          accessible={true}
+          focusable={true}
+          forwardedRef={[Function]}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <View
+            style={
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "transparent",
+                  "overflow": "hidden",
+                  "paddingBottom": 0,
+                  "paddingTop": 0,
+                },
+                Object {
+                  "backgroundColor": "white",
+                  "borderColor": "#780909",
+                  "borderRadius": 27,
+                  "borderWidth": 2,
+                  "height": 54,
+                  "opacity": 1,
+                  "width": 142,
+                },
+              ]
+            }
+          >
+            <RCTScrollView
+              contentOffset={
+                Object {
+                  "x": 0,
+                  "y": 0,
+                }
+              }
+              horizontal={true}
+              onScrollBeginDrag={[Function]}
+              onScrollEndDrag={[Function]}
+              scrollEnabled={true}
+              scrollsToTop={false}
+              showsHorizontalScrollIndicator={false}
+              style={
+                Object {
+                  "width": 142,
+                }
+              }
+            >
+              <View>
+                <View
+                  style={
+                    Array [
+                      Object {
+                        "alignSelf": "center",
+                        "flexDirection": "row",
+                        "padding": 0,
+                        "position": "relative",
+                      },
+                      Object {
+                        "backgroundColor": "white",
+                        "height": 54,
+                        "opacity": 1,
+                      },
+                    ]
+                  }
+                >
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "marginLeft": 5,
+                          "marginRight": 3,
+                        },
+                        Object {
+                          "width": 80,
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "alignSelf": "center",
+                            "color": "#780909",
+                            "textAlign": "center",
+                          },
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                        ]
+                      }
+                    >
+                      فروشگاه
+                    </Text>
+                  </View>
+                  <View
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                        },
+                        Object {
+                          "justifyContent": "flex-end",
+                          "padding": 2,
+                        },
+                      ]
+                    }
+                  >
+                    <View
+                      style={
+                        Array [
+                          Object {
+                            "elevation": 5,
+                            "shadowOffset": Object {
+                              "height": 2,
+                              "width": 0,
+                            },
+                            "shadowOpacity": 0.5,
+                            "shadowRadius": 2,
+                          },
+                          Object {
+                            "backgroundColor": "#780909",
+                            "borderColor": "white",
+                            "borderRadius": 25,
+                            "height": 50,
+                            "width": 50,
+                          },
+                        ]
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Array [
+                        Object {
+                          "alignItems": "center",
+                          "flexDirection": "row",
+                          "justifyContent": "center",
+                          "marginLeft": 3,
+                          "marginRight": 5,
+                        },
+                        Object {
+                          "width": 80,
+                        },
+                      ]
+                    }
+                  >
+                    <Text
+                      style={
+                        Array [
+                          Object {
+                            "alignSelf": "center",
+                            "color": "#780909",
+                            "textAlign": "center",
+                          },
+                          Object {
+                            "fontWeight": "bold",
+                          },
+                        ]
+                      }
+                    >
+                      آیتم
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </RCTScrollView>
+          </View>
+        </View>
+      </View>
+      <View
+        style={
+          Object {
+            "alignContent": "center",
+            "alignItems": "center",
+            "alignSelf": "center",
+            "backgroundColor": "#fff",
+            "borderRadius": 10,
+            "height": 50,
+            "marginBottom": "5%",
+            "marginLeft": 80,
+            "marginTop": "1%",
+            "width": "76%",
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          onChangeText={[Function]}
+          placeholder="جستجو"
+          placeholderTextColor="#000"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "flex": 1,
+              "fontSize": 15,
+              "height": "30%",
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 10,
+            "height": "40%",
+            "justifyContent": "center",
+            "marginBottom": 20,
+            "marginLeft": 6,
+            "marginTop": -70,
+            "opacity": 1,
+            "width": "20%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "black",
+            }
+          }
+        >
+          بگرد
+        </Text>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#b31414",
+          "borderRadius": 10,
+          "elevation": 5,
+          "fontSize": 25,
+          "fontWeight": "bold",
+          "height": "5%",
+          "marginLeft": 10,
+          "marginTop": 15,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": 370,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "color": "white",
+            "marginLeft": 10,
+            "marginTop": -30,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "white",
+              "marginLeft": 30,
+              "paddingTop": 40,
+            }
+          }
+        >
+          فیلتر فروشگاه بر اساس 
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "white",
+              "marginLeft": -40,
+              "marginTop": -30,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "color": "white",
+                "height": 50,
+                "width": 150,
+              }
+            }
+          >
+            <RCTPicker
+              items={
+                Array [
+                  Object {
+                    "label": "امتیاز",
+                    "textColor": undefined,
+                    "value": "score",
+                  },
+                  Object {
+                    "label": "منطقه",
+                    "textColor": undefined,
+                    "value": "region",
+                  },
+                ]
+              }
+              onChange={[Function]}
+              selectedIndex={0}
+              style={
+                Array [
+                  Object {
+                    "height": 216,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+        <View
+          accessible={true}
+          focusable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "white",
+              "borderRadius": 10,
+              "height": "30%",
+              "justifyContent": "center",
+              "marginBottom": 20,
+              "marginLeft": 6,
+              "marginTop": -45,
+              "opacity": 1,
+              "width": "20%",
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "black",
+              }
+            }
+          >
+            فیلتر
+          </Text>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "#b31414",
+          "borderRadius": 10,
+          "elevation": 5,
+          "fontSize": 25,
+          "fontWeight": "bold",
+          "height": "5%",
+          "marginLeft": 10,
+          "marginTop": 15,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": 370,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "color": "white",
+            "marginLeft": 10,
+            "marginTop": -30,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "white",
+              "marginLeft": 30,
+              "paddingTop": 40,
+            }
+          }
+        >
+          فیلتر آیتم بر اساس 
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "white",
+              "marginLeft": -40,
+              "marginTop": -30,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "color": "white",
+                "height": 50,
+                "width": 150,
+              }
+            }
+          >
+            <RCTPicker
+              items={
+                Array [
+                  Object {
+                    "label": "همه",
+                    "textColor": undefined,
+                    "value": "all",
+                  },
+                  Object {
+                    "label": "ادویه، چاشنی و مخلفات غذا",
+                    "textColor": undefined,
+                    "value": "Spices and condiments and food side dishes",
+                  },
+                  Object {
+                    "label": "بهداشت و مراقبت پوست",
+                    "textColor": undefined,
+                    "value": "Cosmetics",
+                  },
+                  Object {
+                    "label": "آرایش و پیرایش",
+                    "textColor": undefined,
+                    "value": "Makeup and trimming",
+                  },
+                  Object {
+                    "label": "پروتئینی",
+                    "textColor": undefined,
+                    "value": "Protein",
+                  },
+                  Object {
+                    "label": "تنقلات",
+                    "textColor": undefined,
+                    "value": "Junk Food",
+                  },
+                  Object {
+                    "label": "خشکبار",
+                    "textColor": undefined,
+                    "value": "Nuts",
+                  },
+                  Object {
+                    "label": "شیرینیجات و دسرها",
+                    "textColor": undefined,
+                    "value": "Sweets and desserts",
+                  },
+                  Object {
+                    "label": "عطر، ادکلن و اسپری",
+                    "textColor": undefined,
+                    "value": "perfume",
+                  },
+                  Object {
+                    "label": "غذا، کنسرو و سبزیجات",
+                    "textColor": undefined,
+                    "value": "Fruits and vegetables",
+                  },
+                  Object {
+                    "label": "لبنیات",
+                    "textColor": undefined,
+                    "value": "Dairy",
+                  },
+                  Object {
+                    "label": "نوشیدنیها",
+                    "textColor": undefined,
+                    "value": "Drinks",
+                  },
+                  Object {
+                    "label": "وسایل شستشو و نظافت",
+                    "textColor": undefined,
+                    "value": "Washing and Cleaning Equipment",
+                  },
+                  Object {
+                    "label": "متفرقه",
+                    "textColor": undefined,
+                    "value": "others",
+                  },
+                ]
+              }
+              onChange={[Function]}
+              selectedIndex={0}
+              style={
+                Array [
+                  Object {
+                    "height": 216,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "color": "white",
+              "marginLeft": -40,
+              "marginTop": -10,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "color": "white",
+                "height": 50,
+                "width": 150,
+              }
+            }
+          >
+            <RCTPicker
+              items={
+                Array [
+                  Object {
+                    "label": "گران ترین",
+                    "textColor": undefined,
+                    "value": "expensive",
+                  },
+                  Object {
+                    "label": "ارزان ترین",
+                    "textColor": undefined,
+                    "value": "cheap",
+                  },
+                  Object {
+                    "label": "جدیدترین",
+                    "textColor": undefined,
+                    "value": "new",
+                  },
+                  Object {
+                    "label": "دسته بندی",
+                    "textColor": undefined,
+                    "value": "category",
+                  },
+                  Object {
+                    "label": "تخفیف",
+                    "textColor": undefined,
+                    "value": "discount",
+                  },
+                ]
+              }
+              onChange={[Function]}
+              selectedIndex={0}
+              style={
+                Array [
+                  Object {
+                    "height": 216,
+                  },
+                  undefined,
+                ]
+              }
+            />
+          </View>
+        </View>
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "white",
+            "borderRadius": 10,
+            "height": "30%",
+            "justifyContent": "center",
+            "marginBottom": 20,
+            "marginLeft": 6,
+            "marginTop": -45,
+            "opacity": 1,
+            "width": "20%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "black",
+            }
+          }
+        >
+          فیلتر
+        </Text>
+      </View>
     </View>
     <RCTScrollView
       data={Array []}
       disableVirtualization={false}
+      extraData={
+        [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        }
+      }
       getItem={[Function]}
       getItemCount={[Function]}
       horizontal={false}
       initialNumToRender={10}
       keyExtractor={[Function]}
       maxToRenderPerBatch={10}
-      nestedScrollEnabled={true}
       onContentSizeChange={[Function]}
       onEndReachedThreshold={2}
       onLayout={[Function]}

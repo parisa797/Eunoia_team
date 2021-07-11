@@ -6,6 +6,7 @@ from django.db.models import Sum
 from users.models import MyUser
 from shops.models import Shop
 from items.models import Item
+from users.models import Coins
 
 
 class ShoppingList(models.Model):
@@ -19,11 +20,21 @@ class ShoppingList(models.Model):
     online = models.BooleanField(default=False,blank=False, null=True)
     max_cost = models.IntegerField(default=0,blank=True, null=True)
     delivery = models.DateTimeField(auto_now_add=False,blank=True, null=True, auto_now=False)
+    wallet_boolean = models.BooleanField(default=False, blank=True,null=True)
 
     @property
     def sum_price(self):
         if(ShoppingItem.objects.filter(shopping_list=self.id).count() is 0):
             return 0
+        shopping=ShoppingList.objects.get(id=self.id)
+        if Coins.objects.filter(user=shopping.user).exists():
+            coin=Coins.objects.get(user=shopping.user)
+            if coin.rank=='gold':
+                return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('sum_price'))['sum_price__sum']*0.7
+            if coin.rank=='silver':
+                return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('sum_price'))['sum_price__sum']*0.8
+            if coin.rank=='bronze':
+                return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('sum_price'))['sum_price__sum']*0.9
         return ShoppingItem.objects.filter(shopping_list=self.id).aggregate(Sum('sum_price'))['sum_price__sum']
 
 

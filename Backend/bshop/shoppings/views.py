@@ -13,6 +13,8 @@ from django.utils import timezone
 from datetime import timedelta
 import requests
 from datetime import datetime
+from users.models import Coins
+from users.models import ElectricWallet
 
 
 from .models import *
@@ -86,8 +88,35 @@ class SabtShoppingListUpdateAPIView(generics.UpdateAPIView):
         if (instance.address is None or instance.phone is None):
             return Response(data="address and phone should be defined",status=status.HTTP_400_BAD_REQUEST)
 
+        if instance.wallet_boolean:
+            wallet = ElectricWallet.objects.get(user=self.request.user)
+            if wallet.money < instance.sum_price:
+                return Response(data="you don't have enough money in your wallet", status=status.HTTP_400_BAD_REQUEST)
+            money = wallet.money
+            wallet.money = money - instance.sum_price
+            wallet.save()
+
         instance.sabt = request.data.get('sabt', instance.sabt)
         instance.date = request.data.get('date', timezone.now())
+
+        if Coins.objects.filter(user=self.request.user).exists():
+            coin=Coins.objects.get(user=self.request.user)
+            money=coin.money
+            coin.money=int(instance.sum_price*(1/10000))+money
+            coin.save()
+
+        instance.save()
+        serializer = AllShoppingListSerializer(instance)
+        return Response(serializer.data)
+
+class WalletShoppingListUpdateAPIView(generics.UpdateAPIView):
+
+    queryset = ShoppingList.objects.all()
+    serializer_class = AllShoppingListSerializer
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.wallet_boolean = request.data.get('wallet_boolean', instance.wallet_boolean)
         instance.save()
         serializer = AllShoppingListSerializer(instance)
         return Response(serializer.data)

@@ -8,6 +8,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import { useSnackbar } from 'notistack';
 
 function ItemCard(props) {
     const [overallPrice, setOverallPrice] = useState(null);
@@ -16,6 +17,7 @@ function ItemCard(props) {
     const [hideOptions,setHideOptions] = useState(true);
     const [id,setId] = useState((props.id? props.id : "")+props.item.shop_id +props.item.id);
     const [bought,setBought] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
     function timeout(delay) {
         return new Promise(res => setTimeout(res, delay));
     }
@@ -91,16 +93,21 @@ function ItemCard(props) {
                         "Authorization": "Token " + localStorage.getItem('token')
                     },
                     body: fd 
-                }).then(async res=>{
-                    if(res.ok)
-                        {
-                            setBought(true);
-                            await timeout(3000);
-                            setBought(false);
-                        }
-                }).catch(err=>console.error(err))
+                }).then(async res => {
+                    if (res.ok) {
+                        setBought(true);
+                        await timeout(3000);
+                        setBought(false);
+                    }
+                    else if (res.status===400)
+                        return res.json()
+                }).then(res => {
+                        if (res === "sum_price should be smaller than max_cost")
+                            enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    })
+                    .catch(err => console.error(err))
             })
-            .catch(err=>console.error(err))
+                .catch(err => console.error(err))
         }else{
             let shopping_id=JSON.parse(localStorage.getItem("shoplists"))[props.item.shop_id];
             fetch("http://eunoia-bshop.ir:8000/api/v1/shoppings/item/list/"+shopping_id,{
@@ -142,7 +149,13 @@ function ItemCard(props) {
                             await timeout(3000);
                             setBought(false);
                         }
-                }).catch(err=>console.error(err))
+                    else if (res.status===400)
+                        return res.json()
+                }).then(res => {
+                        if (res === "sum_price should be smaller than max_cost")
+                            enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    })
+                    .catch(err => console.error(err))
                 }
                 else{
                     let fd = new FormData()
@@ -160,7 +173,13 @@ function ItemCard(props) {
                             await timeout(1000);
                             setBought(false);
                         }
-                }).catch(err=>console.error(err))
+                    else if (res.status===400)
+                        return res.json()
+                }).then(res => {
+                        if (res === "sum_price should be smaller than max_cost")
+                            enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    })
+                    .catch(err => console.error(err))
                 }
                 
             })
@@ -178,8 +197,8 @@ function ItemCard(props) {
                 <input type="text" value={cartCount} onChange={(e)=>changeCartCount(e.target.value)} />
                 <div className="count-btn btn" onClick={()=>changeCartCount(cartCount-1)}>-</div>
             </div>
-            {!bought?<div className="btn add-to-cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
-                <div className="btn add-to-cart-btn" >اضافه شد!</div>
+            {!bought?<div className="btn add-to-cart-btn" data-testid="add-to-cart-btn" onClick={()=>addToCart()} >افزودن به سبد خرید</div>:
+                <div className="btn add-to-cart-btn" data-testid="added-btn" >اضافه شد!</div>
             }</>
             :
             <div className="manager-btns">
@@ -220,7 +239,7 @@ function ItemCard(props) {
                             <div className="cart-btn-1" style={{backgroundColor: "cadetblue",color:"white",borderRadius:"5px"}} onClick={(e)=>{e.stopPropagation(); window.location.href = "/store/" + props.item.shop_id + "/items/" + props.item.id }}><VisibilityIcon /></div>
                             </div>
                             :
-                            props.onlineShop && !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
+                            props.onlineShop && !!overallPrice && overallPrice!==0 && props.item.count!==0 && <div className="btn cart-btn cart-btn-1" data-testid="add-to-cart-switch-btn" style={hideOptions? {backgroundColor: "var(--primary-color)",color:"white"}:{backgroundColor: "transparent",color:"var(--primary-color)"}} onClick={(e)=>ToggleOptions(e)}>
                             {hideOptions?<ShoppingCartIcon/>:<CloseIcon />}
                             </div>
 }                   

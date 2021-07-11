@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { enableExpoCliLogging } from "expo/build/logs/Logs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import * as SecureStore from "expo-secure-store";
 // import FlashMessage from "react-native-flash-message";
 // import { showMessage, hideMessage } from "react-native-flash-message";
@@ -16,14 +16,20 @@ import {
   Keyboard,
   ToastAndroid,
 } from "react-native";
+import AuthContext from "../App";
 
 async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
-const Login = ({ navigation }) => {
+const Login = (props) => {
+  console.log("props");
+  console.log(props);
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
+
+  //used to check state of login
+  // const { signIn } = React.useContext(AuthContext);
 
   const HandleLogin = (email, pass) => {
     // console.log("so check here");
@@ -101,13 +107,15 @@ const Login = ({ navigation }) => {
         }
         if (keys.some((x) => x == "key")) {
           save("token", result.key);
-          navigation.navigate("Home");
+          // signIn(result.key);
+          // navigation.navigate("Home");
+          props.extraData(true);
         }
       })
       .catch((error) => console.log("error", error));
   };
   const pressSignUp = () => {
-    navigation.navigate("Signup"); //this line
+    props.navigation.navigate("Signup"); //this line
     //navigation.push("signup")
   };
 
