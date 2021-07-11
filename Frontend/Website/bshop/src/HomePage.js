@@ -73,14 +73,14 @@ function HomePage(props) {
                                 <p>بعلاوه، با خرید از بی‌شاپ مدال‌های طلا، نقره و برنز بگیرید و به پیشنهادهای ویژه دسترسی پیدا کنید.</p>
                             </div>
                         </div>
-                        <div className="intro intro-app">
+                        {/* <div className="intro intro-app">
                             <img src={DownloadApp} alt="discount" className="intro-pic" />
                             <div className="intro-description">
                                 <h4>بی‌شاپ، اپلیکیشن موبایل هم دارد!</h4>
                                 <p>می‌توانید با لینک مستقیم اپلیکیشن اندروید بی‌شاپ را دریافت کنید.</p>
-                                <a className="btn download-app-btn" /*href="/sth.apk" download*/ ><GetAppIcon style={{marginLeft: "4px"}} />دانلود اپلیکیشن اندروید</a>
+                                <a className="btn download-app-btn" href="/sth.apk" download ><GetAppIcon style={{marginLeft: "4px"}} />دانلود اپلیکیشن اندروید</a>
                             </div>
-                        </div>
+                        </div> */}
                     </>
                 )}
             <div className="logged-header" data-testid="logged-header">
