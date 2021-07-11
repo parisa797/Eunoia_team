@@ -1,0 +1,401 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ItemDetail be tested renders correctly 1`] = `
+<RCTScrollView
+  nestedScrollEnabled={true}
+  style={
+    Object {
+      "flex": 1,
+      "marginBottom": "5%",
+      "marginTop": "5%",
+    }
+  }
+>
+  <View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 5,
+          "height": 350,
+          "marginLeft": 11,
+          "marginTop": 8,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": "95%",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+      >
+        <Text />
+      </View>
+      <Image
+        resizeMode="contain"
+        source={
+          Object {
+            "uri": "http://eunoia-bshop.ir:8000kasd",
+          }
+        }
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "transparent",
+            "height": "85%",
+            "justifyContent": "center",
+            "marginLeft": 35,
+            "marginTop": "-1%",
+            "resizeMode": "cover",
+            "width": "80%",
+          }
+        }
+        testID="item-detail-image-0"
+      />
+    </View>
+    <View
+      style={
+        Object {
+          "backgroundColor": "white",
+          "borderRadius": 10,
+          "elevation": 5,
+          "height": 380,
+          "marginLeft": 12,
+          "marginTop": 15,
+          "shadowColor": "black",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.26,
+          "width": 370,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "height": "48%",
+            "padding": 10,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-name-0"
+        >
+          pofak
+           
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-description-0"
+        >
+          sth
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-brand-0"
+        >
+          برند نامشخص
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-manufacture-0"
+        >
+          تاریخ تولید: 12 تیر 1400
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-expire-0"
+        >
+          تاریخ انقضا: 16 تیر 1400
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-price-0"
+        >
+          300 ریال
+           
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-discounted-0"
+        >
+          با تخفیف: 349 ریال
+           
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-category-0"
+        >
+          دسته بندی: پروتئینی
+           
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontSize": 20,
+              "marginLeft": "-1%",
+              "marginTop": "1%",
+              "marginVertical": 5,
+            }
+          }
+          testID="item-detail-count-0"
+        >
+          موجودی: undefined عدد
+        </Text>
+        <View>
+          <View
+            pointerEvents="auto"
+            style={
+              Object {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+              }
+            }
+          >
+            <View
+              forwardedRef={[Function]}
+              style={Object {}}
+            >
+              <View
+                accessibilityRole="button"
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text />
+              </View>
+            </View>
+            <View
+              forwardedRef={[Function]}
+              style={Object {}}
+            >
+              <View
+                accessibilityRole="button"
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text />
+              </View>
+            </View>
+            <View
+              forwardedRef={[Function]}
+              style={Object {}}
+            >
+              <View
+                accessibilityRole="button"
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text />
+              </View>
+            </View>
+            <View
+              forwardedRef={[Function]}
+              style={Object {}}
+            >
+              <View
+                accessibilityRole="button"
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text />
+              </View>
+            </View>
+            <View
+              forwardedRef={[Function]}
+              style={Object {}}
+            >
+              <View
+                accessibilityRole="button"
+                accessible={true}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
+                style={
+                  Object {
+                    "opacity": 1,
+                  }
+                }
+              >
+                <Text />
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessible={true}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#b31414",
+          "borderRadius": 10,
+          "height": 40,
+          "justifyContent": "center",
+          "marginBottom": 20,
+          "marginLeft": 12,
+          "marginTop": 15,
+          "opacity": 1,
+          "width": 370,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginTop": 5,
+            "textAlign": "center",
+          }
+        }
+      >
+         مشاهده نظرات این محصول
+      </Text>
+    </View>
+    <Text
+      style={
+        Object {
+          "fontWeight": "bold",
+        }
+      }
+    />
+  </View>
+</RCTScrollView>
+`;

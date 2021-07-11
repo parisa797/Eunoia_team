@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing shop items filter renders correctly 1`] = `
+<filterShopItem
+  navigation={
+    Object {
+      "push": [MockFunction],
+    }
+  }
+  route={
+    Object {
+      "params": Object {
+        "category": "Nuts",
+        "filterType": "category",
+        "shopID": 1,
+      },
+    }
+  }
+/>
+`;

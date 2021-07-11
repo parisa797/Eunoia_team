@@ -27,6 +27,12 @@ const Shop = (props) => {
     : "فروشگاه " + props.title;
   const shop_add = "آدرس: " + props.address;
 
+  var photo = props.image
+    ? props.image.includes("http://eunoia-bshop.ir:8000")
+      ? props.image
+      : "http://eunoia-bshop.ir:8000" + props.image
+    : null;
+
   useEffect(() => {
     const getUser = async () => {
       var myHeaders = new Headers();
@@ -106,18 +112,21 @@ const Shop = (props) => {
 
   return (
     <View style={styles.shop}>
-      <Pressable
-        onPress={() => {
-          console.log("like state before change", liked);
-          postLike();
-        }}
-      >
-        <MaterialCommunityIcons
-          name={liked ? "heart" : "heart-outline"}
-          size={32}
-          color={liked ? "red" : "black"}
-        />
-      </Pressable>
+      {!props.nolike && (
+        <Pressable
+          onPress={() => {
+            console.log("like state before change", liked);
+            postLike();
+          }}
+        >
+          <MaterialCommunityIcons
+            name={liked ? "heart" : "heart-outline"}
+            size={32}
+            color={liked ? "red" : "black"}
+          />
+        </Pressable>
+      )}
+
       <TouchableOpacity
         testID={"shop-" + props.index}
         onPress={props.onSelect}
@@ -125,11 +134,20 @@ const Shop = (props) => {
       >
         <View style={styles.name_logo}>
           <View style={styles.imageContainer}>
-            <Image
-              testID={"shop-image-" + props.index}
-              style={styles.image}
-              source={{ uri: props.image }}
-            />
+            {photo && (
+              <Image
+                testID={"shop-image-" + props.index}
+                style={styles.image}
+                source={{ uri: photo }}
+              />
+            )}
+            {!photo && (
+              <Image
+                testID={"shop-noimage-" + props.index}
+                style={styles.image}
+                source={require("../assets/no-image.png")}
+              />
+            )}
           </View>
           <View style={styles.name_star}>
             <Text testID={"shop-name-" + props.index} style={styles.title}>

@@ -22,7 +22,11 @@ const OneComment = (props) => {
   // console.log(date);
 
   var user_photo =
-    props.avatar.length == 0 ? null : props.avatar[0].uploaded_file;
+    props.avatar.length == 0
+      ? null
+      : props.avatar[0].uploaded_file.includes("http://eunoia-bshop.ir:8000")
+      ? props.avatar[0].uploaded_file
+      : "http://eunoia-bshop.ir:8000" + props.avatar[0].uploaded_file;
   // console.log("photo:", user_photo);
 
   return (
@@ -30,6 +34,7 @@ const OneComment = (props) => {
       <View style={styles.avatarContainer}>
         {user_photo == null && (
           <Image
+            testID={"comment-noavatar-" + props.index}
             resizeMode="contain"
             style={styles.avatar}
             // source={{ uri: props.avatar }}
@@ -38,6 +43,7 @@ const OneComment = (props) => {
         )}
         {user_photo && (
           <Image
+            testID={"comment-avatar-" + props.index}
             resizeMode="contain"
             style={styles.avatar}
             source={{ uri: user_photo }}
@@ -46,10 +52,22 @@ const OneComment = (props) => {
       </View>
       <View style={styles.contentContainer}>
         <Text>
-          <Text style={[styles.text, styles.name]}>{props.name}</Text>{" "}
-          <Text style={styles.text}>{props.content}</Text>
+          <Text
+            testID={"comment-userid-" + props.index}
+            style={[styles.text, styles.name]}
+          >
+            {props.name}
+          </Text>{" "}
+          <Text testID={"comment-text-" + props.index} style={styles.text}>
+            {props.content}
+          </Text>
         </Text>
-        <Text style={[styles.text, styles.created]}>{date}</Text>
+        <Text
+          testID={"comment-date-" + props.index}
+          style={[styles.text, styles.created]}
+        >
+          {date}
+        </Text>
       </View>
     </View>
   );
@@ -139,6 +157,7 @@ const CommentItem = ({ route, navigation }) => {
         {/* {noComment && <Text>{noComment}</Text>} */}
         {/* {comments.length != 0 && ( */}
         <FlatList
+          testID={"comments-list"}
           style={styles.list}
           //   extraData={this.state}
           data={comments}
@@ -154,6 +173,7 @@ const CommentItem = ({ route, navigation }) => {
                 name={itemData.item.user.user_name}
                 content={itemData.item.text}
                 date={itemData.item.date_jalali}
+                index={itemData.item.id}
               ></OneComment>
             );
           }}
@@ -186,7 +206,8 @@ const CommentItem = ({ route, navigation }) => {
   );
 };
 
-export default Comment;
+export default CommentItem;
+
 const { width, height } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container2: {

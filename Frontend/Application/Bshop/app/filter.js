@@ -16,19 +16,16 @@ import {
 import * as SecureStore from "expo-secure-store";
 import Shop from "./shop";
 import LikedItem from "./likedItem";
-import { useIsFocused } from "@react-navigation/native";
+// import { useIsFocused } from "@react-navigation/native";
 
 const FilterResult = ({ navigation, route }) => {
   console.log("filtered this:", route.params);
   const [shops, setShops] = useState();
   const [items, setItems] = useState();
   const [noResult, setNoResult] = useState(false);
-  const isFocused = useIsFocused();
+  // const isFocused = useIsFocused();
 
   var fetch_url;
-
-  //route.params.searchType == false --> item
-  //route.params.searchType == true --> shop
 
   const FilterShop = async () => {
     var requestOptions = {
@@ -36,7 +33,6 @@ const FilterResult = ({ navigation, route }) => {
       redirect: "follow",
     };
 
-    // var url = "http://eunoia-bshop.ir:8000/api/v1/shops/top";
     fetch(fetch_url, requestOptions)
       .then((response) => response.json())
       .then((result) => {
@@ -48,6 +44,7 @@ const FilterResult = ({ navigation, route }) => {
   };
 
   const FilterItem = async () => {
+    // console.log("it is being called");
     var requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -64,8 +61,6 @@ const FilterResult = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    setShops();
-    setItems();
     switch (route.params.shop_item) {
       case "shop":
         switch (route.params.filterType) {
@@ -90,26 +85,36 @@ const FilterResult = ({ navigation, route }) => {
         break;
 
       case "item":
-        fetch_url =
-          "http://eunoia-bshop.ir:8000/items/" + route.params.filterType + "/";
+        if (route.params.filterType == "category") {
+          var c =
+            route.params.category == "all"
+              ? "Spices and condiments and food side dishes"
+              : route.params.category;
 
-        var c =
-          route.params.filterType == "category" &&
-          route.params.category == "all"
-            ? "Spices and condiments and food side dishes"
-            : route.params.category;
-        if (c != "all") {
-          fetch_url += "?q=" + c;
+          fetch_url = "http://eunoia-bshop.ir:8000/items/category/?q=" + c;
+        } else {
+          if (route.params.category != "all") {
+            fetch_url =
+              "http://eunoia-bshop.ir:8000/items/category/" +
+              route.params.filterType +
+              "/?q=" +
+              route.params.category;
+          } else {
+            fetch_url =
+              "http://eunoia-bshop.ir:8000/items/" +
+              route.params.filterType +
+              "/";
+          }
         }
-        console.log("this is get url", fetch_url);
         FilterItem();
+        console.log("this is get url", fetch_url);
         break;
 
       default:
         console.log("sth bad happened in switching between shop and item");
         break;
     }
-  }, [isFocused]);
+  }, []);
 
   return (
     <View>
@@ -140,6 +145,7 @@ const FilterResult = ({ navigation, route }) => {
 
       {!noResult && items && (
         <FlatList
+          testID={"items-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -40 }}
           data={items}

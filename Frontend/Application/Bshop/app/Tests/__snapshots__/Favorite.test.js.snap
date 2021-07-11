@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`testing favorite items renders correctly 1`] = `
+<RCTScrollView
+  nestedScrollEnabled={true}
+  style={
+    Object {
+      "flex": 1,
+      "marginBottom": "5%",
+      "marginTop": "5%",
+    }
+  }
+>
+  <View />
+</RCTScrollView>
+`;

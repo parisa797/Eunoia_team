@@ -16,7 +16,8 @@ import ItemComment from "./itemComment";
 import SearchResult from "./search";
 import SearchItemShop from "./serchItemShop";
 import FilterResult from "./filter";
-import FilterPage from "./filterpage";
+import FilterShopItem from "./filterShopItem";
+import Scan from "./qrScan";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,7 +61,7 @@ const AppStack = ({ navigation }) => {
           },
           headerTintColor: "#fff", //Set Header text color
           // headerTitleStyle: {
-          // fontWeight: "bold", //Set Header text style
+          //   fontWeight: "bold", //Set Header text style
           // },
         }}
       />
@@ -100,21 +101,22 @@ const AppStack = ({ navigation }) => {
         options={{ title: "نتایج فیلتر" }}
       />
       <Stack.Screen
-        name="FilterPage"
-        component={FilterPage}
-        options={{ title: " فیلتر" }}
+        name="FilterShopItem"
+        component={FilterShopItem}
+        options={{ title: "نتایج فیلتر" }}
       />
     </Stack.Navigator>
   );
 };
 
-const Profile = ({ navigation }) => {
+const Profile = (props) => {
+  console.log("parisa", props);
   return (
     <Stack.Navigator
       initialRouteName="profile"
       screenOptions={{
         headerLeft: () => (
-          <NavigationDrawerStructure navigationProps={navigation} />
+          <NavigationDrawerStructure navigationProps={props.navigation} />
         ),
         headerStyle: {
           backgroundColor: "#780909", //Set Header color
@@ -129,7 +131,9 @@ const Profile = ({ navigation }) => {
         name="پروفایل کاربر"
         component={PersonalInfo}
         options={{
+          data: props.route.params.params,
           title: " ", //Set Header Title
+          // data: props.extraData,
         }}
       />
     </Stack.Navigator>
@@ -192,7 +196,36 @@ const FavoriteShopsPage = ({ navigation }) => {
   );
 };
 
-export const Sidebar = () => {
+const QR = ({ navigation }) => {
+  return (
+    <Stack.Navigator
+      initialRouteName="scan"
+      screenOptions={{
+        headerLeft: () => (
+          <NavigationDrawerStructure navigationProps={navigation} />
+        ),
+        headerStyle: {
+          backgroundColor: "#780909", //Set Header color
+        },
+        headerTintColor: "#fff", //Set Header text color
+        headerTitleStyle: {
+          fontWeight: "bold", //Set Header text style
+        },
+      }}
+    >
+      <Stack.Screen
+        name="اسکنر بارکد"
+        component={Scan}
+        options={{
+          title: " ", //Set Header Title
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const Sidebar = (props) => {
+  console.log("this is props of sidebar", props);
   return (
     // <Drawer.Navigator drawerPosition="right">
     <Drawer.Navigator>
@@ -209,7 +242,9 @@ export const Sidebar = () => {
         options={{
           drawerLabel: "پروفایل",
           activeTintColor: "#e91e63",
+          params: props.extraData,
         }}
+        // params={props.extraData}
         component={Profile}
       />
       <Drawer.Screen
@@ -228,15 +263,23 @@ export const Sidebar = () => {
         }}
         component={FavoriteShopsPage}
       />
+      <Drawer.Screen
+        name="qrscanner"
+        options={{
+          drawerLabel: "اسکنر بارکد",
+          activeTintColor: "#e91e63",
+        }}
+        component={QR}
+      />
     </Drawer.Navigator>
   );
 };
 
 // export const Router = () => {
-// //More explanations about "authData" below
-// return (
-// <NavigationContainer>
-// {authData ? <AppStack /> : <AuthStack />}
-// </NavigationContainer>
-// );
+//   //More explanations about "authData" below
+//   return (
+//     <NavigationContainer>
+//       {authData ? <AppStack /> : <AuthStack />}
+//     </NavigationContainer>
+//   );
 // };

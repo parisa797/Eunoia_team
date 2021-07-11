@@ -26,8 +26,15 @@ const ItemDetail = ({ route, navigation }) => {
   // const [rated, setRated] = useState(false);
   var rated = false;
   const [star_rates, setRates] = useState(route.params.rate_value);
+  console.log("params given to me", route.params);
 
-  var image = !route.params.photo ? null : route.params.photo;
+  // var image = !route.params.photo ? null : route.params.photo;
+  var image = route.params.photo
+    ? route.params.photo.includes("http://eunoia-bshop.ir:8000")
+      ? route.params.photo
+      : "http://eunoia-bshop.ir:8000" + route.params.photo
+    : null;
+  // console.log("this is image url", image);
   var price = `${route.params.price} ریال`;
   var discounted = `با تخفیف: ${route.params.price_with_discount} ریال`;
   var count =
@@ -280,8 +287,9 @@ const ItemDetail = ({ route, navigation }) => {
           />
         </Pressable>
         {/* <Image style={styles.image} /> */}
-        {image == null && (
+        {!image && (
           <Image
+            testID={"item-detail-noimage-" + route.params.id}
             resizeMode="contain"
             style={styles.image}
             source={require("../assets/no-image.png")}
@@ -289,29 +297,75 @@ const ItemDetail = ({ route, navigation }) => {
         )}
         {image && (
           <Image
+            testID={"item-detail-image-" + route.params.id}
             resizeMode="contain"
             style={styles.image}
-            source={{ uri: "http://eunoia-bshop.ir:8000" + image }}
+            source={{ uri: image }}
           />
         )}
       </View>
       <View style={styles.shop}>
         <View style={styles.details}>
-          <Text style={styles.title}>{route.params.name} </Text>
+          <Text
+            testID={"item-detail-name-" + route.params.id}
+            style={styles.title}
+          >
+            {route.params.name}{" "}
+          </Text>
           {/* <View style={styles.icon}>
               
               <Text style={styles.address}></Text>
             </View> */}
-          <Text style={styles.title}>{route.params.description}</Text>
-          <Text style={styles.title}>{brand}</Text>
-          <Text style={styles.title}>{manufacture}</Text>
-          <Text style={styles.title}>{expire}</Text>
-          <Text style={styles.title}>{price} </Text>
+          <Text
+            testID={"item-detail-description-" + route.params.id}
+            style={styles.title}
+          >
+            {route.params.description}
+          </Text>
+          <Text
+            testID={"item-detail-brand-" + route.params.id}
+            style={styles.title}
+          >
+            {brand}
+          </Text>
+          <Text
+            testID={"item-detail-manufacture-" + route.params.id}
+            style={styles.title}
+          >
+            {manufacture}
+          </Text>
+          <Text
+            testID={"item-detail-expire-" + route.params.id}
+            style={styles.title}
+          >
+            {expire}
+          </Text>
+          <Text
+            testID={"item-detail-price-" + route.params.id}
+            style={styles.title}
+          >
+            {price}{" "}
+          </Text>
           {route.params.price != route.params.price_with_discount && (
-            <Text style={styles.title}>{discounted} </Text>
+            <Text
+              testID={"item-detail-discounted-" + route.params.id}
+              style={styles.title}
+            >
+              {discounted}{" "}
+            </Text>
           )}
-          <Text style={styles.title}>{category} </Text>
-          <Text style={styles.title}>{count}</Text>
+          <Text
+            testID={"item-detail-category-" + route.params.id}
+            style={styles.title}
+          >
+            {category}{" "}
+          </Text>
+          <Text
+            testID={"item-detail-count-" + route.params.id}
+            style={styles.title}
+          >
+            {count}
+          </Text>
           <View>
             <StarRating
               starSize={25}

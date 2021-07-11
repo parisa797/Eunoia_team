@@ -25,7 +25,7 @@ const FavoriteShops = ({ navigation }) => {
 
   useEffect(() => {
     const getLikedShops = async () => {
-      console.log("yes in shops!");
+      // console.log("yes in shops!");
       var myHeaders = new Headers();
       let t = await SecureStore.getItemAsync("token");
       var authorization = "Token " + t;
@@ -54,19 +54,20 @@ const FavoriteShops = ({ navigation }) => {
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       {shops && (
         <FlatList
-          // testID={"items-list" + props.index}
+          testID={"fav-shops-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -30 }}
           data={shops}
           keyExtractor={(item) => item.id.toString()}
           renderItem={(itemData) => {
             console.log("item is", itemData.item.logo);
-            var u = "http://eunoia-bshop.ir:8000" + itemData.item.logo;
+            // var u = "http://eunoia-bshop.ir:8000" + itemData.item.logo;
             return (
               <Shop
+                nolike={true}
                 title={itemData.item.title}
                 address={itemData.item.address}
-                image={u}
+                image={itemData.item.logo}
                 rate_value={itemData.item.rate_value}
                 online={itemData.item.online}
                 phone={itemData.item.phone}

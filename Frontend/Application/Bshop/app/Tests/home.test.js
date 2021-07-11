@@ -10,8 +10,17 @@ import renderer from "react-test-renderer";
 
 import Home from "../homepage";
 import Shop from "../shop";
+// import * as Focus from "@react-navigation/native";
+
+const mockedFocused = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useIsFocused: () => mockedFocused,
+}));
 
 describe("Home page with shops be tested", () => {
+  // jest.mock("@react-navigation/native");
+
   it("renders correctly", () => {
     const tree = renderer.create(<Home />).toJSON();
     expect(tree).toMatchSnapshot();
@@ -33,7 +42,7 @@ describe("Home page with shops be tested", () => {
         rate_value: 1.23482394,
         id: 1,
         address: "",
-        logo: "",
+        logo: "http://eunoia-bshop.ir:8000/shahr",
       },
       {
         title: "فروشگاه شاپ3",
@@ -48,7 +57,7 @@ describe("Home page with shops be tested", () => {
         rate_value: 5,
         id: 3,
         address: "addressssss sdfe",
-        logo: "",
+        logo: null,
       },
     ];
 
@@ -71,11 +80,23 @@ describe("Home page with shops be tested", () => {
         ? shops[i].title
         : "فروشگاه " + shops[i].title;
       const shop_add = "آدرس: " + shops[i].address;
+
       expect(getByTestId("shop-name-" + i).props.children).toBe(shop_name);
       expect(getByTestId("shop-add-" + i).props.children).toBe(shop_add);
-      expect(getByTestId("shop-image-" + i).props.source.uri).toBe(
-        shops[i].logo
-      );
+      // expect(getByTestId("shop-image-" + i).props.source.uri).toBe(
+      //   shops[i].logo
+      // );
+      if (shops[i].logo) {
+        const photo = shops[i].logo.includes("http://eunoia-bshop.ir:8000")
+          ? shops[i].logo
+          : "http://eunoia-bshop.ir:8000" + shops[i].logo;
+
+        expect(getByTestId("shop-image-" + i).props.source.uri).toBe(photo);
+        expect(queryByTestId("shop-noimage-" + i)).toBeNull();
+      } else {
+        expect(queryByTestId("shop-image-" + i)).toBeNull();
+        expect(queryByTestId("shop-noimage-" + i)).not.toBeNull();
+      }
     }
 
     expect(queryByTestId("shop-name-4")).toBeNull();

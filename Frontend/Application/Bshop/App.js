@@ -30,16 +30,20 @@ export default function App({ navigation }) {
       {loggedin == false ? (
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Login">
+            {(props) => <Login {...props} extraData={setlogin} />}
+          </Stack.Screen>
           <Stack.Screen name="Signup" component={SignUp} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
-          <Stack.Screen
-            name="drawer"
+          {/* <Stack.Screen
+            name="BShop"
             component={Sidebar}
-            // options={{ title: " " }}
-          />
+          /> */}
+          <Stack.Screen name="BShop">
+            {(props) => <Sidebar {...props} extraData={setlogin} />}
+          </Stack.Screen>
         </Stack.Navigator>
       )}
     </NavigationContainer>

@@ -20,7 +20,7 @@ const Welcome = ({ navigation }) => {
   return (
     <View>
       <Image style={styles.image} source={require("../assets/cart.png")} />
-      <Text style={styles.text}>
+      <Text style={styles.textstart}>
         اگر قبلا ثبت نام کرده اید وارد حساب کاربری خود شوید.
         {"\n"}
         در غیر اینصورت برای شروعی هیجان انگیز ثبت نام کنید
@@ -51,6 +51,12 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#b31414",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 30,
+  },
+  textstart: {
+    color: "black",
     fontSize: 18,
     textAlign: "center",
     marginTop: 30,
