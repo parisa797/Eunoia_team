@@ -30,7 +30,6 @@ const FilterShopItem = ({ navigation, route }) => {
       method: "GET",
       redirect: "follow",
     };
-
     fetch(fetch_url, requestOptions)
       .then((response) => response.json())
       .then((result) => {

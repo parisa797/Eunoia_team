@@ -86,7 +86,6 @@ const FilterResult = ({ navigation, route }) => {
 
       case "item":
         if (route.params.filterType == "category") {
-          // console.log("i'm entering here");
           var c =
             route.params.category == "all"
               ? "Spices and condiments and food side dishes"

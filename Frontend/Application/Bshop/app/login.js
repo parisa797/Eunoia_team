@@ -22,7 +22,9 @@ async function save(key, value) {
   await SecureStore.setItemAsync(key, value);
 }
 
-const Login = ({ navigation }) => {
+const Login = (props) => {
+  console.log("props");
+  console.log(props);
   const [email, setEmail] = useState("");
   const [pass, setPassword] = useState("");
 
@@ -107,12 +109,13 @@ const Login = ({ navigation }) => {
           save("token", result.key);
           // signIn(result.key);
           // navigation.navigate("Home");
+          props.extraData(true);
         }
       })
       .catch((error) => console.log("error", error));
   };
   const pressSignUp = () => {
-    navigation.navigate("Signup"); //this line
+    props.navigation.navigate("Signup"); //this line
     //navigation.push("signup")
   };
 

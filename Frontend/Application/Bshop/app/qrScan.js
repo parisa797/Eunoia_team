@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
-    marginTop: "80%",
+    marginTop: "135%",
   },
 });
 export default Scan;
