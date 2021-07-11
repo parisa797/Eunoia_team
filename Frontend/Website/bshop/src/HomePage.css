@@ -62,6 +62,9 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     .homepage .discount-intro{
         flex-direction: column;
     }
+    .homepage .intro-app{
+        flex-direction: column;
+    }
     .homepage .intro-description{
         width: 100%;
     }
@@ -98,6 +101,10 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     }
     .homepage .intro{
         max-height: 60vh;
+    }
+
+    .homepage .intro-app{
+        max-height: 80vh;
     }
 }
 
@@ -350,14 +357,27 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
     color:rgb(36, 167, 127);
 }
 
-.homepage .carousel{
+/* .homepage .carousel{
     height: 65vh;
-}
+} */
 
 .homepage .carousel img{
-    height: 60vh;
+    /* height: 60vh;
     object-fit: cover;
+    width: 100%; */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    object-fit: cover;
+    height: 100%;
     width: 100%;
+}
+
+.homepage .carousel .img-container{
+    padding-top: 35.0%;
+    position: relative;
 }
 
 .homepage .carousel .carousel-indicators{
@@ -374,6 +394,19 @@ background: linear-gradient(160deg, rgba(105,43,122,1) 0%, rgba(76,53,131,1) 39%
 
 .homepage .header-list-link{
     text-decoration: none;
+}
+
+.homepage .download-app-btn{
+    /* rgb(236, 69, 91) */
+    background: rgb(236, 69, 91);
+    color: whitesmoke;
+    margin-top: 30px;
+    font-size: large;
+    font-family: 'Casablanca-Heavy';
+}
+
+.homepage .download-app-btn:hover{
+    background: rgb(255, 81, 104);
 }
 
 /* .homepage .carousel .carousel-control-next-icon {
