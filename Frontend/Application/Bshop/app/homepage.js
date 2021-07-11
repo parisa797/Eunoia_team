@@ -35,7 +35,7 @@ export default Home = ({ navigation }) => {
   const [itemFilter, setItemFilter] = useState("expensive");
 
   const isFocused = useIsFocused();
-  const [change, setchange] = useState(isFocused);
+  // const [change, setchange] = useState(isFocused);
   console.log("focus home", isFocused);
 
   //convert persian numbers to english
@@ -288,7 +288,7 @@ export default Home = ({ navigation }) => {
         // refreshing={isRefreshing}
         data={shops}
         keyExtractor={(item) => item.id.toString()}
-        extraData={isFocused}
+        // extraData={isFocused}
         renderItem={(itemData) => (
           <Shop
             title={itemData.item.title}

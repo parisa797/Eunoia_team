@@ -35,7 +35,8 @@ const NavigationDrawerStructure = (props) => {
         {/*Donute Button Image */}
         <Image
           source={{
-            uri: "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
+            uri:
+              "https://raw.githubusercontent.com/AboutReact/sampleresource/master/drawerWhite.png",
           }}
           style={{ width: 25, height: 25, marginLeft: 15 }}
         />
@@ -109,7 +110,7 @@ const AppStack = ({ navigation }) => {
 };
 
 const Profile = (props) => {
-  console.log("props of profile", props);
+  console.log("parisa", props);
   return (
     <Stack.Navigator
       initialRouteName="profile"
@@ -130,6 +131,7 @@ const Profile = (props) => {
         name="پروفایل کاربر"
         component={PersonalInfo}
         options={{
+          data: props.route.params.params,
           title: " ", //Set Header Title
           // data: props.extraData,
         }}
@@ -240,9 +242,9 @@ export const Sidebar = (props) => {
         options={{
           drawerLabel: "پروفایل",
           activeTintColor: "#e91e63",
+          params: props.extraData,
         }}
         // params={props.extraData}
-        initialParams={{ params: props.extraData }}
         component={Profile}
       />
       <Drawer.Screen

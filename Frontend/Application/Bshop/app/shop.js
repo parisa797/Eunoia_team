@@ -112,18 +112,21 @@ const Shop = (props) => {
 
   return (
     <View style={styles.shop}>
-      <Pressable
-        onPress={() => {
-          console.log("like state before change", liked);
-          postLike();
-        }}
-      >
-        <MaterialCommunityIcons
-          name={liked ? "heart" : "heart-outline"}
-          size={32}
-          color={liked ? "red" : "black"}
-        />
-      </Pressable>
+      {!props.nolike && (
+        <Pressable
+          onPress={() => {
+            console.log("like state before change", liked);
+            postLike();
+          }}
+        >
+          <MaterialCommunityIcons
+            name={liked ? "heart" : "heart-outline"}
+            size={32}
+            color={liked ? "red" : "black"}
+          />
+        </Pressable>
+      )}
+
       <TouchableOpacity
         testID={"shop-" + props.index}
         onPress={props.onSelect}

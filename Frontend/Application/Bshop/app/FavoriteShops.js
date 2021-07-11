@@ -64,6 +64,7 @@ const FavoriteShops = ({ navigation }) => {
             // var u = "http://eunoia-bshop.ir:8000" + itemData.item.logo;
             return (
               <Shop
+                nolike={true}
                 title={itemData.item.title}
                 address={itemData.item.address}
                 image={itemData.item.logo}
