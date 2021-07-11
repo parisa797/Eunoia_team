@@ -1,0 +1,96 @@
+name: Bshop CI/CD Workflow
+
+on:
+  push:
+    branches:
+      # - develop
+      - feature/v1.0.0/cicd-back
+
+
+jobs:
+  health-check-job: 
+    runs-on: ubuntu-latest 
+    services:
+      postgres: 
+        image: postgres
+        env: 
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github-actions
+        ports:
+          - 5432:5432 
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v2
+      # - name: Cache dependency # caching dependency will make our build faster.
+      #   working-directory: ./Backend/bshop
+      #   uses: actions/cache@v2 # for more info checkout pip section documentation at https://github.com/actions/cache
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-
+      - name: Setup python environment 
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x' 
+      - name: Check Python version 
+        working-directory: ./Backend/bshop
+        run: python --version
+      - name: Install requirements 
+        working-directory: ./Backend/bshop
+        run: pip install -r requirements.txt
+      # - name: Check Syntax # check code formatting
+      #   working-directory: ./Backend/bshop
+      #   run: pycodestyle --statistics .
+      - name: Run Migrations 
+        working-directory: ./Backend/bshop
+        run: python manage.py migrate
+      - name: Run Test 
+        working-directory: ./Backend/bshop
+        run: python manage.py test
+
+  upload-job: 
+    runs-on: ubuntu-latest
+    needs: [health-check-job] 
+    steps:
+      - name: Checkout Code 
+        uses: actions/checkout@v2
+      - name: Copy folder content recursively to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: ./Backend/bshop
+          remote: /home/ubuntu/Eunoiateam2/bshop
+          host: 37.152.179.124
+          username: ubuntu
+          password: Eunoia6Team
+
+  migration-job: 
+    runs-on: ubuntu-latest
+    needs: [upload-job]
+    steps:
+      - name: migrate ssh
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: | 
+            source venv/bin/activate
+            pip3 install -r Eunoiateam2/bshop/requirements.txt
+            python3 Eunoiateam2/bshop/manage.py migrate
+          host: 37.152.179.124
+          username: ubuntu
+          password: Eunoia6Team
+          
+  runserver-job: 
+    runs-on: ubuntu-latest
+    needs: [migration-job]
+    steps:
+      - name: runserver ssh
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: | 
+            tmux kill-session -t back
+            tmux new -d -s back 'source venv/bin/activate; python3 Eunoiateam2/bshop/manage.py runserver 37.152.179.124:8000'
+          host: 37.152.179.124
+          username: ubuntu
+          password: Eunoia6Team

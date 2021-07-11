@@ -51,7 +51,7 @@ const AddItem = () => {
     const d1 = new Date(values.manufacture_Date)
     const d2 = new Date(values.Expiration_Date)
     const diff = d2.getTime() - d1.getTime()
-    if (values.name && values.manufacture_Date && values.Expiration_Date && values.count && values.category && values.price && diff > 0 &&  (!values.discount || values.discount < 99 )) {
+    if (values.name && values.manufacture_Date && values.Expiration_Date && !isNaN(d1.getTime()) && !isNaN(d2.getTime()) && values.count && values.category && values.price && diff > 0 && (!values.discount || values.discount < 99 )) {
       const fd = new FormData()
       console.log('if');
       fd.append('name', values.name)
@@ -59,21 +59,35 @@ const AddItem = () => {
       fd.append('description', values.description)
       fd.append('manufacture_Date', values.manufacture_Date)
       fd.append('Expiration_Date', values.Expiration_Date)
-      fd.append('count', values.count)
-      fd.append('price', values.price)
-      fd.append('discount', values.discount)
+      fd.append('count', values.count? values.count:0)
+      fd.append('price', values.price? values.price: 0)
+      fd.append('discount', values.discount? values.discount: 0)
       fd.append('category', values.category)
-  
-        fetch("http://eunoia-bshop.ir:8000/shops/"+shopID+"/items/", {
-          method: 'POST',
-          headers: {
-            "Authorization": "Token " + localStorage.getItem("token")
+
+      fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {
+        method: 'POST',
+        headers: {
+          "Authorization": "Token " + localStorage.getItem("token")
+        }
+        , body: fd
+      }).then((resp) => {
+        if (resp.status === 201) {
+          return resp.json()
           }
-          ,body:fd
-        }).then((resp) => {
-          if (resp.status === 201) {
-             window.location.replace("/store/"+shopID);
-          }
+        }).then(res=>{
+          if(!res)
+            return;
+          console.log(res)
+          fetch("http://eunoia-bshop.ir:8000/items/"+res.id+"/qr/", {
+            method: 'POST',
+            headers: {
+              "Authorization": "Token " + localStorage.getItem("token")
+            }
+          }).then((resp) => {
+            if (resp.status === 201) {
+              window.location.replace("/store/" + shopID);
+            }
+          }).catch((e) => { console.log(e.response.data) })
         }).catch((e) => { console.log(e.response.data) })  
     } else {
       console.log('else');
@@ -85,10 +99,16 @@ const AddItem = () => {
     })
       if (!values.manufacture_Date) enqueueSnackbar('تاریخ تولید را وارد کنید', { 
         variant: 'error',
-    })
+    }) 
+    else if(isNaN(d1.getTime())) enqueueSnackbar('تاریخ تولید را به فرمت خواسته‌شده وارد کنید', { 
+      variant: 'error',
+  })
       if (!values.Expiration_Date) enqueueSnackbar('تاریخ انقضا را وارد کنید', { 
         variant: 'error',
-    })
+    }) 
+    else if(isNaN(d2.getTime())) enqueueSnackbar('تاریخ انقضا را به فرمت خواسته‌شده وارد کنید', { 
+      variant: 'error',
+  })
       if (!values.count) enqueueSnackbar('تعداد محصول را وارد کنید', { 
         variant: 'error',
     })
@@ -101,6 +121,7 @@ const AddItem = () => {
       if (diff < 0) enqueueSnackbar('تاریخ انقضا باید بعد از تاریخ تولید باشد', { 
         variant: 'error',
     })
+      
     }
 
   }
@@ -124,8 +145,8 @@ const AddItem = () => {
           id="name"
           className="form-control"
           placeholder="نام محصول خود را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="description" className="sr-only">
           توضیحات محصول
@@ -139,8 +160,8 @@ const AddItem = () => {
           id="description"
           className="form-control"
           placeholder="توضیحات محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="manufacture_Date" className="sr-only">
           تاریخ تولید محصول
@@ -154,8 +175,8 @@ const AddItem = () => {
           id="manufacture_Date"
           className="form-control"
           placeholder="(YYYY-MM-DD)تاریخ تولید محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="Expiration_Date" className="sr-only">
           تاریخ انقضا
@@ -169,8 +190,8 @@ const AddItem = () => {
           id="Expiration_Date"
           className="form-control"
           placeholder="(YYYY-MM-DD)تاریخ انقضاء محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="count" className="sr-only">
           تعداد محصول
@@ -184,8 +205,8 @@ const AddItem = () => {
           id="count"
           className="form-control"
           placeholder="تعداد محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="price" className="sr-only">
           قیمت محصول
@@ -199,8 +220,8 @@ const AddItem = () => {
           id="price"
           className="form-control"
           placeholder="قیمت محصول را وارد کنید(به ریال)"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <label for="discount" className="sr-only">
           درصد تخفیف محصول
@@ -214,8 +235,8 @@ const AddItem = () => {
           id="discount"
           className="form-control"
           placeholder="درصد تخفیف محصول را وارد کنید"
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <div className="dropdown">
         <label for="category" className="sr-only">
@@ -232,35 +253,35 @@ const AddItem = () => {
           id="category"
           className="form-control dropdown-toggle"
           placeholder={values.category}
-          required
-          autofocus
+          // required
+          // autofocus
         />
         <div className="dropdown-menu" id="category-dropdown" style={{right:0}}>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Spices and condiments and food side dishes')}>ادویه، چاشنی و مخلفات غذا</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Cosmetics')}>بهداشت و مراقبت پوست</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Makeup and trimming')}>آرایش و پیرایش</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Protein')}>پروتئینی</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Junk Food')}>تنقلات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Nuts')}>خشکبار</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Sweets and desserts')}>شیرینیجات و دسرها</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'perfume')}>عطر، ادکلن و اسپری</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Fruits and vegetables')}>غذا، کنسرو و سبزیجات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Dairy')}>لبنیات</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Drinks')}>نوشیدنیها</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'Washing and Cleaning Equipment')}>وسایل شستشو و نظافت</button>
-          <button className="dropdown-item" onClick={() => handleChange("category", 'others')}>متفرقه</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault(); handleChange("category", 'Spices and condiments and food side dishes')}}>ادویه، چاشنی و مخلفات غذا</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Cosmetics')}}>بهداشت و مراقبت پوست</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Makeup and trimming')}}>آرایش و پیرایش</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Protein')}}>پروتئینی</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Junk Food')}}>تنقلات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Nuts')}}>خشکبار</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Sweets and desserts')}}>شیرینیجات و دسرها</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'perfume')}}>عطر، ادکلن و اسپری</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Fruits and vegetables')}}>غذا، کنسرو و سبزیجات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Dairy')}}>لبنیات</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Drinks')}}>نوشیدنیها</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'Washing and Cleaning Equipment')}}>وسایل شستشو و نظافت</button>
+          <button className="dropdown-item" onClick={(e) => {e.preventDefault();handleChange("category", 'others')}}>متفرقه</button>
         </div>
         </div>
-        <div class="item-file">
+        <div class="custom-file" style={{direction: "rtl"}}>
           <input
             type="file"
             onChange={imageInsert}
-            class="item-file-input"
+            class="custom-file-input"
             id="itemInput"
-            required
-          />
-          <label class="item-file-label" htmlFor="itemInput">
-            {values.src ? "عکس شما انتخاب شده است" : "Choose file..."}
+            //required
+            />
+          <label class="custom-file-label" htmlFor="itemInput">
+            {values.src ? "عکس شما انتخاب شده است" : "عکس انتخاب کنید..."}
           </label>
         </div>
         <div className="checkbox mb-3">

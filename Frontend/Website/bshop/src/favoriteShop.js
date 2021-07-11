@@ -12,13 +12,11 @@ const FavouriteShop = () => {
         }).then(res => res.json())
         .then(res => {
             if (res?.length) setresults(res)
-        })
+        }).catch(err=> console.log(err))
     }, [])
     return (
         <div className="col-12 d-flex flex-wrap justify-content-end">
-            {results?.length > 0 && (
-            <h1 className="col-12" data-testid="top-shops-header" >فروشگاه‌های مورد علاقه شما </h1>
-            )}
+            <h1 className="col-12" data-testid="fav-shops-header" >فروشگاه‌های مورد علاقه شما </h1>
             {!results || results.length === 0 ?
             <p data-testid="no-shops" style={{ margin: "auto" }}>نتیجه‌ای یافت نشد!</p>
             : results.map((result, i) => {

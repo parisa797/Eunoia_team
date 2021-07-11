@@ -39,6 +39,7 @@ function Item(props) {
       })
       .then((res) => {
         setItems(res);
+        document.title = res.name + " فروشگاه " + (!!res.ItemShop && res.ItemShop.title) + " | بی‌شاپ"
       });
   }, [triggerReload]);
   useEffect(() => {
@@ -203,6 +204,8 @@ function Item(props) {
             }).then(res => {
                     if (res === "sum_price should be smaller than max_cost")
                         enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    else if (res === "The number of itmes should be less than the total number")
+                        enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                 })
                 .catch(err => console.error(err))
         })
@@ -253,6 +256,8 @@ function Item(props) {
             }).then(res => {
                     if (res === "sum_price should be smaller than max_cost")
                         enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    else if (res === "The number of itmes should be less than the total number")
+                        enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                 })
                 .catch(err => console.error(err))
             }
@@ -277,6 +282,8 @@ function Item(props) {
             }).then(res => {
                     if (res === "sum_price should be smaller than max_cost")
                         enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                    else if (res === "The number of itmes should be less than the total number")
+                        enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                 })
                 .catch(err => console.error(err))
             }
@@ -316,6 +323,11 @@ const changeCartCount = (count)=>{
                   <>
                     <h3 className="text-right mb-3">ویژگی های کالا:</h3>
                     <p className="lead text-right" data-testid="item-description">{items.description}</p>
+                  </>
+                )}
+                {!!items.brand && (
+                  <>
+                    <p className="lead text-right" data-testid="item-description">برند {items.brand}</p>
                   </>
                 )}
                 <div className="rating-item">
