@@ -35,6 +35,7 @@ const Item = (props) => {
           )}
           {!props.image && (
             <Image
+              testID={"item-noimage-" + props.index}
               style={styles.image}
               source={require("../assets/no-image.png")}
             />

@@ -59,6 +59,7 @@ const SearchItemShop = ({ navigation, route }) => {
 
       {items && (
         <FlatList
+          testID={"items-list"}
           nestedScrollEnabled={true}
           style={{ marginTop: -40 }}
           data={items}
