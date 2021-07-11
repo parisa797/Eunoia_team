@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 const Item = (props) => {
-  console.log("this is props", props);
+  // console.log("this is props", props);
   var photo = "http://eunoia-bshop.ir:8000" + props.image;
   // console.log("photo url is", props.image);
   var newPrice = ((100 - props.discount) * props.price) / 100;

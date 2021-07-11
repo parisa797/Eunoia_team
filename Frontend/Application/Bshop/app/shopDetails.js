@@ -12,6 +12,7 @@ import {
   FlatList,
   Pressable,
   ScrollView,
+  Picker,
 } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -27,6 +28,8 @@ const ShopDetail = ({ route, navigation }) => {
   const [shopitems, setItems] = useState();
   const [star_rates, setRates] = useState(route.params.rate_value);
   const [user, setUser] = useState();
+  const [category, setCategory] = useState("all");
+  const [itemFilter, setItemFilter] = useState("expensive");
   var rated = false;
   var url =
     "http://eunoia-bshop.ir:8000/api/v1/shops/rate/list/" + route.params.id;
@@ -43,7 +46,7 @@ const ShopDetail = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((result) => {
         setItems(result);
-        console.log("fetching again in shop detail page");
+        // console.log("fetching again in shop detail page");
       })
       .catch((error) => {
         console.log("error", error);
@@ -129,7 +132,7 @@ const ShopDetail = ({ route, navigation }) => {
             return response.json();
           })
           .then((result) => {
-            console.log("result after user rate", result);
+            // console.log("result after user rate", result);
             //after fetching user's rate, get the item rate in order to update stars
             requestOptions = {
               method: "GET",
@@ -159,17 +162,17 @@ const ShopDetail = ({ route, navigation }) => {
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <View style={styles.rows2}>
         {/* <Picker
-        selectedValue={selectedValue}
-        style={{ height: 50, width: 150 }}
-        onValueChange={(itemValue, itemIndex) => {
-          console.log("actual", itemValue);
-          setSelectedValue(itemValue);
-          console.log("state:", selectedValue);
-        }}
-      >
-        <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" />
-      </Picker> */}
+          selectedValue={selectedValue}
+          style={{ height: 50, width: 150 }}
+          onValueChange={(itemValue, itemIndex) => {
+            console.log("actual", itemValue);
+            setSelectedValue(itemValue);
+            console.log("state:", selectedValue);
+          }}
+        >
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker> */}
 
         <View style={styles.inputView}>
           <TextInput
@@ -190,7 +193,115 @@ const ShopDetail = ({ route, navigation }) => {
         >
           <Text style={styles.loginText}>بگرد</Text>
         </TouchableOpacity>
+        <View style={styles.selector}>
+          <Text style={styles.filterText}>فیلتر آیتم بر اساس </Text>
+          <View style={styles.container2}>
+            {itemFilter != "category" && (
+              <Picker
+                selectedValue={category}
+                style={{ height: 50, width: 150, color: "white" }}
+                onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+              >
+                {/* {itemFilter != "category" && ( */}
+                <Picker.Item label="همه" value="all" />
+                {/* )} */}
+                <Picker.Item
+                  label="ادویه، چاشنی و مخلفات غذا"
+                  value="Spices and condiments and food side dishes"
+                />
+                <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
+                <Picker.Item
+                  label="آرایش و پیرایش"
+                  value="Makeup and trimming"
+                />
+                <Picker.Item label="پروتئینی" value="Protein" />
+                <Picker.Item label="تنقلات" value="Junk Food" />
+                <Picker.Item label="خشکبار" value="Nuts" />
+                <Picker.Item
+                  label="شیرینیجات و دسرها"
+                  value="Sweets and desserts"
+                />
+                <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
+                <Picker.Item
+                  label="غذا، کنسرو و سبزیجات"
+                  value="Fruits and vegetables"
+                />
+                <Picker.Item label="لبنیات" value="Dairy" />
+                <Picker.Item label="نوشیدنیها" value="Drinks" />
+                <Picker.Item
+                  label="وسایل شستشو و نظافت"
+                  value="Washing and Cleaning Equipment"
+                />
+                <Picker.Item label="متفرقه" value="others" />
+              </Picker>
+            )}
+
+            {itemFilter == "category" && (
+              <Picker
+                selectedValue={category}
+                style={{ height: 50, width: 150, color: "white" }}
+                onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+              >
+                <Picker.Item
+                  label="ادویه، چاشنی و مخلفات غذا"
+                  value="Spices and condiments and food side dishes"
+                />
+                <Picker.Item label="بهداشت و مراقبت پوست" value="Cosmetics" />
+                <Picker.Item
+                  label="آرایش و پیرایش"
+                  value="Makeup and trimming"
+                />
+                <Picker.Item label="پروتئینی" value="Protein" />
+                <Picker.Item label="تنقلات" value="Junk Food" />
+                <Picker.Item label="خشکبار" value="Nuts" />
+                <Picker.Item
+                  label="شیرینیجات و دسرها"
+                  value="Sweets and desserts"
+                />
+                <Picker.Item label="عطر، ادکلن و اسپری" value="perfume" />
+                <Picker.Item
+                  label="غذا، کنسرو و سبزیجات"
+                  value="Fruits and vegetables"
+                />
+                <Picker.Item label="لبنیات" value="Dairy" />
+                <Picker.Item label="نوشیدنیها" value="Drinks" />
+                <Picker.Item
+                  label="وسایل شستشو و نظافت"
+                  value="Washing and Cleaning Equipment"
+                />
+                <Picker.Item label="متفرقه" value="others" />
+              </Picker>
+            )}
+          </View>
+          <View style={styles.container2}>
+            <Picker
+              selectedValue={itemFilter}
+              style={{ height: 50, width: 150, color: "white" }}
+              onValueChange={(itemValue, itemIndex) => setItemFilter(itemValue)}
+            >
+              <Picker.Item label="گران ترین" value="expensive" />
+              <Picker.Item label="ارزان ترین" value="cheap" />
+              <Picker.Item label="جدیدترین" value="new" />
+              <Picker.Item label="دسته بندی" value="category" />
+              <Picker.Item label="تخفیف دار" value="discount" />
+            </Picker>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={styles.Btn}
+          onPress={() => {
+            var x = {
+              filterType: itemFilter,
+              category,
+              shopID: route.params.id,
+            };
+            navigation.navigate("FilterShopItem", x);
+          }}
+        >
+          <Text style={styles.loginText}>فیلتر</Text>
+        </TouchableOpacity>
       </View>
+
       <View>
         {/* <ImageBackground
         source={require("../assets/lemon.jpg")}
@@ -292,6 +403,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#b31414",
     marginLeft: 10,
   },
+  filterText: {
+    color: "white",
+  },
   inputView: {
     backgroundColor: "#fff",
     borderRadius: 10,
@@ -343,7 +457,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     backgroundColor: "#f1f1f2",
-    height: 300,
+    height: 320,
     width: 370,
     marginLeft: 18,
   },
@@ -368,7 +482,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
     backgroundColor: "#b31414",
-    height: 60,
+    height: 180,
     width: 370,
     marginLeft: 15,
     fontWeight: "bold",
@@ -482,12 +596,17 @@ const styles = StyleSheet.create({
     color: "black",
     marginLeft: 20,
   },
+  selector: {
+    marginLeft: 10,
+    marginTop: -10,
+    color: "white",
+  },
   container: {
     flex: 1,
     // backgroundColor: "#fff",
     // alignItems: "center",
     // justifyContent: "center",
-    marginTop: "5%",
+    marginTop: "1%",
     // width: "50%",
     // height: "50%",
     marginBottom: "5%",
@@ -506,10 +625,10 @@ const styles = StyleSheet.create({
   Btn: {
     width: "20%",
     borderRadius: 10,
-    height: 10,
+    height: 30,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: -68,
+    marginTop: -120,
     marginBottom: 20,
     backgroundColor: "white",
     marginLeft: 6,
