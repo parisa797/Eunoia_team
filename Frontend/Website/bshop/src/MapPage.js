@@ -203,7 +203,7 @@ function MapPage(props) {
                 {clickedShop.properties.shop_phone && <p data-testid="shop-phone" className="phone"><CallIcon className="icon" />{clickedShop.properties.shop_phone}</p>}
                 <h3>نظرات</h3>
                 <div className="shop-page">
-                  <ShopComments shopID={clickedShop.properties.id} userState={"u"} />
+                  <ShopComments shopID={clickedShop.properties.id} userState={"u"} noLikes="true"/>
                 </div>
               </div>
             </div>
