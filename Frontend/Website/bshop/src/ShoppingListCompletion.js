@@ -12,8 +12,8 @@ function ShoppingListCompletion(props) {
     const { enqueueSnackbar } = useSnackbar();
     const [shopInfo, setShopInfo] = useState({});
     const [reload, setReload] = useState(false);
-    const [address, setAddress] = useState({ edit: false, address: "" });
-    const [phone, setPhone] = useState({ edit: false, phone: "" });
+    const [address, setAddress] = useState({ edit: false, address: "", set:false });
+    const [phone, setPhone] = useState({ edit: false, phone: "", set:false });
     const [deliverDate, setDeliverDate] = useState(null);
     const [dates, setDates] = useState([]);
     useEffect(() => {
@@ -71,24 +71,24 @@ function ShoppingListCompletion(props) {
                     ).then(
                         res => {
                             if (!!r.address)
-                                setAddress({ edit: false, address: r.address })
+                                setAddress({ edit: false, address: r.address, set:true })
                             else if (res === null || !res.address)
-                                setAddress({ edit: true, address: "" })
+                                setAddress({ edit: true, address: "", set:false })
                             else
-                                setAddress({ edit: true, address: res.address })
+                                setAddress({ edit: true, address: res.address, set:false })
 
                             if (!!r.phone)
-                                setPhone({ edit: false, phone: r.phone })
+                                setPhone({ edit: false, phone: r.phone, set:true })
                             else if (res === null || !res.phone)
-                                setPhone({ edit: true, phone: "" })
+                                setPhone({ edit: true, phone: "", set:false })
                             else
-                                setPhone({ edit: true, phone: res.phone })
+                                setPhone({ edit: true, phone: res.phone, set:false })
                         })
                         .catch(err => console.log(err))
                 }
                 else {
-                    setAddress({ edit: false, address: r.address })
-                    setPhone({ edit: false, phone: r.phone })
+                    setAddress({ edit: false, address: r.address, set:true })
+                    setPhone({ edit: false, phone: r.phone, set:true })
                 }
             }
             console.log(r)
@@ -159,10 +159,10 @@ function ShoppingListCompletion(props) {
         }).then(res => {
             if (res.ok) {
                 if (type === "address") {
-                    setAddress({ edit: false, address: val })
+                    setAddress({ edit: false, address: val, set:true })
                 }
                 else {
-                    setPhone({ edit: false, phone: val })
+                    setPhone({ edit: false, phone: val, set:true })
                 }
             }
         }).catch(err => console.error(err))
@@ -170,11 +170,11 @@ function ShoppingListCompletion(props) {
     }
 
     function sabt() {
-        if (!address.address) {
+        if (!address.set) {
             enqueueSnackbar("محل تحویل سفارش را قبل از ثبت وارد کنید", { variant: "error" })
             return;
         }
-        if (!phone.phone) {
+        if (!phone.set) {
             enqueueSnackbar("برای ثبت سفارش باید شماره تلفنی وارد کنید", { variant: "error" })
             return;
         }
@@ -263,7 +263,7 @@ function ShoppingListCompletion(props) {
                                 :
                                 <div style={{ display: "inline-flex", marginBottom: "10px" }}>
                                     <p className="content" data-testid="shopping-address">{address.address}</p>
-                                    <p className="change-btn" data-testid="shopping-change-address" onClick={() => setAddress({ edit: true, address: address.address })} > تغییر آدرس</p>
+                                    <p className="change-btn" data-testid="shopping-change-address" onClick={() => setAddress({ edit: true, address: address.address, set:address.set })} > تغییر آدرس</p>
                                 </div>
                             }
                             <p className="title">شماره تماس:</p>
@@ -275,7 +275,7 @@ function ShoppingListCompletion(props) {
                                 :
                                 <div style={{ display: "inline-flex", marginBottom: "10px" }}>
                                     <p className="content" data-testid="shopping-phone">{phone.phone}</p>
-                                    <p className="change-btn" data-testid="shopping-change-phone" onClick={() => setPhone({ edit: true, phone: phone.phone })} > تغییر شماره</p>
+                                    <p className="change-btn" data-testid="shopping-change-phone" onClick={() => setPhone({ edit: true, phone: phone.phone, set:phone.set })} > تغییر شماره</p>
                                 </div>
                             }
 
