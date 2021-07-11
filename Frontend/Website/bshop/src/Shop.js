@@ -71,7 +71,7 @@ function Shop(props) {
             )
             .then((d) => {
                 setShopInfo(d);
-                // document.title = "فروشگاه "+d.title + " | بی‌شاپ"
+                document.title = "فروشگاه "+d.title + " | بی‌شاپ"
                 console.log(d)
             });
         fetch("http://eunoia-bshop.ir:8000/shops/" + shopID + "/items/", {

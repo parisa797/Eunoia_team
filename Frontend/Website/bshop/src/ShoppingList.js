@@ -239,7 +239,7 @@ function ShoppingList(props) {
                         }
                         <div className="price">
                             {!!shoppingList && (shoppingList.rawTotalPrice !== shoppingList.totalPrice) && <h6 data-testid="shopping-raw-total">{shoppingList.rawTotalPrice} ریال</h6>}
-                            {!!shoppingList && <h3 data-testid="shopping-total">{shoppingList.totalPrice} ریال</h3>}
+                            {!!shoppingList && <h3 data-testid="shopping-total">{shoppingList.sum_price} ریال</h3>}
                         </div>
                         {!!shoppingList && !!shoppingList.shopping_list_items && shoppingList.shopping_list_items.length > 0 && !props.completed && <div className="btn submit-btn" onClick={()=>window.location.href = "/store/"+shopID+"/shopping-list/complete-order"}>ثبت خرید<ChevronLeftIcon /></div>}
                         {!!shoppingList && props.completed && <div className="history-info">
@@ -273,7 +273,7 @@ function ShoppingList(props) {
                                                     {!!el.item?.discount && el.item.discount > 0 ?
                                                         <div className="shopping-price">
                                                             <div style={{ display: "inline-flex" }}><p className="item-card-real-price">{el.rawTotalPrice}</p><div className="item-card-discount">{el.item.discount}%</div></div>
-                                                            <p className="item-card-price-text" data-testid={`shopping-item-price-${el.item.id}`}>{el.totalPrice} ریال</p>
+                                                            <p className="item-card-price-text" data-testid={`shopping-item-price-${el.item.id}`}>{el.sum_price} ریال</p>
 
                                                         </div>
                                                         : <p className="shopping-price item-card-price-text" data-testid={`shopping-item-price-${el.item.id}`}>{el.rawTotalPrice + "ریال"}</p>}

@@ -5,16 +5,18 @@ import Carousel from 'react-bootstrap/Carousel';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import OfflineGroceries from './medias/OnlineGroceries-pana.svg';
 import OnlineGroceries from './medias/OnlineGroceries-amico.svg';
+import DownloadApp from './medias/Mobile_login-cuate.svg';
 import DiscountPic from './medias/Discount-pana.svg';
 import { useState } from 'react';
 import LocationOnIcon from '@material-ui/icons/LocationOn'
 import SearchBar from './SearchBar';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import HomeItemList from './HomeItemList';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 function HomePage(props) {
     const [homeBoard, setHomeBoard] = useState([{ image: "/yalda-slider-without-ad.png", url: "/shop/14" }, { image: "/special-offer.jpg", url: "/" }, { image: "/am65tyeqh1y1.jpeg", url: "/register" }])
-    // document.title = "فروشگاه اینترنتی بی‌شاپ"
+    document.title = "فروشگاه اینترنتی بی‌شاپ"
 
     const SearchDropDownToggle = (id) => {
         var dropdowns = document.getElementsByClassName("dropdown-menu");
@@ -71,6 +73,14 @@ function HomePage(props) {
                                 <p>بعلاوه، با خرید از بی‌شاپ مدال‌های طلا، نقره و برنز بگیرید و به پیشنهادهای ویژه دسترسی پیدا کنید.</p>
                             </div>
                         </div>
+                        <div className="intro intro-app">
+                            <img src={DownloadApp} alt="discount" className="intro-pic" />
+                            <div className="intro-description">
+                                <h4>بی‌شاپ، اپلیکیشن موبایل هم دارد!</h4>
+                                <p>می‌توانید با لینک مستقیم اپلیکیشن اندروید بی‌شاپ را دریافت کنید.</p>
+                                <a className="btn download-app-btn" /*href="/sth.apk" download*/ ><GetAppIcon style={{marginLeft: "4px"}} />دانلود اپلیکیشن اندروید</a>
+                            </div>
+                        </div>
                     </>
                 )}
             <div className="logged-header" data-testid="logged-header">
@@ -80,7 +90,9 @@ function HomePage(props) {
                             {homeBoard.map((item, i) => {
                                 if (item)
                                     return (<Carousel.Item key={i} className="board-item">
-                                        <img src={item.image} alt="board item" />
+                                        <div className="img-container">
+                                            <img src={item.image} alt="board item" />
+                                        </div>
                                         <Carousel.Caption>
                                             <h5>{item.title}</h5>
                                             <p>{item.description}</p>

@@ -27,6 +27,8 @@
     display: block;
     cursor: pointer;
     margin:3px;
+    color: var(--font-color2);
+    text-decoration: none;
 }
 
 .page-footer a:hover, .page-footer .a:not([href]):not([class]):hover{

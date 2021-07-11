@@ -7,9 +7,13 @@ import mapPointer from './medias/pointer.jpg';
 import './Map.css';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import ShopComments from './ShopComments';
+
+
 function MapPage(props) {
   var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
-
+  // @ts-ignore
+  // eslint-disable-next-line import/no-webpack-loader-syntax
+  mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default
   mapboxgl.accessToken = 'pk.eyJ1IjoiZXVub2lhNnRlYW0iLCJhIjoiY2twaW1pc29oMGc5NjJ1b2ZmMGdiNWkweCJ9.6KH84Su77toujLB9IU4wTQ';
   const [stores, setStores] = useState({ features: [] })
   const mapContainer = useRef(null);
@@ -183,20 +187,20 @@ function MapPage(props) {
       <div className='sidebar'>
         {
           clickedShop ?
-            <div>
+            <div data-testid="one-shop">
               <div className='map-go-back'>
-                <h1 onClick={() => setClickedShop(null)}><ChevronLeftIcon />بازگشت</h1>
+                <h1 onClick={() => setClickedShop(null)} data-testid="go-back-btn" ><ChevronLeftIcon />بازگشت</h1>
               </div>
               <div className="map-shop">
                 <div className="map-shop-header">
                   <div className="img-container">
-                    <img src={clickedShop.properties.logo ? clickedShop.properties.logo : "/shop-default-logo.png"} alt="logo" />
+                    <img data-testid="shop-logo" src={clickedShop.properties.logo ? clickedShop.properties.logo : "/shop-default-logo.png"} alt="logo" />
                   </div>
-                  <h2 onClick={() => window.location.href = `/store/${clickedShop.properties.id}/`}>{clickedShop.properties.title}</h2>
+                  <h2 data-testid="shop-title" onClick={() => window.location.href = `/store/${clickedShop.properties.id}/`}>{clickedShop.properties.title}</h2>
                 </div>
-                {clickedShop.properties.online ? <p style={{ color: "green", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین دارد</p> : <p style={{ color: "red", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین ندارد</p>}
-                {clickedShop.properties.address && <p className="address"><LocationOnIcon className="icon" />{clickedShop.properties.address}</p>}
-                {clickedShop.properties.shop_phone && <p className="phone"><CallIcon className="icon" />{clickedShop.properties.shop_phone}</p>}
+                {clickedShop.properties.online ? <p data-testid="shop-online" style={{ color: "green", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین دارد</p> : <p data-testid="shop-not-online" style={{ color: "red", fontSize: "0.9rem", alignSelf: "center" }}>امکان خرید آنلاین ندارد</p>}
+                {clickedShop.properties.address && <p data-testid="shop-address" className="address"><LocationOnIcon className="icon" />{clickedShop.properties.address}</p>}
+                {clickedShop.properties.shop_phone && <p data-testid="shop-phone" className="phone"><CallIcon className="icon" />{clickedShop.properties.shop_phone}</p>}
                 <h3>نظرات</h3>
                 <div className="shop-page">
                   <ShopComments shopID={clickedShop.properties.id} userState={"u"} />
@@ -207,22 +211,23 @@ function MapPage(props) {
             <><div className='heading'>
               <h1>فروشگاه‌ها</h1>
             </div>
-              <div id='listings' className='listings'>
+              <div id='listings' className='listings' data-testid="all-shops-list">
                 {stores.features.map(store => {
                   return (
-                    <div className="map-list-item" onClick={() => flyToStore(store)}>
-                      <h2>{store.properties.title}</h2>
-                      <p className="map-desc">{store.properties.mantaghe} منطقه</p>
+                    <div className="map-list-item" key={store.properties.id} data-testid={"fly-to-shop-"+store.properties.id} onClick={() => flyToStore(store)}>
+                      <h2 data-testid={"shop-title-"+store.properties.id}>{store.properties.title}</h2>
+                      {!!store.properties.mantaghe && <p data-testid={"shop-mantaghe-"+store.properties.id} className="map-desc">{store.properties.mantaghe} منطقه</p>}
                       <div className="shop-stars">
                         <ReactStars
                           edit={false}
                           value={store.properties.rate_value ? store.properties.rate_value : 0}
                           isHalf={true}
                           classNames="stars"
+                          data-testid={"shop-ratings-"+store.properties.id}
                           size={22}
                           activeColor={"var(--primary-color)"}
                         />
-                        <p>({store.properties.rate_count})</p>
+                        <p data-testid={"shop-rate-count-"+store.properties.id}>({store.properties.rate_count})</p>
                       </div>
                     </div>
                   )
