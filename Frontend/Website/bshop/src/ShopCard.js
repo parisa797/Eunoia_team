@@ -9,7 +9,7 @@ function ShopCard(props){
         <div className="shop-stars">
             <ReactStars
                 edit={false}
-                value={props.shop.rate_value ? props.shop.rate_value : 0}
+                value={props.shop.rate_value ? Number(props.shop.rate_value) : 0}
                 isHalf={true}
                 classNames="stars"
                 size={20}

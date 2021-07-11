@@ -235,17 +235,17 @@ const RegisterStore = () => {
           placeholder="کد فروشگاه خود را وارد کنید"
           required
         />
-        <div class="custom-file">
+        <div class="custom-file" style={{direction: "rtl"}}>
           <input
           data-testid="register-shop-image"
             type="file"
             onChange={imageInsert}
             class="custom-file-input"
             id="customInput"
-            required
+            //required
           />
           <label class="custom-file-label" htmlFor="customInput">
-            {values.src ? "عکس شما انتخاب شده است" : "Choose file..."}
+            {values.src ? "عکس شما انتخاب شده است" : "عکس انتخاب کنید..."}
           </label>
         </div>
         <div className="checkbox mb-3"></div>

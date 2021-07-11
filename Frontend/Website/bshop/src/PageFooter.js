@@ -6,7 +6,7 @@ function PageFooter(props) {
             <div className="col-12 col-sm-6 col-md-4" >
                 <h4>بیشتر بدانید</h4>
                 <a>درباره ما</a>
-                <a>اپلیکیشن اندروید</a>
+                <a  /*href="/sth.apk" download*/>دانلود اپلیکیشن اندروید</a>
                 <a>قوانین سایت</a>
             </div>
             <div className="col-12 col-sm-6 col-md-4" >
@@ -16,7 +16,7 @@ function PageFooter(props) {
             </div>
             <div className="col-12 col-sm-6 col-md-4" >
                 <h4>به ما بپیوندید!</h4>
-                <a>ثبت فروشگاه</a>
+                <a href="/registerstore">ثبت فروشگاه</a>
                 <a>قوانین ثبت فروشگاه</a>
             </div>
         </div>

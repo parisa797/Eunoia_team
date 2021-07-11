@@ -14,14 +14,19 @@ function ShopComments(props) {
     // const [like, setLikes] = useState([props.value])
     const [comments, setComments] = useState([])
     const [writtenComment, setWrittenComment] = useState("")
+    // const [writtenReply, setWrittenReply] = useState("")
     const [updateComments, setUpdateComments] = useState(false);
+    // const [updateReply, setUpdateReplies] = useState(false);
     const [edittingID, setEdittingID] = useState("");
+    const [edittingIDReply, setEdittingIDReply] = useState("");
     const [deletingComment, setDeletingComment] = useState(null);
     const [selfComments, setSelfComments] = useState([]);
     const months = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"]
     const [loading, setLoading] = useState(true);
     const shopID = window.location.pathname.match(/[^\/]+/g)[1]
     const itemID = window.location.pathname.match(/[^\/]+/g)[3];
+    const [deletingReply, setDeletingReply] = useState(null);
+    // const [editingReply, setEditingReply] = useState(null);
     const handleUpdateComments = () => {
         
         fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${props.shopID}/commentsreplis`, {
@@ -122,6 +127,52 @@ function ShopComments(props) {
         }
 
     }
+
+    //////////////////////////////////jadid zadam
+    function startEdittingReply(id, text) {
+        if(isReplyng>-1)
+            setIsreplying(-2)
+        console.log("slm")
+        setEdittingIDReply(id);
+        setReply(text);
+    }
+
+    function stopEdittingReply() {
+        setEdittingIDReply(null);
+        setReply("")
+    }
+
+
+    function SendReply() {
+        if (reply === "")
+            return;
+        if (edittingIDReply) {
+            let fd = new FormData()
+            fd.append("text", reply);
+            //fd.append("shop", props.shopID)
+            fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${props.shopID}/comments/${edittingIDReply.commentid}/replies/`+edittingIDReply.replyid, {
+
+
+                method: "PUT",
+                headers: {
+                    "Authorization": "Token " + localStorage.getItem('token')
+                },
+                body: fd
+            }).then(res => {
+                if (res.status === 200) {
+                    setUpdateComments(!updateComments);
+                    setReply("")
+                    setEdittingIDReply(null);
+                }
+            }).catch(e => console.log(e))
+        }
+        else {
+            replyComment();
+        }
+
+    }
+///////////////// ta inja
+
     const [isReplyng, setIsreplying] = useState(-2)
     const [reply, setReply] = useState("")
     const replyComment = () => {
@@ -175,6 +226,8 @@ function ShopComments(props) {
     }
 
     const deleteComment=()=>{
+        if(edittingID == deletingComment.id)
+            stopEditting();
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+deletingComment.id,{
             method: 'DELETE',
             headers: {
@@ -191,9 +244,28 @@ function ShopComments(props) {
         )
             .catch(e => console.log(e));
     }
+    const deleteReply=()=>{
+        fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${deletingReply.commentid}/replies/`+deletingReply.replyid,{
+            method: 'DELETE',
+            headers: {
+                "Authorization": "Token " + localStorage.getItem('token')
+            }
+        }).then(
+            res => {
+                if (res.status === 204) {
+                    setUpdateComments(!updateComments);
+                    setDeletingReply(null)
+                }
+                return null;
+            }
+        )
+            .catch(e => console.log(e));
+    }
     const role = localStorage.getItem("role")
     console.log(props);
     const handleLikeComment = (comment) => {
+        if(props.noLikes)
+            return;
         console.log('123');
         fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${comment.id}/likes`,{
             method: 'POST',
@@ -209,6 +281,8 @@ function ShopComments(props) {
         return temp > -1 ? true : false
     }
     const handleReplyLikeComment = (reply, commentid) => {
+        if(props.noLikes)
+            return;
         fetch(`http://eunoia-bshop.ir:8000/api/v1/shops/${shopID}/comments/${commentid}/replies/${reply.id}/likes`,{
             method: 'POST',
             headers: {
@@ -236,16 +310,16 @@ function ShopComments(props) {
                             <p className="shop-comment-author" data-testid={"comment-username"+comment.id} >{comment.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-datetime"+comment.id}>{comment.date_jalali}</p>
                             <p className="shop-comment-date">
-                                <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
+                            {!props.noLikes && <IconButton onClick={() => handleLikeComment(comment)} style={{ color: 'red', padding: '0' }}> 
                                 {checkIsLikedByUserOrNot(comment) ? <FavoriteIcon data-testid={`comment-liked${comment.id}`} /> : <FavoriteBorderIcon data-testid={`comment-not-liked${comment.id}`}/>}
-                                </IconButton>
+                                </IconButton>}
                             </p>
-                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}`}>{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>
+                            {!props.noLikes && <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}`}>{comment.AllPeopleLiked[0]?.Liked_By?.length}لایک</p>}
                             {selfComments.includes(comment.id) && <div className="comment-edit-delete" data-testid={"comment-edit-delete-options"+comment.id}>
-                                <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
-                                <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
+                            {!props.noLikes &&<p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>}
+                            {!props.noLikes &&<p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>}
                             </div>}
-                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() => setIsreplying(comment.id)} > پاسخ به نظر</p>)}
+                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() =>{ if(!!edittingIDReply)stopEdittingReply(); setIsreplying(comment.id)}} > پاسخ به نظر</p>)}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
@@ -256,15 +330,16 @@ function ShopComments(props) {
                             <p className="shop-comment-author" data-testid={"comment-reply-username"+comment.id+"-"+r.id} >{r.user.user_name}</p>
                             <p className="shop-comment-date" data-testid={"comment-reply-datetime"+comment.id+"-"+r.id}>{r.date_jalali}</p>
                             <div className="shop-comment-author">
-                            <IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
+                            {!props.noLikes &&<IconButton onClick={() => handleReplyLikeComment(r, comment.id)} style={{ color: 'red', padding: '0' }}> 
                                    {checkIsReplyLikedByUser(r) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                            </IconButton>
+                            </IconButton>}
                             </div>
-                            <p className="shop-comment-date" data-testid={`comment-like-count${comment.id}-${r.id}`}>
+                            {!props.noLikes && <p className="shop-comment-date mr-2" data-testid={`comment-like-count${comment.id}-${r.id}`}>
                             {r.AllPeopleLiked[0]?.Liked_By?.length}
                             لایک 
-                            </p>
-                           
+                            </p>}
+                            {!props.noLikes && props.userState === "m" && <p className="comment-delete" data-testid={"comment-reply-delete-options"+comment.id+"-"+r.id} onClick={()=>setDeletingReply({replyid:r.id, commentid:comment.id, text:r.text})}>حذف نظر</p>}
+                            {!props.noLikes && props.userState === "m" &&  <p className="comment-edit mr-2" data-testid={"comment-edit-options"+r.id} onClick={() => startEdittingReply({replyid:r.id, commentid:comment.id},r.text)} > ویرایش نظر</p>}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-reply-text"+comment.id+"-"+r.id}>{r.text}</p>
                     </div>)}</div>
@@ -281,10 +356,18 @@ function ShopComments(props) {
                 <textarea type="text" placeholder="نظر خود را بنویسید..." value={writtenComment} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setWrittenComment(e.target.value)} data-testid="write-comment-input" ></textarea>
             </div>
         </div>}</>}
-        {(props.userState === "m") && isReplyng > -1 && <div className="write-comment-container" data-testid="write-reply-comment">
+
+        {(props.userState === "m") && (isReplyng > -1 || !!edittingIDReply) && <div className="write-comment-container" data-testid="write-reply-comment">
+            {edittingIDReply && <div className="comment-editting-indicator" >
+                  <p><div className="btn" onClick={stopEdittingReply} data-testid="stop-editing-btn" style={{padding:0}}> <CloseIcon /></div>در حال ویرایش نظر...</p>
+                 </div>}
+
             <div className="write-comment">
-                <div onClick={replyComment} data-testid="send-comment-reply-button"><SendIcon /></div>
+                <div onClick={SendReply} data-testid="send-comment-reply-button"><SendIcon /></div>
                 <textarea type="text" placeholder="پاسخ نظر خود را بنویسید..." value={reply} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setReply(e.target.value)} data-testid="write-comment-reply-input" ></textarea>
+                {/* ///////////inja */}
+                
+                
             </div>
         </div>}
         {deletingComment && <Modal show={deletingComment} onHide={() => setDeletingComment(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
@@ -302,7 +385,22 @@ function ShopComments(props) {
     </Modal.Body>
 
 </Modal>}
+{deletingReply && <Modal show={deletingReply} onHide={() => setDeletingReply(null)} style={{ display: "flex" }} className="profile-outer-modal comment-modal">
+    <Modal.Header closeButton className="profile-modal">
+        <Modal.Title>حذف نظر</Modal.Title>
+    </Modal.Header>
+    
+    <Modal.Body className="profile-modal">
+        <div style={{ direction: "rtl" }}>
+            <p>آیا از حذف این نظر اطمینان دارید؟</p>
+            <p className="delete-comment-text">"{deletingReply.text}"</p>
+            <div className="justify-content-center" style={{ width: "100%", display: "flex" }}>
+                <div className="btn delete-button" onClick={() => deleteReply()}>تایید و حذف نظر</div>
+            </div>
+        </div>
+    </Modal.Body>
 
+</Modal>}
     </div>)
 }
 

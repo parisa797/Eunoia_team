@@ -104,6 +104,8 @@ function ItemCard(props) {
                 }).then(res => {
                         if (res === "sum_price should be smaller than max_cost")
                             enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                        else if (res === "The number of itmes should be less than the total number")
+                            enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                     })
                     .catch(err => console.error(err))
             })
@@ -154,6 +156,8 @@ function ItemCard(props) {
                 }).then(res => {
                         if (res === "sum_price should be smaller than max_cost")
                             enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                        else if (res === "The number of itmes should be less than the total number")
+                            enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                     })
                     .catch(err => console.error(err))
                 }
@@ -178,6 +182,8 @@ function ItemCard(props) {
                 }).then(res => {
                         if (res === "sum_price should be smaller than max_cost")
                             enqueueSnackbar("به محدودیت قیمت سبد خرید رسیده‌اید", { variant: "error" })
+                        else if (res === "The number of itmes should be less than the total number")
+                            enqueueSnackbar("این تعداد از کالا (همراه با تعداد اضافه شده در سبد) در فروشگاه وجود ندارد", { variant: "error" })
                     })
                     .catch(err => console.error(err))
                 }

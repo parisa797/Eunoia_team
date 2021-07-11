@@ -11,6 +11,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 function EditItem(props) {
     const [profile, setProfile] = useState({});
     const [name, setName] = useState("");
+    const [brand, setBrand] = useState("");
     const [category, setCategory] = useState("");
     const [manufacture_Date, setManufactureDate] = useState("");
     const [count, setCount] = useState(1);
@@ -83,6 +84,8 @@ function EditItem(props) {
                 prof = res;
                 if (!prof.name)
                     prof.name = "نام کالا را وارد کنید...";
+                if (!prof.brand)
+                    prof.brand = "برند کالا را وارد کنید...";
                 if (!prof.count)
                     prof.count = "تعداد موجودی کالا را وارد کنید...";
                 if (!prof.price) {
@@ -108,6 +111,7 @@ function EditItem(props) {
                 //set prof in profile and other state variables
                 setProfile(prof)
                 setName(prof.name);
+                setBrand(prof.brand);
                 setCategory(prof.category);
                 setManufactureDate(prof.manufacture_Date)
                 setCount(prof.count)
@@ -239,6 +243,7 @@ function EditItem(props) {
 
     function cancelChanges() {
         setName(profile.name);
+        setBrand(profile.brand);
         setCategory(profile.category);
         setManufactureDate(profile.manufacture_Date);
         setCount(profile.count)
@@ -255,6 +260,7 @@ function EditItem(props) {
 
     async function submitChanges() {
         await document.getElementById("prof-page-name").blur()
+        await document.getElementById("prof-page-brand").blur()
         await document.getElementById("prof-page-category").blur()
         await document.getElementById("prof-page-count").blur()
         await document.getElementById("prof-page-price").blur()
@@ -282,6 +288,10 @@ function EditItem(props) {
         }
         else {
             fd.append("name", profile.name)
+        }
+        if (brand !== profile.brand && brand) {
+            fd.append("brand", brand);
+            sthChanged = true;
         }
         if (category !== profile.category && category) {
             fd.append("category", swapCategories()[category])
@@ -361,7 +371,7 @@ function EditItem(props) {
                 <EditItemPhoto pic={proPic} setPic={setProPic} newPicInfo={newPicInfo} setNewPicInfo={setNewPicInfo} />
                 <form>
                     <div className="row">
-                        <div className=" form-group input-container col-12 col-md-6">
+                        <div className=" form-group input-container col-12 col-md-4">
                             <label>نام کالا</label>
                             <input id="prof-page-name" type="text" className="input" value={name} data-testid="edit-item-name" maxLength={20}
                                 onFocus={() => { if (name === "نام کالا را وارد کنید...") setName("") }}
@@ -369,7 +379,15 @@ function EditItem(props) {
                                 onBlur={(e) => { if (!e.target.value) setName(profile.name); }}
                             />
                         </div>
-                        <div className=" form-group input-container col-12 col-md-6">
+                        <div className=" form-group input-container col-12 col-md-4">
+                            <label>برند کالا</label>
+                            <input id="prof-page-brand" type="text" className="input" value={brand} data-testid="edit-item-brand" maxLength={20}
+                                onFocus={() => { if (brand === "برند کالا را وارد کنید...") setBrand("") }}
+                                onChange={(e) => setBrand(e.target.value)}
+                                onBlur={(e) => { if (!e.target.value) setBrand(profile.brand); }}
+                            />
+                        </div>
+                        <div className=" form-group input-container col-12 col-md-4">
                             <label>دسته بندی</label>
                             <input id="prof-page-category" type="text" className="input dropdown-toggle" defaultValue={category} data-testid="edit-item-category" placeholder={category}
                                 onFocus={(e) => document.getElementById("category-dropdown").classList.toggle("show")}

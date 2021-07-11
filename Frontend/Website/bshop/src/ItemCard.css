@@ -154,6 +154,7 @@ transition: visibility 0.2s, opacity 0.2s linear;
     background-color: var(--bg-color);
     display:grid;
     padding:2rem 5px;
+    overflow: hidden;
 }
 
 .item-card .add-to-cart-card h1{
