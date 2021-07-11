@@ -130,6 +130,8 @@ function ShopComments(props) {
 
     //////////////////////////////////jadid zadam
     function startEdittingReply(id, text) {
+        if(isReplyng>-1)
+            setIsreplying(-2)
         console.log("slm")
         setEdittingIDReply(id);
         setReply(text);
@@ -224,6 +226,8 @@ function ShopComments(props) {
     }
 
     const deleteComment=()=>{
+        if(edittingID == deletingComment.id)
+            stopEditting();
         fetch("http://eunoia-bshop.ir:8000/api/v1/shops/comment/"+deletingComment.id,{
             method: 'DELETE',
             headers: {
@@ -311,7 +315,7 @@ function ShopComments(props) {
                                 <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
                                 <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
                             </div>}
-                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() => setIsreplying(comment.id)} > پاسخ به نظر</p>)}
+                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() =>{ if(!!edittingIDReply)stopEdittingReply(); setIsreplying(comment.id)}} > پاسخ به نظر</p>)}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>

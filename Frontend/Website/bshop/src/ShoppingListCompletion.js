@@ -169,7 +169,7 @@ function ShoppingListCompletion(props) {
 
     }
 
-    function sabt() {
+    function sabt() { ////
         if (!address.set) {
             enqueueSnackbar("محل تحویل سفارش را قبل از ثبت وارد کنید", { variant: "error" })
             return;
@@ -205,6 +205,13 @@ function ShoppingListCompletion(props) {
                         localStorage.removeItem("shoplists")
                         window.location.href = "/profile/shoppinglists";
                     }
+                    else return res.json()
+                }).then(res=>{
+                    if(!!res && (typeof res === 'string' || res instanceof String))
+                        if(res.includes("The number of itmes")){
+                            let id = res.split(" ")[0];
+                            enqueueSnackbar(" تعداد انتخابی از کالای: "+ shoppingList.shopping_list_items.filter((x,i)=> `${x.id}` === id)[0].item.name + " وجود ندارد. لطفا به صفحه سبد خرید بازگشته و تعداد آن را تغییر دهید", { variant: "error" })
+                        }
                 }).catch(err => console.error(err))
             }
         }).catch(err => console.error(err))

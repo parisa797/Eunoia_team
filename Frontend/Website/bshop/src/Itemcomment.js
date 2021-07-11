@@ -150,6 +150,8 @@ function Itemcomment(props) {
     }
     //////////////////////////////////jadid zadam
     function startEdittingReply(id, text) {
+        if(isReplyng>-1)
+            setIsreplying(-2)
         console.log("slm")
         setEdittingIDReply(id);
         setReply(text);
@@ -278,7 +280,7 @@ function Itemcomment(props) {
                                 <p className="comment-edit" data-testid={"comment-edit-options"+comment.id} onClick={() => startEditting(comment.id, comment.text)} > ویرایش</p>
                                 <p className="comment-delete" data-testid={"comment-delete-options"+comment.id} onClick={()=>setDeletingComment(comment)}>حذف نظر</p>
                             </div>}
-                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() => setIsreplying(comment.id)} > پاسخ به نظر</p>)}
+                            {props.userState ==="m" && (<p className="comment-edit mr-2" data-testid={"comment-reply-to"+comment.id} onClick={() =>{ if(!!edittingIDReply)stopEdittingReply(); setIsreplying(comment.id)}} > پاسخ به نظر</p>)}
                         </div>
                         <p className="shop-comment-desc" data-testid={"comment-text"+comment.id}>{comment.text}</p>
                     </div>
@@ -314,6 +316,9 @@ function Itemcomment(props) {
                 <textarea type="text" placeholder="نظر خود را بنویسید..." value={writtenComment} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setWrittenComment(e.target.value)} data-testid="write-comment-input" ></textarea>
             </div>
         </div>} {(props.userState === "m") &&  (isReplyng > -1 || !!edittingIDReply) && <div className="write-comment-container" data-testid="write-reply-comment">
+        {edittingIDReply && <div className="comment-editting-indicator" >
+                  <p><div className="btn" onClick={stopEdittingReply} data-testid="stop-editing-btn" style={{padding:0, backgroundColor:"inherit", border:"none"}}> <CloseIcon /></div>در حال ویرایش نظر...</p>
+                 </div>}
             <div className="write-comment">
                 <div onClick={SendReply} data-testid="send-comment-reply-button"><SendIcon /></div>
                 <textarea type="text" placeholder="پاسخ نظر خود را بنویسید..." value={reply} style={{ border: "none", height: "calc(20vh - 20px)" }} onChange={e => setReply(e.target.value)} data-testid="write-comment-reply-input" ></textarea>
