@@ -7,7 +7,7 @@ from users.models import MyUser
 from shops.models import Shop
 from django.db.models import Q
 from django.http import Http404
-from rest_framework.permissions import IsAuthenticated, AllowAny , IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.authentication import TokenAuthentication
 from django.core.exceptions import ValidationError
 from rest_framework.response import Response
@@ -20,7 +20,7 @@ from django.utils.dateparse import parse_date
 from datetime import datetime, timedelta
 from jalali_date import date2jalali
 from persiantools.jdatetime import JalaliDate
-from rest_framework.permissions import  IsAdminUser
+from rest_framework.permissions import IsAdminUser
 
 
 # from django.http import HttpResponse
@@ -45,6 +45,7 @@ class Search(generics.ListAPIView):
             if len(queryset) == 0:
                 raise Http404
         return queryset
+
 
 class ItemInShopSearch(generics.ListAPIView):
     serializer_class = CreateListItemSerializer
@@ -71,7 +72,8 @@ class ItemInShopSearch(generics.ListAPIView):
 class CreateItem(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = CreateListItemSerializer
-    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly] ### baraye get male hamash
+    # baraye get male hamash
+    permission_classes = [IsOwner, IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         shop_id = self.kwargs.get('pk')
@@ -84,29 +86,33 @@ class CreateItem(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         shops = self.get_object()
-        serializer.save(shopID=shops) ###### in bayad onlineshop ham biad
-        #serializer.save()
+        serializer.save(shopID=shops)  # in bayad onlineshop ham biad
+        # serializer.save()
 
     def create(self, request, *args, **kwargs):
         shop = self.get_object()
         if shop == None:
             return Response(data="Shop Not found", status=status.HTTP_404_NOT_FOUND)
-        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
-            temp=request.data['manufacture_Date'].split("-")
-            Ma=JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
-            temp=request.data['Expiration_Date'].split("-")
-            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+        if 'manufacture_Date' in request.data.keys() and 'Expiration_Date' in request.data.keys():
+            temp = request.data['manufacture_Date'].split("-")
+            Ma = JalaliDate(int(temp[0]), int(temp[1]),
+                            int(temp[2])).to_gregorian()
+            temp = request.data['Expiration_Date'].split("-")
+            Ex = JalaliDate(int(temp[0]), int(temp[1]),
+                            int(temp[2])).to_gregorian()
 
             delta = (Ex) - (Ma)
-            if delta< timedelta(days=0): ##darbareye
-                return Response(data="Expiration_Date is " +str(delta).split("-")[1].split(",")[0]  +"  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
+            if delta < timedelta(days=0):  # darbareye
+                return Response(data="Expiration_Date is " + str(delta).split("-")[1].split(",")[0] + "  before manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
        # elif delta == timedelta(days=0): ##darbareye
            # return Response(data="Expiration_Date is the same day as manufacture_Date", status=status.HTTP_400_BAD_REQUEST)
         serializer_data = request.data.copy()
-        if "discount" in request.data.keys() :
-            serializer_data.update({'price_with_discount':(int(request.data['price']) * (100 - int(request.data['discount'])) / 100)})
-        else :
-            serializer_data.update({'price_with_discount': (int(request.data['price']))})
+        if "discount" in request.data.keys():
+            serializer_data.update({'price_with_discount': (
+                int(request.data['price']) * (100 - int(request.data['discount'])) / 100)})
+        else:
+            serializer_data.update(
+                {'price_with_discount': (int(request.data['price']))})
         # serializer = self.get_serializer(data=request.data)
         serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
@@ -116,36 +122,40 @@ class CreateItem(generics.ListCreateAPIView):
 
     def list(self, request, *args, **kwargs):
         shop_id = self.get_object()
-        shopItems=Item.objects.filter(shopID=shop_id)
+        shopItems = Item.objects.filter(shopID=shop_id)
         serializer = CreateListItemSerializer(shopItems, many=True)
         return Response(serializer.data)
+
 
 class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [IsOwner,IsAuthenticatedOrReadOnly]
+    permission_classes = [IsOwner, IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         shop_id = self.kwargs.get('pk')
         item_id = self.kwargs.get('id')
         shops = Shop.objects.get(id=shop_id)
         items = Item.objects.get(id=item_id)
-        self.check_object_permissions(self.request,items)
+        self.check_object_permissions(self.request, items)
         # check whether the post belongs to the community
         if items.shopID != shops:
             items = None
         return items
+
     def update(self, request, *args, **kwargs):
-        if 'manufacture_Date' in request.data.keys()  and 'Expiration_Date' in request.data.keys():
+        if 'manufacture_Date' in request.data.keys() and 'Expiration_Date' in request.data.keys():
             temp = request.data['manufacture_Date'].split("-")
-            Ma = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            Ma = JalaliDate(int(temp[0]), int(temp[1]),
+                            int(temp[2])).to_gregorian()
             temp = request.data['Expiration_Date'].split("-")
-            Ex = JalaliDate(int(temp[0]), int(temp[1]), int(temp[2])).to_gregorian()
+            Ex = JalaliDate(int(temp[0]), int(temp[1]),
+                            int(temp[2])).to_gregorian()
             delta = (Ex) - (Ma)
 
             if delta < timedelta(days=0):
                 return Response(data="Expiration_Date is " + str(delta).split("-")[1].split(",")[0] + "  before manufacture_Date",
-                    status=status.HTTP_400_BAD_REQUEST)
+                                status=status.HTTP_400_BAD_REQUEST)
 
         return super().update(request)
 
@@ -155,6 +165,7 @@ class ItemInfo(generics.RetrieveUpdateDestroyAPIView):
             return Response(data="item Not found", status=status.HTTP_404_NOT_FOUND)
         serializer = self.get_serializer(items)
         return Response(serializer.data)
+
 
 class MostExpensiveAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -176,6 +187,7 @@ class CheapestAllItemListAPIView(generics.ListAPIView):
         # return queryset.order_by('price')
         return queryset.order_by('price_with_discount')
 
+
 class NewestAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -185,6 +197,7 @@ class NewestAllItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.all()
         return queryset.order_by('-manufacture_Date')
 
+
 class MostDiscountsAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -193,6 +206,7 @@ class MostDiscountsAllItemListAPIView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Item.objects.all()
         return queryset.order_by('-discount')
+
 
 class FilterCategoryItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -204,6 +218,7 @@ class FilterCategoryItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(category=q)
         return queryset
 
+
 class ExpensiveFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -213,6 +228,7 @@ class ExpensiveFilterItemListAPIView(generics.ListAPIView):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-price_with_discount')
+
 
 class CheapFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -224,6 +240,7 @@ class CheapFilterItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('price_with_discount')
 
+
 class NewFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -233,6 +250,7 @@ class NewFilterItemListAPIView(generics.ListAPIView):
         q = self.request.query_params.get('q', None)
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-manufacture_Date')
+
 
 class DiscountsFilterItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -244,6 +262,7 @@ class DiscountsFilterItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(category=q)
         return queryset.order_by('-discount')
 
+
 class MostExpensiveAllItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -252,6 +271,7 @@ class MostExpensiveAllItemOneShopListAPIView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
         return queryset.order_by('-price_with_discount')
+
 
 class CheapestAllItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -262,6 +282,7 @@ class CheapestAllItemOneShopListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
         return queryset.order_by('price_with_discount')
 
+
 class NewestAllItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -270,6 +291,7 @@ class NewestAllItemOneShopListAPIView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
         return queryset.order_by('-manufacture_Date')
+
 
 class MostDiscountsOneShopAllItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -280,6 +302,7 @@ class MostDiscountsOneShopAllItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(shopID=self.kwargs['pk'])
         return queryset.order_by('-discount')
 
+
 class FilterCategoryItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -287,8 +310,10 @@ class FilterCategoryItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(category=q)
         return queryset
+
 
 class ExpensiveFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -297,8 +322,10 @@ class ExpensiveFilterItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(category=q)
         return queryset.order_by('-price_with_discount')
+
 
 class CheapFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -307,8 +334,10 @@ class CheapFilterItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(category=q)
         return queryset.order_by('price_with_discount')
+
 
 class NewFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -317,8 +346,10 @@ class NewFilterItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(category=q)
         return queryset.order_by('-manufacture_Date')
+
 
 class DiscountsFilterItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -327,8 +358,10 @@ class DiscountsFilterItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(category=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(category=q)
         return queryset.order_by('-discount')
+
 
 class FilterBrandItemListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
@@ -340,6 +373,7 @@ class FilterBrandItemListAPIView(generics.ListAPIView):
         queryset = Item.objects.filter(brand=q)
         return queryset
 
+
 class FilterBrandItemOneShopListAPIView(generics.ListAPIView):
     serializer_class = ItemSerializer
     permission_classes = [AllowAny]
@@ -347,10 +381,13 @@ class FilterBrandItemOneShopListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         q = self.request.query_params.get('q', None)
-        queryset = Item.objects.filter(shopID=self.kwargs['pk']).filter(brand=q)
+        queryset = Item.objects.filter(
+            shopID=self.kwargs['pk']).filter(brand=q)
         return queryset
 
-########################################like
+# like
+
+
 class LikeItem(generics.ListCreateAPIView):
     queryset = ItemLike.objects.all()
     serializer_class = LikeSerializer
@@ -399,7 +436,9 @@ class LikeItem(generics.ListCreateAPIView):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-########################################comment
+# comment
+
+
 class Comments(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -458,7 +497,8 @@ class Comments(generics.ListCreateAPIView):
 class CommentInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]  # permission bayad dorost she
+    # permission bayad dorost she
+    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         item_id = self.kwargs.get('id')
@@ -539,12 +579,12 @@ class LikeComment(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
-########################################Reply
+# Reply
 
 class Replies(generics.ListCreateAPIView):
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
-    permission_classes = [IsAuthor,IsAuthenticatedOrReadOnly] ##fagat owner
+    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]  # fagat owner
 
     def get_object(self):
         item_id = self.kwargs.get('id')
@@ -589,7 +629,8 @@ class Replies(generics.ListCreateAPIView):
 class ReplyInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reply.objects.all()
     serializer_class = ReplySerializer
-    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]  # permission bayad dorost she
+    # permission bayad dorost she
+    permission_classes = [IsAuthor, IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         # post_id = self.kwargs.get('id')
@@ -697,7 +738,9 @@ class CommentReply(generics.ListAPIView):
         serializer = CommentReplySerializer(comment, many=True)
         return Response(serializer.data)
 
-########################rate
+# rate
+
+
 class RateCreateAPIView(generics.ListCreateAPIView):
     serializer_class = RateSerializer
 
@@ -706,12 +749,12 @@ class RateCreateAPIView(generics.ListCreateAPIView):
         return queryset
 
     def perform_create(self, serializer):
-        item=Item.objects.get(id=self.kwargs['id'])
+        item = Item.objects.get(id=self.kwargs['id'])
         serializer.save(item=item)
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data.copy()
-        serializer_data.update({'user':request.user.id})
+        serializer_data.update({'user': request.user.id})
         serializer = self.get_serializer(data=serializer_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -743,20 +786,26 @@ class RateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
 #######################SpecialItem####################
+
+
 class SpecialItemCreate(generics.CreateAPIView):
     queryset = SpecialItem.objects.all()
     serializer_class = SepcialItemSerializer
-    permission_classes = [IsAdminUser,IsAuthenticated] ### baraye get male hamash
+    # baraye get male hamash
+    permission_classes = [IsAdminUser, IsAuthenticated]
+
 
 class SpecialItemList(generics.ListAPIView):
     queryset = SpecialItem.objects.all()
     serializer_class = SepcialItemSerializer
     permission_classes = [AllowAny]
 
+
 class SpecialItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SpecialItem.objects.all()
     serializer_class = SepcialItemSerializer
     permission_classes = [IsAdminUser, IsAuthenticated]
+
 
 class SpecialItemRetrieveAPIView(generics.RetrieveAPIView):
     queryset = SpecialItem.objects.all()
@@ -764,6 +813,8 @@ class SpecialItemRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
 #######################QR for Item####################
+
+
 class QRCreateAPIView(generics.ListCreateAPIView):
     queryset = QR.objects.all()
     serializer_class = QRSerializer
@@ -775,11 +826,11 @@ class QRCreateAPIView(generics.ListCreateAPIView):
         return item
 
     def perform_create(self, serializer):
-        item=self.get_object()
+        item = self.get_object()
         serializer.save(item=item)
 
     def create(self, request, *args, **kwargs):
-        item=self.get_object()
+        item = self.get_object()
         if QR.objects.filter(item=item).exists():
             return Response(data="You made QR before", status=status.HTTP_400_BAD_REQUEST)
         serializer = self.get_serializer(data=request.data)
@@ -789,7 +840,7 @@ class QRCreateAPIView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def list(self, request, *args, **kwargs):
-        item=self.get_object()
-        qr=QR.objects.filter(item=item)
+        item = self.get_object()
+        qr = QR.objects.filter(item=item)
         serializer = QRSerializer(qr, many=True)
         return Response(serializer.data)
